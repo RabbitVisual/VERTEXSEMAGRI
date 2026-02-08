@@ -1,8 +1,8 @@
-<div x-data="{ open: false }" 
-     @keydown.window.cmd.k.prevent="open = !open" 
-     @keydown.window.ctrl.k.prevent="open = !open" 
-     x-show="open" 
-     class="fixed inset-0 z-50 overflow-y-auto" 
+<div x-data="{ open: false }"
+     @keydown.window.cmd.k.prevent="open = !open"
+     @keydown.window.ctrl.k.prevent="open = !open"
+     x-show="open"
+     class="fixed inset-0 z-50 overflow-y-auto"
      style="display: none;"
      x-transition:enter="ease-out duration-300"
      x-transition:enter-start="opacity-0"
@@ -10,7 +10,7 @@
      x-transition:leave="ease-in duration-200"
      x-transition:leave-start="opacity-100"
      x-transition:leave-end="opacity-0">
-    
+
     <div class="flex items-end justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
         <div class="fixed inset-0 transition-opacity" aria-hidden="true" @click="open = false">
             <div class="absolute inset-0 bg-gray-500/75 backdrop-blur-sm"></div>
@@ -24,8 +24,8 @@
                         Command Palette
                     </h3>
                     <div class="mt-4 relative">
-                        <input type="text" 
-                               class="w-full p-3 border border-gray-200 rounded-lg dark:bg-gray-700/50 dark:border-gray-600 dark:text-white focus:ring-2 focus:ring-green-500/50 focus:border-green-500 font-sans" 
+                        <input type="text"
+                               class="w-full p-3 border border-gray-200 rounded-lg dark:bg-gray-700/50 dark:border-gray-600 dark:text-white focus:ring-2 focus:ring-green-500/50 focus:border-green-500 font-sans"
                                placeholder="Search commands..."
                                autofocus>
                     </div>

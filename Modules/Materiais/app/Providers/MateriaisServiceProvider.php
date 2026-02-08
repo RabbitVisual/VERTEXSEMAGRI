@@ -38,6 +38,7 @@ class MateriaisServiceProvider extends ServiceProvider
     {
         $this->commands([
             SyncNcmCommand::class,
+            \Modules\Materiais\App\Console\SyncMateriaisCommand::class,
         ]);
     }
 
