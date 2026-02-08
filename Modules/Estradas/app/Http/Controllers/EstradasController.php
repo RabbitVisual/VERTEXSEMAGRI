@@ -159,12 +159,12 @@ class EstradasController extends Controller
 
         // Estatísticas do trecho
         $estatisticas = [
-            'total_demandas' => $trecho->demandas()->count(),
-            'demandas_abertas' => $trecho->demandas()->where('status', 'aberta')->count(),
-            'total_ordens' => $trecho->ordensServico()->count(),
-            'ordens_pendentes' => $trecho->ordensServico()->where('status', 'pendente')->count(),
-            'ordens_em_execucao' => $trecho->ordensServico()->where('status', 'em_execucao')->count(),
-            'ordens_concluidas' => $trecho->ordensServico()->where('status', 'concluida')->count(),
+            'total_demandas' => $trecho->demandas->count(),
+            'demandas_abertas' => $trecho->demandas->where('status', 'aberta')->count(),
+            'total_ordens' => $trecho->ordensServico->count(),
+            'ordens_pendentes' => $trecho->ordensServico->where('status', 'pendente')->count(),
+            'ordens_em_execucao' => $trecho->ordensServico->where('status', 'em_execucao')->count(),
+            'ordens_concluidas' => $trecho->ordensServico->where('status', 'concluida')->count(),
             'dias_sem_manutencao' => $trecho->diasSemManutencao(),
             'precisa_manutencao' => $trecho->precisaManutencao(),
         ];

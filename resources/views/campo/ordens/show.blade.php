@@ -452,6 +452,21 @@
                                     >
                                     <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Informe a quantidade necessária</p>
                                 </div>
+                                <div class="md:col-span-3">
+                                    <label for="poste_codigo" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                                        <span class="flex items-center gap-2">
+                                            <svg class="w-4 h-4 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m4.5 0a12.05 12.05 0 004.5 0m0 0a12.05 12.05 0 00-4.5 0m4.5 0v5.25M9 18v-5.25m0 0a6.01 6.01 0 00-1.5-.189M9 12.75a6.01 6.01 0 011.5-.189m-1.5.189a6.01 6.01 0 00-1.5-.189m1.5.189v5.25m0 0a12.05 12.05 0 01-4.5 0m4.5 0v5.25" /></svg>
+                                            Código do Poste (Opcional - Iluminação)
+                                        </span>
+                                    </label>
+                                    <input
+                                        type="text"
+                                        id="poste_codigo"
+                                        name="poste_codigo"
+                                        class="w-full px-4 py-3 border-2 border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 text-sm md:text-base"
+                                        placeholder="Digite o código da plaqueta..."
+                                    >
+                                </div>
                             </div>
                             <button
                                 type="button"
@@ -1333,6 +1348,7 @@
     function adicionarMaterial() {
         const materialId = document.getElementById('material_id').value;
         const quantidade = document.getElementById('quantidade_material').value;
+        const posteCodigo = document.getElementById('poste_codigo')?.value;
 
         if (!materialId || !quantidade || parseFloat(quantidade) <= 0) {
             alert('Selecione um material e informe a quantidade.');
@@ -1356,7 +1372,8 @@
             },
             body: JSON.stringify({
                 material_id: materialId,
-                quantidade: quantidade
+                quantidade: quantidade,
+                poste_codigo: posteCodigo
             })
         })
         .then(response => response.json())
@@ -1368,6 +1385,7 @@
                 // Limpar formulário
                 document.getElementById('material_id').value = '';
                 document.getElementById('quantidade_material').value = '';
+                if(document.getElementById('poste_codigo')) document.getElementById('poste_codigo').value = '';
                 document.getElementById('material-sem-estoque-alerta').classList.add('hidden');
 
                 // Atualizar contador
