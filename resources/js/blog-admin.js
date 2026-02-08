@@ -1,5 +1,5 @@
 // Blog Admin JavaScript - Modal de Exclusão Otimizado
-(function() {
+(function () {
     'use strict';
 
 
@@ -94,7 +94,7 @@
     }
 
     // Função global para chamar o modal
-    window.confirmDelete = async function(postId, postTitle) {
+    window.confirmDelete = async function (postId, postTitle) {
 
         if (!postId || !postTitle) {
             console.error('❌ Parâmetros inválidos para confirmDelete');
@@ -213,14 +213,14 @@
             // Tenta recuperar de emergência
             const emergencyToken = findCsrfToken();
             if (emergencyToken) {
-                 if (inputToken) inputToken.value = emergencyToken;
-                 else {
-                     const newInput = document.createElement('input');
-                     newInput.type = 'hidden';
-                     newInput.name = '_token';
-                     newInput.value = emergencyToken;
-                     deleteForm.appendChild(newInput);
-                 }
+                if (inputToken) inputToken.value = emergencyToken;
+                else {
+                    const newInput = document.createElement('input');
+                    newInput.type = 'hidden';
+                    newInput.name = '_token';
+                    newInput.value = emergencyToken;
+                    deleteForm.appendChild(newInput);
+                }
             } else {
                 alert('Sessão expirada ou inválida. Recarregue a página.');
                 return;
@@ -255,20 +255,23 @@
         if (confirmBtn) {
             const newConfirm = confirmBtn.cloneNode(true);
             confirmBtn.parentNode.replaceChild(newConfirm, confirmBtn);
-            newConfirm.addEventListener('click', function(e) {
+            newConfirm.addEventListener('click', function (e) {
                 e.preventDefault(); // Prevenir comportamento padrão
                 executeDelete();
+            });
         }
 
         if (modal) {
-            modal.addEventListener('click', function(e) {
+            modal.addEventListener('click', function (e) {
                 if (e.target === this) closeDeleteModal();
+            });
         }
 
-        document.addEventListener('keydown', function(e) {
+        document.addEventListener('keydown', function (e) {
             if (e.key === 'Escape' && modal && !modal.classList.contains('hidden')) {
                 closeDeleteModal();
             }
+        });
     }
 
     function initializeBlogAdmin() {
@@ -297,20 +300,22 @@
 
         // Estratégia 2: Aguardar DOMContentLoaded
         if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', function() {
+            document.addEventListener('DOMContentLoaded', function () {
                 // Aguardar um pouco mais para garantir que tudo esteja carregado
                 setTimeout(initializeBlogAdmin, 100);
+            });
         } else {
             // Document está em 'interactive' - aguardar um pouco
             setTimeout(initializeBlogAdmin, 200);
         }
 
         // Estratégia 3: Fallback com window.load
-        window.addEventListener('load', function() {
+        window.addEventListener('load', function () {
             if (!isInitialized) {
                 initializeBlogAdmin();
             }
         });
+    }
 
     // Iniciar inicialização segura
     safeInitialize();

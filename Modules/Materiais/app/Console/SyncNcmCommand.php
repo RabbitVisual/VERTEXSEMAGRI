@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Materiais\Console;
+namespace Modules\Materiais\App\Console;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
@@ -14,26 +14,26 @@ class SyncNcmCommand extends Command
      *
      * @var string
      */
-    protected  = 'ncm:sync';
+    protected $signature = 'ncm:sync';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected  = 'Synchronize NCM data from external source';
+    protected $description = 'Synchronize NCM data from external source';
 
     /**
      * Execute the console command.
      */
     public function handle()
     {
-        ->info('Starting NCM synchronization...');
+        $this->info('Starting NCM synchronization...');
 
         // Logic to sync NCMs
         // Assuming a dummy implementation for now as I don't have the source URL or specific logic
         // This is to fix the "Command Not Found" error.
-        
-        ->info('NCM synchronization completed successfully.');
+
+        $this->info('NCM synchronization completed successfully.');
     }
 }
