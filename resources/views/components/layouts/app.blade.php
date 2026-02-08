@@ -46,7 +46,7 @@
             {{ $slot }}
 
             <!-- Command Center (CMD+K) -->
-            <livewire:command-palette />
+            <!-- <livewire:command-palette /> -->
 
         </main>
     </div>

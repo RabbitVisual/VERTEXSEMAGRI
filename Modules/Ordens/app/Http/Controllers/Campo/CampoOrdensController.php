@@ -215,6 +215,8 @@ class CampoOrdensController extends Controller
         $request->validate([
             'material_id' => 'required|exists:materiais,id',
             'quantidade' => 'required|numeric|min:0.01',
+            'poste_id' => 'nullable|exists:postes,id',
+            'poste_codigo' => 'nullable|string',
         ]);
 
         $ordem = OrdemServico::findOrFail($id);
@@ -229,6 +231,17 @@ class CampoOrdensController extends Controller
 
         // Buscar material
         $material = \Modules\Materiais\App\Models\Material::findOrFail($request->material_id);
+
+        // Resolver Poste ID se código fornecido
+        $posteId = $request->poste_id;
+        if (!$posteId && $request->filled('poste_codigo')) {
+            $poste = \Modules\Iluminacao\App\Models\Poste::where('codigo', $request->poste_codigo)->first();
+            if ($poste) {
+                $posteId = $poste->id;
+            } else {
+                return response()->json(['error' => "Poste com código '{$request->poste_codigo}' não encontrado."], 404);
+            }
+        }
 
         // Verificar estoque
         if (!$material->temEstoqueSuficiente($request->quantidade)) {
@@ -255,6 +268,7 @@ class CampoOrdensController extends Controller
                 'quantidade' => $request->quantidade,
                 'valor_unitario' => $material->valor_unitario ?? 0,
                 'status_reserva' => 'reservado',
+                'poste_id' => $posteId,
             ]);
 
             // RESERVAR estoque (não baixar definitivamente ainda)

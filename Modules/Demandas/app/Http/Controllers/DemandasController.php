@@ -84,20 +84,7 @@ class DemandasController extends Controller
 
         // Estatísticas gerais
         try {
-            $estatisticas = [
-                'total' => (int) (Demanda::count() ?? 0),
-                'abertas' => (int) (Demanda::abertas()->count() ?? 0),
-                'em_andamento' => (int) (Demanda::emAndamento()->count() ?? 0),
-                'concluidas' => (int) (Demanda::concluidas()->count() ?? 0),
-                'urgentes' => (int) (Demanda::urgentes()->count() ?? 0),
-                'sem_os' => (int) (Demanda::whereDoesntHave('ordemServico')->count() ?? 0),
-                'por_tipo' => [
-                    'agua' => (int) (Demanda::porTipo('agua')->count() ?? 0),
-                    'luz' => (int) (Demanda::porTipo('luz')->count() ?? 0),
-                    'estrada' => (int) (Demanda::porTipo('estrada')->count() ?? 0),
-                    'poco' => (int) (Demanda::porTipo('poco')->count() ?? 0),
-                ],
-            ];
+            $estatisticas = Demanda::getDashboardStats();
         } catch (\Exception $e) {
             Log::error('Erro ao calcular estatísticas de demandas: ' . $e->getMessage());
             $estatisticas = [

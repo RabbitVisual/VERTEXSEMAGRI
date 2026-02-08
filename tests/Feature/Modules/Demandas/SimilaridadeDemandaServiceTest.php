@@ -28,6 +28,8 @@ class SimilaridadeDemandaServiceTest extends TestCase
         config(['database.default' => 'sqlite']);
         config(['database.connections.sqlite.database' => ':memory:']);
 
+        parent::setUp();
+
         // Ensure we start with a clean state for these tables
         Schema::dropIfExists('demandas');
         Schema::dropIfExists('localidades');
