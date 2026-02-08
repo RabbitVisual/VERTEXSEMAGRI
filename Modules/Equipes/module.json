@@ -1,0 +1,24 @@
+{
+    "name": "Equipes",
+    "alias": "equipes",
+    "description": "Módulo de gestão de equipes de campo, funcionários e alocação de recursos para atividades externas",
+    "keywords": [
+        "equipes",
+        "campo",
+        "funcionarios",
+        "alocacao",
+        "recursos"
+    ],
+    "priority": 0,
+    "version": "1.0.0",
+    "author": "Reinan Rodrigues",
+    "company": "Vertex Solutions LTDA",
+    "providers": [
+        "Modules\\Equipes\\Providers\\EquipesServiceProvider",
+        "Modules\\Equipes\\Providers\\EventServiceProvider",
+        "Modules\\Equipes\\Providers\\RouteServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

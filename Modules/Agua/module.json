@@ -1,0 +1,22 @@
+{
+    "name": "Agua",
+    "alias": "agua",
+    "description": "Módulo de gestão e cadastro de sistemas de água, poços artesianos e infraestrutura hídrica do município",
+    "keywords": [
+        "agua",
+        "hidrica",
+        "poco",
+        "artesiano",
+        "abastecimento"
+    ],
+    "priority": 0,
+    "version": "1.0.0",
+    "author": "Reinan Rodrigues",
+    "company": "Vertex Solutions LTDA",
+    "providers": [
+        "Modules\\Agua\\Providers\\AguaServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

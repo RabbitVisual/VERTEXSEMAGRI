@@ -1,0 +1,24 @@
+{
+    "name": "CAF",
+    "alias": "caf",
+    "description": "Módulo completo de Cadastro de Agricultores Familiares (CAF) integrado ao VERTEXSEMAGRI",
+    "keywords": [
+        "caf",
+        "agricultor",
+        "cadastro",
+        "agricultura familiar",
+        "rural"
+    ],
+    "priority": 50,
+    "version": "1.0.0",
+    "author": "Reinan Rodrigues",
+    "company": "Vertex Solutions LTDA",
+    "providers": [
+        "Modules\\CAF\\App\\Providers\\CAFServiceProvider",
+        "Modules\\CAF\\App\\Providers\\RouteServiceProvider",
+        "Modules\\CAF\\App\\Providers\\EventServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

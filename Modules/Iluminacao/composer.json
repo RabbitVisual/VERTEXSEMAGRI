@@ -1,0 +1,30 @@
+{
+    "name": "nwidart/iluminacao",
+    "description": "",
+    "authors": [
+        {
+            "name": "Nicolas Widart",
+            "email": "n.widart@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Iluminacao\\": "app/",
+            "Modules\\Iluminacao\\Database\\Factories\\": "database/factories/",
+            "Modules\\Iluminacao\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\Iluminacao\\Tests\\": "tests/"
+        }
+    }
+}

@@ -1,0 +1,22 @@
+{
+    "name": "Funcionarios",
+    "alias": "funcionarios",
+    "description": "Módulo de gestão de funcionários públicos, cadastro de servidores e recursos humanos da prefeitura",
+    "keywords": [
+        "funcionarios",
+        "servidores",
+        "recursos humanos",
+        "rh",
+        "cadastro"
+    ],
+    "priority": 0,
+    "version": "1.0.0",
+    "author": "Reinan Rodrigues",
+    "company": "Vertex Solutions LTDA",
+    "providers": [
+        "Modules\\Funcionarios\\App\\Providers\\FuncionariosServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

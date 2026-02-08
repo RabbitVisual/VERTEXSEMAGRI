@@ -1,0 +1,22 @@
+{
+    "name": "ProgramasAgricultura",
+    "alias": "programasagricultura",
+    "description": "Módulo de gestão de programas de agricultura, políticas públicas rurais e projetos agrícolas do município",
+    "keywords": [
+        "programas",
+        "agricultura",
+        "rural",
+        "politicas",
+        "projetos"
+    ],
+    "priority": 0,
+    "version": "1.0.0",
+    "author": "Reinan Rodrigues",
+    "company": "Vertex Solutions LTDA",
+    "providers": [
+        "Modules\\ProgramasAgricultura\\Providers\\ProgramasAgriculturaServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

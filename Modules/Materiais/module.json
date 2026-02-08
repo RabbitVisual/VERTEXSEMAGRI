@@ -1,0 +1,24 @@
+{
+    "name": "Materiais",
+    "alias": "materiais",
+    "description": "Módulo de gestão de materiais e estoque, controle de inventário e recursos da prefeitura",
+    "keywords": [
+        "materiais",
+        "estoque",
+        "inventario",
+        "recursos",
+        "almoxarifado"
+    ],
+    "priority": 0,
+    "version": "1.0.0",
+    "author": "Reinan Rodrigues",
+    "company": "Vertex Solutions LTDA",
+    "providers": [
+        "Modules\\Materiais\\Providers\\MateriaisServiceProvider",
+        "Modules\\Materiais\\Providers\\EventServiceProvider",
+        "Modules\\Materiais\\Providers\\RouteServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

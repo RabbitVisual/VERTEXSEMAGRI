@@ -1,0 +1,22 @@
+{
+    "name": "Pocos",
+    "alias": "pocos",
+    "description": "Módulo de gestão e cadastro de poços artesianos, perfurações e sistemas de captação de água",
+    "keywords": [
+        "pocos",
+        "artesianos",
+        "perfuracao",
+        "captacao",
+        "agua"
+    ],
+    "priority": 0,
+    "version": "1.0.0",
+    "author": "Reinan Rodrigues",
+    "company": "Vertex Solutions LTDA",
+    "providers": [
+        "Modules\\Pocos\\Providers\\PocosServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

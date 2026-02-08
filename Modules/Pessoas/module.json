@@ -1,0 +1,24 @@
+{
+    "name": "Pessoas",
+    "alias": "pessoas",
+    "description": "Módulo de gestão de pessoas do Cadastro Único (CadÚnico), beneficiários e cidadãos do município",
+    "keywords": [
+        "pessoas",
+        "cadunico",
+        "beneficiarios",
+        "cidadaos",
+        "cadastro"
+    ],
+    "priority": 0,
+    "version": "1.0.0",
+    "author": "Reinan Rodrigues",
+    "company": "Vertex Solutions LTDA",
+    "providers": [
+        "Modules\\Pessoas\\Providers\\PessoasServiceProvider",
+        "Modules\\Pessoas\\Providers\\EventServiceProvider",
+        "Modules\\Pessoas\\Providers\\RouteServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

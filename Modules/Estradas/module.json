@@ -1,0 +1,22 @@
+{
+    "name": "Estradas",
+    "alias": "estradas",
+    "description": "Módulo de gestão e cadastro de estradas rurais, vias públicas e infraestrutura viária do município",
+    "keywords": [
+        "estradas",
+        "vias",
+        "rurais",
+        "infraestrutura",
+        "viaria"
+    ],
+    "priority": 0,
+    "version": "1.0.0",
+    "author": "Reinan Rodrigues",
+    "company": "Vertex Solutions LTDA",
+    "providers": [
+        "Modules\\Estradas\\Providers\\EstradasServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

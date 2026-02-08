@@ -1,0 +1,22 @@
+{
+    "name": "Notificacoes",
+    "alias": "notificacoes",
+    "description": "Módulo de sistema de notificações, alertas e comunicações internas do VERTEXSEMAGRI",
+    "keywords": [
+        "notificacoes",
+        "alertas",
+        "comunicacoes",
+        "mensagens",
+        "sistema"
+    ],
+    "priority": 0,
+    "version": "1.0.0",
+    "author": "Reinan Rodrigues",
+    "company": "Vertex Solutions LTDA",
+    "providers": [
+        "Modules\\Notificacoes\\Providers\\NotificacoesServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

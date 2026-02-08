@@ -1,0 +1,567 @@
+@extends('Co-Admin.layouts.app')
+
+@section('title', 'Monitoramento de Funcionários em Tempo Real')
+
+@push('styles')
+<style>
+    .pulse-animation {
+        animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+
+    @keyframes pulse {
+        0%, 100% {
+            opacity: 1;
+        }
+        50% {
+            opacity: .5;
+        }
+    }
+
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .status-indicator {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+    }
+
+    .status-indicator.pulse {
+        animation: pulse-dot 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+
+    @keyframes pulse-dot {
+        0%, 100% {
+            transform: scale(1);
+            opacity: 1;
+        }
+        50% {
+            transform: scale(1.2);
+            opacity: 0.8;
+        }
+    }
+
+    .status-success { color: #10b981; }
+    .status-warning { color: #f59e0b; }
+    .status-info { color: #3b82f6; }
+    .status-secondary { color: #6b7280; }
+    .bg-success-500 { background-color: #10b981; }
+    .bg-warning-500 { background-color: #f59e0b; }
+    .bg-info-500 { background-color: #3b82f6; }
+    .bg-secondary-500 { background-color: #6b7280; }
+</style>
+@endpush
+
+@section('content')
+<div class="space-y-6">
+    <!-- Page Header -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6 border-b border-gray-200 dark:border-gray-700">
+        <div>
+            <h1 class="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-3">
+                <svg class="w-7 h-7 text-emerald-600 dark:text-emerald-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+                </svg>
+                Monitoramento em Tempo Real
+            </h1>
+            <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                Status atual dos funcionários em campo
+                <span class="inline-flex items-center gap-1 ml-2 text-xs text-emerald-600 dark:text-emerald-500">
+                    <span class="w-2 h-2 bg-emerald-500 rounded-full pulse-animation"></span>
+                    Atualização automática a cada 15s
+                </span>
+            </p>
+        </div>
+        <div class="flex items-center gap-2">
+            <a href="{{ route('co-admin.funcionarios.index') }}" class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-700">
+                <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+                </svg>
+                Voltar
+            </a>
+            <button onclick="atualizarAgora()" class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-white bg-emerald-600 rounded-lg hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                <svg class="w-4 h-4 mr-2" id="refresh-icon" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+                </svg>
+                Atualizar
+            </button>
+        </div>
+    </div>
+
+    <!-- Alertas -->
+    @if(session('success'))
+        <div class="p-4 bg-emerald-50 border border-emerald-200 rounded-lg dark:bg-emerald-900/20 dark:border-emerald-800">
+            <div class="flex items-center gap-3">
+                <svg class="w-5 h-5 text-emerald-600 dark:text-emerald-500" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" />
+                </svg>
+                <p class="text-sm text-emerald-800 dark:text-emerald-200">{{ session('success') }}</p>
+            </div>
+        </div>
+    @endif
+
+    @if(session('error'))
+        <div class="p-4 bg-red-50 border border-red-200 rounded-lg dark:bg-red-900/20 dark:border-red-800">
+            <div class="flex items-center gap-3">
+                <svg class="w-5 h-5 text-red-600 dark:text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clip-rule="evenodd" />
+                </svg>
+                <p class="text-sm text-red-800 dark:text-red-200">{{ session('error') }}</p>
+            </div>
+        </div>
+    @endif
+
+    <!-- Cards de Estatísticas -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+        <!-- Total -->
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Total</p>
+                    <p class="text-3xl font-bold text-gray-900 dark:text-white mt-1" id="stat-total">{{ $estatisticas['total'] ?? 0 }}</p>
+                </div>
+                <div class="p-3 bg-gray-100 dark:bg-gray-700 rounded-lg">
+                    <svg class="w-6 h-6 text-gray-600 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Disponíveis -->
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Disponíveis</p>
+                    <p class="text-3xl font-bold text-emerald-600 dark:text-emerald-500 mt-1" id="stat-disponiveis">{{ $estatisticas['disponiveis'] ?? 0 }}</p>
+                </div>
+                <div class="p-3 bg-emerald-100 dark:bg-emerald-900/20 rounded-lg">
+                    <svg class="w-6 h-6 text-emerald-600 dark:text-emerald-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Em Atendimento -->
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Em Atendimento</p>
+                    <p class="text-3xl font-bold text-amber-600 dark:text-amber-500 mt-1" id="stat-atendimento">{{ $estatisticas['em_atendimento'] ?? 0 }}</p>
+                </div>
+                <div class="p-3 bg-amber-100 dark:bg-amber-900/20 rounded-lg">
+                    <svg class="w-6 h-6 text-amber-600 dark:text-amber-500 pulse-animation" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 11-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 004.486-6.336l-3.276 3.277a3.004 3.004 0 01-2.25-2.25l3.276-3.276a4.5 4.5 0 00-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-1.745 1.437L5.909 7.5H4.5L2.25 3.75l1.5-1.5L7.5 4.5v1.409l4.26 4.26m-1.745 1.437l1.745-1.437m6.615 8.206L15.75 15.75M4.867 19.125h.008v.008h-.008v-.008z" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pausados -->
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Pausados</p>
+                    <p class="text-3xl font-bold text-blue-600 dark:text-blue-500 mt-1" id="stat-pausados">{{ $estatisticas['pausados'] ?? 0 }}</p>
+                </div>
+                <div class="p-3 bg-blue-100 dark:bg-blue-900/20 rounded-lg">
+                    <svg class="w-6 h-6 text-blue-600 dark:text-blue-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25v13.5m-7.5-13.5v13.5" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Offline -->
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Offline</p>
+                    <p class="text-3xl font-bold text-gray-600 dark:text-gray-500 mt-1" id="stat-offline">{{ $estatisticas['offline'] ?? 0 }}</p>
+                </div>
+                <div class="p-3 bg-gray-100 dark:bg-gray-700 rounded-lg">
+                    <svg class="w-6 h-6 text-gray-600 dark:text-gray-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 3l8.735 8.735m0 0a.374.374 0 11.53.53m-.53-.53l.53.53m0 0L21 21M14.652 9.348a3.75 3.75 0 010 5.304m2.121-7.425a6.75 6.75 0 010 9.546m2.121-11.667c3.808 3.807 3.808 9.98 0 13.788m-9.546-4.242a3.733 3.733 0 01-1.06-2.122m-1.061 4.243a6.75 6.75 0 01-1.625-6.929m-.496 9.05c-3.068-3.067-3.664-7.67-1.79-11.334M12 12h.008v.008H12V12z" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Última Atualização -->
+    <div class="flex items-center justify-between text-sm text-gray-600 dark:text-gray-400">
+        <span>Última atualização: <strong id="ultima-atualizacao">{{ now()->format('H:i:s') }}</strong></span>
+        <span>Próxima atualização em: <strong id="proximo-update">15s</strong></span>
+    </div>
+
+    <!-- Lista de Funcionários -->
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden">
+        <div class="p-6 border-b border-gray-200 dark:border-gray-700">
+            <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Funcionários Ativos</h2>
+            <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Monitoramento em tempo real do status de todos os funcionários</p>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                <thead class="bg-gray-50 dark:bg-gray-900">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                            Funcionário
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                            Função
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                            Status
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                            Ordem Atual
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                            Tempo em Atendimento
+                        </th>
+                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                            Ações
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="funcionarios-tbody" class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                    @forelse($funcionarios as $funcionario)
+                    <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors" data-funcionario-id="{{ $funcionario->id }}">
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 h-10 w-10">
+                                    <div class="h-10 w-10 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center text-white font-semibold">
+                                        {{ strtoupper(substr($funcionario->nome, 0, 2)) }}
+                                    </div>
+                                </div>
+                                <div class="ml-4">
+                                    <div class="text-sm font-medium text-gray-900 dark:text-white">{{ $funcionario->nome }}</div>
+                                    <div class="text-sm text-gray-500 dark:text-gray-400">{{ $funcionario->codigo }}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="text-sm text-gray-900 dark:text-white">{{ $funcionario->funcao_formatada }}</span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            @php
+                                $statusCor = $funcionario->status_campo_cor;
+                                $corClasses = [
+                                    'success' => 'bg-emerald-500 text-emerald-700 dark:text-emerald-400',
+                                    'warning' => 'bg-amber-500 text-amber-700 dark:text-amber-400',
+                                    'info' => 'bg-blue-500 text-blue-700 dark:text-blue-400',
+                                    'secondary' => 'bg-gray-500 text-gray-700 dark:text-gray-400',
+                                ];
+                                $bgClass = explode(' ', $corClasses[$statusCor] ?? $corClasses['secondary'])[0];
+                                $textClass = implode(' ', array_slice(explode(' ', $corClasses[$statusCor] ?? $corClasses['secondary']), 1));
+                            @endphp
+                            <span class="status-badge">
+                                <span class="status-indicator {{ $funcionario->status_campo === 'em_atendimento' ? 'pulse' : '' }} {{ $bgClass }}"></span>
+                                <span class="text-sm font-medium {{ $textClass }}">
+                                    {{ $funcionario->status_campo_texto }}
+                                </span>
+                            </span>
+                        </td>
+                        <td class="px-6 py-4">
+                            @if($funcionario->ordemServicoAtual)
+                                <a href="{{ route('co-admin.ordens.show', $funcionario->ordemServicoAtual->id) }}" class="text-sm text-emerald-600 dark:text-emerald-500 hover:underline">
+                                    OS #{{ $funcionario->ordemServicoAtual->numero }}
+                                </a>
+                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                                    {{ $funcionario->ordemServicoAtual->demanda->localidade->nome ?? 'N/A' }}
+                                </p>
+                            @else
+                                <span class="text-sm text-gray-500 dark:text-gray-400">-</span>
+                            @endif
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            @if($funcionario->tempo_atendimento)
+                                <span class="text-sm text-gray-900 dark:text-white font-medium">{{ $funcionario->tempo_atendimento }}</span>
+                            @else
+                                <span class="text-sm text-gray-500 dark:text-gray-400">-</span>
+                            @endif
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                            <button onclick="verDetalhes({{ $funcionario->id }})" class="text-emerald-600 hover:text-emerald-900 dark:text-emerald-500 dark:hover:text-emerald-400">
+                                Detalhes
+                            </button>
+                        </td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="6" class="px-6 py-12 text-center text-gray-500 dark:text-gray-400">
+                            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
+                            </svg>
+                            <p class="mt-2">Nenhum funcionário ativo encontrado</p>
+                        </td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Detalhes -->
+<div id="modal-detalhes" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-lg w-full p-6">
+        <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Detalhes do Funcionário</h3>
+            <button onclick="fecharModalDetalhes()" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+        <div id="modal-detalhes-content" class="space-y-4">
+            <!-- Conteúdo será preenchido via JavaScript -->
+        </div>
+        <div class="mt-6 flex justify-end">
+            <button onclick="fecharModalDetalhes()" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600">
+                Fechar
+            </button>
+        </div>
+    </div>
+</div>
+@endsection
+
+@push('scripts')
+<script>
+let updateInterval;
+let countdownInterval;
+let countdown = 15;
+
+// Atualização automática
+function iniciarAtualizacaoAutomatica() {
+    // Atualizar a cada 15 segundos
+    updateInterval = setInterval(() => {
+        atualizarDados();
+        countdown = 15;
+    }, 15000);
+
+    // Countdown
+    countdownInterval = setInterval(() => {
+        countdown--;
+        document.getElementById('proximo-update').textContent = countdown + 's';
+        if (countdown <= 0) {
+            countdown = 15;
+        }
+    }, 1000);
+}
+
+// Atualizar dados via AJAX
+async function atualizarDados() {
+    try {
+        const response = await fetch('{{ route("co-admin.funcionarios.status.atualizar") }}', {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json'
+            }
+        });
+
+        if (!response.ok) throw new Error('Erro na requisição');
+
+        const data = await response.json();
+
+        if (data.success) {
+            // Atualizar estatísticas
+            document.getElementById('stat-total').textContent = data.estatisticas.total;
+            document.getElementById('stat-disponiveis').textContent = data.estatisticas.disponiveis;
+            document.getElementById('stat-atendimento').textContent = data.estatisticas.em_atendimento;
+            document.getElementById('stat-pausados').textContent = data.estatisticas.pausados;
+            document.getElementById('stat-offline').textContent = data.estatisticas.offline;
+
+            // Atualizar timestamp
+            document.getElementById('ultima-atualizacao').textContent = data.timestamp;
+
+            // Atualizar tabela de funcionários
+            atualizarTabelaFuncionarios(data.funcionarios);
+        }
+    } catch (error) {
+        console.error('Erro ao atualizar dados:', error);
+    }
+}
+
+// Atualizar tabela
+function atualizarTabelaFuncionarios(funcionarios) {
+    const tbody = document.getElementById('funcionarios-tbody');
+
+    funcionarios.forEach(func => {
+        const row = tbody.querySelector(`tr[data-funcionario-id="${func.id}"]`);
+        if (!row) return;
+
+        // Mapeamento de cores
+        const corMap = {
+            'success': { bg: 'bg-emerald-500', text: 'text-emerald-700 dark:text-emerald-400' },
+            'warning': { bg: 'bg-amber-500', text: 'text-amber-700 dark:text-amber-400' },
+            'info': { bg: 'bg-blue-500', text: 'text-blue-700 dark:text-blue-400' },
+            'secondary': { bg: 'bg-gray-500', text: 'text-gray-700 dark:text-gray-400' },
+        };
+        const cor = corMap[func.status_campo_cor] || corMap['secondary'];
+
+        // Atualizar status
+        const statusCell = row.querySelector('td:nth-child(3)');
+        const statusIndicatorClass = func.status_campo === 'em_atendimento' ? 'pulse' : '';
+        statusCell.innerHTML = `
+            <span class="status-badge">
+                <span class="status-indicator ${statusIndicatorClass} ${cor.bg}"></span>
+                <span class="text-sm font-medium ${cor.text}">
+                    ${func.status_campo_texto}
+                </span>
+            </span>
+        `;
+
+        // Atualizar ordem atual
+        const ordemCell = row.querySelector('td:nth-child(4)');
+        if (func.ordem_atual) {
+            ordemCell.innerHTML = `
+                <a href="/co-admin/ordens/${func.ordem_atual.id}" class="text-sm text-emerald-600 dark:text-emerald-500 hover:underline">
+                    OS #${func.ordem_atual.numero}
+                </a>
+                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                    ${func.ordem_atual.localidade}
+                </p>
+            `;
+        } else {
+            ordemCell.innerHTML = '<span class="text-sm text-gray-500 dark:text-gray-400">-</span>';
+        }
+
+        // Atualizar tempo
+        const tempoCell = row.querySelector('td:nth-child(5)');
+        if (func.tempo_atendimento) {
+            tempoCell.innerHTML = `<span class="text-sm text-gray-900 dark:text-white font-medium">${func.tempo_atendimento}</span>`;
+        } else {
+            tempoCell.innerHTML = '<span class="text-sm text-gray-500 dark:text-gray-400">-</span>';
+        }
+    });
+}
+
+// Atualizar agora
+function atualizarAgora() {
+    const icon = document.getElementById('refresh-icon');
+    icon.classList.add('animate-spin');
+
+    atualizarDados().finally(() => {
+        setTimeout(() => {
+            icon.classList.remove('animate-spin');
+        }, 500);
+    });
+
+    countdown = 15;
+}
+
+// Ver detalhes
+async function verDetalhes(id) {
+    try {
+        const response = await fetch(`{{ url('/co-admin/funcionarios/status') }}/${id}/detalhes`, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json'
+            }
+        });
+
+        if (!response.ok) throw new Error('Erro na requisição');
+
+        const data = await response.json();
+
+        if (data.success) {
+            const func = data.funcionario;
+            const content = document.getElementById('modal-detalhes-content');
+
+            let html = `
+                <div class="flex items-center gap-4 pb-4 border-b border-gray-200 dark:border-gray-700">
+                    <div class="h-16 w-16 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center text-white font-bold text-xl">
+                        ${func.nome.substring(0, 2).toUpperCase()}
+                    </div>
+                    <div>
+                        <h4 class="text-lg font-semibold text-gray-900 dark:text-white">${func.nome}</h4>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">${func.codigo}</p>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <p class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Função</p>
+                        <p class="text-sm text-gray-900 dark:text-white">${func.funcao}</p>
+                    </div>
+                    <div>
+                        <p class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Status</p>
+                        <p class="text-sm text-gray-900 dark:text-white">${func.status}</p>
+                    </div>
+                    <div>
+                        <p class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Email</p>
+                        <p class="text-sm text-gray-900 dark:text-white">${func.email || 'N/A'}</p>
+                    </div>
+                    <div>
+                        <p class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Telefone</p>
+                        <p class="text-sm text-gray-900 dark:text-white">${func.telefone || 'N/A'}</p>
+                    </div>
+                </div>
+            `;
+
+            if (func.ordem_atual) {
+                html += `
+                    <div class="pt-4 border-t border-gray-200 dark:border-gray-700">
+                        <h5 class="text-sm font-semibold text-gray-900 dark:text-white mb-3">Ordem de Serviço Atual</h5>
+                        <div class="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-sm font-medium text-amber-800 dark:text-amber-200">OS #${func.ordem_atual.numero}</span>
+                                <span class="text-xs text-amber-600 dark:text-amber-400">${func.tempo_atendimento || 'N/A'}</span>
+                            </div>
+                            <p class="text-sm text-gray-700 dark:text-gray-300">${func.ordem_atual.tipo_servico}</p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">${func.ordem_atual.localidade}</p>
+                            ${func.ordem_atual.iniciado_em ? `<p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Iniciado em: ${func.ordem_atual.iniciado_em}</p>` : ''}
+                        </div>
+                    </div>
+                `;
+            }
+
+            if (func.equipes && func.equipes.length > 0) {
+                html += `
+                    <div class="pt-4 border-t border-gray-200 dark:border-gray-700">
+                        <h5 class="text-sm font-semibold text-gray-900 dark:text-white mb-2">Equipes</h5>
+                        <div class="flex flex-wrap gap-2">
+                            ${func.equipes.map(e => `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400">${e.nome}</span>`).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            content.innerHTML = html;
+            document.getElementById('modal-detalhes').classList.remove('hidden');
+        }
+    } catch (error) {
+        console.error('Erro ao buscar detalhes:', error);
+        alert('Erro ao buscar detalhes do funcionário');
+    }
+}
+
+// Fechar modal de detalhes
+function fecharModalDetalhes() {
+    document.getElementById('modal-detalhes').classList.add('hidden');
+}
+
+// Iniciar ao carregar a página
+document.addEventListener('DOMContentLoaded', () => {
+    iniciarAtualizacaoAutomatica();
+});
+
+// Limpar intervalos ao sair
+window.addEventListener('beforeunload', () => {
+    if (updateInterval) clearInterval(updateInterval);
+    if (countdownInterval) clearInterval(countdownInterval);
+});
+
+// Fechar modal ao clicar fora
+document.getElementById('modal-detalhes').addEventListener('click', function(e) {
+    if (e.target === this) {
+        fecharModalDetalhes();
+    }
+});
+</script>
+@endpush
+

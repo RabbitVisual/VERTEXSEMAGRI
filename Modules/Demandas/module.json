@@ -1,0 +1,24 @@
+{
+    "name": "Demandas",
+    "alias": "demandas",
+    "description": "Módulo de gestão de demandas da população, solicitações e atendimentos do município",
+    "keywords": [
+        "demandas",
+        "solicitacoes",
+        "atendimento",
+        "requerimentos",
+        "pedidos"
+    ],
+    "priority": 0,
+    "version": "1.0.0",
+    "author": "Reinan Rodrigues",
+    "company": "Vertex Solutions LTDA",
+    "providers": [
+        "Modules\\Demandas\\Providers\\DemandasServiceProvider",
+        "Modules\\Demandas\\Providers\\EventServiceProvider",
+        "Modules\\Demandas\\Providers\\RouteServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

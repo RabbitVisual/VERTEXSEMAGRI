@@ -1,0 +1,753 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Módulo Chat - VERTEXSEMAGRI Documentação</title>
+    <meta name="description" content="Documentação completa do módulo Chat do sistema VERTEXSEMAGRI - Chat institucional para suporte e comunicação">
+    <link rel="icon" type="image/svg+xml" href="assets/img/logo-icon.svg">
+
+    <!-- Suppress Tailwind CSS CDN warning -->
+    <script>
+        (function() {
+            const originalWarn = console.warn;
+            console.warn = function(...args) {
+                const message = args[0];
+                if (typeof message === 'string' && (
+                    message.includes('cdn.tailwindcss.com should not be used in production') ||
+                    message.includes('should not be used in production') ||
+                    message.includes('To use Tailwind CSS in production') ||
+                    message.includes('PostCSS plugin') ||
+                    message.includes('Tailwind CLI')
+                )) {
+                    return;
+                }
+                originalWarn.apply(console, args);
+            };
+            const originalError = console.error;
+            console.error = function(...args) {
+                const message = args[0];
+                if (typeof message === 'string' && (
+                    message.includes('cdn.tailwindcss.com should not be used in production') ||
+                    message.includes('should not be used in production') ||
+                    message.includes('To use Tailwind CSS in production')
+                )) {
+                    return;
+                }
+                originalError.apply(console, args);
+            };
+            const originalLog = console.log;
+            console.log = function(...args) {
+                const message = args[0];
+                if (typeof message === 'string' && (
+                    message.includes('cdn.tailwindcss.com should not be used in production') ||
+                    message.includes('should not be used in production') ||
+                    message.includes('To use Tailwind CSS in production')
+                )) {
+                    return;
+                }
+                originalLog.apply(console, args);
+            };
+        })();
+    </script>
+
+    <!-- Tailwind CSS v3.4 - Play CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#10b981',
+                        'primary-dark': '#059669',
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="assets/css/tailwind.css">
+    <link rel="stylesheet" href="assets/css/hyperui.css">
+    <link rel="stylesheet" href="assets/css/docs.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-50 via-white to-cyan-50/30 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-gray-200 dark:border-slate-700 shadow-sm">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between h-20">
+                <a href="index.html" class="flex items-center gap-3 hover:opacity-80 transition-opacity">
+                    <img src="assets/img/logo-vertex-semagri.svg" alt="Vertex SEMAGRI" class="h-12">
+                </a>
+                <div class="hidden md:flex items-center gap-6">
+                    <a href="index.html" class="text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 font-medium transition-colors">Início</a>
+                    <a href="index.html#modulos" class="text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 font-medium transition-colors">Módulos</a>
+                    <a href="#sobre" class="text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 font-medium transition-colors">Sobre</a>
+                    <a href="#funcionalidades" class="text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 font-medium transition-colors">Funcionalidades</a>
+                    <a href="#estrutura" class="text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 font-medium transition-colors">Estrutura</a>
+                    <a href="api.html" class="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors font-semibold shadow-sm hover:shadow-md">API Reference</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative overflow-hidden bg-gradient-to-br from-cyan-600 via-blue-600 to-indigo-600 py-16 lg:py-24">
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'0.4\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E'); background-size: 60px 60px;"></div>
+        </div>
+
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="text-center text-white space-y-6">
+                <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-5 py-2.5 rounded-full text-sm font-medium">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 01-.825-.242m9.345-8.334a2.126 2.126 0 00-.476-.095 48.64 48.64 0 00-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0011.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.48.062.96.125 1.44.194v.256c0 1.227 1.216 2.35 2.762 2.35 1.512 0 2.731-1.08 2.762-2.29v-.105c.392-.026.781-.05 1.17-.08.12-.001.243-.007.363-.018l3-.003z" />
+                    </svg>
+                    <span>Módulo de Comunicação</span>
+                </div>
+
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
+                    Módulo Chat
+                </h1>
+
+                <p class="text-lg md:text-xl text-white/95 leading-relaxed max-w-3xl mx-auto">
+                    Chat institucional completo para suporte ao público e comunicação interna. Sistema de atendimento em tempo real com widget público e painel administrativo.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-16 lg:py-20">
+        <!-- Sobre o Módulo -->
+        <section id="sobre" class="mb-16">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-gray-200 dark:border-slate-700 overflow-hidden">
+                <div class="p-8 lg:p-12">
+                    <div class="flex items-start gap-4 mb-6">
+                        <div class="flex-shrink-0 w-12 h-12 bg-cyan-100 dark:bg-cyan-900/30 rounded-xl flex items-center justify-center">
+                            <svg class="w-6 h-6 text-cyan-600 dark:text-cyan-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Sobre o Módulo</h2>
+                            <p class="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+                                O módulo <strong class="text-cyan-600 dark:text-cyan-400">Chat</strong> oferece um sistema completo de chat institucional para suporte ao público e comunicação interna. O sistema permite que visitantes iniciem conversas através de um widget público, enquanto atendentes gerenciam múltiplas sessões através de um painel administrativo.
+                            </p>
+                            <p class="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+                                O módulo inclui controle de horários de funcionamento, sistema de fila de espera, atribuição de atendentes, contadores de mensagens não lidas e histórico completo de conversas.
+                            </p>
+                            <div class="grid md:grid-cols-2 gap-4 mt-6">
+                                <div class="bg-cyan-50 dark:bg-cyan-900/20 border border-cyan-200 dark:border-cyan-800 rounded-xl p-4">
+                                    <h3 class="font-semibold text-cyan-900 dark:text-cyan-300 mb-2">Versão</h3>
+                                    <p class="text-sm text-gray-700 dark:text-gray-300">1.0.0</p>
+                                </div>
+                                <div class="bg-cyan-50 dark:bg-cyan-900/20 border border-cyan-200 dark:border-cyan-800 rounded-xl p-4">
+                                    <h3 class="font-semibold text-cyan-900 dark:text-cyan-300 mb-2">Categoria</h3>
+                                    <p class="text-sm text-gray-700 dark:text-gray-300">Comunicação e Suporte</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Funcionalidades -->
+        <section id="funcionalidades" class="mb-16">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">Funcionalidades Principais</h2>
+                <p class="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+                    Recursos completos para chat institucional e atendimento ao público
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-slate-700">
+                    <div class="w-12 h-12 bg-gradient-to-br from-cyan-500 to-cyan-600 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 01-.825-.242m9.345-8.334a2.126 2.126 0 00-.476-.095 48.64 48.64 0 00-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0011.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.48.062.96.125 1.44.194v.256c0 1.227 1.216 2.35 2.762 2.35 1.512 0 2.731-1.08 2.762-2.29v-.105c.392-.026.781-.05 1.17-.08.12-.001.243-.007.363-.018l3-.003z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Chat Público</h3>
+                    <p class="text-gray-700 dark:text-gray-300 text-sm">
+                        Widget público para visitantes iniciarem conversas, com coleta de informações básicas (nome, email, telefone) e identificação por IP.
+                    </p>
+                </div>
+
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-slate-700">
+                    <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h11.25c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Painel Administrativo</h3>
+                    <p class="text-gray-700 dark:text-gray-300 text-sm">
+                        Painel completo para atendentes gerenciarem múltiplas sessões, visualizar fila de espera, atribuir conversas e acompanhar histórico.
+                    </p>
+                </div>
+
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-slate-700">
+                    <div class="w-12 h-12 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Horários de Funcionamento</h3>
+                    <p class="text-gray-700 dark:text-gray-300 text-sm">
+                        Configuração de horários de funcionamento por dia da semana, com verificação automática de disponibilidade e cálculo de próxima disponibilidade.
+                    </p>
+                </div>
+
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-slate-700">
+                    <div class="w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h11.25c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Sistema de Fila</h3>
+                    <p class="text-gray-700 dark:text-gray-300 text-sm">
+                        Sistema de fila de espera para visitantes quando não há atendentes disponíveis, com status de aguardando, em atendimento, encerrada e transferida.
+                    </p>
+                </div>
+
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-slate-700">
+                    <div class="w-12 h-12 bg-gradient-to-br from-pink-500 to-pink-600 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Contadores de Não Lidas</h3>
+                    <p class="text-gray-700 dark:text-gray-300 text-sm">
+                        Contadores separados de mensagens não lidas para atendentes e visitantes, permitindo notificações precisas e controle de leitura.
+                    </p>
+                </div>
+
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-slate-700">
+                    <div class="w-12 h-12 bg-gradient-to-br from-teal-500 to-teal-600 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.645-5.963-1.88A13.07 13.07 0 016.5 15.5m12 0a13.07 13.07 0 00-1.537-3.62M6.5 15.5a13.07 13.07 0 01-1.537-3.62m0 0A13.07 13.07 0 0112 8.5c2.17 0 4.207.645 5.963 1.88M6.5 15.5l-3.5 3.5m3.5-3.5l3.5 3.5m-3.5-3.5v-7m0 0l-3.5-3.5m3.5 3.5l3.5-3.5" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Atribuição de Atendentes</h3>
+                    <p class="text-gray-700 dark:text-gray-300 text-sm">
+                        Sistema de atribuição de conversas a atendentes específicos, permitindo distribuição de carga de trabalho e responsabilização.
+                    </p>
+                </div>
+
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-slate-700">
+                    <div class="w-12 h-12 bg-gradient-to-br from-amber-500 to-amber-600 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M18.375 12.739l-7.693 7.693a4.5 4.5 0 01-6.364-6.364l10.94-10.94A3 3 0 1119.5 7.372L8.552 18.32m.009-.01l-.01.01m5.699-9.941l-7.81 7.81a1.5 1.5 0 002.112 2.13" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Anexos e Arquivos</h3>
+                    <p class="text-gray-700 dark:text-gray-300 text-sm">
+                        Suporte a envio de anexos (imagens e arquivos) nas mensagens, com armazenamento seguro e controle de tipos de mensagem.
+                    </p>
+                </div>
+
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-slate-700">
+                    <div class="w-12 h-12 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Rastreamento de Atividade</h3>
+                    <p class="text-gray-700 dark:text-gray-300 text-sm">
+                        Rastreamento de última atividade de cada sessão, permitindo identificar conversas inativas e otimizar atendimento.
+                    </p>
+                </div>
+
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-slate-700">
+                    <div class="w-12 h-12 bg-gradient-to-br from-rose-500 to-rose-600 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h11.25c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Chat Interno</h3>
+                    <p class="text-gray-700 dark:text-gray-300 text-sm">
+                        Suporte a conversas internas entre usuários do sistema, permitindo comunicação entre equipes e departamentos.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Estrutura de Dados -->
+        <section id="estrutura" class="mb-16">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-gray-200 dark:border-slate-700 overflow-hidden">
+                <div class="p-8 lg:p-12">
+                    <div class="flex items-start gap-4 mb-8">
+                        <div class="flex-shrink-0 w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center">
+                            <svg class="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125" />
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Estrutura de Dados</h2>
+                            <p class="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+                                O módulo utiliza três tabelas principais: <code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded text-sm">chat_sessions</code>, <code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded text-sm">chat_messages</code> e <code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded text-sm">chat_configs</code>.
+                            </p>
+
+                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 mt-8">Tabela: chat_sessions</h3>
+                            <div class="overflow-x-auto mb-8">
+                                <table class="w-full border-collapse">
+                                    <thead>
+                                        <tr class="bg-gray-50 dark:bg-slate-700">
+                                            <th class="border border-gray-300 dark:border-slate-600 px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white">Campo</th>
+                                            <th class="border border-gray-300 dark:border-slate-600 px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white">Tipo</th>
+                                            <th class="border border-gray-300 dark:border-slate-600 px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white">Descrição</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-sm text-gray-700 dark:text-gray-300">
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">id</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">bigint</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Identificador único</td>
+                                        </tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">session_id</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">string (unique)</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">ID único da sessão de chat</td>
+                                        </tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">type</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">enum</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Tipo: 'public' (público) ou 'internal' (interno)</td>
+                                        </tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">visitor_name</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">string (nullable)</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Nome do visitante</td>
+                                        </tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">visitor_email</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">string (nullable)</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Email do visitante</td>
+                                        </tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">visitor_phone</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">string (nullable)</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Telefone do visitante</td>
+                                        </tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">visitor_ip</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">string (nullable)</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">IP do visitante</td>
+                                        </tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">user_id</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">foreignId (nullable)</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Usuário que iniciou a sessão (para chat interno)</td>
+                                        </tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">assigned_to</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">foreignId (nullable)</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Atendente atribuído à sessão</td>
+                                        </tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">status</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">enum</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Status: 'waiting', 'active', 'closed', 'transferred'</td>
+                                        </tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">unread_count_user</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">integer</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Contador de mensagens não lidas pelo atendente</td>
+                                        </tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">unread_count_visitor</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">integer</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Contador de mensagens não lidas pelo visitante</td>
+                                        </tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">last_activity_at</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">timestamp (nullable)</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Data/hora da última atividade na sessão</td>
+                                        </tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">closed_at</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">timestamp (nullable)</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Data/hora de encerramento da sessão</td>
+                                        </tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">notes</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">text (nullable)</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Notas internas sobre a sessão</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Tabela: chat_messages</h3>
+                            <div class="overflow-x-auto mb-8">
+                                <table class="w-full border-collapse">
+                                    <thead>
+                                        <tr class="bg-gray-50 dark:bg-slate-700">
+                                            <th class="border border-gray-300 dark:border-slate-600 px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white">Campo</th>
+                                            <th class="border border-gray-300 dark:border-slate-600 px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white">Tipo</th>
+                                            <th class="border border-gray-300 dark:border-slate-600 px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white">Descrição</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-sm text-gray-700 dark:text-gray-300">
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">id</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">bigint</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Identificador único</td>
+                                        </tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">chat_session_id</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">foreignId</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Sessão de chat relacionada</td>
+                                        </tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">user_id</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">foreignId (nullable)</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Usuário que enviou a mensagem (se aplicável)</td>
+                                        </tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">sender_type</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">enum</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Tipo de remetente: 'user', 'visitor' ou 'system'</td>
+                                        </tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">message</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">text</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Conteúdo da mensagem</td>
+                                        </tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">message_type</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">enum</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Tipo: 'text', 'image', 'file' ou 'system'</td>
+                                        </tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">attachment_path</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">string (nullable)</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Caminho do anexo (se aplicável)</td>
+                                        </tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">attachment_name</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">string (nullable)</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Nome original do anexo</td>
+                                        </tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">is_read</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">boolean</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Indica se a mensagem foi lida</td>
+                                        </tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">read_at</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">timestamp (nullable)</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Data/hora de leitura da mensagem</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Tabela: chat_configs</h3>
+                            <div class="overflow-x-auto">
+                                <table class="w-full border-collapse">
+                                    <thead>
+                                        <tr class="bg-gray-50 dark:bg-slate-700">
+                                            <th class="border border-gray-300 dark:border-slate-600 px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white">Campo</th>
+                                            <th class="border border-gray-300 dark:border-slate-600 px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white">Tipo</th>
+                                            <th class="border border-gray-300 dark:border-slate-600 px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white">Descrição</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-sm text-gray-700 dark:text-gray-300">
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">id</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">bigint</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Identificador único</td>
+                                        </tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">key</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">string</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Chave da configuração (ex: 'chat_enabled', 'opening_hours')</td>
+                                        </tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">value</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">text</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Valor da configuração (pode ser JSON para estruturas complexas)</td>
+                                        </tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">description</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">text (nullable)</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Descrição da configuração</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Relacionamentos -->
+        <section id="relacionamentos" class="mb-16">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-gray-200 dark:border-slate-700 overflow-hidden">
+                <div class="p-8 lg:p-12">
+                    <div class="flex items-start gap-4 mb-8">
+                        <div class="flex-shrink-0 w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-xl flex items-center justify-center">
+                            <svg class="w-6 h-6 text-purple-600 dark:text-purple-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" />
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Relacionamentos</h2>
+                            <p class="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+                                Os modelos do módulo Chat mantêm relacionamentos simples e diretos, focados em sessões e mensagens.
+                            </p>
+
+                            <div class="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-slate-700 dark:to-slate-800 rounded-xl p-6 mb-6">
+                                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">ChatSession</h3>
+                                <ul class="space-y-3 text-gray-700 dark:text-gray-300">
+                                    <li class="flex items-start gap-2">
+                                        <svg class="w-5 h-5 text-cyan-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                        </svg>
+                                        <span><strong>user():</strong> belongsTo - Usuário que iniciou a sessão (chat interno)</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <svg class="w-5 h-5 text-cyan-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                        </svg>
+                                        <span><strong>assignedTo():</strong> belongsTo - Atendente atribuído à sessão</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <svg class="w-5 h-5 text-cyan-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                        </svg>
+                                        <span><strong>messages():</strong> hasMany - Todas as mensagens da sessão (ordenadas por data)</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <svg class="w-5 h-5 text-cyan-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                        </svg>
+                                        <span><strong>lastMessage():</strong> hasOne - Última mensagem da sessão</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-slate-700 dark:to-slate-800 rounded-xl p-6">
+                                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">ChatMessage</h3>
+                                <ul class="space-y-3 text-gray-700 dark:text-gray-300">
+                                    <li class="flex items-start gap-2">
+                                        <svg class="w-5 h-5 text-cyan-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                        </svg>
+                                        <span><strong>session():</strong> belongsTo - Sessão de chat relacionada</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <svg class="w-5 h-5 text-cyan-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                        </svg>
+                                        <span><strong>user():</strong> belongsTo - Usuário que enviou a mensagem (se aplicável)</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Métodos e Scopes -->
+        <section id="metodos" class="mb-16">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-gray-200 dark:border-slate-700 overflow-hidden">
+                <div class="p-8 lg:p-12">
+                    <div class="flex items-start gap-4 mb-8">
+                        <div class="flex-shrink-0 w-12 h-12 bg-teal-100 dark:bg-teal-900/30 rounded-xl flex items-center justify-center">
+                            <svg class="w-6 h-6 text-teal-600 dark:text-teal-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" />
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Métodos e Scopes</h2>
+                            <p class="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+                                Os modelos do módulo Chat possuem métodos auxiliares e scopes que facilitam consultas, controle de leitura e gerenciamento de sessões.
+                            </p>
+
+                            <div class="grid md:grid-cols-2 gap-6 mb-6">
+                                <div class="bg-gray-50 dark:bg-slate-700 rounded-xl p-6">
+                                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Scopes (ChatSession)</h3>
+                                    <ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                                        <li><code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">scopeActive()</code> - Filtra sessões ativas (waiting ou active)</li>
+                                        <li><code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">scopeWaiting()</code> - Filtra sessões aguardando atendimento</li>
+                                        <li><code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">scopeAssignedTo()</code> - Filtra sessões atribuídas a um usuário</li>
+                                        <li><code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">scopePublic()</code> - Filtra sessões públicas</li>
+                                        <li><code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">scopeInternal()</code> - Filtra sessões internas</li>
+                                    </ul>
+                                </div>
+
+                                <div class="bg-gray-50 dark:bg-slate-700 rounded-xl p-6">
+                                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Accessors</h3>
+                                    <ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                                        <li><code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">status_texto</code> - Status formatado em texto</li>
+                                        <li><code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">is_active</code> - Indica se a sessão está ativa</li>
+                                        <li><code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">has_unread_messages</code> - Indica se há mensagens não lidas</li>
+                                        <li><code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">sender_name</code> - Nome do remetente (ChatMessage)</li>
+                                        <li><code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">formatted_message</code> - Mensagem formatada com quebras de linha (ChatMessage)</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="bg-gray-50 dark:bg-slate-700 rounded-xl p-6">
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Métodos Auxiliares</h3>
+                                <ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                                    <li><code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">markAsRead()</code> - Marca mensagens como lidas (ChatSession e ChatMessage)</li>
+                                    <li><code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">incrementUnread()</code> - Incrementa contador de não lidas (ChatSession)</li>
+                                    <li><code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">assignTo()</code> - Atribui sessão a um atendente (ChatSession)</li>
+                                    <li><code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">close()</code> - Encerra uma sessão (ChatSession)</li>
+                                    <li><code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">isEnabled()</code> - Verifica se chat está habilitado (ChatConfig)</li>
+                                    <li><code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">isPublicEnabled()</code> - Verifica se chat público está habilitado (ChatConfig)</li>
+                                    <li><code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">isAvailableNow()</code> - Verifica se chat está disponível no momento (ChatConfig)</li>
+                                    <li><code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">getNextAvailability()</code> - Retorna próxima disponibilidade (ChatConfig)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Créditos -->
+        <section class="mb-16">
+            <div class="bg-gradient-to-br from-cyan-50 to-blue-50 dark:from-cyan-900/20 dark:to-blue-900/20 rounded-2xl shadow-xl border-2 border-cyan-200 dark:border-cyan-800 overflow-hidden">
+                <div class="p-8 lg:p-12">
+                    <div class="flex items-start gap-4">
+                        <div class="flex-shrink-0 w-12 h-12 bg-cyan-500 rounded-xl flex items-center justify-center">
+                            <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Créditos</h2>
+                            <div class="space-y-4">
+                                <div>
+                                    <p class="text-lg text-gray-700 dark:text-gray-300 mb-2">
+                                        <strong class="text-cyan-600 dark:text-cyan-400">Desenvolvedor:</strong> Reinan Rodrigues
+                                    </p>
+                                    <p class="text-lg text-gray-700 dark:text-gray-300 mb-4">
+                                        <strong class="text-cyan-600 dark:text-cyan-400">Empresa:</strong> Vertex Solutions LTDA
+                                    </p>
+                                </div>
+                                <div class="bg-white dark:bg-slate-800 rounded-xl p-4 border border-cyan-200 dark:border-cyan-800">
+                                    <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                                        O módulo Chat é essencial para o atendimento ao público e comunicação interna, oferecendo uma solução completa de chat institucional. Desenvolvido com foco em usabilidade, controle de horários e rastreamento completo de conversas.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 dark:bg-slate-950 text-slate-300 border-t border-slate-800">
+        <div class="container mx-auto px-4 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <div class="mb-4">
+                        <img src="assets/img/logo-vertex-semagri.svg" alt="Vertex SEMAGRI" class="h-10">
+                    </div>
+                    <p class="text-sm text-slate-400">
+                        Sistema de Gestão Municipal Modular desenvolvido para secretarias de agricultura e desenvolvimento rural.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold text-white mb-4">Navegação</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li>
+                            <a href="index.html" class="text-slate-400 hover:text-emerald-400 transition-colors">
+                                Página Inicial
+                            </a>
+                        </li>
+                        <li>
+                            <a href="index.html#modulos" class="text-slate-400 hover:text-emerald-400 transition-colors">
+                                Todos os Módulos
+                            </a>
+                        </li>
+                        <li>
+                            <a href="changelog.html" class="text-slate-400 hover:text-emerald-400 transition-colors">
+                                Changelog
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold text-white mb-4">Contato</h3>
+                    <p class="text-sm text-slate-400 mb-2">Vertex Solutions LTDA</p>
+                    <p class="text-sm text-slate-400">Desenvolvido com dedicação e excelência</p>
+                </div>
+            </div>
+            <div class="mt-8 pt-8 border-t border-slate-800 text-center text-sm text-slate-500">
+                <p>&copy; 2024 Vertex Solutions LTDA. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button id="backToTop" class="fixed bottom-8 right-8 w-14 h-14 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-full shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-300 opacity-0 invisible z-50 flex items-center justify-center">
+        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+        </svg>
+    </button>
+
+    <script>
+        // Smooth scroll para links âncora
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href !== '#' && href.length > 1) {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        const offsetTop = target.offsetTop - 80;
+                        window.scrollTo({
+                            top: offsetTop,
+                            behavior: 'smooth'
+                        });
+                    }
+                }
+            });
+        });
+
+        // Back to Top Button
+        const backToTopBtn = document.getElementById('backToTop');
+        if (backToTopBtn) {
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 300) {
+                    backToTopBtn.classList.remove('opacity-0', 'invisible');
+                    backToTopBtn.classList.add('opacity-100', 'visible');
+                } else {
+                    backToTopBtn.classList.add('opacity-0', 'invisible');
+                    backToTopBtn.classList.remove('opacity-100', 'visible');
+                }
+            });
+
+            backToTopBtn.addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+

@@ -1,0 +1,648 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Módulo CAF - VERTEXSEMAGRI Documentação</title>
+    <meta name="description" content="Documentação completa do módulo CAF do sistema VERTEXSEMAGRI - Cadastro de Agricultores Familiares">
+    <link rel="icon" type="image/svg+xml" href="assets/img/logo-icon.svg">
+
+    <!-- Suppress Tailwind CSS CDN warning -->
+    <script>
+        (function() {
+            const originalWarn = console.warn;
+            console.warn = function(...args) {
+                const message = args[0];
+                if (typeof message === 'string' && (
+                    message.includes('cdn.tailwindcss.com should not be used in production') ||
+                    message.includes('should not be used in production') ||
+                    message.includes('To use Tailwind CSS in production') ||
+                    message.includes('PostCSS plugin') ||
+                    message.includes('Tailwind CLI')
+                )) {
+                    return;
+                }
+                originalWarn.apply(console, args);
+            };
+            const originalError = console.error;
+            console.error = function(...args) {
+                const message = args[0];
+                if (typeof message === 'string' && (
+                    message.includes('cdn.tailwindcss.com should not be used in production') ||
+                    message.includes('should not be used in production') ||
+                    message.includes('To use Tailwind CSS in production')
+                )) {
+                    return;
+                }
+                originalError.apply(console, args);
+            };
+            const originalLog = console.log;
+            console.log = function(...args) {
+                const message = args[0];
+                if (typeof message === 'string' && (
+                    message.includes('cdn.tailwindcss.com should not be used in production') ||
+                    message.includes('should not be used in production') ||
+                    message.includes('To use Tailwind CSS in production')
+                )) {
+                    return;
+                }
+                originalLog.apply(console, args);
+            };
+        })();
+    </script>
+
+    <!-- Tailwind CSS v3.4 - Play CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#10b981',
+                        'primary-dark': '#059669',
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="assets/css/tailwind.css">
+    <link rel="stylesheet" href="assets/css/hyperui.css">
+    <link rel="stylesheet" href="assets/css/docs.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-50 via-white to-green-50/30 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-gray-200 dark:border-slate-700 shadow-sm">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between h-20">
+                <a href="index.html" class="flex items-center gap-3 hover:opacity-80 transition-opacity">
+                    <img src="assets/img/logo-vertex-semagri.svg" alt="Vertex SEMAGRI" class="h-12">
+                </a>
+                <div class="hidden md:flex items-center gap-6">
+                    <a href="index.html" class="text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 font-medium transition-colors">Início</a>
+                    <a href="index.html#modulos" class="text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 font-medium transition-colors">Módulos</a>
+                    <a href="#sobre" class="text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 font-medium transition-colors">Sobre</a>
+                    <a href="#funcionalidades" class="text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 font-medium transition-colors">Funcionalidades</a>
+                    <a href="#estrutura" class="text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 font-medium transition-colors">Estrutura</a>
+                    <a href="api.html" class="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors font-semibold shadow-sm hover:shadow-md">API Reference</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative overflow-hidden bg-gradient-to-br from-green-600 via-emerald-600 to-teal-600 py-16 lg:py-24">
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'0.4\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E'); background-size: 60px 60px;"></div>
+        </div>
+
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="text-center text-white space-y-6">
+                <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-5 py-2.5 rounded-full text-sm font-medium">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v17.25m0 0c-1.472 0-2.882.265-4.185.75M12 20.25c1.472 0 2.882.265 4.185.75M18.75 4.97A48.224 48.224 0 0012 4.5c-2.48 0-4.785.685-6.75 1.97m13.5 0c1.01.003 2.01.107 2.995.292m-10.5 0a51.964 51.964 0 014.5 0m0 0c.93.003 1.857.092 2.75.292M6.75 4.97l-.016.005M6.75 4.97l-.016.005M6.75 4.97l-.016.005m13.516.005m-13.516 0l.016-.005m13.516-.005L18.75 4.97m-13.5 13.5c1.01.003 2.01.107 2.995.292M6.75 20.25c-1.472 0-2.882-.265-4.185-.75M18.75 20.25c1.472 0 2.882-.265 4.185-.75m-10.5 0a51.964 51.964 0 01-4.5 0m10.5 0a48.225 48.225 0 005.25-15.28" />
+                    </svg>
+                    <span>Módulo de Agricultura Familiar</span>
+                </div>
+
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
+                    Módulo CAF
+                </h1>
+
+                <p class="text-lg md:text-xl text-white/95 leading-relaxed max-w-3xl mx-auto">
+                    Cadastro completo de Agricultores Familiares (CAF) integrado ao sistema VERTEXSEMAGRI. Gestão de propriedades rurais, produção e integração com programas de agricultura.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-16 lg:py-20">
+        <!-- Sobre o Módulo -->
+        <section id="sobre" class="mb-16">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-gray-200 dark:border-slate-700 overflow-hidden">
+                <div class="p-8 lg:p-12">
+                    <div class="flex items-start gap-4 mb-6">
+                        <div class="flex-shrink-0 w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-xl flex items-center justify-center">
+                            <svg class="w-6 h-6 text-green-600 dark:text-green-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Sobre o Módulo</h2>
+                            <p class="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+                                O módulo <strong class="text-green-600 dark:text-green-400">CAF</strong> (Cadastro de Agricultores Familiares) gerencia o cadastro completo de agricultores familiares do município. O sistema permite cadastro em múltiplas etapas, incluindo dados pessoais, cônjuge, familiares, imóvel rural e renda familiar.
+                            </p>
+                            <p class="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+                                O módulo integra-se com o módulo Pessoas (CadÚnico), permitindo vincular agricultores já cadastrados, e com o módulo Programas de Agricultura, para rastreamento de beneficiários de programas rurais.
+                            </p>
+                            <div class="grid md:grid-cols-2 gap-4 mt-6">
+                                <div class="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-xl p-4">
+                                    <h3 class="font-semibold text-green-900 dark:text-green-300 mb-2">Versão</h3>
+                                    <p class="text-sm text-gray-700 dark:text-gray-300">1.0.0</p>
+                                </div>
+                                <div class="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-xl p-4">
+                                    <h3 class="font-semibold text-green-900 dark:text-green-300 mb-2">Categoria</h3>
+                                    <p class="text-sm text-gray-700 dark:text-gray-300">Agricultura Familiar</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Funcionalidades -->
+        <section id="funcionalidades" class="mb-16">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">Funcionalidades Principais</h2>
+                <p class="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+                    Recursos completos para cadastro e gestão de agricultores familiares
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-slate-700">
+                    <div class="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h11.25c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Cadastro em Etapas</h3>
+                    <p class="text-gray-700 dark:text-gray-300 text-sm">
+                        Processo de cadastro dividido em 6 etapas: dados pessoais, cônjuge, familiares, imóvel rural, renda familiar e revisão final.
+                    </p>
+                </div>
+
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-slate-700">
+                    <div class="w-12 h-12 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Integração com CadÚnico</h3>
+                    <p class="text-gray-700 dark:text-gray-300 text-sm">
+                        Busca e vinculação automática com pessoas já cadastradas no Cadastro Único, evitando duplicação de dados.
+                    </p>
+                </div>
+
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-slate-700">
+                    <div class="w-12 h-12 bg-gradient-to-br from-teal-500 to-teal-600 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Controle de Status</h3>
+                    <p class="text-gray-700 dark:text-gray-300 text-sm">
+                        Sistema de status completo: rascunho, em andamento, completo, aprovado, rejeitado e enviado ao CAF oficial.
+                    </p>
+                </div>
+
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-slate-700">
+                    <div class="w-12 h-12 bg-gradient-to-br from-lime-500 to-lime-600 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Gestão de Imóveis Rurais</h3>
+                    <p class="text-gray-700 dark:text-gray-300 text-sm">
+                        Cadastro completo de propriedades rurais: tipo de posse, áreas (total, agricultável, pastagem, reserva legal) e atividades desenvolvidas.
+                    </p>
+                </div>
+
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-slate-700">
+                    <div class="w-12 h-12 bg-gradient-to-br from-cyan-500 to-cyan-600 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818l.818.182A2.25 2.25 0 0015.75 16.5v-9a2.25 2.25 0 00-1.932-2.182l-.818-.182m-3 2.818v12m-3-2.818l.818.182A2.25 2.25 0 008.25 16.5v-9a2.25 2.25 0 011.932-2.182l.818-.182m-3 2.818v12m9-2.818l-.818.182A2.25 2.25 0 0115.75 16.5v-9a2.25 2.25 0 011.932-2.182l.818-.182" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Cálculo de Renda Familiar</h3>
+                    <p class="text-gray-700 dark:text-gray-300 text-sm">
+                        Cálculo automático de renda total e per capita, incluindo renda da agricultura, pecuária, extrativismo, aposentadoria e benefícios sociais.
+                    </p>
+                </div>
+
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-slate-700">
+                    <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.645-5.963-1.88A13.07 13.07 0 016.5 15.5m12 0a13.07 13.07 0 00-1.537-3.62M6.5 15.5a13.07 13.07 0 01-1.537-3.62m0 0A13.07 13.07 0 0112 8.5c2.17 0 4.207.645 5.963 1.88M6.5 15.5l-3.5 3.5m3.5-3.5l3.5 3.5m-3.5-3.5v-7m0 0l-3.5-3.5m3.5 3.5l3.5-3.5" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Integração com Programas</h3>
+                    <p class="text-gray-700 dark:text-gray-300 text-sm">
+                        Vinculação automática com programas de agricultura, permitindo rastreamento de beneficiários e histórico de participação.
+                    </p>
+                </div>
+
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-slate-700">
+                    <div class="w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Geração de PDF</h3>
+                    <p class="text-gray-700 dark:text-gray-300 text-sm">
+                        Geração automática de documentos PDF com todos os dados do cadastro para impressão e arquivamento.
+                    </p>
+                </div>
+
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-slate-700">
+                    <div class="w-12 h-12 bg-gradient-to-br from-amber-500 to-amber-600 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h11.25c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Protocolo Automático</h3>
+                    <p class="text-gray-700 dark:text-gray-300 text-sm">
+                        Geração automática de protocolo único para cada cadastro (formato: CAF-YYYY-NNNNNN) e protocolo oficial após envio ao sistema CAF.
+                    </p>
+                </div>
+
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-slate-700">
+                    <div class="w-12 h-12 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Vinculação Territorial</h3>
+                    <p class="text-gray-700 dark:text-gray-300 text-sm">
+                        Vinculação com localidades do município, permitindo organização geográfica e estatísticas por região.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Estrutura de Dados -->
+        <section id="estrutura" class="mb-16">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-gray-200 dark:border-slate-700 overflow-hidden">
+                <div class="p-8 lg:p-12">
+                    <div class="flex items-start gap-4 mb-8">
+                        <div class="flex-shrink-0 w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center">
+                            <svg class="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125" />
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Estrutura de Dados</h2>
+                            <p class="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+                                O módulo utiliza múltiplas tabelas para armazenar todas as informações do cadastro CAF: <code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded text-sm">cadastros_caf</code>, <code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded text-sm">conjuges_caf</code>, <code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded text-sm">familiares_caf</code>, <code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded text-sm">imoveis_caf</code> e <code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded text-sm">rendas_familiares_caf</code>.
+                            </p>
+
+                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 mt-8">Tabela: cadastros_caf</h3>
+                            <div class="overflow-x-auto mb-8">
+                                <table class="w-full border-collapse">
+                                    <thead>
+                                        <tr class="bg-gray-50 dark:bg-slate-700">
+                                            <th class="border border-gray-300 dark:border-slate-600 px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white">Campo</th>
+                                            <th class="border border-gray-300 dark:border-slate-600 px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white">Tipo</th>
+                                            <th class="border border-gray-300 dark:border-slate-600 px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white">Descrição</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-sm text-gray-700 dark:text-gray-300">
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">id</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">bigint</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Identificador único</td>
+                                        </tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">protocolo</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">string (unique, nullable)</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Protocolo público (ex: CAF-2024-000001)</td>
+                                        </tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">codigo</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">string (unique)</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Código interno gerado automaticamente</td>
+                                        </tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">pessoa_id</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">foreignId (nullable)</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Vinculação com PessoaCad (CadÚnico)</td>
+                                        </tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">funcionario_id</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">foreignId (nullable)</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Funcionário cadastrador</td>
+                                        </tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">cpf</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">string(11) (unique)</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">CPF do agricultor</td>
+                                        </tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">status</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">enum</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Status: 'rascunho', 'em_andamento', 'completo', 'aprovado', 'rejeitado', 'enviado_caf'</td>
+                                        </tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">enviado_caf_at</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">timestamp (nullable)</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Data/hora de envio ao sistema CAF oficial</td>
+                                        </tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">protocolo_caf_oficial</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">string (nullable)</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Protocolo retornado pelo sistema CAF oficial</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-xl p-4 mb-6">
+                                <p class="text-sm text-gray-700 dark:text-gray-300">
+                                    <strong class="text-green-600 dark:text-green-400">Tabelas Relacionadas:</strong> O módulo também utiliza as tabelas <code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded text-xs">conjuges_caf</code>, <code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded text-xs">familiares_caf</code>, <code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded text-xs">imoveis_caf</code> e <code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded text-xs">rendas_familiares_caf</code> para armazenar informações complementares do cadastro.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Relacionamentos -->
+        <section id="relacionamentos" class="mb-16">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-gray-200 dark:border-slate-700 overflow-hidden">
+                <div class="p-8 lg:p-12">
+                    <div class="flex items-start gap-4 mb-8">
+                        <div class="flex-shrink-0 w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-xl flex items-center justify-center">
+                            <svg class="w-6 h-6 text-purple-600 dark:text-purple-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" />
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Relacionamentos</h2>
+                            <p class="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+                                O modelo CadastroCAF mantém relacionamentos integrados com múltiplos módulos do sistema, permitindo rastreamento completo e integração de dados.
+                            </p>
+
+                            <div class="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-slate-700 dark:to-slate-800 rounded-xl p-6">
+                                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">CadastroCAF</h3>
+                                <ul class="space-y-3 text-gray-700 dark:text-gray-300">
+                                    <li class="flex items-start gap-2">
+                                        <svg class="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                        </svg>
+                                        <span><strong>pessoa():</strong> belongsTo - PessoaCad do CadÚnico (se vinculado)</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <svg class="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                        </svg>
+                                        <span><strong>funcionario():</strong> belongsTo - Funcionário cadastrador</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <svg class="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                        </svg>
+                                        <span><strong>cadastrador():</strong> belongsTo - Usuário que criou o cadastro</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <svg class="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                        </svg>
+                                        <span><strong>localidade():</strong> belongsTo - Localidade onde o agricultor reside</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <svg class="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                        </svg>
+                                        <span><strong>conjuge():</strong> hasOne - Dados do cônjuge</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <svg class="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                        </svg>
+                                        <span><strong>familiares():</strong> hasMany - Familiares do agricultor</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <svg class="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                        </svg>
+                                        <span><strong>imovel():</strong> hasOne - Dados do imóvel rural</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <svg class="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                        </svg>
+                                        <span><strong>rendaFamiliar():</strong> hasOne - Dados de renda familiar</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <svg class="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                        </svg>
+                                        <span><strong>beneficiarios():</strong> Query - Beneficiários de programas de agricultura</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <svg class="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                        </svg>
+                                        <span><strong>programas():</strong> Query - Programas de agricultura vinculados</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Métodos e Scopes -->
+        <section id="metodos" class="mb-16">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-gray-200 dark:border-slate-700 overflow-hidden">
+                <div class="p-8 lg:p-12">
+                    <div class="flex items-start gap-4 mb-8">
+                        <div class="flex-shrink-0 w-12 h-12 bg-teal-100 dark:bg-teal-900/30 rounded-xl flex items-center justify-center">
+                            <svg class="w-6 h-6 text-teal-600 dark:text-teal-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" />
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Métodos e Scopes</h2>
+                            <p class="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+                                O modelo CadastroCAF possui métodos auxiliares e scopes que facilitam consultas, validações e geração de protocolos.
+                            </p>
+
+                            <div class="grid md:grid-cols-2 gap-6 mb-6">
+                                <div class="bg-gray-50 dark:bg-slate-700 rounded-xl p-6">
+                                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Scopes</h3>
+                                    <ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                                        <li><code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">scopeRascunhos()</code> - Filtra cadastros em rascunho</li>
+                                        <li><code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">scopeEmAndamento()</code> - Filtra cadastros em andamento</li>
+                                        <li><code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">scopeCompletos()</code> - Filtra cadastros completos</li>
+                                        <li><code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">scopeAprovados()</code> - Filtra cadastros aprovados</li>
+                                        <li><code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">scopeEnviadosCAF()</code> - Filtra cadastros enviados ao CAF</li>
+                                        <li><code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">scopePorFuncionario()</code> - Filtra por funcionário cadastrador</li>
+                                        <li><code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">scopePorLocalidade()</code> - Filtra por localidade</li>
+                                    </ul>
+                                </div>
+
+                                <div class="bg-gray-50 dark:bg-slate-700 rounded-xl p-6">
+                                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Accessors</h3>
+                                    <ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                                        <li><code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">status_texto</code> - Status formatado em texto</li>
+                                        <li><code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">status_cor</code> - Cor do status (para badges)</li>
+                                        <li><code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">estado_civil_texto</code> - Estado civil formatado</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="bg-gray-50 dark:bg-slate-700 rounded-xl p-6">
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Métodos Auxiliares</h3>
+                                <ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                                    <li><code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">estaCompleto()</code> - Verifica se o cadastro está completo (todas as etapas preenchidas)</li>
+                                    <li><code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">podeSerEnviado()</code> - Verifica se o cadastro pode ser enviado ao CAF oficial</li>
+                                    <li><code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">gerarProtocolo()</code> - Gera ou retorna o protocolo do cadastro</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Créditos -->
+        <section class="mb-16">
+            <div class="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-2xl shadow-xl border-2 border-green-200 dark:border-green-800 overflow-hidden">
+                <div class="p-8 lg:p-12">
+                    <div class="flex items-start gap-4">
+                        <div class="flex-shrink-0 w-12 h-12 bg-green-500 rounded-xl flex items-center justify-center">
+                            <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Créditos</h2>
+                            <div class="space-y-4">
+                                <div>
+                                    <p class="text-lg text-gray-700 dark:text-gray-300 mb-2">
+                                        <strong class="text-green-600 dark:text-green-400">Desenvolvedor:</strong> Reinan Rodrigues
+                                    </p>
+                                    <p class="text-lg text-gray-700 dark:text-gray-300 mb-4">
+                                        <strong class="text-green-600 dark:text-green-400">Empresa:</strong> Vertex Solutions LTDA
+                                    </p>
+                                </div>
+                                <div class="bg-white dark:bg-slate-800 rounded-xl p-4 border border-green-200 dark:border-green-800">
+                                    <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                                        O módulo CAF é essencial para a gestão de agricultores familiares do município, oferecendo cadastro completo e integração com sistemas oficiais. Desenvolvido com foco em usabilidade, permitindo cadastro em etapas e rastreamento completo do processo de aprovação e envio.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 dark:bg-slate-950 text-slate-300 border-t border-slate-800">
+        <div class="container mx-auto px-4 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <div class="mb-4">
+                        <img src="assets/img/logo-vertex-semagri.svg" alt="Vertex SEMAGRI" class="h-10">
+                    </div>
+                    <p class="text-sm text-slate-400">
+                        Sistema de Gestão Municipal Modular desenvolvido para secretarias de agricultura e desenvolvimento rural.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold text-white mb-4">Navegação</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li>
+                            <a href="index.html" class="text-slate-400 hover:text-emerald-400 transition-colors">
+                                Página Inicial
+                            </a>
+                        </li>
+                        <li>
+                            <a href="index.html#modulos" class="text-slate-400 hover:text-emerald-400 transition-colors">
+                                Todos os Módulos
+                            </a>
+                        </li>
+                        <li>
+                            <a href="changelog.html" class="text-slate-400 hover:text-emerald-400 transition-colors">
+                                Changelog
+                            </a>
+                        </li>
+                        <li>
+                            <a href="pessoas.html" class="text-slate-400 hover:text-emerald-400 transition-colors">
+                                Módulo Pessoas
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold text-white mb-4">Contato</h3>
+                    <p class="text-sm text-slate-400 mb-2">Vertex Solutions LTDA</p>
+                    <p class="text-sm text-slate-400">Desenvolvido com dedicação e excelência</p>
+                </div>
+            </div>
+            <div class="mt-8 pt-8 border-t border-slate-800 text-center text-sm text-slate-500">
+                <p>&copy; 2024 Vertex Solutions LTDA. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button id="backToTop" class="fixed bottom-8 right-8 w-14 h-14 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-full shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-300 opacity-0 invisible z-50 flex items-center justify-center">
+        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+        </svg>
+    </button>
+
+    <script>
+        // Smooth scroll para links âncora
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href !== '#' && href.length > 1) {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        const offsetTop = target.offsetTop - 80;
+                        window.scrollTo({
+                            top: offsetTop,
+                            behavior: 'smooth'
+                        });
+                    }
+                }
+            });
+        });
+
+        // Back to Top Button
+        const backToTopBtn = document.getElementById('backToTop');
+        if (backToTopBtn) {
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 300) {
+                    backToTopBtn.classList.remove('opacity-0', 'invisible');
+                    backToTopBtn.classList.add('opacity-100', 'visible');
+                } else {
+                    backToTopBtn.classList.add('opacity-0', 'invisible');
+                    backToTopBtn.classList.remove('opacity-100', 'visible');
+                }
+            });
+
+            backToTopBtn.addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+

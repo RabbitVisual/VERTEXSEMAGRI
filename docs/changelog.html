@@ -1,0 +1,454 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Changelog - VERTEXSEMAGRI Documentação</title>
+    <meta name="description" content="Histórico de versões e melhorias do sistema VERTEXSEMAGRI">
+    <link rel="icon" type="image/svg+xml" href="assets/img/logo-icon.svg">
+
+    <!-- Suppress Tailwind CSS CDN warning -->
+    <script>
+        (function () {
+            const originalWarn = console.warn;
+            console.warn = function (...args) {
+                const message = args[0];
+                if (typeof message === 'string' && (
+                    message.includes('cdn.tailwindcss.com should not be used in production') ||
+                    message.includes('should not be used in production') ||
+                    message.includes('To use Tailwind CSS in production') ||
+                    message.includes('PostCSS plugin') ||
+                    message.includes('Tailwind CLI')
+                )) {
+                    return;
+                }
+                originalWarn.apply(console, args);
+            };
+            const originalError = console.error;
+            console.error = function (...args) {
+                const message = args[0];
+                if (typeof message === 'string' && (
+                    message.includes('cdn.tailwindcss.com should not be used in production') ||
+                    message.includes('should not be used in production') ||
+                    message.includes('To use Tailwind CSS in production')
+                )) {
+                    return;
+                }
+                originalError.apply(console, args);
+            };
+            const originalLog = console.log;
+            console.log = function (...args) {
+                const message = args[0];
+                if (typeof message === 'string' && (
+                    message.includes('cdn.tailwindcss.com should not be used in production') ||
+                    message.includes('should not be used in production') ||
+                    message.includes('To use Tailwind CSS in production')
+                )) {
+                    return;
+                }
+                originalLog.apply(console, args);
+            };
+        })();
+    </script>
+
+    <!-- Tailwind CSS v3.4 - Play CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#10b981',
+                        'primary-dark': '#059669',
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="assets/css/tailwind.css">
+    <link rel="stylesheet" href="assets/css/hyperui.css">
+    <link rel="stylesheet" href="assets/css/docs.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+    </style>
+</head>
+
+<body class="bg-slate-50 dark:bg-slate-900">
+
+    <!-- Navigation -->
+    <nav
+        class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-gray-200 dark:border-slate-700 shadow-sm">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between h-20">
+                <a href="index.html" class="flex items-center gap-3 hover:opacity-80 transition-opacity">
+                    <img src="assets/img/logo-vertex-semagri.svg" alt="Vertex SEMAGRI" class="h-12">
+                </a>
+                <div class="hidden md:flex items-center gap-6">
+                    <a href="index.html"
+                        class="text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 font-medium transition-colors">Início</a>
+                    <a href="index.html#modulos"
+                        class="text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 font-medium transition-colors">Módulos</a>
+                    <a href="api.html"
+                        class="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors font-semibold shadow-sm hover:shadow-md">API
+                        Reference</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section
+        class="relative overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-20 lg:py-24 border-b border-slate-800">
+        <div class="absolute inset-0 opacity-20">
+            <div class="absolute inset-0"
+                style="background-image: url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'0.2\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E'); background-size: 60px 60px;">
+            </div>
+        </div>
+
+        <div class="container mx-auto px-4 relative z-10 text-center">
+            <div
+                class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium text-emerald-400 mb-6 border border-white/10">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span>Histórico de Evolução</span>
+            </div>
+
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 tracking-tight">
+                Changelog do Sistema
+            </h1>
+
+            <p class="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto leading-relaxed">
+                Acompanhe todas as atualizações, novas funcionalidades, correções e melhorias implementadas no
+                VERTEXSEMAGRI.
+            </p>
+        </div>
+    </section>
+
+    <!-- Content -->
+    <main class="container mx-auto px-4 py-16">
+        <div class="max-w-4xl mx-auto relative">
+            <!-- Vertical Line -->
+            <div class="absolute left-0 md:left-8 top-0 bottom-0 w-px bg-slate-200 dark:bg-slate-700 hidden md:block">
+            </div>
+
+            <!-- Version 2.1.0 -->
+            <div class="relative pl-0 md:pl-20 py-8 mb-12">
+                <!-- Timeline Dot -->
+                <div
+                    class="absolute left-8 top-12 -translate-x-1/2 w-4 h-4 rounded-full bg-emerald-500 border-4 border-white dark:border-slate-900 hidden md:block z-10 box-content shadow-lg shadow-emerald-500/30">
+                </div>
+
+                <div
+                    class="bg-white dark:bg-slate-800 rounded-2xl p-8 border border-slate-200 dark:border-slate-700 shadow-xl transition-all hover:border-emerald-500/30">
+                    <div
+                        class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 border-b border-slate-100 dark:border-slate-700/50 pb-6">
+                        <div>
+                            <div class="flex items-center gap-3 mb-2">
+                                <h2 class="text-3xl font-bold text-gray-900 dark:text-white">v2.1.0</h2>
+                                <span
+                                    class="px-3 py-1 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 text-xs font-bold uppercase tracking-wider rounded-full">Atual</span>
+                            </div>
+                            <span class="text-slate-500 dark:text-slate-400 font-medium">30 de Janeiro de 2026</span>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-sm font-semibold text-slate-400 uppercase tracking-widest">Integração
+                                Efipay Split</span>
+                        </div>
+                    </div>
+
+                    <div class="prose dark:prose-invert max-w-none">
+                        <div
+                            class="bg-slate-50 dark:bg-slate-900/50 rounded-xl p-5 mb-8 border border-slate-100 dark:border-slate-700">
+                            <p class="text-gray-600 dark:text-gray-300 m-0 leading-relaxed">
+                                Integração total com o sistema de pagamentos <strong>PIX Efipay (Gerencianet)
+                                    SDK</strong>, introduzindo suporte para <strong>Split de Pagamentos
+                                    (Marketplace)</strong> entre Plataforma Central e Líderes Comunitários.
+                                Implementação de painel de configurações 100% dinâmico (Admin), redesign de UI para
+                                temas escuros/claros e auditoria completa de segurança para produção.
+                            </p>
+                        </div>
+
+                        <div class="grid md:grid-cols-2 gap-8">
+                            <div>
+                                <h3
+                                    class="flex items-center gap-2 text-lg font-bold text-gray-900 dark:text-white mb-4">
+                                    <svg class="w-5 h-5 text-emerald-500" fill="none" viewBox="0 0 24 24"
+                                        stroke-width="1.5" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    Novas Funcionalidades
+                                </h3>
+                                <ul class="space-y-3">
+                                    <li class="flex items-start gap-2.5">
+                                        <div class="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-2"></div>
+                                        <span class="text-gray-600 dark:text-gray-300 text-sm"><strong>Pagamentos
+                                                Split:</strong> Fluxo "Platform-First" com cálculo automático de taxas e
+                                            repasse líquido.</span>
+                                    </li>
+                                    <li class="flex items-start gap-2.5">
+                                        <div class="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-2"></div>
+                                        <span class="text-gray-600 dark:text-gray-300 text-sm"><strong>SDK
+                                                Gerencianet:</strong> Substituição de chamadas manuais para maior
+                                            segurança.</span>
+                                    </li>
+                                    <li class="flex items-start gap-2.5">
+                                        <div class="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-2"></div>
+                                        <span class="text-gray-600 dark:text-gray-300 text-sm"><strong>Painel de
+                                                Configurações:</strong> Gestão dinâmica de chaves API via Admin.</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div>
+                                <h3
+                                    class="flex items-center gap-2 text-lg font-bold text-gray-900 dark:text-white mb-4">
+                                    <svg class="w-5 h-5 text-blue-500" fill="none" viewBox="0 0 24 24"
+                                        stroke-width="1.5" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M9.53 16.122a3 3 0 00-5.78 1.128 2.25 2.25 0 01-2.4 2.245 4.5 4.5 0 008.4-2.245c0-.399-.078-.78-.22-1.128zm0 0a15.998 15.998 0 003.388-1.62m-5.048 4.025a3 3 0 01-5.996-1.074.75.75 0 011.5-.045 1.5 1.5 0 001.989 1.414.75.75 0 011.007.863zm-4.25-8.125a2.25 2.25 0 100-4.5 2.25 2.25 0 000 4.5z" />
+                                    </svg>
+                                    UI/UX & Melhorias
+                                </h3>
+                                <ul class="space-y-3">
+                                    <li class="flex items-start gap-2.5">
+                                        <div class="w-1.5 h-1.5 rounded-full bg-blue-500 mt-2"></div>
+                                        <span class="text-gray-600 dark:text-gray-300 text-sm"><strong>Tema
+                                                Escuro/Claro:</strong> Seletor global persistente.</span>
+                                    </li>
+                                    <li class="flex items-start gap-2.5">
+                                        <div class="w-1.5 h-1.5 rounded-full bg-blue-500 mt-2"></div>
+                                        <span class="text-gray-600 dark:text-gray-300 text-sm"><strong>Feedback
+                                                Visual:</strong> Alertas padronizados com ícones SVG.</span>
+                                    </li>
+                                    <li class="flex items-start gap-2.5">
+                                        <div class="w-1.5 h-1.5 rounded-full bg-blue-500 mt-2"></div>
+                                        <span class="text-gray-600 dark:text-gray-300 text-sm"><strong>Auditoria
+                                                HTML:</strong> Validação de estrutura Blade.</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Version 2.0.0 -->
+            <div class="relative pl-0 md:pl-20 py-8">
+                <!-- Timeline Dot -->
+                <div
+                    class="absolute left-8 top-12 -translate-x-1/2 w-4 h-4 rounded-full bg-slate-300 dark:bg-slate-600 border-4 border-white dark:border-slate-900 hidden md:block z-10 box-content">
+                </div>
+
+                <div
+                    class="bg-white dark:bg-slate-800 rounded-2xl p-8 border border-slate-200 dark:border-slate-700 shadow-sm opacity-80 hover:opacity-100 transition-opacity">
+                    <div
+                        class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 border-b border-slate-100 dark:border-slate-700/50 pb-6">
+                        <div>
+                            <div class="flex items-center gap-3 mb-2">
+                                <h2 class="text-3xl font-bold text-gray-900 dark:text-white">v2.0.0</h2>
+                            </div>
+                            <span class="text-slate-500 dark:text-slate-400 font-medium">Janeiro de 2025</span>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-sm font-semibold text-slate-400 uppercase tracking-widest">PWA Completo &
+                                Offline</span>
+                        </div>
+                    </div>
+
+                    <div class="prose dark:prose-invert max-w-none">
+                        <div
+                            class="bg-slate-50 dark:bg-slate-900/50 rounded-xl p-5 mb-8 border border-slate-100 dark:border-slate-700">
+                            <p class="text-gray-600 dark:text-gray-300 m-0 leading-relaxed">
+                                Implementação completa de um <strong>Progressive Web App (PWA)</strong> profissional
+                                para o painel Campo, com funcionalidade 100% offline, sincronização segura via
+                                IndexedDB, design moderno com Tailwind CSS v4.1 e HyperUI, sistema de alertas
+                                inteligente e correções críticas de UX.
+                            </p>
+                        </div>
+
+                        <div class="grid md:grid-cols-2 gap-8">
+                            <div>
+                                <h3
+                                    class="flex items-center gap-2 text-lg font-bold text-gray-900 dark:text-white mb-4">
+                                    <svg class="w-5 h-5 text-purple-500" fill="none" viewBox="0 0 24 24"
+                                        stroke-width="1.5" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3" />
+                                    </svg>
+                                    PWA & Offline
+                                </h3>
+                                <ul class="space-y-3">
+                                    <li class="flex items-start gap-2.5">
+                                        <div class="w-1.5 h-1.5 rounded-full bg-purple-500 mt-2"></div>
+                                        <span class="text-gray-600 dark:text-gray-300 text-sm"><strong>Service Worker
+                                                Avançado:</strong> Cache estratégico e background sync.</span>
+                                    </li>
+                                    <li class="flex items-start gap-2.5">
+                                        <div class="w-1.5 h-1.5 rounded-full bg-purple-500 mt-2"></div>
+                                        <span
+                                            class="text-gray-600 dark:text-gray-300 text-sm"><strong>IndexedDB:</strong>
+                                            Armazenamento local robusto para operações offline.</span>
+                                    </li>
+                                    <li class="flex items-start gap-2.5">
+                                        <div class="w-1.5 h-1.5 rounded-full bg-purple-500 mt-2"></div>
+                                        <span class="text-gray-600 dark:text-gray-300 text-sm"><strong>Manifest.json
+                                                Profissional:</strong> Ícones SVG, shortcuts e display modes.</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div>
+                                <h3
+                                    class="flex items-center gap-2 text-lg font-bold text-gray-900 dark:text-white mb-4">
+                                    <svg class="w-5 h-5 text-orange-500" fill="none" viewBox="0 0 24 24"
+                                        stroke-width="1.5" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655-5.653a2.548 2.548 0 010-3.586L11.42 15.17z" />
+                                    </svg>
+                                    Correções & Melhorias
+                                </h3>
+                                <ul class="space-y-3">
+                                    <li class="flex items-start gap-2.5">
+                                        <div class="w-1.5 h-1.5 rounded-full bg-orange-500 mt-2"></div>
+                                        <span class="text-gray-600 dark:text-gray-300 text-sm"><strong>UI/UX:</strong>
+                                            Layouts modernos, alertas globais e carregamento otimizado.</span>
+                                    </li>
+                                    <li class="flex items-start gap-2.5">
+                                        <div class="w-1.5 h-1.5 rounded-full bg-orange-500 mt-2"></div>
+                                        <span class="text-gray-600 dark:text-gray-300 text-sm"><strong>Bug
+                                                Fixes:</strong> Loading overlay, ícones 404 e logging
+                                            condicional.</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="mt-8 pt-6 border-t border-slate-100 dark:border-slate-700">
+                            <h4 class="text-sm font-semibold text-gray-900 dark:text-white mb-4">Arquivos Impactados
+                            </h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span
+                                    class="px-2 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs rounded font-mono">public/sw.js</span>
+                                <span
+                                    class="px-2 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs rounded font-mono">public/manifest.json</span>
+                                <span
+                                    class="px-2 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs rounded font-mono">public/js/campo-offline.js</span>
+                                <span
+                                    class="px-2 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs rounded font-mono">resources/views/campo/*</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 dark:bg-slate-950 text-slate-300 border-t border-slate-800">
+        <div class="container mx-auto px-4 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <div class="mb-4">
+                        <img src="assets/img/logo-vertex-semagri.svg" alt="Vertex SEMAGRI" class="h-10">
+                    </div>
+                    <p class="text-sm text-slate-400">
+                        Sistema de Gestão Municipal Modular desenvolvido para secretarias de agricultura e
+                        desenvolvimento rural.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold text-white mb-4">Navegação</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li>
+                            <a href="index.html" class="text-slate-400 hover:text-emerald-400 transition-colors">
+                                Página Inicial
+                            </a>
+                        </li>
+                        <li>
+                            <a href="index.html#modulos"
+                                class="text-slate-400 hover:text-emerald-400 transition-colors">
+                                Todos os Módulos
+                            </a>
+                        </li>
+                        <li>
+                            <a href="changelog.html" class="text-slate-400 hover:text-emerald-400 transition-colors">
+                                Changelog
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold text-white mb-4">Contato</h3>
+                    <p class="text-sm text-slate-400 mb-2">Vertex Solutions LTDA</p>
+                    <p class="text-sm text-slate-400">Desenvolvido com dedicação e excelência</p>
+                </div>
+            </div>
+            <div class="mt-8 pt-8 border-t border-slate-800 text-center text-sm text-slate-500">
+                <p>&copy; 2024 Vertex Solutions LTDA. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button id="backToTop"
+        class="fixed bottom-8 right-8 w-14 h-14 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-full shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-300 opacity-0 invisible z-50 flex items-center justify-center">
+        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+        </svg>
+    </button>
+
+    <script>
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href !== '#' && href.length > 1) {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        const offsetTop = target.offsetTop - 80;
+                        window.scrollTo({
+                            top: offsetTop,
+                            behavior: 'smooth'
+                        });
+                    }
+                }
+            });
+        });
+
+        // Back to Top
+        const backToTopBtn = document.getElementById('backToTop');
+        if (backToTopBtn) {
+            window.addEventListener('scroll', function () {
+                if (window.pageYOffset > 300) {
+                    backToTopBtn.classList.remove('opacity-0', 'invisible');
+                    backToTopBtn.classList.add('opacity-100', 'visible');
+                } else {
+                    backToTopBtn.classList.add('opacity-0', 'invisible');
+                    backToTopBtn.classList.remove('opacity-100', 'visible');
+                }
+            });
+
+            backToTopBtn.addEventListener('click', function () {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        }
+    </script>
+</body>
+
+</html>

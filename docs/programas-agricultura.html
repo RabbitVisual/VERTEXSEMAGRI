@@ -1,0 +1,584 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Módulo Programas de Agricultura - VERTEXSEMAGRI Documentação</title>
+    <meta name="description" content="Documentação completa do módulo Programas de Agricultura do sistema VERTEXSEMAGRI - Gestão de programas agrícolas e políticas públicas rurais">
+    <link rel="icon" type="image/svg+xml" href="assets/img/logo-icon.svg">
+    <script>
+        (function() {
+            const originalWarn = console.warn;
+            console.warn = function(...args) {
+                const message = args[0];
+                if (typeof message === 'string' && (
+                    message.includes('cdn.tailwindcss.com should not be used in production') ||
+                    message.includes('should not be used in production') ||
+                    message.includes('To use Tailwind CSS in production') ||
+                    message.includes('PostCSS plugin') ||
+                    message.includes('Tailwind CLI')
+                )) {
+                    return;
+                }
+                originalWarn.apply(console, args);
+            };
+            const originalError = console.error;
+            console.error = function(...args) {
+                const message = args[0];
+                if (typeof message === 'string' && (
+                    message.includes('cdn.tailwindcss.com should not be used in production') ||
+                    message.includes('should not be used in production') ||
+                    message.includes('To use Tailwind CSS in production')
+                )) {
+                    return;
+                }
+                originalError.apply(console, args);
+            };
+            const originalLog = console.log;
+            console.log = function(...args) {
+                const message = args[0];
+                if (typeof message === 'string' && (
+                    message.includes('cdn.tailwindcss.com should not be used in production') ||
+                    message.includes('should not be used in production') ||
+                    message.includes('To use Tailwind CSS in production')
+                )) {
+                    return;
+                }
+                originalLog.apply(console, args);
+            };
+        })();
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#10b981',
+                        'primary-dark': '#059669',
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="assets/css/tailwind.css">
+    <link rel="stylesheet" href="assets/css/hyperui.css">
+    <link rel="stylesheet" href="assets/css/docs.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-50 via-white to-green-50/30 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-gray-200 dark:border-slate-700 shadow-sm">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between h-20">
+                <a href="index.html" class="flex items-center gap-3 hover:opacity-80 transition-opacity">
+                    <img src="assets/img/logo-vertex-semagri.svg" alt="Vertex SEMAGRI" class="h-12">
+                </a>
+                <div class="hidden md:flex items-center gap-6">
+                    <a href="index.html" class="text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 font-medium transition-colors">Início</a>
+                    <a href="index.html#modulos" class="text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 font-medium transition-colors">Módulos</a>
+                    <a href="#sobre" class="text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 font-medium transition-colors">Sobre</a>
+                    <a href="#funcionalidades" class="text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 font-medium transition-colors">Funcionalidades</a>
+                    <a href="#estrutura" class="text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 font-medium transition-colors">Estrutura</a>
+                    <a href="api.html" class="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors font-semibold shadow-sm hover:shadow-md">API Reference</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section class="relative overflow-hidden bg-gradient-to-br from-green-600 via-emerald-600 to-teal-600 py-16 lg:py-24">
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'0.4\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E'); background-size: 60px 60px;"></div>
+        </div>
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="text-center text-white space-y-6">
+                <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-5 py-2.5 rounded-full text-sm font-medium">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v17.25m0 0c-1.472 0-2.882.265-4.185.75M12 20.25c1.472 0 2.882.265 4.185.75M18.75 4.97A48.224 48.224 0 0012 4.5c-2.48 0-4.785.685-6.75 1.97m13.5 0c1.01.003 2.01.107 2.995.292m-10.5 0a51.964 51.964 0 014.5 0m0 0c.93.003 1.857.092 2.75.292M6.75 4.97l-.016.005M6.75 4.97l-.016.005M6.75 4.97l-.016.005m13.516.005m-13.516 0l.016-.005m13.516-.005L18.75 4.97m-13.5 13.5c1.01.003 2.01.107 2.995.292M6.75 20.25c-1.472 0-2.882-.265-4.185-.75M18.75 20.25c1.472 0 2.882-.265 4.185-.75m-10.5 0a51.964 51.964 0 01-4.5 0m10.5 0a48.225 48.225 0 005.25-15.28" />
+                    </svg>
+                    <span>Módulo de Políticas Públicas</span>
+                </div>
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">Módulo Programas de Agricultura</h1>
+                <p class="text-lg md:text-xl text-white/95 leading-relaxed max-w-3xl mx-auto">
+                    Gestão completa de programas agrícolas, políticas públicas rurais e projetos do município. Inscrições, beneficiários, eventos e portal do agricultor.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <main class="container mx-auto px-4 py-16 lg:py-20">
+        <section id="sobre" class="mb-16">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-gray-200 dark:border-slate-700 overflow-hidden">
+                <div class="p-8 lg:p-12">
+                    <div class="flex items-start gap-4 mb-6">
+                        <div class="flex-shrink-0 w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-xl flex items-center justify-center">
+                            <svg class="w-6 h-6 text-green-600 dark:text-green-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Sobre o Módulo</h2>
+                            <p class="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+                                O módulo <strong class="text-green-600 dark:text-green-400">Programas de Agricultura</strong> gerencia programas agrícolas, políticas públicas rurais e projetos do município. O sistema permite cadastrar programas, gerenciar beneficiários, organizar eventos e disponibilizar informações públicas através do portal do agricultor.
+                            </p>
+                            <p class="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+                                O módulo integra-se com o módulo CAF para vinculação de beneficiários, com Pessoas para cadastro de participantes, com Localidades para organização geográfica, e com Homepage para exibição no portal público.
+                            </p>
+                            <div class="grid md:grid-cols-2 gap-4 mt-6">
+                                <div class="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-xl p-4">
+                                    <h3 class="font-semibold text-green-900 dark:text-green-300 mb-2">Versão</h3>
+                                    <p class="text-sm text-gray-700 dark:text-gray-300">1.0.0</p>
+                                </div>
+                                <div class="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-xl p-4">
+                                    <h3 class="font-semibold text-green-900 dark:text-green-300 mb-2">Categoria</h3>
+                                    <p class="text-sm text-gray-700 dark:text-gray-300">Políticas Públicas e Agricultura</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="funcionalidades" class="mb-16">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">Funcionalidades Principais</h2>
+                <p class="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">Recursos completos para gestão de programas agrícolas e políticas públicas</p>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-slate-700">
+                    <div class="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v17.25m0 0c-1.472 0-2.882.265-4.185.75M12 20.25c1.472 0 2.882.265 4.185.75M18.75 4.97A48.224 48.224 0 0012 4.5c-2.48 0-4.785.685-6.75 1.97m13.5 0c1.01.003 2.01.107 2.995.292m-10.5 0a51.964 51.964 0 014.5 0m0 0c.93.003 1.857.092 2.75.292M6.75 4.97l-.016.005M6.75 4.97l-.016.005M6.75 4.97l-.016.005m13.516.005m-13.516 0l.016-.005m13.516-.005L18.75 4.97m-13.5 13.5c1.01.003 2.01.107 2.995.292M6.75 20.25c-1.472 0-2.882-.265-4.185-.75M18.75 20.25c1.472 0 2.882-.265 4.185-.75m-10.5 0a51.964 51.964 0 01-4.5 0m10.5 0a48.225 48.225 0 005.25-15.28" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Gestão de Programas</h3>
+                    <p class="text-gray-700 dark:text-gray-300 text-sm">Cadastro completo de programas agrícolas com tipos específicos: Seguro Safra, PRONAF, Distribuição de Sementes, Crédito Rural, Assistência Técnica e outros.</p>
+                </div>
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-slate-700">
+                    <div class="w-12 h-12 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Gestão de Beneficiários</h3>
+                    <p class="text-gray-700 dark:text-gray-300 text-sm">Controle completo de beneficiários com status de inscrição, aprovação e benefício, permitindo rastreamento do ciclo completo de participação.</p>
+                </div>
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-slate-700">
+                    <div class="w-12 h-12 bg-gradient-to-br from-teal-500 to-teal-600 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Gestão de Eventos</h3>
+                    <p class="text-gray-700 dark:text-gray-300 text-sm">Organização de eventos agrícolas: capacitações, palestras, feiras, dias de campo, visitas técnicas e reuniões, com controle de vagas e inscrições.</p>
+                </div>
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-slate-700">
+                    <div class="w-12 h-12 bg-gradient-to-br from-green-400 to-green-500 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h11.25c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Controle de Vagas</h3>
+                    <p class="text-gray-700 dark:text-gray-300 text-sm">Controle de vagas disponíveis e preenchidas para programas e eventos, com cálculo automático de vagas restantes e verificação de disponibilidade.</p>
+                </div>
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-slate-700">
+                    <div class="w-12 h-12 bg-gradient-to-br from-emerald-400 to-emerald-500 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Portal do Agricultor</h3>
+                    <p class="text-gray-700 dark:text-gray-300 text-sm">Portal público do agricultor com consulta de programas, eventos, calendário e informações sobre políticas públicas rurais, integrado ao módulo Homepage.</p>
+                </div>
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-slate-700">
+                    <div class="w-12 h-12 bg-gradient-to-br from-teal-400 to-teal-500 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h11.25c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Requisitos e Documentos</h3>
+                    <p class="text-gray-700 dark:text-gray-300 text-sm">Cadastro de requisitos e documentos necessários para cada programa, facilitando o processo de inscrição e verificação de elegibilidade.</p>
+                </div>
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-slate-700">
+                    <div class="w-12 h-12 bg-gradient-to-br from-green-300 to-green-400 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Inscrições em Eventos</h3>
+                    <p class="text-gray-700 dark:text-gray-300 text-sm">Sistema de inscrições para eventos com controle de vagas, confirmação de presença e gestão de participantes.</p>
+                </div>
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-slate-700">
+                    <div class="w-12 h-12 bg-gradient-to-br from-emerald-300 to-emerald-400 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Calendário de Eventos</h3>
+                    <p class="text-gray-700 dark:text-gray-300 text-sm">Calendário público de eventos agrícolas, permitindo visualização por mês e acesso rápido a informações e inscrições.</p>
+                </div>
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-slate-700">
+                    <div class="w-12 h-12 bg-gradient-to-br from-teal-300 to-teal-400 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Integração com CAF</h3>
+                    <p class="text-gray-700 dark:text-gray-300 text-sm">Integração com o módulo CAF para vinculação automática de beneficiários através de cadastros de agricultores familiares.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="estrutura" class="mb-16">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-gray-200 dark:border-slate-700 overflow-hidden">
+                <div class="p-8 lg:p-12">
+                    <div class="flex items-start gap-4 mb-8">
+                        <div class="flex-shrink-0 w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center">
+                            <svg class="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125" />
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Estrutura de Dados</h2>
+                            <p class="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+                                O módulo utiliza as tabelas <code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded text-sm">programas</code>, <code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded text-sm">beneficiarios</code>, <code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded text-sm">eventos</code> e <code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded text-sm">inscricoes_eventos</code>.
+                            </p>
+                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 mt-8">Tabela: programas</h3>
+                            <div class="overflow-x-auto mb-8">
+                                <table class="w-full border-collapse">
+                                    <thead>
+                                        <tr class="bg-gray-50 dark:bg-slate-700">
+                                            <th class="border border-gray-300 dark:border-slate-600 px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white">Campo</th>
+                                            <th class="border border-gray-300 dark:border-slate-600 px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white">Tipo</th>
+                                            <th class="border border-gray-300 dark:border-slate-600 px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white">Descrição</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-sm text-gray-700 dark:text-gray-300">
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50"><td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">id</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">bigint</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Identificador único</td></tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50"><td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">codigo</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">string (unique)</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Código único gerado automaticamente</td></tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50"><td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">nome</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">string(255)</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Nome do programa</td></tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50"><td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">descricao</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">text (nullable)</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Descrição detalhada do programa</td></tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50"><td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">tipo</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">enum</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Tipo: 'seguro_safra', 'pronaf', 'distribuicao_sementes', 'distribuicao_insumos', 'assistencia_tecnica', 'credito_rural', 'feira_agricola', 'capacitacao' ou 'outro'</td></tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50"><td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">status</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">enum</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Status: 'ativo', 'inativo' ou 'suspenso' (padrão: 'ativo')</td></tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50"><td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">data_inicio</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">date (nullable)</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Data de início do programa</td></tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50"><td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">data_fim</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">date (nullable)</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Data de término do programa</td></tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50"><td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">vagas_disponiveis</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">integer (nullable)</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Número total de vagas disponíveis</td></tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50"><td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">vagas_preenchidas</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">integer</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Número de vagas preenchidas (padrão: 0)</td></tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50"><td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">requisitos</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">text (nullable)</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Requisitos para participação no programa</td></tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50"><td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">documentos_necessarios</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">text (nullable)</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Documentos necessários para inscrição</td></tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50"><td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">beneficios</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">text (nullable)</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Benefícios oferecidos pelo programa</td></tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50"><td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">orgao_responsavel</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">string (nullable)</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Órgão responsável pelo programa</td></tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50"><td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">publico</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">boolean</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Indica se aparece no portal público (padrão: true)</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Tabela: beneficiarios</h3>
+                            <div class="overflow-x-auto mb-8">
+                                <table class="w-full border-collapse">
+                                    <thead>
+                                        <tr class="bg-gray-50 dark:bg-slate-700">
+                                            <th class="border border-gray-300 dark:border-slate-600 px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white">Campo</th>
+                                            <th class="border border-gray-300 dark:border-slate-600 px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white">Tipo</th>
+                                            <th class="border border-gray-300 dark:border-slate-600 px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white">Descrição</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-sm text-gray-700 dark:text-gray-300">
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50"><td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">id</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">bigint</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Identificador único</td></tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50"><td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">programa_id</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">foreignId</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">ID do programa</td></tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50"><td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">pessoa_id</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">foreignId (nullable)</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">ID da pessoa cadastrada</td></tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50"><td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">nome</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">string (nullable)</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Nome do beneficiário (se não vinculado a pessoa)</td></tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50"><td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">cpf</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">string (nullable)</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">CPF do beneficiário</td></tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50"><td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">localidade_id</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">foreignId (nullable)</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">ID da localidade do beneficiário</td></tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50"><td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">status</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">enum</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Status: 'inscrito', 'aprovado', 'beneficiado', 'cancelado' ou 'inativo'</td></tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50"><td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">data_inscricao</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">date (nullable)</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Data de inscrição</td></tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50"><td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">data_aprovacao</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">date (nullable)</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Data de aprovação</td></tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50"><td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">data_beneficio</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">date (nullable)</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Data de concessão do benefício</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Tabela: eventos</h3>
+                            <div class="overflow-x-auto">
+                                <table class="w-full border-collapse">
+                                    <thead>
+                                        <tr class="bg-gray-50 dark:bg-slate-700">
+                                            <th class="border border-gray-300 dark:border-slate-600 px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white">Campo</th>
+                                            <th class="border border-gray-300 dark:border-slate-600 px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white">Tipo</th>
+                                            <th class="border border-gray-300 dark:border-slate-600 px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white">Descrição</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-sm text-gray-700 dark:text-gray-300">
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50"><td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">id</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">bigint</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Identificador único</td></tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50"><td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">codigo</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">string (unique)</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Código único gerado automaticamente</td></tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50"><td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">titulo</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">string(255)</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Título do evento</td></tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50"><td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">tipo</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">enum</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Tipo: 'capacitacao', 'palestra', 'feira', 'dia_campo', 'visita_tecnica', 'reuniao' ou 'outro'</td></tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50"><td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">data_inicio</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">date</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Data de início do evento</td></tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50"><td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">data_fim</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">date (nullable)</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Data de término do evento</td></tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50"><td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">vagas_totais</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">integer (nullable)</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Número total de vagas</td></tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50"><td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">vagas_preenchidas</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">integer</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Número de vagas preenchidas (padrão: 0)</td></tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50"><td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">status</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">enum</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Status: 'agendado', 'em_andamento', 'concluido' ou 'cancelado'</td></tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50"><td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">inscricao_aberta</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">boolean</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Indica se as inscrições estão abertas</td></tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50"><td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">publico</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">boolean</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Indica se aparece no portal público</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="relacionamentos" class="mb-16">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-gray-200 dark:border-slate-700 overflow-hidden">
+                <div class="p-8 lg:p-12">
+                    <div class="flex items-start gap-4 mb-8">
+                        <div class="flex-shrink-0 w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-xl flex items-center justify-center">
+                            <svg class="w-6 h-6 text-purple-600 dark:text-purple-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" />
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Relacionamentos</h2>
+                            <p class="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+                                Os modelos do módulo mantêm relacionamentos integrados com múltiplos módulos do sistema, permitindo rastreamento completo de beneficiários e participantes.
+                            </p>
+                            <div class="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-slate-700 dark:to-slate-800 rounded-xl p-6">
+                                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Programa</h3>
+                                <ul class="space-y-3 text-gray-700 dark:text-gray-300">
+                                    <li class="flex items-start gap-2">
+                                        <svg class="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                        </svg>
+                                        <span><strong>beneficiarios():</strong> hasMany - Beneficiários do programa</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <svg class="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                        </svg>
+                                        <span><strong>beneficiariosAtivos():</strong> hasMany - Beneficiários ativos (inscrito, aprovado, beneficiado)</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <svg class="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                        </svg>
+                                        <span><strong>cadastrosCaf():</strong> Query - Cadastros CAF vinculados através dos beneficiários</span>
+                                    </li>
+                                </ul>
+                                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 mt-6">Beneficiario</h3>
+                                <ul class="space-y-3 text-gray-700 dark:text-gray-300">
+                                    <li class="flex items-start gap-2">
+                                        <svg class="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                        </svg>
+                                        <span><strong>programa():</strong> belongsTo - Programa ao qual o beneficiário pertence</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <svg class="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                        </svg>
+                                        <span><strong>pessoa():</strong> belongsTo - Pessoa cadastrada vinculada</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <svg class="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                        </svg>
+                                        <span><strong>localidade():</strong> belongsTo - Localidade do beneficiário</span>
+                                    </li>
+                                </ul>
+                                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 mt-6">Evento</h3>
+                                <ul class="space-y-3 text-gray-700 dark:text-gray-300">
+                                    <li class="flex items-start gap-2">
+                                        <svg class="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                        </svg>
+                                        <span><strong>localidade():</strong> belongsTo - Localidade onde o evento ocorre</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <svg class="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                        </svg>
+                                        <span><strong>inscricoes():</strong> hasMany - Inscrições no evento</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <svg class="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                        </svg>
+                                        <span><strong>inscricoesConfirmadas():</strong> hasMany - Inscrições confirmadas (inscrito, confirmado, presente)</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="metodos" class="mb-16">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-gray-200 dark:border-slate-700 overflow-hidden">
+                <div class="p-8 lg:p-12">
+                    <div class="flex items-start gap-4 mb-8">
+                        <div class="flex-shrink-0 w-12 h-12 bg-teal-100 dark:bg-teal-900/30 rounded-xl flex items-center justify-center">
+                            <svg class="w-6 h-6 text-teal-600 dark:text-teal-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" />
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Métodos e Scopes</h2>
+                            <p class="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+                                Os modelos possuem métodos auxiliares, scopes e accessors que facilitam consultas e gerenciamento de programas, beneficiários e eventos.
+                            </p>
+                            <div class="grid md:grid-cols-2 gap-6 mb-6">
+                                <div class="bg-gray-50 dark:bg-slate-700 rounded-xl p-6">
+                                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Scopes (Programa)</h3>
+                                    <ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                                        <li><code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">scopeAtivos()</code> - Filtra programas ativos</li>
+                                        <li><code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">scopePublicos()</code> - Filtra programas públicos</li>
+                                        <li><code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">scopePorTipo()</code> - Filtra por tipo específico</li>
+                                        <li><code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">scopeComVagas()</code> - Filtra programas com vagas disponíveis</li>
+                                        <li><code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">scopeDisponiveis()</code> - Filtra programas disponíveis (ativo, público, dentro do prazo)</li>
+                                    </ul>
+                                </div>
+                                <div class="bg-gray-50 dark:bg-slate-700 rounded-xl p-6">
+                                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Accessors (Programa)</h3>
+                                    <ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                                        <li><code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">tipo_texto</code> - Tipo formatado em texto</li>
+                                        <li><code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">status_texto</code> - Status formatado em texto</li>
+                                        <li><code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">vagas_restantes</code> - Vagas restantes calculadas</li>
+                                        <li><code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">tem_vagas</code> - Indica se há vagas disponíveis</li>
+                                        <li><code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">esta_ativo</code> - Verifica se está ativo e dentro do prazo</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="bg-gray-50 dark:bg-slate-700 rounded-xl p-6">
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Scopes (Evento)</h3>
+                                <ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                                    <li><code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">scopePublicos()</code> - Filtra eventos públicos</li>
+                                    <li><code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">scopeInscricaoAberta()</code> - Filtra eventos com inscrição aberta</li>
+                                    <li><code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">scopePorTipo()</code> - Filtra por tipo específico</li>
+                                    <li><code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">scopeProximos()</code> - Filtra eventos próximos (próximos N dias)</li>
+                                    <li><code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">scopeDisponiveis()</code> - Filtra eventos disponíveis para inscrição</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-16">
+            <div class="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-2xl shadow-xl border-2 border-green-200 dark:border-green-800 overflow-hidden">
+                <div class="p-8 lg:p-12">
+                    <div class="flex items-start gap-4">
+                        <div class="flex-shrink-0 w-12 h-12 bg-green-500 rounded-xl flex items-center justify-center">
+                            <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Créditos</h2>
+                            <div class="space-y-4">
+                                <div>
+                                    <p class="text-lg text-gray-700 dark:text-gray-300 mb-2">
+                                        <strong class="text-green-600 dark:text-green-400">Desenvolvedor:</strong> Reinan Rodrigues
+                                    </p>
+                                    <p class="text-lg text-gray-700 dark:text-gray-300 mb-4">
+                                        <strong class="text-green-600 dark:text-green-400">Empresa:</strong> Vertex Solutions LTDA
+                                    </p>
+                                </div>
+                                <div class="bg-white dark:bg-slate-800 rounded-xl p-4 border border-green-200 dark:border-green-800">
+                                    <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                                        O módulo Programas de Agricultura é essencial para a gestão de políticas públicas rurais, oferecendo controle completo de programas agrícolas, beneficiários, eventos e portal do agricultor. Desenvolvido com foco em transparência, acessibilidade e eficiência na gestão de políticas públicas.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-slate-900 dark:bg-slate-950 text-slate-300 border-t border-slate-800">
+        <div class="container mx-auto px-4 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <div class="mb-4">
+                        <img src="assets/img/logo-vertex-semagri.svg" alt="Vertex SEMAGRI" class="h-10">
+                    </div>
+                    <p class="text-sm text-slate-400">Sistema de Gestão Municipal Modular desenvolvido para secretarias de agricultura e desenvolvimento rural.</p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold text-white mb-4">Navegação</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="index.html" class="text-slate-400 hover:text-emerald-400 transition-colors">Página Inicial</a></li>
+                        <li><a href="index.html#modulos" class="text-slate-400 hover:text-emerald-400 transition-colors">Todos os Módulos</a></li>
+                        <li>
+                            <a href="changelog.html" class="text-slate-400 hover:text-emerald-400 transition-colors">
+                                Changelog
+                            </a>
+                        </li>
+                        <li><a href="caf.html" class="text-slate-400 hover:text-emerald-400 transition-colors">Módulo CAF</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold text-white mb-4">Contato</h3>
+                    <p class="text-sm text-slate-400 mb-2">Vertex Solutions LTDA</p>
+                    <p class="text-sm text-slate-400">Desenvolvido com dedicação e excelência</p>
+                </div>
+            </div>
+            <div class="mt-8 pt-8 border-t border-slate-800 text-center text-sm text-slate-500">
+                <p>&copy; 2024 Vertex Solutions LTDA. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <button id="backToTop" class="fixed bottom-8 right-8 w-14 h-14 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-full shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-300 opacity-0 invisible z-50 flex items-center justify-center">
+        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+        </svg>
+    </button>
+
+    <script>
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href !== '#' && href.length > 1) {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        const offsetTop = target.offsetTop - 80;
+                        window.scrollTo({ top: offsetTop, behavior: 'smooth' });
+                    }
+                }
+            });
+        });
+        const backToTopBtn = document.getElementById('backToTop');
+        if (backToTopBtn) {
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 300) {
+                    backToTopBtn.classList.remove('opacity-0', 'invisible');
+                    backToTopBtn.classList.add('opacity-100', 'visible');
+                } else {
+                    backToTopBtn.classList.add('opacity-0', 'invisible');
+                    backToTopBtn.classList.remove('opacity-100', 'visible');
+                }
+            });
+            backToTopBtn.addEventListener('click', function() {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+

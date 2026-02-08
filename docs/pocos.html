@@ -1,0 +1,496 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Módulo Poços - VERTEXSEMAGRI Documentação</title>
+    <meta name="description" content="Documentação completa do módulo Poços do sistema VERTEXSEMAGRI - Gestão de poços artesianos e sistemas de captação de água">
+    <link rel="icon" type="image/svg+xml" href="assets/img/logo-icon.svg">
+    <script>
+        (function() {
+            const originalWarn = console.warn;
+            console.warn = function(...args) {
+                const message = args[0];
+                if (typeof message === 'string' && (
+                    message.includes('cdn.tailwindcss.com should not be used in production') ||
+                    message.includes('should not be used in production') ||
+                    message.includes('To use Tailwind CSS in production') ||
+                    message.includes('PostCSS plugin') ||
+                    message.includes('Tailwind CLI')
+                )) {
+                    return;
+                }
+                originalWarn.apply(console, args);
+            };
+            const originalError = console.error;
+            console.error = function(...args) {
+                const message = args[0];
+                if (typeof message === 'string' && (
+                    message.includes('cdn.tailwindcss.com should not be used in production') ||
+                    message.includes('should not be used in production') ||
+                    message.includes('To use Tailwind CSS in production')
+                )) {
+                    return;
+                }
+                originalError.apply(console, args);
+            };
+            const originalLog = console.log;
+            console.log = function(...args) {
+                const message = args[0];
+                if (typeof message === 'string' && (
+                    message.includes('cdn.tailwindcss.com should not be used in production') ||
+                    message.includes('should not be used in production') ||
+                    message.includes('To use Tailwind CSS in production')
+                )) {
+                    return;
+                }
+                originalLog.apply(console, args);
+            };
+        })();
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#10b981',
+                        'primary-dark': '#059669',
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="assets/css/tailwind.css">
+    <link rel="stylesheet" href="assets/css/hyperui.css">
+    <link rel="stylesheet" href="assets/css/docs.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-50 via-white to-cyan-50/30 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-gray-200 dark:border-slate-700 shadow-sm">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between h-20">
+                <a href="index.html" class="flex items-center gap-3 hover:opacity-80 transition-opacity">
+                    <img src="assets/img/logo-vertex-semagri.svg" alt="Vertex SEMAGRI" class="h-12">
+                </a>
+                <div class="hidden md:flex items-center gap-6">
+                    <a href="index.html" class="text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 font-medium transition-colors">Início</a>
+                    <a href="index.html#modulos" class="text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 font-medium transition-colors">Módulos</a>
+                    <a href="#sobre" class="text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 font-medium transition-colors">Sobre</a>
+                    <a href="#funcionalidades" class="text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 font-medium transition-colors">Funcionalidades</a>
+                    <a href="#estrutura" class="text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 font-medium transition-colors">Estrutura</a>
+                    <a href="api.html" class="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors font-semibold shadow-sm hover:shadow-md">API Reference</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section class="relative overflow-hidden bg-gradient-to-br from-cyan-600 via-blue-600 to-indigo-600 py-16 lg:py-24">
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'0.4\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E'); background-size: 60px 60px;"></div>
+        </div>
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="text-center text-white space-y-6">
+                <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-5 py-2.5 rounded-full text-sm font-medium">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" />
+                    </svg>
+                    <span>Módulo de Infraestrutura</span>
+                </div>
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">Módulo Poços</h1>
+                <p class="text-lg md:text-xl text-white/95 leading-relaxed max-w-3xl mx-auto">
+                    Gestão completa de poços artesianos, perfurações e sistemas de captação de água. Controle de manutenção preventiva, status operacional e integração com demandas e ordens de serviço.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <main class="container mx-auto px-4 py-16 lg:py-20">
+        <section id="sobre" class="mb-16">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-gray-200 dark:border-slate-700 overflow-hidden">
+                <div class="p-8 lg:p-12">
+                    <div class="flex items-start gap-4 mb-6">
+                        <div class="flex-shrink-0 w-12 h-12 bg-cyan-100 dark:bg-cyan-900/30 rounded-xl flex items-center justify-center">
+                            <svg class="w-6 h-6 text-cyan-600 dark:text-cyan-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Sobre o Módulo</h2>
+                            <p class="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+                                O módulo <strong class="text-cyan-600 dark:text-cyan-400">Poços</strong> gerencia o cadastro completo de poços artesianos e sistemas de captação de água do município. O sistema permite cadastrar poços com informações técnicas detalhadas, controlar status operacional, realizar manutenção preventiva e integrar-se com o sistema de demandas e ordens de serviço.
+                            </p>
+                            <p class="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+                                O módulo integra-se com o módulo Localidades para geolocalização, com Equipes para atribuição de responsabilidade, com Demandas para rastreamento de solicitações, e com Ordens de Serviço para gerenciamento de manutenções.
+                            </p>
+                            <div class="grid md:grid-cols-2 gap-4 mt-6">
+                                <div class="bg-cyan-50 dark:bg-cyan-900/20 border border-cyan-200 dark:border-cyan-800 rounded-xl p-4">
+                                    <h3 class="font-semibold text-cyan-900 dark:text-cyan-300 mb-2">Versão</h3>
+                                    <p class="text-sm text-gray-700 dark:text-gray-300">1.0.0</p>
+                                </div>
+                                <div class="bg-cyan-50 dark:bg-cyan-900/20 border border-cyan-200 dark:border-cyan-800 rounded-xl p-4">
+                                    <h3 class="font-semibold text-cyan-900 dark:text-cyan-300 mb-2">Categoria</h3>
+                                    <p class="text-sm text-gray-700 dark:text-gray-300">Infraestrutura Hídrica</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="funcionalidades" class="mb-16">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">Funcionalidades Principais</h2>
+                <p class="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">Recursos completos para gestão de poços artesianos e sistemas de captação</p>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-slate-700">
+                    <div class="w-12 h-12 bg-gradient-to-br from-cyan-500 to-cyan-600 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Cadastro Completo</h3>
+                    <p class="text-gray-700 dark:text-gray-300 text-sm">Cadastro completo de poços com informações técnicas: profundidade, vazão, diâmetro, tipo de bomba, potência, datas de perfuração e manutenção.</p>
+                </div>
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-slate-700">
+                    <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Geolocalização</h3>
+                    <p class="text-gray-700 dark:text-gray-300 text-sm">Geolocalização completa com latitude e longitude, permitindo visualização em mapas e integração com sistemas de navegação.</p>
+                </div>
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-slate-700">
+                    <div class="w-12 h-12 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Controle de Status</h3>
+                    <p class="text-gray-700 dark:text-gray-300 text-sm">Controle de status: ativo, inativo, em manutenção ou bomba queimada, permitindo monitoramento em tempo real do estado dos poços.</p>
+                </div>
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-slate-700">
+                    <div class="w-12 h-12 bg-gradient-to-br from-cyan-400 to-cyan-500 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Manutenção Preventiva</h3>
+                    <p class="text-gray-700 dark:text-gray-300 text-sm">Controle de datas de última manutenção e próxima manutenção, com cálculo automático de dias sem manutenção e alertas quando necessário.</p>
+                </div>
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-slate-700">
+                    <div class="w-12 h-12 bg-gradient-to-br from-blue-400 to-blue-500 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.645-5.963-1.88A13.07 13.07 0 016.5 15.5m12 0a13.07 13.07 0 00-1.537-3.62M6.5 15.5a13.07 13.07 0 01-1.537-3.62m0 0A13.07 13.07 0 0112 8.5c2.17 0 4.207.645 5.963 1.88M6.5 15.5l-3.5 3.5m3.5-3.5l3.5 3.5m-3.5-3.5v-7m0 0l-3.5-3.5m3.5 3.5l3.5-3.5" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Equipe Responsável</h3>
+                    <p class="text-gray-700 dark:text-gray-300 text-sm">Vinculação com equipes responsáveis pela manutenção e operação dos poços, permitindo organização e responsabilização.</p>
+                </div>
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-slate-700">
+                    <div class="w-12 h-12 bg-gradient-to-br from-indigo-400 to-indigo-500 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h11.25c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Integração com Demandas</h3>
+                    <p class="text-gray-700 dark:text-gray-300 text-sm">Integração com o módulo Demandas para rastreamento de solicitações relacionadas aos poços, permitindo histórico completo de demandas.</p>
+                </div>
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-slate-700">
+                    <div class="w-12 h-12 bg-gradient-to-br from-cyan-300 to-cyan-400 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h11.25c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Integração com Ordens</h3>
+                    <p class="text-gray-700 dark:text-gray-300 text-sm">Rastreamento de ordens de serviço relacionadas através das demandas, permitindo histórico completo de manutenções e intervenções realizadas.</p>
+                </div>
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-slate-700">
+                    <div class="w-12 h-12 bg-gradient-to-br from-blue-300 to-blue-400 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Estatísticas e Relatórios</h3>
+                    <p class="text-gray-700 dark:text-gray-300 text-sm">Estatísticas completas: total de demandas, ordens de serviço, status operacional, manutenções e exportação de dados em múltiplos formatos.</p>
+                </div>
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-slate-700">
+                    <div class="w-12 h-12 bg-gradient-to-br from-indigo-300 to-indigo-400 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Relatório de Problemas</h3>
+                    <p class="text-gray-700 dark:text-gray-300 text-sm">Sistema de relatório de problemas para poços, permitindo registro rápido de falhas e solicitação de manutenção.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="estrutura" class="mb-16">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-gray-200 dark:border-slate-700 overflow-hidden">
+                <div class="p-8 lg:p-12">
+                    <div class="flex items-start gap-4 mb-8">
+                        <div class="flex-shrink-0 w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center">
+                            <svg class="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125" />
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Estrutura de Dados</h2>
+                            <p class="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+                                O módulo utiliza a tabela <code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded text-sm">pocos</code> para armazenar informações sobre poços artesianos.
+                            </p>
+                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 mt-8">Tabela: pocos</h3>
+                            <div class="overflow-x-auto">
+                                <table class="w-full border-collapse">
+                                    <thead>
+                                        <tr class="bg-gray-50 dark:bg-slate-700">
+                                            <th class="border border-gray-300 dark:border-slate-600 px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white">Campo</th>
+                                            <th class="border border-gray-300 dark:border-slate-600 px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white">Tipo</th>
+                                            <th class="border border-gray-300 dark:border-slate-600 px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white">Descrição</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-sm text-gray-700 dark:text-gray-300">
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50"><td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">id</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">bigint</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Identificador único</td></tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50"><td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">codigo</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">string (unique)</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Código único gerado automaticamente</td></tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50"><td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">localidade_id</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">foreignId</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">ID da localidade onde o poço está localizado</td></tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50"><td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">endereco</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">string(255)</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Endereço do poço</td></tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50"><td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">latitude</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">decimal(10,8) (nullable)</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Latitude para geolocalização</td></tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50"><td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">longitude</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">decimal(11,8) (nullable)</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Longitude para geolocalização</td></tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50"><td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">nome_mapa</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">string(255) (nullable)</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Nome para identificação no mapa</td></tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50"><td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">profundidade_metros</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">decimal(8,2)</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Profundidade do poço em metros</td></tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50"><td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">vazao_litros_hora</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">decimal(10,2) (nullable)</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Vazão em litros por hora</td></tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50"><td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">data_perfuracao</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">date (nullable)</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Data de perfuração</td></tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50"><td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">diametro</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">string (nullable)</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Diâmetro do poço</td></tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50"><td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">tipo_bomba</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">string (nullable)</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Tipo de bomba utilizada</td></tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50"><td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">potencia_bomba</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">integer (nullable)</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Potência da bomba (watts ou HP)</td></tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50"><td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">equipe_responsavel_id</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">foreignId (nullable)</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">ID da equipe responsável pela manutenção</td></tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50"><td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">ultima_manutencao</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">date (nullable)</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Data da última manutenção</td></tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50"><td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">proxima_manutencao</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">date (nullable)</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Data da próxima manutenção prevista</td></tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50"><td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">status</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">enum</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Status: 'ativo', 'inativo', 'manutencao' ou 'bomba_queimada' (padrão: 'ativo')</td></tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50"><td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">observacoes</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">text (nullable)</td><td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Observações adicionais sobre o poço</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="relacionamentos" class="mb-16">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-gray-200 dark:border-slate-700 overflow-hidden">
+                <div class="p-8 lg:p-12">
+                    <div class="flex items-start gap-4 mb-8">
+                        <div class="flex-shrink-0 w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-xl flex items-center justify-center">
+                            <svg class="w-6 h-6 text-purple-600 dark:text-purple-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" />
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Relacionamentos</h2>
+                            <p class="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+                                O modelo Poco mantém relacionamentos integrados com múltiplos módulos do sistema, permitindo rastreamento completo de demandas, ordens de serviço e equipes responsáveis.
+                            </p>
+                            <div class="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-slate-700 dark:to-slate-800 rounded-xl p-6">
+                                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Poco</h3>
+                                <ul class="space-y-3 text-gray-700 dark:text-gray-300">
+                                    <li class="flex items-start gap-2">
+                                        <svg class="w-5 h-5 text-cyan-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                        </svg>
+                                        <span><strong>localidade():</strong> belongsTo - Localidade onde o poço está localizado</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <svg class="w-5 h-5 text-cyan-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                        </svg>
+                                        <span><strong>equipeResponsavel():</strong> belongsTo - Equipe responsável pela manutenção e operação</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <svg class="w-5 h-5 text-cyan-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                        </svg>
+                                        <span><strong>demandas():</strong> hasMany - Demandas relacionadas ao poço (tipo: 'poco')</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <svg class="w-5 h-5 text-cyan-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                        </svg>
+                                        <span><strong>ordensServico():</strong> hasManyThrough - Ordens de serviço relacionadas através das demandas</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="metodos" class="mb-16">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-gray-200 dark:border-slate-700 overflow-hidden">
+                <div class="p-8 lg:p-12">
+                    <div class="flex items-start gap-4 mb-8">
+                        <div class="flex-shrink-0 w-12 h-12 bg-teal-100 dark:bg-teal-900/30 rounded-xl flex items-center justify-center">
+                            <svg class="w-6 h-6 text-teal-600 dark:text-teal-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" />
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Métodos e Scopes</h2>
+                            <p class="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+                                O modelo Poco possui métodos auxiliares, scopes e accessors que facilitam consultas, controle de manutenção e gerenciamento de status.
+                            </p>
+                            <div class="grid md:grid-cols-2 gap-6 mb-6">
+                                <div class="bg-gray-50 dark:bg-slate-700 rounded-xl p-6">
+                                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Scopes</h3>
+                                    <ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                                        <li><code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">scopeAtivos()</code> - Filtra poços ativos</li>
+                                        <li><code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">scopeEmManutencao()</code> - Filtra poços em manutenção</li>
+                                        <li><code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">scopeComProblemas()</code> - Filtra poços com problemas (manutenção, bomba queimada, inativo)</li>
+                                    </ul>
+                                </div>
+                                <div class="bg-gray-50 dark:bg-slate-700 rounded-xl p-6">
+                                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Accessors</h3>
+                                    <ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                                        <li><code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">status_texto</code> - Status formatado em texto</li>
+                                        <li><code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">status_cor</code> - Cor do status (para badges)</li>
+                                        <li><code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">estatisticas</code> - Estatísticas completas do poço</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="bg-gray-50 dark:bg-slate-700 rounded-xl p-6">
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Métodos Auxiliares</h3>
+                                <ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                                    <li><code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">precisaManutencao()</code> - Verifica se o poço precisa de manutenção (baseado em proxima_manutencao)</li>
+                                    <li><code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">diasSemManutencao()</code> - Calcula dias desde a última manutenção</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-16">
+            <div class="bg-gradient-to-br from-cyan-50 to-blue-50 dark:from-cyan-900/20 dark:to-blue-900/20 rounded-2xl shadow-xl border-2 border-cyan-200 dark:border-cyan-800 overflow-hidden">
+                <div class="p-8 lg:p-12">
+                    <div class="flex items-start gap-4">
+                        <div class="flex-shrink-0 w-12 h-12 bg-cyan-500 rounded-xl flex items-center justify-center">
+                            <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Créditos</h2>
+                            <div class="space-y-4">
+                                <div>
+                                    <p class="text-lg text-gray-700 dark:text-gray-300 mb-2">
+                                        <strong class="text-cyan-600 dark:text-cyan-400">Desenvolvedor:</strong> Reinan Rodrigues
+                                    </p>
+                                    <p class="text-lg text-gray-700 dark:text-gray-300 mb-4">
+                                        <strong class="text-cyan-600 dark:text-cyan-400">Empresa:</strong> Vertex Solutions LTDA
+                                    </p>
+                                </div>
+                                <div class="bg-white dark:bg-slate-800 rounded-xl p-4 border border-cyan-200 dark:border-cyan-800">
+                                    <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                                        O módulo Poços é essencial para a gestão de infraestrutura hídrica, oferecendo controle completo de poços artesianos, manutenção preventiva, status operacional e integração com demandas e ordens de serviço. Desenvolvido com foco em rastreabilidade, manutenção preventiva e eficiência operacional.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-slate-900 dark:bg-slate-950 text-slate-300 border-t border-slate-800">
+        <div class="container mx-auto px-4 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <div class="mb-4">
+                        <img src="assets/img/logo-vertex-semagri.svg" alt="Vertex SEMAGRI" class="h-10">
+                    </div>
+                    <p class="text-sm text-slate-400">Sistema de Gestão Municipal Modular desenvolvido para secretarias de agricultura e desenvolvimento rural.</p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold text-white mb-4">Navegação</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="index.html" class="text-slate-400 hover:text-emerald-400 transition-colors">Página Inicial</a></li>
+                        <li><a href="index.html#modulos" class="text-slate-400 hover:text-emerald-400 transition-colors">Todos os Módulos</a></li>
+                        <li>
+                            <a href="changelog.html" class="text-slate-400 hover:text-emerald-400 transition-colors">
+                                Changelog
+                            </a>
+                        </li>
+                        <li><a href="localidades.html" class="text-slate-400 hover:text-emerald-400 transition-colors">Módulo Localidades</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold text-white mb-4">Contato</h3>
+                    <p class="text-sm text-slate-400 mb-2">Vertex Solutions LTDA</p>
+                    <p class="text-sm text-slate-400">Desenvolvido com dedicação e excelência</p>
+                </div>
+            </div>
+            <div class="mt-8 pt-8 border-t border-slate-800 text-center text-sm text-slate-500">
+                <p>&copy; 2024 Vertex Solutions LTDA. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <button id="backToTop" class="fixed bottom-8 right-8 w-14 h-14 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-full shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-300 opacity-0 invisible z-50 flex items-center justify-center">
+        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+        </svg>
+    </button>
+
+    <script>
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href !== '#' && href.length > 1) {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        const offsetTop = target.offsetTop - 80;
+                        window.scrollTo({ top: offsetTop, behavior: 'smooth' });
+                    }
+                }
+            });
+        });
+        const backToTopBtn = document.getElementById('backToTop');
+        if (backToTopBtn) {
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 300) {
+                    backToTopBtn.classList.remove('opacity-0', 'invisible');
+                    backToTopBtn.classList.add('opacity-100', 'visible');
+                } else {
+                    backToTopBtn.classList.add('opacity-0', 'invisible');
+                    backToTopBtn.classList.remove('opacity-100', 'visible');
+                }
+            });
+            backToTopBtn.addEventListener('click', function() {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+

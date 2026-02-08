@@ -1,0 +1,21 @@
+{
+    "Localidades": true,
+    "Iluminacao": true,
+    "Agua": true,
+    "Pocos": true,
+    "Estradas": true,
+    "Relatorios": true,
+    "Equipes": true,
+    "Materiais": true,
+    "Demandas": true,
+    "Ordens": true,
+    "Funcionarios": true,
+    "Pessoas": true,
+    "Notificacoes": true,
+    "ProgramasAgricultura": false,
+    "CAF": false,
+    "Homepage": true,
+    "Chat": true,
+    "Avisos": true,
+    "Blog": true
+}

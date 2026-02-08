@@ -1,0 +1,714 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Módulo Ordens - VERTEXSEMAGRI Documentação</title>
+    <meta name="description" content="Documentação completa do módulo Ordens de Serviço do sistema VERTEXSEMAGRI - Gestão de execução de trabalhos">
+    <link rel="icon" type="image/svg+xml" href="assets/img/logo-icon.svg">
+
+    <!-- Suppress Tailwind CSS CDN warning -->
+    <script>
+        (function() {
+            const originalWarn = console.warn;
+            console.warn = function(...args) {
+                const message = args[0];
+                if (typeof message === 'string' && (
+                    message.includes('cdn.tailwindcss.com should not be used in production') ||
+                    message.includes('should not be used in production') ||
+                    message.includes('To use Tailwind CSS in production') ||
+                    message.includes('PostCSS plugin') ||
+                    message.includes('Tailwind CLI')
+                )) {
+                    return;
+                }
+                originalWarn.apply(console, args);
+            };
+            const originalError = console.error;
+            console.error = function(...args) {
+                const message = args[0];
+                if (typeof message === 'string' && (
+                    message.includes('cdn.tailwindcss.com should not be used in production') ||
+                    message.includes('should not be used in production') ||
+                    message.includes('To use Tailwind CSS in production')
+                )) {
+                    return;
+                }
+                originalError.apply(console, args);
+            };
+            const originalLog = console.log;
+            console.log = function(...args) {
+                const message = args[0];
+                if (typeof message === 'string' && (
+                    message.includes('cdn.tailwindcss.com should not be used in production') ||
+                    message.includes('should not be used in production') ||
+                    message.includes('To use Tailwind CSS in production')
+                )) {
+                    return;
+                }
+                originalLog.apply(console, args);
+            };
+        })();
+    </script>
+
+    <!-- Tailwind CSS v3.4 - Play CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#10b981',
+                        'primary-dark': '#059669',
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="assets/css/tailwind.css">
+    <link rel="stylesheet" href="assets/css/hyperui.css">
+    <link rel="stylesheet" href="assets/css/docs.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-50 via-white to-pink-50/30 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-gray-200 dark:border-slate-700 shadow-sm">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between h-20">
+                <a href="index.html" class="flex items-center gap-3 hover:opacity-80 transition-opacity">
+                    <img src="assets/img/logo-vertex-semagri.svg" alt="Vertex SEMAGRI" class="h-12">
+                </a>
+                <div class="hidden md:flex items-center gap-6">
+                    <a href="index.html" class="text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 font-medium transition-colors">Início</a>
+                    <a href="index.html#modulos" class="text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 font-medium transition-colors">Módulos</a>
+                    <a href="#sobre" class="text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 font-medium transition-colors">Sobre</a>
+                    <a href="#funcionalidades" class="text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 font-medium transition-colors">Funcionalidades</a>
+                    <a href="#estrutura" class="text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 font-medium transition-colors">Estrutura</a>
+                    <a href="api.html" class="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors font-semibold shadow-sm hover:shadow-md">API Reference</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative overflow-hidden bg-gradient-to-br from-pink-600 via-rose-600 to-red-600 py-16 lg:py-24">
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'0.4\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E'); background-size: 60px 60px;"></div>
+        </div>
+
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="text-center text-white space-y-6">
+                <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-5 py-2.5 rounded-full text-sm font-medium">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655-5.653a2.548 2.548 0 010-3.586L11.42 15.17z" />
+                    </svg>
+                    <span>Módulo de Execução</span>
+                </div>
+
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
+                    Módulo Ordens de Serviço
+                </h1>
+
+                <p class="text-lg md:text-xl text-white/95 leading-relaxed max-w-3xl mx-auto">
+                    Sistema completo de gestão de ordens de serviço, controle de execução de trabalhos, manutenção e acompanhamento de serviços municipais com integração completa de materiais e equipes.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-16 lg:py-20">
+        <!-- Sobre o Módulo -->
+        <section id="sobre" class="mb-16">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-gray-200 dark:border-slate-700 overflow-hidden">
+                <div class="p-8 lg:p-12">
+                    <div class="flex items-start gap-4 mb-6">
+                        <div class="flex-shrink-0 w-12 h-12 bg-pink-100 dark:bg-pink-900/30 rounded-xl flex items-center justify-center">
+                            <svg class="w-6 h-6 text-pink-600 dark:text-pink-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Sobre o Módulo</h2>
+                            <p class="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+                                O módulo <strong class="text-pink-600 dark:text-pink-400">Ordens de Serviço</strong> é responsável pela execução e controle de todos os serviços municipais. Ele gerencia o ciclo completo desde a criação da ordem até a conclusão, incluindo controle de materiais utilizados, tempo de execução, fotos antes e depois, e relatórios detalhados.
+                            </p>
+                            <p class="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+                                Este módulo integra-se diretamente com o módulo de Demandas, recebendo ordens geradas a partir de solicitações da população, e se conecta com Equipes, Funcionários e Materiais para garantir execução completa e rastreável.
+                            </p>
+                            <div class="grid md:grid-cols-2 gap-4 mt-6">
+                                <div class="bg-pink-50 dark:bg-pink-900/20 border border-pink-200 dark:border-pink-800 rounded-xl p-4">
+                                    <h3 class="font-semibold text-pink-900 dark:text-pink-300 mb-2">Versão</h3>
+                                    <p class="text-sm text-gray-700 dark:text-gray-300">1.0.0</p>
+                                </div>
+                                <div class="bg-pink-50 dark:bg-pink-900/20 border border-pink-200 dark:border-pink-800 rounded-xl p-4">
+                                    <h3 class="font-semibold text-pink-900 dark:text-pink-300 mb-2">Categoria</h3>
+                                    <p class="text-sm text-gray-700 dark:text-gray-300">Gestão Operacional - Execução</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Funcionalidades -->
+        <section id="funcionalidades" class="mb-16">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">Funcionalidades Principais</h2>
+                <p class="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+                    Recursos completos para gestão e execução de serviços municipais
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-slate-700">
+                    <div class="w-12 h-12 bg-gradient-to-br from-pink-500 to-pink-600 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Criação de Ordens</h3>
+                    <p class="text-gray-700 dark:text-gray-300 text-sm">
+                        Criação de ordens de serviço a partir de demandas ou diretamente, com atribuição de equipes e funcionários.
+                    </p>
+                </div>
+
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-slate-700">
+                    <div class="w-12 h-12 bg-gradient-to-br from-rose-500 to-rose-600 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Controle de Status</h3>
+                    <p class="text-gray-700 dark:text-gray-300 text-sm">
+                        Acompanhamento completo: pendente, em execução, concluída e cancelada, com histórico de alterações.
+                    </p>
+                </div>
+
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-slate-700">
+                    <div class="w-12 h-12 bg-gradient-to-br from-red-500 to-red-600 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Controle de Tempo</h3>
+                    <p class="text-gray-700 dark:text-gray-300 text-sm">
+                        Registro de tempo de execução, data de início e conclusão, com cálculo automático de duração.
+                    </p>
+                </div>
+
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-slate-700">
+                    <div class="w-12 h-12 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Fotos Antes e Depois</h3>
+                    <p class="text-gray-700 dark:text-gray-300 text-sm">
+                        Anexo de múltiplas fotos antes e depois da execução, permitindo documentação visual completa do serviço.
+                    </p>
+                </div>
+
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-slate-700">
+                    <div class="w-12 h-12 bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Gestão de Materiais</h3>
+                    <p class="text-gray-700 dark:text-gray-300 text-sm">
+                        Controle completo de materiais utilizados na ordem, com quantidades, valores e integração com estoque.
+                    </p>
+                </div>
+
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-slate-700">
+                    <div class="w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.645-5.963-1.88A13.07 13.07 0 016.5 15.5m12 0a13.07 13.07 0 00-1.537-3.62M6.5 15.5a13.07 13.07 0 01-1.537-3.62m0 0A13.07 13.07 0 0112 8.5c2.17 0 4.207.645 5.963 1.88M6.5 15.5l-3.5 3.5m3.5-3.5l3.5 3.5m-3.5-3.5v-7m0 0l-3.5-3.5m3.5 3.5l3.5-3.5" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Atribuição de Equipes</h3>
+                    <p class="text-gray-700 dark:text-gray-300 text-sm">
+                        Atribuição de ordens a equipes de campo ou funcionários específicos, com controle de permissões e acesso.
+                    </p>
+                </div>
+
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-slate-700">
+                    <div class="w-12 h-12 bg-gradient-to-br from-teal-500 to-teal-600 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75M3.75 6.75h16.5M3.75 9.75h16.5m-16.5 3h16.5M3.75 15.75h16.5" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Relatórios de Execução</h3>
+                    <p class="text-gray-700 dark:text-gray-300 text-sm">
+                        Relatórios detalhados de execução com descrição do trabalho realizado, materiais utilizados e observações.
+                    </p>
+                </div>
+
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-slate-700">
+                    <div class="w-12 h-12 bg-gradient-to-br from-cyan-500 to-cyan-600 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Controle de Acesso</h3>
+                    <p class="text-gray-700 dark:text-gray-300 text-sm">
+                        Sistema de permissões que garante que apenas equipes e funcionários relacionados possam acessar ordens específicas.
+                    </p>
+                </div>
+
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-slate-700">
+                    <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Integração com Infraestrutura</h3>
+                    <p class="text-gray-700 dark:text-gray-300 text-sm">
+                        Relacionamento dinâmico com módulos de infraestrutura (Água, Iluminação, Estradas, Poços) baseado no tipo da demanda.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Estrutura de Dados -->
+        <section id="estrutura" class="mb-16">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-gray-200 dark:border-slate-700 overflow-hidden">
+                <div class="p-8 lg:p-12">
+                    <div class="flex items-start gap-4 mb-8">
+                        <div class="flex-shrink-0 w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center">
+                            <svg class="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125" />
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Estrutura de Dados</h2>
+                            <p class="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+                                A tabela <code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded text-sm">ordens_servico</code> armazena todas as informações necessárias para o controle completo da execução de serviços.
+                            </p>
+
+                            <div class="overflow-x-auto">
+                                <table class="w-full border-collapse">
+                                    <thead>
+                                        <tr class="bg-gray-50 dark:bg-slate-700">
+                                            <th class="border border-gray-300 dark:border-slate-600 px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white">Campo</th>
+                                            <th class="border border-gray-300 dark:border-slate-600 px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white">Tipo</th>
+                                            <th class="border border-gray-300 dark:border-slate-600 px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white">Descrição</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-sm text-gray-700 dark:text-gray-300">
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">id</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">bigint</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Identificador único</td>
+                                        </tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">numero</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">string (unique)</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Número único da ordem (gerado automaticamente)</td>
+                                        </tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">demanda_id</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">foreignId (nullable)</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Demanda que originou a ordem (opcional)</td>
+                                        </tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">equipe_id</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">foreignId (nullable)</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Equipe responsável pela execução</td>
+                                        </tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">funcionario_id</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">foreignId (nullable)</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Funcionário específico atribuído</td>
+                                        </tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">tipo_servico</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">string</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Tipo de serviço a ser executado</td>
+                                        </tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">descricao</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">text</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Descrição detalhada do serviço</td>
+                                        </tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">prioridade</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">enum</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">baixa, media, alta, urgente (padrão: media)</td>
+                                        </tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">status</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">enum</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">pendente, em_execucao, concluida, cancelada (padrão: pendente)</td>
+                                        </tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">data_abertura</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">timestamp</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Data e hora de abertura (automático)</td>
+                                        </tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">data_inicio</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">timestamp (nullable)</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Data e hora de início da execução</td>
+                                        </tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">data_conclusao</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">timestamp (nullable)</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Data e hora de conclusão</td>
+                                        </tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">tempo_execucao</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">integer (nullable)</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Tempo de execução em minutos</td>
+                                        </tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">fotos_antes / fotos_depois</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">json (nullable)</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Arrays de URLs de fotos antes e depois</td>
+                                        </tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">relatorio_execucao</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">text (nullable)</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Relatório detalhado da execução</td>
+                                        </tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">sem_material</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">boolean</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Indica se o serviço foi realizado sem uso de materiais</td>
+                                        </tr>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">user_id_abertura / user_id_execucao</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">foreignId (nullable)</td>
+                                            <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Usuários que abriram e executaram a ordem</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="mt-8">
+                                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Tabela: ordem_servico_materiais</h3>
+                                <p class="text-gray-700 dark:text-gray-300 mb-4 text-sm">
+                                    Tabela pivot que relaciona ordens de serviço com materiais utilizados, armazenando quantidade e valor unitário.
+                                </p>
+                                <div class="overflow-x-auto">
+                                    <table class="w-full border-collapse">
+                                        <thead>
+                                            <tr class="bg-gray-50 dark:bg-slate-700">
+                                                <th class="border border-gray-300 dark:border-slate-600 px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white">Campo</th>
+                                                <th class="border border-gray-300 dark:border-slate-600 px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white">Tipo</th>
+                                                <th class="border border-gray-300 dark:border-slate-600 px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white">Descrição</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="text-sm text-gray-700 dark:text-gray-300">
+                                            <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">ordem_servico_id</td>
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">foreignId</td>
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">ID da ordem de serviço</td>
+                                            </tr>
+                                            <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">material_id</td>
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">foreignId</td>
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">ID do material utilizado</td>
+                                            </tr>
+                                            <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">quantidade</td>
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">decimal</td>
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Quantidade utilizada</td>
+                                            </tr>
+                                            <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">valor_unitario</td>
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">decimal (nullable)</td>
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Valor unitário no momento da utilização</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Relacionamentos -->
+        <section id="relacionamentos" class="mb-16">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-gray-200 dark:border-slate-700 overflow-hidden">
+                <div class="p-8 lg:p-12">
+                    <div class="flex items-start gap-4 mb-8">
+                        <div class="flex-shrink-0 w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-xl flex items-center justify-center">
+                            <svg class="w-6 h-6 text-purple-600 dark:text-purple-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" />
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Relacionamentos</h2>
+                            <p class="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+                                O modelo OrdemServico mantém relacionamentos integrados com múltiplos módulos, garantindo rastreabilidade completa.
+                            </p>
+
+                            <div class="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-slate-700 dark:to-slate-800 rounded-xl p-6">
+                                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">OrdemServico</h3>
+                                <ul class="space-y-3 text-gray-700 dark:text-gray-300">
+                                    <li class="flex items-start gap-2">
+                                        <svg class="w-5 h-5 text-pink-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                        </svg>
+                                        <span><strong>demanda():</strong> belongsTo - Demanda que originou a ordem (opcional)</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <svg class="w-5 h-5 text-pink-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                        </svg>
+                                        <span><strong>equipe():</strong> belongsTo - Equipe responsável pela execução</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <svg class="w-5 h-5 text-pink-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                        </svg>
+                                        <span><strong>funcionario():</strong> belongsTo - Funcionário específico atribuído</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <svg class="w-5 h-5 text-pink-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                        </svg>
+                                        <span><strong>materiais():</strong> hasMany - Materiais utilizados na ordem (tabela pivot)</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <svg class="w-5 h-5 text-pink-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                        </svg>
+                                        <span><strong>usuarioAbertura() / usuarioExecucao():</strong> belongsTo - Usuários do sistema</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <svg class="w-5 h-5 text-pink-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                        </svg>
+                                        <span><strong>poco() / redeAgua():</strong> Relacionamentos dinâmicos baseados no tipo da demanda</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Métodos e Segurança -->
+        <section id="metodos" class="mb-16">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-gray-200 dark:border-slate-700 overflow-hidden">
+                <div class="p-8 lg:p-12">
+                    <div class="flex items-start gap-4 mb-8">
+                        <div class="flex-shrink-0 w-12 h-12 bg-teal-100 dark:bg-teal-900/30 rounded-xl flex items-center justify-center">
+                            <svg class="w-6 h-6 text-teal-600 dark:text-teal-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Métodos e Segurança</h2>
+                            <p class="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+                                O modelo OrdemServico possui métodos auxiliares e sistema de segurança que garante privacidade e controle de acesso.
+                            </p>
+
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div class="bg-gray-50 dark:bg-slate-700 rounded-xl p-6">
+                                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Accessors</h3>
+                                    <ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                                        <li><code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">status_texto</code> - Status formatado</li>
+                                        <li><code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">status_cor</code> - Cor do status</li>
+                                        <li><code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">prioridade_texto</code> - Prioridade formatada</li>
+                                        <li><code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">tempo_execucao_formatado</code> - Tempo em formato legível</li>
+                                        <li><code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">total_materiais</code> - Total de materiais</li>
+                                        <li><code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">valor_total_materiais</code> - Valor total dos materiais</li>
+                                    </ul>
+                                </div>
+
+                                <div class="bg-gray-50 dark:bg-slate-700 rounded-xl p-6">
+                                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Scopes</h3>
+                                    <ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                                        <li><code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">scopePendentes()</code> - Filtra pendentes</li>
+                                        <li><code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">scopeEmExecucao()</code> - Filtra em execução</li>
+                                        <li><code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">scopeConcluidas()</code> - Filtra concluídas</li>
+                                        <li><code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">scopeUrgentes()</code> - Filtra urgentes</li>
+                                        <li><code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">scopePorEquipe($id)</code> - Filtra por equipe</li>
+                                        <li><code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">scopeMinhasOrdens($userId)</code> - Ordens do usuário (segurança)</li>
+                                    </ul>
+                                </div>
+
+                                <div class="bg-gray-50 dark:bg-slate-700 rounded-xl p-6">
+                                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Métodos de Validação</h3>
+                                    <ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                                        <li><code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">podeIniciar()</code> - Verifica se pode iniciar</li>
+                                        <li><code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">podeConcluir()</code> - Verifica se pode concluir</li>
+                                        <li><code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">podeCancelar()</code> - Verifica se pode cancelar</li>
+                                        <li><code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">temMateriais()</code> - Verifica se tem materiais</li>
+                                    </ul>
+                                </div>
+
+                                <div class="bg-gray-50 dark:bg-slate-700 rounded-xl p-6">
+                                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Métodos de Segurança</h3>
+                                    <ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                                        <li><code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">usuarioPodeAcessar($userId)</code> - Verifica permissão de acesso</li>
+                                        <li><code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">estaAtribuidaA($funcionarioId)</code> - Verifica atribuição</li>
+                                        <li><code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">estaAtribuidaAoUsuario($userId)</code> - Verifica atribuição ao usuário</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="mt-6 bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded-xl p-4">
+                                <p class="text-sm text-gray-700 dark:text-gray-300">
+                                    <strong class="text-emerald-600 dark:text-emerald-400">Segurança:</strong> O método <code class="bg-emerald-100 dark:bg-emerald-800 px-2 py-1 rounded text-xs">scopeMinhasOrdens()</code> garante que funcionários e equipes vejam apenas as ordens relacionadas a eles, protegendo a privacidade e garantindo que informações sensíveis não sejam expostas.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Créditos -->
+        <section class="mb-16">
+            <div class="bg-gradient-to-br from-pink-50 to-rose-50 dark:from-pink-900/20 dark:to-rose-900/20 rounded-2xl shadow-xl border-2 border-pink-200 dark:border-pink-800 overflow-hidden">
+                <div class="p-8 lg:p-12">
+                    <div class="flex items-start gap-4">
+                        <div class="flex-shrink-0 w-12 h-12 bg-pink-500 rounded-xl flex items-center justify-center">
+                            <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Créditos</h2>
+                            <div class="space-y-4">
+                                <div>
+                                    <p class="text-lg text-gray-700 dark:text-gray-300 mb-2">
+                                        <strong class="text-pink-600 dark:text-pink-400">Desenvolvedor:</strong> Reinan Rodrigues
+                                    </p>
+                                    <p class="text-lg text-gray-700 dark:text-gray-300 mb-4">
+                                        <strong class="text-pink-600 dark:text-pink-400">Empresa:</strong> Vertex Solutions LTDA
+                                    </p>
+                                </div>
+                                <div class="bg-white dark:bg-slate-800 rounded-xl p-4 border border-pink-200 dark:border-pink-800">
+                                    <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                                        O módulo Ordens de Serviço é fundamental para a execução de trabalhos municipais, integrando-se com Demandas, Equipes, Funcionários e Materiais. Desenvolvido com foco em rastreabilidade, controle de acesso e segurança de dados.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 dark:bg-slate-950 text-slate-300 border-t border-slate-800">
+        <div class="container mx-auto px-4 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <div class="mb-4">
+                        <img src="assets/img/logo-vertex-semagri.svg" alt="Vertex SEMAGRI" class="h-10">
+                    </div>
+                    <p class="text-sm text-slate-400">
+                        Sistema de Gestão Municipal Modular desenvolvido para secretarias de agricultura e desenvolvimento rural.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold text-white mb-4">Navegação</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li>
+                            <a href="index.html" class="text-slate-400 hover:text-emerald-400 transition-colors">
+                                Página Inicial
+                            </a>
+                        </li>
+                        <li>
+                            <a href="index.html#modulos" class="text-slate-400 hover:text-emerald-400 transition-colors">
+                                Todos os Módulos
+                            </a>
+                        </li>
+                        <li>
+                            <a href="changelog.html" class="text-slate-400 hover:text-emerald-400 transition-colors">
+                                Changelog
+                            </a>
+                        </li>
+                        <li>
+                            <a href="demandas.html" class="text-slate-400 hover:text-emerald-400 transition-colors">
+                                Módulo Demandas
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold text-white mb-4">Contato</h3>
+                    <p class="text-sm text-slate-400 mb-2">Vertex Solutions LTDA</p>
+                    <p class="text-sm text-slate-400">Desenvolvido com dedicação e excelência</p>
+                </div>
+            </div>
+            <div class="mt-8 pt-8 border-t border-slate-800 text-center text-sm text-slate-500">
+                <p>&copy; 2024 Vertex Solutions LTDA. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button id="backToTop" class="fixed bottom-8 right-8 w-14 h-14 bg-gradient-to-r from-pink-500 to-rose-600 text-white rounded-full shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-300 opacity-0 invisible z-50 flex items-center justify-center">
+        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+        </svg>
+    </button>
+
+    <script>
+        // Smooth scroll para links âncora
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href !== '#' && href.length > 1) {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        const offsetTop = target.offsetTop - 80;
+                        window.scrollTo({
+                            top: offsetTop,
+                            behavior: 'smooth'
+                        });
+                    }
+                }
+            });
+        });
+
+        // Back to Top Button
+        const backToTopBtn = document.getElementById('backToTop');
+        if (backToTopBtn) {
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 300) {
+                    backToTopBtn.classList.remove('opacity-0', 'invisible');
+                    backToTopBtn.classList.add('opacity-100', 'visible');
+                } else {
+                    backToTopBtn.classList.add('opacity-0', 'invisible');
+                    backToTopBtn.classList.remove('opacity-100', 'visible');
+                }
+            });
+
+            backToTopBtn.addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+

@@ -1,0 +1,23 @@
+{
+    "name": "Blog",
+    "alias": "blog",
+    "description": "Módulo completo de Blog para publicação de notícias e novidades da prefeitura com integração aos demais módulos do sistema",
+    "keywords": [
+        "blog",
+        "noticias",
+        "novidades",
+        "publicacoes",
+        "imprensa",
+        "comunicacao"
+    ],
+    "priority": 0,
+    "version": "1.0.0",
+    "author": "Reinan Rodrigues",
+    "company": "Vertex Solutions LTDA",
+    "providers": [
+        "Modules\\Blog\\Providers\\BlogServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

@@ -1,0 +1,11 @@
+{
+    "name": "Avisos",
+    "alias": "avisos",
+    "description": "Sistema completo de alertas, avisos e banners para exibição estratégica na Homepage e páginas públicas com componentes HyperUI",
+    "keywords": ["avisos", "banners", "alertas", "marketing", "cta", "hyperui"],
+    "priority": 5,
+    "providers": [
+        "Modules\\Avisos\\Providers\\AvisosServiceProvider"
+    ],
+    "files": []
+}

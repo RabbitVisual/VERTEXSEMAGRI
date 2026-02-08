@@ -1,0 +1,22 @@
+{
+    "name": "Iluminacao",
+    "alias": "iluminacao",
+    "description": "Módulo de gestão e cadastro de iluminação pública, postes, lâmpadas e infraestrutura de energia",
+    "keywords": [
+        "iluminacao",
+        "publica",
+        "postes",
+        "lampadas",
+        "energia"
+    ],
+    "priority": 0,
+    "version": "1.0.0",
+    "author": "Reinan Rodrigues",
+    "company": "Vertex Solutions LTDA",
+    "providers": [
+        "Modules\\Iluminacao\\Providers\\IluminacaoServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

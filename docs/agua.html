@@ -1,0 +1,812 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Módulo Água - VERTEXSEMAGRI Documentação</title>
+    <meta name="description" content="Documentação completa do módulo Água do sistema VERTEXSEMAGRI - Gestão de sistemas de abastecimento de água">
+    <link rel="icon" type="image/svg+xml" href="assets/img/logo-icon.svg">
+
+    <!-- Suppress Tailwind CSS CDN warning - Must be before Tailwind loads -->
+    <script>
+        (function() {
+            const originalWarn = console.warn;
+            console.warn = function(...args) {
+                const message = args[0];
+                if (typeof message === 'string' && (
+                    message.includes('cdn.tailwindcss.com should not be used in production') ||
+                    message.includes('should not be used in production') ||
+                    message.includes('To use Tailwind CSS in production') ||
+                    message.includes('PostCSS plugin') ||
+                    message.includes('Tailwind CLI')
+                )) {
+                    return;
+                }
+                originalWarn.apply(console, args);
+            };
+            const originalError = console.error;
+            console.error = function(...args) {
+                const message = args[0];
+                if (typeof message === 'string' && (
+                    message.includes('cdn.tailwindcss.com should not be used in production') ||
+                    message.includes('should not be used in production') ||
+                    message.includes('To use Tailwind CSS in production')
+                )) {
+                    return;
+                }
+                originalError.apply(console, args);
+            };
+            const originalLog = console.log;
+            console.log = function(...args) {
+                const message = args[0];
+                if (typeof message === 'string' && (
+                    message.includes('cdn.tailwindcss.com should not be used in production') ||
+                    message.includes('should not be used in production') ||
+                    message.includes('To use Tailwind CSS in production')
+                )) {
+                    return;
+                }
+                originalLog.apply(console, args);
+            };
+        })();
+    </script>
+
+    <!-- Tailwind CSS v3.4 - Play CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#10b981',
+                        'primary-dark': '#059669',
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="assets/css/tailwind.css">
+    <link rel="stylesheet" href="assets/css/hyperui.css">
+    <link rel="stylesheet" href="assets/css/docs.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-50 via-white to-emerald-50/30 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-gray-200 dark:border-slate-700 shadow-sm">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between h-20">
+                <a href="index.html" class="flex items-center gap-3 hover:opacity-80 transition-opacity">
+                    <img src="assets/img/logo-vertex-semagri.svg" alt="Vertex SEMAGRI" class="h-12">
+                </a>
+                <div class="hidden md:flex items-center gap-6">
+                    <a href="index.html" class="text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 font-medium transition-colors">Início</a>
+                    <a href="index.html#modulos" class="text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 font-medium transition-colors">Módulos</a>
+                    <a href="#sobre" class="text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 font-medium transition-colors">Sobre</a>
+                    <a href="#funcionalidades" class="text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 font-medium transition-colors">Funcionalidades</a>
+                    <a href="#estrutura" class="text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 font-medium transition-colors">Estrutura</a>
+                    <a href="api.html" class="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors font-semibold shadow-sm hover:shadow-md">API Reference</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative overflow-hidden bg-gradient-to-br from-emerald-600 via-teal-600 to-green-600 py-16 lg:py-24">
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'0.4\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E'); background-size: 60px 60px;"></div>
+        </div>
+
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="text-center text-white space-y-6">
+                <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-5 py-2.5 rounded-full text-sm font-medium">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" />
+                    </svg>
+                    <span>Módulo de Infraestrutura</span>
+                </div>
+
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
+                    Módulo Água
+                </h1>
+
+                <p class="text-lg md:text-xl text-white/95 leading-relaxed max-w-3xl mx-auto">
+                    Gestão completa de sistemas de abastecimento de água do município, incluindo redes de distribuição, pontos de abastecimento e controle de qualidade da infraestrutura hídrica.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-16 lg:py-20">
+        <!-- Sobre o Módulo -->
+        <section id="sobre" class="mb-16">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-gray-200 dark:border-slate-700 overflow-hidden">
+                <div class="p-8 lg:p-12">
+                    <div class="flex items-start gap-4 mb-6">
+                        <div class="flex-shrink-0 w-12 h-12 bg-emerald-100 dark:bg-emerald-900/30 rounded-xl flex items-center justify-center">
+                            <svg class="w-6 h-6 text-emerald-600 dark:text-emerald-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Sobre o Módulo</h2>
+                            <p class="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+                                O módulo <strong class="text-emerald-600 dark:text-emerald-400">Água</strong> é responsável pela gestão completa dos sistemas de abastecimento de água do município. Ele permite o cadastro e controle de redes de distribuição, pontos de abastecimento, manutenção preventiva e integração completa com o sistema de demandas e ordens de serviço.
+                            </p>
+                            <div class="grid md:grid-cols-2 gap-4 mt-6">
+                                <div class="bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded-xl p-4">
+                                    <h3 class="font-semibold text-emerald-900 dark:text-emerald-300 mb-2">Versão</h3>
+                                    <p class="text-sm text-gray-700 dark:text-gray-300">1.0.0</p>
+                                </div>
+                                <div class="bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded-xl p-4">
+                                    <h3 class="font-semibold text-emerald-900 dark:text-emerald-300 mb-2">Categoria</h3>
+                                    <p class="text-sm text-gray-700 dark:text-gray-300">Infraestrutura Hídrica</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Funcionalidades -->
+        <section id="funcionalidades" class="mb-16">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">Funcionalidades Principais</h2>
+                <p class="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+                    Recursos completos para gestão de infraestrutura hídrica municipal
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-slate-700">
+                    <div class="w-12 h-12 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 21h16.5M4.5 3h15m-16.5 18V9.75m0 0l3-3m-3 3l3 3m8.25-3V9.75m0 0l-3-3m3 3l-3 3M9.75 9.75h.008v.008H9.75zm0 3h.008v.008H9.75zm0 3h.008v.008H9.75z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Cadastro de Redes</h3>
+                    <p class="text-gray-700 dark:text-gray-300 text-sm">
+                        Cadastro completo de redes de distribuição de água com informações técnicas detalhadas (diâmetro, material, extensão, tipo de rede).
+                    </p>
+                </div>
+
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-slate-700">
+                    <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Pontos de Distribuição</h3>
+                    <p class="text-gray-700 dark:text-gray-300 text-sm">
+                        Gestão de pontos de distribuição (hidrantes, caixas d'água, reservatórios) com localização geográfica e capacidade.
+                    </p>
+                </div>
+
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-slate-700">
+                    <div class="w-12 h-12 bg-gradient-to-br from-teal-500 to-teal-600 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h11.25c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Controle de Status</h3>
+                    <p class="text-gray-700 dark:text-gray-300 text-sm">
+                        Acompanhamento do status das redes (funcionando, com vazamento, interrompida) e pontos (funcionando, com defeito, em manutenção).
+                    </p>
+                </div>
+
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-slate-700">
+                    <div class="w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.645-5.963-1.88A13.07 13.07 0 016.5 15.5m12 0a13.07 13.07 0 00-1.537-3.62M6.5 15.5a13.07 13.07 0 01-1.537-3.62m0 0A13.07 13.07 0 0112 8.5c2.17 0 4.207.645 5.963 1.88M6.5 15.5l-3.5 3.5m3.5-3.5l3.5 3.5m-3.5-3.5v-7m0 0l-3.5-3.5m3.5 3.5l3.5-3.5" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Integração com Demandas</h3>
+                    <p class="text-gray-700 dark:text-gray-300 text-sm">
+                        Integração completa com o módulo de Demandas, permitindo rastreamento de solicitações relacionadas a problemas de água na mesma localidade.
+                    </p>
+                </div>
+
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-slate-700">
+                    <div class="w-12 h-12 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655-5.653a2.548 2.548 0 010-3.586L11.42 15.17z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Ordens de Serviço</h3>
+                    <p class="text-gray-700 dark:text-gray-300 text-sm">
+                        Rastreamento de ordens de serviço relacionadas através das demandas, permitindo acompanhamento completo da execução de manutenções.
+                    </p>
+                </div>
+
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-slate-700">
+                    <div class="w-12 h-12 bg-gradient-to-br from-rose-500 to-rose-600 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Estatísticas Completas</h3>
+                    <p class="text-gray-700 dark:text-gray-300 text-sm">
+                        Dashboard administrativo com estatísticas detalhadas de redes, pontos, demandas e ordens de serviço relacionadas.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Estrutura de Dados -->
+        <section id="estrutura" class="mb-16">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-gray-200 dark:border-slate-700 overflow-hidden">
+                <div class="p-8 lg:p-12">
+                    <div class="flex items-start gap-4 mb-8">
+                        <div class="flex-shrink-0 w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center">
+                            <svg class="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125" />
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Estrutura de Dados</h2>
+                            <p class="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+                                O módulo utiliza duas tabelas principais para gerenciar a infraestrutura hídrica do município.
+                            </p>
+
+                            <!-- Tabela Redes de Água -->
+                            <div class="mb-8">
+                                <h3 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                                    <svg class="w-6 h-6 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 21h16.5M4.5 3h15m-16.5 18V9.75m0 0l3-3m-3 3l3 3m8.25-3V9.75m0 0l-3-3m3 3l-3 3M9.75 9.75h.008v.008H9.75zm0 3h.008v.008H9.75zm0 3h.008v.008H9.75z" />
+                                    </svg>
+                                    Tabela: redes_agua
+                                </h3>
+                                <div class="overflow-x-auto">
+                                    <table class="w-full border-collapse">
+                                        <thead>
+                                            <tr class="bg-gray-50 dark:bg-slate-700">
+                                                <th class="border border-gray-300 dark:border-slate-600 px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white">Campo</th>
+                                                <th class="border border-gray-300 dark:border-slate-600 px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white">Tipo</th>
+                                                <th class="border border-gray-300 dark:border-slate-600 px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white">Descrição</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="text-sm text-gray-700 dark:text-gray-300">
+                                            <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">id</td>
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">bigint</td>
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Identificador único</td>
+                                            </tr>
+                                            <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">codigo</td>
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">string (unique)</td>
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Código único da rede</td>
+                                            </tr>
+                                            <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">localidade_id</td>
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">foreignId</td>
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Localidade onde a rede está localizada</td>
+                                            </tr>
+                                            <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">tipo_rede</td>
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">enum</td>
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">principal, secundaria, ramal</td>
+                                            </tr>
+                                            <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">diametro</td>
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">string</td>
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Diâmetro da tubulação (polegadas ou mm)</td>
+                                            </tr>
+                                            <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">material</td>
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">string</td>
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Material da tubulação (PVC, ferro, polietileno)</td>
+                                            </tr>
+                                            <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">extensao_metros</td>
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">decimal(10,2)</td>
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Extensão total da rede em metros</td>
+                                            </tr>
+                                            <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">data_instalacao</td>
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">date</td>
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Data de instalação da rede</td>
+                                            </tr>
+                                            <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">status</td>
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">enum</td>
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">funcionando, com_vazamento, interrompida</td>
+                                            </tr>
+                                            <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">observacoes</td>
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">text</td>
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Observações e notas adicionais</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- Tabela Pontos de Distribuição -->
+                            <div>
+                                <h3 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                                    <svg class="w-6 h-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+                                    </svg>
+                                    Tabela: pontos_distribuicao
+                                </h3>
+                                <div class="overflow-x-auto">
+                                    <table class="w-full border-collapse">
+                                        <thead>
+                                            <tr class="bg-gray-50 dark:bg-slate-700">
+                                                <th class="border border-gray-300 dark:border-slate-600 px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white">Campo</th>
+                                                <th class="border border-gray-300 dark:border-slate-600 px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white">Tipo</th>
+                                                <th class="border border-gray-300 dark:border-slate-600 px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white">Descrição</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="text-sm text-gray-700 dark:text-gray-300">
+                                            <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">id</td>
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">bigint</td>
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Identificador único</td>
+                                            </tr>
+                                            <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">codigo</td>
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">string (unique)</td>
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Código único do ponto</td>
+                                            </tr>
+                                            <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">rede_agua_id</td>
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">foreignId</td>
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Rede de água à qual pertence</td>
+                                            </tr>
+                                            <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">localidade_id</td>
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">foreignId</td>
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Localidade onde está localizado</td>
+                                            </tr>
+                                            <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">endereco</td>
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">string</td>
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Endereço do ponto de distribuição</td>
+                                            </tr>
+                                            <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">latitude / longitude</td>
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">decimal(10,8)</td>
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Coordenadas geográficas</td>
+                                            </tr>
+                                            <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">nome_mapa</td>
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">string</td>
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Nome para identificação no mapa</td>
+                                            </tr>
+                                            <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">numero_conexoes</td>
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">integer</td>
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Número de conexões do ponto</td>
+                                            </tr>
+                                            <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">tipo</td>
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">enum</td>
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">hidrante, caixa_dagua, reservatorio</td>
+                                            </tr>
+                                            <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">capacidade_litros</td>
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">decimal</td>
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">Capacidade em litros</td>
+                                            </tr>
+                                            <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3 font-mono text-xs">status</td>
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">enum</td>
+                                                <td class="border border-gray-300 dark:border-slate-600 px-4 py-3">funcionando, com_defeito, manutencao</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Relacionamentos -->
+        <section id="relacionamentos" class="mb-16">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-gray-200 dark:border-slate-700 overflow-hidden">
+                <div class="p-8 lg:p-12">
+                    <div class="flex items-start gap-4 mb-8">
+                        <div class="flex-shrink-0 w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-xl flex items-center justify-center">
+                            <svg class="w-6 h-6 text-purple-600 dark:text-purple-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" />
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Relacionamentos</h2>
+                            <p class="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+                                O módulo Água mantém relacionamentos integrados com outros módulos do sistema, permitindo rastreamento completo do fluxo de trabalho.
+                            </p>
+
+                            <div class="space-y-6">
+                                <div class="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-slate-700 dark:to-slate-800 rounded-xl p-6">
+                                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">RedeAgua</h3>
+                                    <ul class="space-y-3 text-gray-700 dark:text-gray-300">
+                                        <li class="flex items-start gap-2">
+                                            <svg class="w-5 h-5 text-emerald-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                            </svg>
+                                            <span><strong>localidade():</strong> belongsTo - Rede pertence a uma localidade</span>
+                                        </li>
+                                        <li class="flex items-start gap-2">
+                                            <svg class="w-5 h-5 text-emerald-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                            </svg>
+                                            <span><strong>pontosDistribuicao():</strong> hasMany - Rede tem muitos pontos de distribuição</span>
+                                        </li>
+                                        <li class="flex items-start gap-2">
+                                            <svg class="w-5 h-5 text-emerald-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                            </svg>
+                                            <span><strong>demandas():</strong> hasMany - Demandas de água na mesma localidade (tipo 'agua')</span>
+                                        </li>
+                                        <li class="flex items-start gap-2">
+                                            <svg class="w-5 h-5 text-emerald-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                            </svg>
+                                            <span><strong>ordensServico():</strong> hasManyThrough - Ordens de serviço através das demandas</span>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-slate-700 dark:to-slate-800 rounded-xl p-6">
+                                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">PontoDistribuicao</h3>
+                                    <ul class="space-y-3 text-gray-700 dark:text-gray-300">
+                                        <li class="flex items-start gap-2">
+                                            <svg class="w-5 h-5 text-emerald-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                            </svg>
+                                            <span><strong>redeAgua():</strong> belongsTo - Ponto pertence a uma rede de água</span>
+                                        </li>
+                                        <li class="flex items-start gap-2">
+                                            <svg class="w-5 h-5 text-emerald-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                            </svg>
+                                            <span><strong>localidade():</strong> belongsTo - Ponto pertence a uma localidade</span>
+                                        </li>
+                                        <li class="flex items-start gap-2">
+                                            <svg class="w-5 h-5 text-emerald-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                            </svg>
+                                            <span><strong>demandas():</strong> hasMany - Demandas de água na mesma localidade</span>
+                                        </li>
+                                        <li class="flex items-start gap-2">
+                                            <svg class="w-5 h-5 text-emerald-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                            </svg>
+                                            <span><strong>ordensServico():</strong> hasManyThrough - Ordens de serviço através das demandas</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Controllers e Rotas -->
+        <section id="controllers" class="mb-16">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-gray-200 dark:border-slate-700 overflow-hidden">
+                <div class="p-8 lg:p-12">
+                    <div class="flex items-start gap-4 mb-8">
+                        <div class="flex-shrink-0 w-12 h-12 bg-orange-100 dark:bg-orange-900/30 rounded-xl flex items-center justify-center">
+                            <svg class="w-6 h-6 text-orange-600 dark:text-orange-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" />
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Controllers e Rotas</h2>
+
+                            <div class="space-y-6">
+                                <div>
+                                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">AguaController</h3>
+                                    <p class="text-gray-700 dark:text-gray-300 mb-4">Controller público para operações CRUD de redes de água.</p>
+                                    <div class="bg-gray-50 dark:bg-slate-700 rounded-lg p-4 mb-4">
+                                        <p class="text-sm text-gray-600 dark:text-gray-400 mb-2"><strong>Namespace:</strong> <code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">Modules\Agua\App\Http\Controllers</code></p>
+                                        <p class="text-sm text-gray-600 dark:text-gray-400"><strong>Traits:</strong> ExportsData, ChecksModuleEnabled</p>
+                                    </div>
+                                    <div class="overflow-x-auto">
+                                        <table class="w-full border-collapse text-sm">
+                                            <thead>
+                                                <tr class="bg-gray-50 dark:bg-slate-700">
+                                                    <th class="border border-gray-300 dark:border-slate-600 px-4 py-2 text-left">Método</th>
+                                                    <th class="border border-gray-300 dark:border-slate-600 px-4 py-2 text-left">Rota</th>
+                                                    <th class="border border-gray-300 dark:border-slate-600 px-4 py-2 text-left">Descrição</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="text-gray-700 dark:text-gray-300">
+                                                <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                                    <td class="border border-gray-300 dark:border-slate-600 px-4 py-2 font-mono text-xs">index()</td>
+                                                    <td class="border border-gray-300 dark:border-slate-600 px-4 py-2 font-mono text-xs">GET /agua</td>
+                                                    <td class="border border-gray-300 dark:border-slate-600 px-4 py-2">Lista todas as redes com filtros e busca</td>
+                                                </tr>
+                                                <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                                    <td class="border border-gray-300 dark:border-slate-600 px-4 py-2 font-mono text-xs">create()</td>
+                                                    <td class="border border-gray-300 dark:border-slate-600 px-4 py-2 font-mono text-xs">GET /agua/create</td>
+                                                    <td class="border border-gray-300 dark:border-slate-600 px-4 py-2">Formulário de criação</td>
+                                                </tr>
+                                                <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                                    <td class="border border-gray-300 dark:border-slate-600 px-4 py-2 font-mono text-xs">store()</td>
+                                                    <td class="border border-gray-300 dark:border-slate-600 px-4 py-2 font-mono text-xs">POST /agua</td>
+                                                    <td class="border border-gray-300 dark:border-slate-600 px-4 py-2">Salva nova rede</td>
+                                                </tr>
+                                                <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                                    <td class="border border-gray-300 dark:border-slate-600 px-4 py-2 font-mono text-xs">show()</td>
+                                                    <td class="border border-gray-300 dark:border-slate-600 px-4 py-2 font-mono text-xs">GET /agua/{id}</td>
+                                                    <td class="border border-gray-300 dark:border-slate-600 px-4 py-2">Exibe detalhes da rede</td>
+                                                </tr>
+                                                <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                                    <td class="border border-gray-300 dark:border-slate-600 px-4 py-2 font-mono text-xs">edit()</td>
+                                                    <td class="border border-gray-300 dark:border-slate-600 px-4 py-2 font-mono text-xs">GET /agua/{id}/edit</td>
+                                                    <td class="border border-gray-300 dark:border-slate-600 px-4 py-2">Formulário de edição</td>
+                                                </tr>
+                                                <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                                    <td class="border border-gray-300 dark:border-slate-600 px-4 py-2 font-mono text-xs">update()</td>
+                                                    <td class="border border-gray-300 dark:border-slate-600 px-4 py-2 font-mono text-xs">PUT/PATCH /agua/{id}</td>
+                                                    <td class="border border-gray-300 dark:border-slate-600 px-4 py-2">Atualiza rede existente</td>
+                                                </tr>
+                                                <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                                    <td class="border border-gray-300 dark:border-slate-600 px-4 py-2 font-mono text-xs">destroy()</td>
+                                                    <td class="border border-gray-300 dark:border-slate-600 px-4 py-2 font-mono text-xs">DELETE /agua/{id}</td>
+                                                    <td class="border border-gray-300 dark:border-slate-600 px-4 py-2">Remove rede (soft delete)</td>
+                                                </tr>
+                                                <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                                    <td class="border border-gray-300 dark:border-slate-600 px-4 py-2 font-mono text-xs">export()</td>
+                                                    <td class="border border-gray-300 dark:border-slate-600 px-4 py-2 font-mono text-xs">GET /agua?format=excel/pdf</td>
+                                                    <td class="border border-gray-300 dark:border-slate-600 px-4 py-2">Exporta dados em Excel ou PDF</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">AguaAdminController</h3>
+                                    <p class="text-gray-700 dark:text-gray-300 mb-4">Controller administrativo com estatísticas completas e visualização detalhada.</p>
+                                    <div class="bg-gray-50 dark:bg-slate-700 rounded-lg p-4 mb-4">
+                                        <p class="text-sm text-gray-600 dark:text-gray-400 mb-2"><strong>Namespace:</strong> <code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded">Modules\Agua\App\Http\Controllers\Admin</code></p>
+                                    </div>
+                                    <div class="overflow-x-auto">
+                                        <table class="w-full border-collapse text-sm">
+                                            <thead>
+                                                <tr class="bg-gray-50 dark:bg-slate-700">
+                                                    <th class="border border-gray-300 dark:border-slate-600 px-4 py-2 text-left">Método</th>
+                                                    <th class="border border-gray-300 dark:border-slate-600 px-4 py-2 text-left">Rota</th>
+                                                    <th class="border border-gray-300 dark:border-slate-600 px-4 py-2 text-left">Descrição</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="text-gray-700 dark:text-gray-300">
+                                                <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                                    <td class="border border-gray-300 dark:border-slate-600 px-4 py-2 font-mono text-xs">index()</td>
+                                                    <td class="border border-gray-300 dark:border-slate-600 px-4 py-2 font-mono text-xs">GET /admin/agua</td>
+                                                    <td class="border border-gray-300 dark:border-slate-600 px-4 py-2">Lista redes com estatísticas gerais</td>
+                                                </tr>
+                                                <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                                                    <td class="border border-gray-300 dark:border-slate-600 px-4 py-2 font-mono text-xs">show()</td>
+                                                    <td class="border border-gray-300 dark:border-slate-600 px-4 py-2 font-mono text-xs">GET /admin/agua/{id}</td>
+                                                    <td class="border border-gray-300 dark:border-slate-600 px-4 py-2">Detalhes completos com relacionamentos</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Estatísticas -->
+        <section id="estatisticas" class="mb-16">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-gray-200 dark:border-slate-700 overflow-hidden">
+                <div class="p-8 lg:p-12">
+                    <div class="flex items-start gap-4 mb-8">
+                        <div class="flex-shrink-0 w-12 h-12 bg-rose-100 dark:bg-rose-900/30 rounded-xl flex items-center justify-center">
+                            <svg class="w-6 h-6 text-rose-600 dark:text-rose-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Estatísticas Disponíveis</h2>
+                            <p class="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+                                O módulo fornece estatísticas completas através do accessor <code class="bg-gray-200 dark:bg-slate-600 px-2 py-1 rounded text-sm">getEstatisticasAttribute()</code> no model RedeAgua.
+                            </p>
+
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div class="bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 rounded-xl p-6 border border-emerald-200 dark:border-emerald-800">
+                                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Estatísticas de Redes</h3>
+                                    <ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                                        <li>• Total de redes cadastradas</li>
+                                        <li>• Redes funcionando</li>
+                                        <li>• Redes com vazamento</li>
+                                        <li>• Redes interrompidas</li>
+                                    </ul>
+                                </div>
+
+                                <div class="bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 rounded-xl p-6 border border-blue-200 dark:border-blue-800">
+                                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Estatísticas de Pontos</h3>
+                                    <ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                                        <li>• Total de pontos de distribuição</li>
+                                        <li>• Pontos funcionando</li>
+                                        <li>• Pontos com defeito</li>
+                                        <li>• Pontos em manutenção</li>
+                                    </ul>
+                                </div>
+
+                                <div class="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-xl p-6 border border-purple-200 dark:border-purple-800">
+                                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Estatísticas de Demandas</h3>
+                                    <ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                                        <li>• Total de demandas de água</li>
+                                        <li>• Demandas abertas</li>
+                                        <li>• Demandas em andamento</li>
+                                        <li>• Demandas concluídas</li>
+                                    </ul>
+                                </div>
+
+                                <div class="bg-gradient-to-br from-orange-50 to-amber-50 dark:from-orange-900/20 dark:to-amber-900/20 rounded-xl p-6 border border-orange-200 dark:border-orange-800">
+                                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Estatísticas de Ordens</h3>
+                                    <ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                                        <li>• Total de ordens de serviço</li>
+                                        <li>• Ordens pendentes</li>
+                                        <li>• Ordens em execução</li>
+                                        <li>• Ordens concluídas</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Créditos -->
+        <section class="mb-16">
+            <div class="bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 rounded-2xl shadow-xl border-2 border-emerald-200 dark:border-emerald-800 overflow-hidden">
+                <div class="p-8 lg:p-12">
+                    <div class="flex items-start gap-4">
+                        <div class="flex-shrink-0 w-12 h-12 bg-emerald-500 rounded-xl flex items-center justify-center">
+                            <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Créditos</h2>
+                            <div class="space-y-4">
+                                <div>
+                                    <p class="text-lg text-gray-700 dark:text-gray-300 mb-2">
+                                        <strong class="text-emerald-600 dark:text-emerald-400">Desenvolvedor:</strong> Reinan Rodrigues
+                                    </p>
+                                    <p class="text-lg text-gray-700 dark:text-gray-300 mb-4">
+                                        <strong class="text-emerald-600 dark:text-emerald-400">Empresa:</strong> Vertex Solutions LTDA
+                                    </p>
+                                </div>
+                                <div class="bg-white dark:bg-slate-800 rounded-xl p-4 border border-emerald-200 dark:border-emerald-800">
+                                    <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                                        O módulo Água foi desenvolvido seguindo as melhores práticas de desenvolvimento Laravel e arquitetura modular. Integração completa com os módulos de Localidades, Demandas, Ordens e Materiais.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 dark:bg-slate-950 text-slate-300 border-t border-slate-800">
+        <div class="container mx-auto px-4 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <div class="mb-4">
+                        <img src="assets/img/logo-vertex-semagri.svg" alt="Vertex SEMAGRI" class="h-10">
+                    </div>
+                    <p class="text-sm text-slate-400">
+                        Sistema de Gestão Municipal Modular desenvolvido para secretarias de agricultura e desenvolvimento rural.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold text-white mb-4">Navegação</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li>
+                            <a href="index.html" class="text-slate-400 hover:text-emerald-400 transition-colors">
+                                Página Inicial
+                            </a>
+                        </li>
+                        <li>
+                            <a href="index.html#modulos" class="text-slate-400 hover:text-emerald-400 transition-colors">
+                                Todos os Módulos
+                            </a>
+                        </li>
+                        <li>
+                            <a href="changelog.html" class="text-slate-400 hover:text-emerald-400 transition-colors">
+                                Changelog
+                            </a>
+                        </li>
+                        <li>
+                            <a href="index.html#arquitetura" class="text-slate-400 hover:text-emerald-400 transition-colors">
+                                Arquitetura
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold text-white mb-4">Contato</h3>
+                    <p class="text-sm text-slate-400 mb-2">Vertex Solutions LTDA</p>
+                    <p class="text-sm text-slate-400">Desenvolvido com dedicação e excelência</p>
+                </div>
+            </div>
+            <div class="mt-8 pt-8 border-t border-slate-800 text-center text-sm text-slate-500">
+                <p>&copy; 2024 Vertex Solutions LTDA. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button id="backToTop" class="fixed bottom-8 right-8 w-14 h-14 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-full shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-300 opacity-0 invisible z-50 flex items-center justify-center">
+        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+        </svg>
+    </button>
+
+    <script>
+        // Smooth scroll para links âncora
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href !== '#' && href.length > 1) {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        const offsetTop = target.offsetTop - 80;
+                        window.scrollTo({
+                            top: offsetTop,
+                            behavior: 'smooth'
+                        });
+                    }
+                }
+            });
+        });
+
+        // Back to Top Button
+        const backToTopBtn = document.getElementById('backToTop');
+        if (backToTopBtn) {
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 300) {
+                    backToTopBtn.classList.remove('opacity-0', 'invisible');
+                    backToTopBtn.classList.add('opacity-100', 'visible');
+                } else {
+                    backToTopBtn.classList.add('opacity-0', 'invisible');
+                    backToTopBtn.classList.remove('opacity-100', 'visible');
+                }
+            });
+
+            backToTopBtn.addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        }
+    </script>
+</body>
+</html>
+
+
+
+

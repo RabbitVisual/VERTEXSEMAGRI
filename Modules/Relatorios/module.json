@@ -1,0 +1,24 @@
+{
+    "name": "Relatorios",
+    "alias": "relatorios",
+    "description": "Módulo de relatórios e estatísticas do sistema, geração de documentos e análises de dados do VERTEXSEMAGRI",
+    "keywords": [
+        "relatorios",
+        "estatisticas",
+        "documentos",
+        "analises",
+        "dados"
+    ],
+    "priority": 0,
+    "version": "1.0.0",
+    "author": "Reinan Rodrigues",
+    "company": "Vertex Solutions LTDA",
+    "providers": [
+        "Modules\\Relatorios\\Providers\\RelatoriosServiceProvider",
+        "Modules\\Relatorios\\Providers\\EventServiceProvider",
+        "Modules\\Relatorios\\Providers\\RouteServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

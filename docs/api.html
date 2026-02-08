@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Reference - VERTEXSEMAGRI</title>
+    <meta name="description" content="Documentação completa da API REST do sistema VERTEXSEMAGRI.">
+    <link rel="icon" type="image/svg+xml" href="assets/img/logo-icon.svg">
+
+    <!-- Suppress Tailwind CSS CDN warning -->
+    <script>
+        (function () {
+            const originalWarn = console.warn;
+            console.warn = function (...args) {
+                if (args[0] && typeof args[0] === 'string' && args[0].includes('cdn.tailwindcss.com')) return;
+                originalWarn.apply(console, args);
+            };
+        })();
+    </script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#10b981',
+                        'primary-dark': '#059669',
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="assets/css/docs.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .api-method {
+            @apply px-2 py-1 rounded text-xs font-bold uppercase tracking-wider;
+        }
+
+        .method-get {
+            @apply bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400;
+        }
+
+        .method-post {
+            @apply bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400;
+        }
+
+        .method-put {
+            @apply bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400;
+        }
+
+        .method-delete {
+            @apply bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400;
+        }
+
+        code {
+            @apply font-mono text-sm bg-slate-100 dark:bg-slate-800 px-1 py-0.5 rounded text-pink-600 dark:text-pink-400;
+        }
+
+        .endpoint-card {
+            @apply bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 p-4 hover:shadow-md transition-shadow;
+        }
+    </style>
+</head>
+
+<body class="bg-slate-50 dark:bg-slate-900">
+
+    <!-- Navigation -->
+    <nav
+        class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-gray-200 dark:border-slate-700 shadow-sm">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between h-20">
+                <a href="index.html" class="flex items-center gap-3 hover:opacity-80 transition-opacity">
+                    <img src="assets/img/logo-vertex-semagri.svg" alt="Vertex SEMAGRI" class="h-12">
+                </a>
+                <div class="hidden md:flex items-center gap-6">
+                    <a href="index.html"
+                        class="text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 font-medium transition-colors">Início</a>
+                    <a href="index.html#modulos"
+                        class="text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 font-medium transition-colors">Módulos</a>
+                    <a href="api.html"
+                        class="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors font-semibold shadow-sm hover:shadow-md">API
+                        Reference</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="flex h-[calc(100vh-80px)]">
+
+        <!-- Sidebar -->
+        <aside
+            class="w-64 bg-white dark:bg-slate-800 border-r border-gray-200 dark:border-slate-700 overflow-y-auto hidden lg:block">
+            <div class="p-6">
+                <h5 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-4">Core</h5>
+                <nav class="space-y-1 mb-6">
+                    <a href="#auth"
+                        class="block px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 rounded-md hover:bg-slate-100 dark:hover:bg-slate-700">Autenticação</a>
+                    <a href="#notifications"
+                        class="block px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 rounded-md hover:bg-slate-100 dark:hover:bg-slate-700">Notificações</a>
+                    <a href="#chat"
+                        class="block px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 rounded-md hover:bg-slate-100 dark:hover:bg-slate-700">Chat</a>
+                </nav>
+
+                <h5 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-4">Infraestrutura</h5>
+                <nav class="space-y-1 mb-6">
+                    <a href="#agua"
+                        class="block px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 rounded-md hover:bg-slate-100 dark:hover:bg-slate-700">Água</a>
+                    <a href="#pocos"
+                        class="block px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 rounded-md hover:bg-slate-100 dark:hover:bg-slate-700">Poços</a>
+                    <a href="#iluminacao"
+                        class="block px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 rounded-md hover:bg-slate-100 dark:hover:bg-slate-700">Iluminação</a>
+                    <a href="#estradas"
+                        class="block px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 rounded-md hover:bg-slate-100 dark:hover:bg-slate-700">Estradas</a>
+                    <a href="#localidades"
+                        class="block px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 rounded-md hover:bg-slate-100 dark:hover:bg-slate-700">Localidades</a>
+                </nav>
+
+                <h5 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-4">Gestão</h5>
+                <nav class="space-y-1 mb-6">
+                    <a href="#funcionarios"
+                        class="block px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 rounded-md hover:bg-slate-100 dark:hover:bg-slate-700">Funcionários</a>
+                    <a href="#pessoas"
+                        class="block px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 rounded-md hover:bg-slate-100 dark:hover:bg-slate-700">Pessoas</a>
+                    <a href="#avisos"
+                        class="block px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 rounded-md hover:bg-slate-100 dark:hover:bg-slate-700">Avisos</a>
+                    <a href="#blog"
+                        class="block px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 rounded-md hover:bg-slate-100 dark:hover:bg-slate-700">Blog</a>
+                </nav>
+
+                <h5 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-4">Finanças & Analytics</h5>
+                <nav class="space-y-1 mb-6">
+                    <a href="#pagamentos"
+                        class="block px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 rounded-md hover:bg-slate-100 dark:hover:bg-slate-700">Pagamentos
+                        (Split)</a>
+                    <a href="#relatorios"
+                        class="block px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 rounded-md hover:bg-slate-100 dark:hover:bg-slate-700">Relatórios</a>
+                </nav>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 overflow-y-auto bg-slate-50 dark:bg-slate-900 p-8 lg:p-12 scroll-smooth">
+
+            <div class="max-w-4xl mx-auto space-y-16">
+
+                <!-- Intro -->
+                <div>
+                    <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">API Reference</h1>
+                    <p class="text-lg text-gray-600 dark:text-gray-300">
+                        Documentação técnica completa dos endpoints REST do sistema. Todas as rotas (exceto Login e
+                        Webhooks) exigem autenticação via Bearer Token.
+                    </p>
+                    <div
+                        class="mt-4 p-4 bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded-lg">
+                        <p class="text-sm text-emerald-800 dark:text-emerald-200 font-mono">
+                            Base URL: https://seu-dominio.com/api/v1
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Authentication -->
+                <section id="auth" class="scroll-mt-24">
+                    <h2
+                        class="text-2xl font-bold text-gray-900 dark:text-white mb-6 pb-2 border-b border-gray-200 dark:border-slate-700">
+                        Autenticação</h2>
+                    <div class="space-y-4">
+                        <div class="endpoint-card">
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="api-method method-post">POST</span>
+                                <code class="text-base bg-transparent">/api/login</code>
+                            </div>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Autentica usuário e retorna Bearer
+                                Token.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Core Modules -->
+                <section id="notifications" class="scroll-mt-24">
+                    <h2
+                        class="text-2xl font-bold text-gray-900 dark:text-white mb-6 pb-2 border-b border-gray-200 dark:border-slate-700">
+                        Notificações</h2>
+                    <div class="grid gap-4">
+                        <div class="endpoint-card">
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="api-method method-get">GET</span>
+                                <code class="bg-transparent">/api/notificacoes</code>
+                            </div>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Lista todas as notificações do usuário.
+                            </p>
+                        </div>
+                        <div class="endpoint-card">
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="api-method method-get">GET</span>
+                                <code class="bg-transparent">/api/notificacoes/unread</code>
+                            </div>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Lista apenas notificações não lidas.</p>
+                        </div>
+                        <div class="endpoint-card">
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="api-method method-get">GET</span>
+                                <code class="bg-transparent">/api/notificacoes/count</code>
+                            </div>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Retorna contagem de não lidas.</p>
+                        </div>
+                        <div class="endpoint-card">
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="api-method method-post">POST</span>
+                                <code class="bg-transparent">/api/notificacoes/{id}/read</code>
+                            </div>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Marca uma notificação específica como
+                                lida.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="chat" class="scroll-mt-24">
+                    <h2
+                        class="text-2xl font-bold text-gray-900 dark:text-white mb-6 pb-2 border-b border-gray-200 dark:border-slate-700">
+                        Chat</h2>
+                    <div class="grid gap-4">
+                        <div class="endpoint-card">
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="api-method method-get">GET</span>
+                                <code class="bg-transparent">/api/chat/sessions</code>
+                            </div>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Retorna sessões ativas de chat.</p>
+                        </div>
+                        <div class="endpoint-card">
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="api-method method-get">GET</span>
+                                <code class="bg-transparent">/api/chat/session/{id}/messages</code>
+                            </div>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Histórico de mensagens de uma sessão.
+                            </p>
+                        </div>
+                        <div class="endpoint-card">
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="api-method method-post">POST</span>
+                                <code class="bg-transparent">/api/chat/session/{id}/message</code>
+                            </div>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Envia uma nova mensagem.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Infrastructure Modules (CRUD Patterns) -->
+                <section id="agua" class="scroll-mt-24">
+                    <h2
+                        class="text-2xl font-bold text-gray-900 dark:text-white mb-6 pb-2 border-b border-gray-200 dark:border-slate-700">
+                        Módulo Água</h2>
+                    <div class="grid gap-4">
+                        <div class="endpoint-card">
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="api-method method-get">GET</span>
+                                <code class="bg-transparent">/api/v1/agua</code>
+                            </div>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Listagem de registros de água
+                                (paginado).</p>
+                        </div>
+                        <div class="endpoint-card">
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="api-method method-post">POST</span>
+                                <code class="bg-transparent">/api/v1/agua</code>
+                            </div>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Criar novo registro.</p>
+                        </div>
+                        <div class="endpoint-card">
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="api-method method-put">PUT</span>
+                                <code class="bg-transparent">/api/v1/agua/{id}</code>
+                            </div>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Atualizar registro existente.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="pocos" class="scroll-mt-24">
+                    <h2
+                        class="text-2xl font-bold text-gray-900 dark:text-white mb-6 pb-2 border-b border-gray-200 dark:border-slate-700">
+                        Módulo Poços</h2>
+                    <div class="grid gap-4">
+                        <div class="endpoint-card">
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="api-method method-get">GET</span>
+                                <code class="bg-transparent">/api/v1/pocos</code>
+                            </div>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Listagem de poços artesianos.</p>
+                        </div>
+                        <div class="endpoint-card">
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="api-method method-post">POST</span>
+                                <code class="bg-transparent">/api/v1/pocos</code>
+                            </div>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Cadastrar novo poço.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="iluminacao" class="scroll-mt-24">
+                    <h2
+                        class="text-2xl font-bold text-gray-900 dark:text-white mb-6 pb-2 border-b border-gray-200 dark:border-slate-700">
+                        Módulo Iluminação</h2>
+                    <div class="grid gap-4">
+                        <div class="endpoint-card">
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="api-method method-get">GET</span>
+                                <code class="bg-transparent">/api/v1/iluminacao</code>
+                            </div>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Listagem de pontos de iluminação.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="estradas" class="scroll-mt-24">
+                    <h2
+                        class="text-2xl font-bold text-gray-900 dark:text-white mb-6 pb-2 border-b border-gray-200 dark:border-slate-700">
+                        Módulo Estradas</h2>
+                    <div class="grid gap-4">
+                        <div class="endpoint-card">
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="api-method method-get">GET</span>
+                                <code class="bg-transparent">/api/v1/estradas</code>
+                            </div>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Monitoramento de estradas e vias.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="localidades" class="scroll-mt-24">
+                    <h2
+                        class="text-2xl font-bold text-gray-900 dark:text-white mb-6 pb-2 border-b border-gray-200 dark:border-slate-700">
+                        Módulo Localidades</h2>
+                    <div class="grid gap-4">
+                        <div class="endpoint-card">
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="api-method method-get">GET</span>
+                                <code class="bg-transparent">/api/v1/localidades</code>
+                            </div>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Cadastro de bairros e distritos.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Management Modules -->
+                <section id="funcionarios" class="scroll-mt-24">
+                    <h2
+                        class="text-2xl font-bold text-gray-900 dark:text-white mb-6 pb-2 border-b border-gray-200 dark:border-slate-700">
+                        Módulo Funcionários</h2>
+                    <div class="grid gap-4">
+                        <div class="endpoint-card">
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="api-method method-get">GET</span>
+                                <code class="bg-transparent">/api/v1/funcionarios</code>
+                            </div>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Gestão de servidores municipais.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="pessoas" class="scroll-mt-24">
+                    <h2
+                        class="text-2xl font-bold text-gray-900 dark:text-white mb-6 pb-2 border-b border-gray-200 dark:border-slate-700">
+                        Módulo Pessoas (CadÚnico)</h2>
+                    <div class="grid gap-4">
+                        <div class="endpoint-card">
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="api-method method-get">GET</span>
+                                <code class="bg-transparent">/api/v1/pessoas</code>
+                            </div>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Listagem de beneficiários e cidadãos.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="avisos" class="scroll-mt-24">
+                    <h2
+                        class="text-2xl font-bold text-gray-900 dark:text-white mb-6 pb-2 border-b border-gray-200 dark:border-slate-700">
+                        Módulo Avisos</h2>
+                    <div class="grid gap-4">
+                        <div class="endpoint-card">
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="api-method method-get">GET</span>
+                                <code class="bg-transparent">/api/v1/avisos</code>
+                            </div>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Quadro de avisos e comunicados.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="blog" class="scroll-mt-24">
+                    <h2
+                        class="text-2xl font-bold text-gray-900 dark:text-white mb-6 pb-2 border-b border-gray-200 dark:border-slate-700">
+                        Módulo Blog</h2>
+                    <div class="grid gap-4">
+                        <div class="endpoint-card">
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="api-method method-get">GET</span>
+                                <code class="bg-transparent">/api/v1/blogs</code>
+                            </div>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Gerenciamento de posts e notícias.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Analytics & Payments -->
+                <section id="pagamentos" class="scroll-mt-24">
+                    <h2
+                        class="text-2xl font-bold text-gray-900 dark:text-white mb-6 pb-2 border-b border-gray-200 dark:border-slate-700">
+                        Pagamentos Split (Efipay)</h2>
+                    <div class="grid gap-4">
+                        <div class="endpoint-card">
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="api-method method-post">POST</span>
+                                <code class="bg-transparent">/api/pix/cobrar</code>
+                            </div>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Gera cobrança PIX com divisão automática
+                                de valores.</p>
+                        </div>
+                        <div class="endpoint-card">
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="api-method method-post">POST</span>
+                                <code class="bg-transparent">/api/webhook/pix</code>
+                            </div>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Callback público para confirmação de
+                                pagamento.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="relatorios" class="scroll-mt-24">
+                    <h2
+                        class="text-2xl font-bold text-gray-900 dark:text-white mb-6 pb-2 border-b border-gray-200 dark:border-slate-700">
+                        Relatórios & Analytics</h2>
+                    <div class="grid gap-4">
+                        <div class="endpoint-card">
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="api-method method-get">GET</span>
+                                <code class="bg-transparent">/relatorios/api/demandas</code>
+                            </div>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Dados estatísticos de demandas.</p>
+                        </div>
+                        <div class="endpoint-card">
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="api-method method-get">GET</span>
+                                <code class="bg-transparent">/relatorios/api/ordens</code>
+                            </div>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Dados estatísticos de ordens de serviço.
+                            </p>
+                        </div>
+                        <div class="endpoint-card">
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="api-method method-get">GET</span>
+                                <code class="bg-transparent">/relatorios/api/materiais</code>
+                            </div>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Dados estatísticos de consumo de
+                                materiais.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Footer -->
+                <footer class="pt-12 mt-12 border-t border-gray-200 dark:border-slate-700 text-center">
+                    <p class="text-gray-500 text-sm">
+                        &copy; 2026 Vertex Solutions. Documentação Privada.
+                    </p>
+                </footer>
+
+            </div>
+        </main>
+    </div>
+
+</body>
+
+</html>

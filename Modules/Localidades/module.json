@@ -1,0 +1,22 @@
+{
+    "name": "Localidades",
+    "alias": "localidades",
+    "description": "Módulo de gestão de localidades, bairros, distritos e divisão territorial do município",
+    "keywords": [
+        "localidades",
+        "bairros",
+        "distritos",
+        "territorial",
+        "divisao"
+    ],
+    "priority": 0,
+    "version": "1.0.0",
+    "author": "Reinan Rodrigues",
+    "company": "Vertex Solutions LTDA",
+    "providers": [
+        "Modules\\Localidades\\Providers\\LocalidadesServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

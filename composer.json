@@ -1,0 +1,139 @@
+{
+    "$schema": "https://getcomposer.org/schema.json",
+    "name": "laravel/laravel",
+    "type": "project",
+    "description": "The skeleton application for the Laravel framework.",
+    "keywords": ["laravel", "framework"],
+    "license": "MIT",
+    "require": {
+        "php": "^8.2",
+        "barryvdh/laravel-dompdf": "^3.1",
+        "dompdf/dompdf": "^3.1",
+        "gerencianet/gerencianet-sdk-php": "^5.1",
+        "intervention/image": "^3.11",
+        "laravel/framework": "^12.0",
+        "laravel/sanctum": "*",
+        "laravel/tinker": "^2.10.1",
+        "minishlink/web-push": "^9.0",
+        "nwidart/laravel-modules": "^12.0",
+        "phpoffice/phpspreadsheet": "^5.2",
+        "setasign/fpdf": "^1.8",
+        "setasign/fpdi": "2.6",
+        "spatie/laravel-permission": "^6.23"
+    },
+    "require-dev": {
+        "fakerphp/faker": "^1.23",
+        "laravel/pail": "^1.2.2",
+        "laravel/pint": "^1.13",
+        "laravel/sail": "^1.41",
+        "mockery/mockery": "^1.6",
+        "nunomaduro/collision": "^8.6",
+        "phpunit/phpunit": "^11.5.3"
+    },
+    "autoload": {
+        "files": [
+            "app/helpers.php"
+        ],
+        "psr-4": {
+            "App\\": "app/",
+            "Database\\Factories\\": "database/factories/",
+            "Database\\Seeders\\": "database/seeders/",
+            "Modules\\Agua\\App\\": "Modules/Agua/app/",
+            "Modules\\Estradas\\App\\": "Modules/Estradas/app/",
+            "Modules\\Iluminacao\\App\\": "Modules/Iluminacao/app/",
+            "Modules\\Localidades\\App\\": "Modules/Localidades/app/",
+            "Modules\\Pocos\\App\\": "Modules/Pocos/app/",
+            "Modules\\Relatorios\\App\\": "Modules/Relatorios/app/",
+            "Modules\\Equipes\\App\\": "Modules/Equipes/app/",
+            "Modules\\Materiais\\App\\": "Modules/Materiais/app/",
+            "Modules\\Materiais\\Database\\Seeders\\": "Modules/Materiais/database/seeders/",
+            "Modules\\Demandas\\App\\": "Modules/Demandas/app/",
+            "Modules\\Ordens\\App\\": "Modules/Ordens/app/",
+            "Modules\\Funcionarios\\App\\": "Modules/Funcionarios/app/",
+            "Modules\\Pessoas\\App\\": "Modules/Pessoas/app/",
+            "Modules\\Notificacoes\\App\\": "Modules/Notificacoes/app/",
+            "Modules\\Notificacoes\\Database\\Seeders\\": "Modules/Notificacoes/database/seeders/",
+            "Modules\\ProgramasAgricultura\\App\\": "Modules/ProgramasAgricultura/app/",
+            "Modules\\ProgramasAgricultura\\Database\\Seeders\\": "Modules/ProgramasAgricultura/database/seeders/",
+            "Modules\\CAF\\App\\": "Modules/CAF/app/",
+            "Modules\\CAF\\Database\\Seeders\\": "Modules/CAF/database/seeders/",
+            "Modules\\Homepage\\App\\": "Modules/Homepage/app/",
+            "Modules\\Homepage\\Database\\Seeders\\": "Modules/Homepage/database/seeders/",
+            "Modules\\Chat\\App\\": "Modules/Chat/app/",
+            "Modules\\Chat\\Database\\Seeders\\": "Modules/Chat/database/seeders/",
+            "Modules\\Avisos\\App\\": "Modules/Avisos/app/",
+            "Modules\\Avisos\\Database\\Seeders\\": "Modules/Avisos/database/seeders/",
+            "Modules\\Blog\\App\\": "Modules/Blog/app/",
+            "Modules\\Blog\\Database\\Seeders\\": "Modules/Blog/database/seeders/",
+            "Modules\\Agua\\Providers\\": "Modules/Agua/app/Providers/",
+            "Modules\\Estradas\\Providers\\": "Modules/Estradas/app/Providers/",
+            "Modules\\Iluminacao\\Providers\\": "Modules/Iluminacao/app/Providers/",
+            "Modules\\Localidades\\Providers\\": "Modules/Localidades/app/Providers/",
+            "Modules\\Pocos\\Providers\\": "Modules/Pocos/app/Providers/",
+            "Modules\\Relatorios\\Providers\\": "Modules/Relatorios/app/Providers/",
+            "Modules\\Equipes\\Providers\\": "Modules/Equipes/app/Providers/",
+            "Modules\\Materiais\\Providers\\": "Modules/Materiais/app/Providers/",
+            "Modules\\Demandas\\Providers\\": "Modules/Demandas/app/Providers/",
+            "Modules\\Ordens\\Providers\\": "Modules/Ordens/app/Providers/",
+            "Modules\\Funcionarios\\Providers\\": "Modules/Funcionarios/app/Providers/",
+            "Modules\\Pessoas\\Providers\\": "Modules/Pessoas/app/Providers/",
+            "Modules\\Notificacoes\\Providers\\": "Modules/Notificacoes/app/Providers/",
+            "Modules\\ProgramasAgricultura\\Providers\\": "Modules/ProgramasAgricultura/app/Providers/",
+            "Modules\\CAF\\Providers\\": "Modules/CAF/app/Providers/",
+            "Modules\\Homepage\\Providers\\": "Modules/Homepage/app/Providers/",
+            "Modules\\Chat\\Providers\\": "Modules/Chat/app/Providers/",
+            "Modules\\Avisos\\Providers\\": "Modules/Avisos/app/Providers/",
+            "Modules\\Blog\\Providers\\": "Modules/Blog/app/Providers/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "post-autoload-dump": [
+            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
+            "@php artisan package:discover --ansi"
+        ],
+        "post-update-cmd": [
+            "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
+        ],
+        "post-root-package-install": [
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+        ],
+        "post-create-project-cmd": [
+            "@php artisan key:generate --ansi",
+            "@php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\"",
+            "@php artisan migrate --graceful --ansi"
+        ],
+        "dev": [
+            "Composer\\Config::disableProcessTimeout",
+            "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"php artisan pail --timeout=0\" \"npm run dev\" --names=server,queue,logs,vite"
+        ]
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "12.x-dev"
+        },
+        "laravel": {
+            "dont-discover": [
+                "laravel/pail",
+                "laravel/sail",
+                "nunomaduro/collision"
+            ]
+        }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "php-http/discovery": true,
+            "wikimedia/composer-merge-plugin": true
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

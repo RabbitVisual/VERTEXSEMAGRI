@@ -1,0 +1,24 @@
+{
+    "name": "Ordens",
+    "alias": "ordens",
+    "description": "Módulo de gestão de ordens de serviço, solicitações de manutenção e controle de execução de trabalhos",
+    "keywords": [
+        "ordens",
+        "servico",
+        "manutencao",
+        "trabalhos",
+        "execucao"
+    ],
+    "priority": 0,
+    "version": "1.0.0",
+    "author": "Reinan Rodrigues",
+    "company": "Vertex Solutions LTDA",
+    "providers": [
+        "Modules\\Ordens\\Providers\\OrdensServiceProvider",
+        "Modules\\Ordens\\Providers\\EventServiceProvider",
+        "Modules\\Ordens\\Providers\\RouteServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

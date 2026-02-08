@@ -1,0 +1,1806 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VERTEXSEMAGRI - Documentação Oficial</title>
+    <meta name="description"
+        content="Documentação completa do sistema VERTEXSEMAGRI - Sistema de Gestão Municipal Modular">
+    <link rel="icon" type="image/svg+xml" href="assets/img/logo-icon.svg">
+
+    <!-- Suppress Tailwind CSS CDN warning - Must be before Tailwind loads -->
+    <script>
+        (function () {
+            // Intercept console.warn
+            const originalWarn = console.warn;
+            console.warn = function (...args) {
+                const message = args[0];
+                if (typeof message === 'string' && (
+                    message.includes('cdn.tailwindcss.com should not be used in production') ||
+                    message.includes('should not be used in production') ||
+                    message.includes('To use Tailwind CSS in production') ||
+                    message.includes('PostCSS plugin') ||
+                    message.includes('Tailwind CLI')
+                )) {
+                    return; // Suppress Tailwind production warning
+                }
+                originalWarn.apply(console, args);
+            };
+
+            // Intercept console.error (in case warning is shown as error)
+            const originalError = console.error;
+            console.error = function (...args) {
+                const message = args[0];
+                if (typeof message === 'string' && (
+                    message.includes('cdn.tailwindcss.com should not be used in production') ||
+                    message.includes('should not be used in production') ||
+                    message.includes('To use Tailwind CSS in production')
+                )) {
+                    return; // Suppress Tailwind production warning
+                }
+                originalError.apply(console, args);
+            };
+
+            // Intercept console.log (in case warning is shown as log)
+            const originalLog = console.log;
+            console.log = function (...args) {
+                const message = args[0];
+                if (typeof message === 'string' && (
+                    message.includes('cdn.tailwindcss.com should not be used in production') ||
+                    message.includes('should not be used in production') ||
+                    message.includes('To use Tailwind CSS in production')
+                )) {
+                    return; // Suppress Tailwind production warning
+                }
+                originalLog.apply(console, args);
+            };
+        })();
+    </script>
+
+    <!-- Tailwind CSS v3.4 - Play CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#10b981',
+                        'primary-dark': '#059669',
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="assets/css/tailwind.css">
+    <link rel="stylesheet" href="assets/css/hyperui.css">
+    <link rel="stylesheet" href="assets/css/docs.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+    </style>
+</head>
+
+<body
+    class="bg-gradient-to-br from-slate-50 via-white to-emerald-50/30 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
+    <!-- Navigation -->
+    <nav
+        class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-gray-200 dark:border-slate-700 shadow-sm">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between h-20">
+                <a href="index.html" class="flex items-center gap-3 hover:opacity-80 transition-opacity">
+                    <img src="assets/img/logo-vertex-semagri.svg" alt="Vertex SEMAGRI" class="h-12">
+                </a>
+                <div class="hidden md:flex items-center gap-6">
+                    <a href="#inicio"
+                        class="text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 font-medium transition-colors">Início</a>
+                    <a href="#modulos"
+                        class="text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 font-medium transition-colors">Módulos</a>
+                    <a href="#arquitetura"
+                        class="text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 font-medium transition-colors">Arquitetura</a>
+                    <a href="#tecnologias"
+                        class="text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 font-medium transition-colors">Tecnologias</a>
+                    <a href="api.html"
+                        class="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors font-semibold shadow-sm hover:shadow-md">API
+                        Reference</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="inicio"
+        class="relative overflow-hidden bg-gradient-to-br from-emerald-600 via-teal-600 to-green-600 py-16 lg:py-24">
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute inset-0"
+                style="background-image: url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'0.4\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E'); background-size: 60px 60px;">
+            </div>
+        </div>
+
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div class="text-white space-y-6 text-center lg:text-left">
+                    <div
+                        class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-5 py-2.5 rounded-full text-sm font-medium">
+                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+                        </svg>
+                        <span>Documentação Oficial v1.0.0</span>
+                    </div>
+
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
+                        VERTEXSEMAGRI
+                    </h1>
+
+                    <p class="text-lg md:text-xl text-white/95 leading-relaxed max-w-2xl mx-auto lg:mx-0">
+                        Sistema de Gestão Municipal Modular desenvolvido para secretarias de agricultura e
+                        desenvolvimento rural. Arquitetura modular baseada em Laravel Modules.
+                    </p>
+
+                    <div class="flex flex-wrap gap-3 sm:gap-4 pt-4 justify-center lg:justify-start">
+                        <a href="#modulos"
+                            class="group inline-flex items-center gap-2 bg-white text-emerald-600 px-5 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold hover:bg-yellow-50 hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl text-sm sm:text-base">
+                            <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
+                            </svg>
+                            <span>Explorar Módulos</span>
+                        </a>
+                        <a href="agua.html"
+                            class="group inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm text-white border-2 border-white/30 px-5 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold hover:bg-white/20 hover:scale-105 transition-all duration-300 text-sm sm:text-base">
+                            <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" />
+                            </svg>
+                            <span>Módulo Água</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="hidden lg:block animate-float">
+                    <div class="relative">
+                        <img src="assets/img/logo-vertex-full.svg" alt="VERTEXSEMAGRI"
+                            class="w-full max-w-lg mx-auto drop-shadow-2xl">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-16 lg:py-20">
+        <!-- Quick Stats -->
+        <section class="mb-16">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div
+                    class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-slate-700">
+                    <div class="flex items-center gap-4">
+                        <div
+                            class="w-12 h-12 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl flex items-center justify-center">
+                            <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <div class="text-3xl font-bold text-gray-900 dark:text-white">17</div>
+                            <div class="text-sm text-gray-600 dark:text-gray-400">Módulos Disponíveis</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-slate-700">
+                    <div class="flex items-center gap-4">
+                        <div
+                            class="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center">
+                            <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <div class="text-3xl font-bold text-gray-900 dark:text-white">4</div>
+                            <div class="text-sm text-gray-600 dark:text-gray-400">Categorias Principais</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-slate-700">
+                    <div class="flex items-center gap-4">
+                        <div
+                            class="w-12 h-12 bg-gradient-to-br from-teal-500 to-teal-600 rounded-xl flex items-center justify-center">
+                            <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" />
+                            </svg>
+                        </div>
+                        <div>
+                            <div class="text-3xl font-bold text-gray-900 dark:text-white">100%</div>
+                            <div class="text-sm text-gray-600 dark:text-gray-400">Integração Completa</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-slate-700">
+                    <div class="flex items-center gap-4">
+                        <div
+                            class="w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center">
+                            <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" />
+                            </svg>
+                        </div>
+                        <div>
+                            <div class="text-lg font-bold text-gray-900 dark:text-white">Laravel</div>
+                            <div class="text-sm text-gray-600 dark:text-gray-400">Framework Base</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Introduction -->
+        <section class="mb-16">
+            <div
+                class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-gray-200 dark:border-slate-700 overflow-hidden">
+                <div class="p-8 lg:p-12">
+                    <div class="flex items-start gap-4 mb-6">
+                        <div
+                            class="flex-shrink-0 w-12 h-12 bg-emerald-100 dark:bg-emerald-900/30 rounded-xl flex items-center justify-center">
+                            <svg class="w-6 h-6 text-emerald-600 dark:text-emerald-400" fill="none" viewBox="0 0 24 24"
+                                stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Visão Geral</h2>
+                            <p class="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+                                O <strong class="text-emerald-600 dark:text-emerald-400">VERTEXSEMAGRI</strong> é um
+                                sistema modular desenvolvido para gestão municipal, especialmente focado em secretarias
+                                de agricultura e desenvolvimento rural. O sistema utiliza uma arquitetura modular
+                                baseada em <strong>Laravel Modules</strong>, permitindo que cada funcionalidade seja
+                                desenvolvida, mantida e ativada/desativada independentemente.
+                            </p>
+                            <div
+                                class="bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded-xl p-4">
+                                <p class="text-sm text-gray-700 dark:text-gray-300">
+                                    <strong class="text-emerald-600 dark:text-emerald-400">Arquitetura Modular:</strong>
+                                    Cada módulo é uma unidade independente de código, permitindo flexibilidade,
+                                    escalabilidade e fácil manutenção.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Modules Section -->
+        <section id="modulos" class="mb-16">
+            <div class="text-center mb-12">
+                <div
+                    class="inline-flex items-center gap-2 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 px-4 py-2 rounded-full text-sm font-semibold mb-4">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
+                    </svg>
+                    Módulos do Sistema
+                </div>
+                <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-4">
+                    Módulos Disponíveis
+                </h2>
+                <p class="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto leading-relaxed">
+                    Explore todos os módulos disponíveis no sistema, organizados por categoria
+                </p>
+            </div>
+
+            <!-- Infraestrutura -->
+            <div class="mb-12">
+                <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-3">
+                    <div
+                        class="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center">
+                        <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M3.75 21h16.5M4.5 3h15m-16.5 18V9.75m0 0l3-3m-3 3l3 3m8.25-3V9.75m0 0l-3-3m3 3l-3 3M9.75 9.75h.008v.008H9.75zm0 3h.008v.008H9.75zm0 3h.008v.008H9.75z" />
+                        </svg>
+                    </div>
+                    Módulos de Infraestrutura
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div
+                        class="group relative bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-2 border-emerald-100 dark:border-emerald-900/50 hover:border-emerald-300 dark:hover:border-emerald-700 overflow-hidden">
+                        <div
+                            class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-emerald-100/50 to-transparent dark:from-emerald-900/20 rounded-bl-full">
+                        </div>
+                        <div class="relative">
+                            <div
+                                class="w-16 h-16 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-lg">
+                                <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 1024 1024">
+                                    <path d="M485.2 98.2h58.3v133.7h-58.3z" fill="#B6B7B7"></path>
+                                    <path
+                                        d="M543.5 241.9h-58.3c-5.5 0-10-4.5-10-10V98.2c0-5.5 4.5-10 10-10h58.3c5.5 0 10 4.5 10 10v133.7c0 5.6-4.5 10-10 10z m-48.3-20h38.3V108.2h-38.3v113.7z"
+                                        fill="currentColor"></path>
+                                    <path
+                                        d="M898.4 300H682.8c-28.7-63-92-106.9-165.7-106.9S380 237 351.3 300H248.7c-78.5 0-142.1 63.6-142.1 142.1v135.4h145.7V445.7H349c27.5 65.6 92.4 111.7 168 111.7s140.5-46.1 168-111.7h213.3V300z"
+                                        fill="#B6B7B7"></path>
+                                    <path
+                                        d="M262.3 587.5H96.6V442.1c0-83.9 68.2-152.1 152.1-152.1H345c15.2-30.6 38.2-56.6 66.8-75.4 31.3-20.6 67.7-31.5 105.3-31.5 37.6 0 74 10.9 105.3 31.5 28.6 18.8 51.6 44.8 66.8 75.4h209.3v20h-222l-2.7-5.9c-13.5-29.7-35.1-54.9-62.4-72.8-28-18.4-60.6-28.2-94.3-28.2s-66.3 9.7-94.3 28.2c-27.3 18-48.9 43.1-62.4 72.8l-2.7 5.9h-109c-72.8 0-132.1 59.3-132.1 132.1v125.4h125.7V435.7h113.4l2.6 6.1c26.9 64.2 89.3 105.6 158.8 105.6 69.5 0 131.9-41.5 158.8-105.6l2.6-6.1h220v20H691.6c-31.4 68.1-99.2 111.7-174.6 111.7s-143.2-43.6-174.6-111.7h-80.2v131.8z"
+                                        fill="currentColor"></path>
+                                    <path
+                                        d="M984.7 734.2c-35.2 0-53.3-16.2-69.4-30.5-15.3-13.7-28.5-25.5-56-25.5s-40.7 11.8-56 25.5c-16 14.3-34.2 30.5-69.4 30.5s-53.3-16.2-69.4-30.5c-15.3-13.7-28.5-25.5-56-25.5s-40.7 11.8-56 25.5c-16 14.3-34.2 30.5-69.4 30.5s-53.3-16.2-69.4-30.5c-15.3-13.7-28.5-25.5-56-25.5v-20c35.2 0 53.3 16.2 69.4 30.5 15.3 13.7 28.5 25.5 56 25.5s40.7-11.8 56-25.5c16-14.3 34.2-30.5 69.4-30.5s53.3 16.2 69.4 30.5c15.3 13.7 28.5 25.5 56 25.5s40.7-11.8 56-25.5c16-14.3 34.2-30.5 69.4-30.5s53.3 16.2 69.4 30.5c15.3 13.7 28.5 25.5 56 25.5v20z"
+                                        fill="#44C0C6"></path>
+                                    <path
+                                        d="M484.7 718.4c-34.5 0-52.6-15.9-68.6-29.9-15.4-13.5-28.7-25.3-56.3-25l-0.2-20h1c34.5 0 52.6 15.9 68.6 29.9 15.4 13.5 28.7 25.2 56.3 25 27.5-0.2 40.6-12.2 55.8-26 15.9-14.5 33.9-30.8 69.1-31.2h1c34.5 0 52.6 15.9 68.6 29.9 15.3 13.4 28.5 25 55.4 25h0.8c27.5-0.2 40.6-12.2 55.8-26 15.9-14.5 33.9-30.8 69.1-31.2h1c34.5 0 52.6 15.9 68.6 29.9 15.3 13.4 28.5 25 55.4 25h0.8l0.2 20h-1c-34.5 0-52.6-15.9-68.6-29.9-15.3-13.4-28.5-25-55.4-25h-0.8c-27.5 0.2-40.6 12.2-55.8 26-15.9 14.5-33.9 30.8-69.1 31.2h-1c-34.5 0-52.6-15.9-68.6-29.9-15.3-13.4-28.5-25-55.4-25h-0.8c-27.5 0.2-40.6 12.2-55.8 26-15.9 14.5-33.9 30.8-69.1 31.2h-1z"
+                                        fill="currentColor"></path>
+                                    <path
+                                        d="M802.3 847.3c-41.9 0-63.8-15.9-83.1-29.9-18.5-13.4-36-26.1-71.4-26.1s-52.9 12.7-71.4 26.1c-19.3 14-41.2 29.9-83.1 29.9-41.9 0-63.8-15.9-83.1-29.9-18.5-13.4-36-26.1-71.4-26.1-35.4 0-52.9 12.7-71.4 26.1-19.3 14-41.2 29.9-83.1 29.9-41.9 0-63.8-15.9-83.1-29.9-18.5-13.4-36-26.1-71.4-26.1v-20c41.9 0 63.8 15.9 83.1 29.9 18.5 13.4 36 26.1 71.4 26.1 35.4 0 52.9-12.7 71.4-26.1 19.3-14 41.2-29.9 83.1-29.9 41.9 0 63.8 15.9 83.1 29.9 18.5 13.4 36 26.1 71.4 26.1 35.4 0 52.9-12.7 71.4-26.1 19.3-14 41.2-29.9 83.1-29.9s63.8 15.9 83.1 29.9c18.5 13.4 36 26.1 71.4 26.1v20zM964 967.1c-35.2 0-53.3-16.2-69.4-30.5-15.3-13.7-28.5-25.5-56-25.5s-40.7 11.8-56 25.5c-16 14.3-34.2 30.5-69.4 30.5s-53.3-16.2-69.4-30.5c-15.3-13.7-28.5-25.5-56-25.5s-40.7 11.8-56 25.5c-16 14.3-34.2 30.5-69.4 30.5s-53.3-16.2-69.4-30.5c-15.3-13.7-28.5-25.5-56-25.5v-20c35.2 0 53.3 16.2 69.4 30.5 15.3 13.7 28.5 25.5 56 25.5s40.7-11.8 56-25.5c16-14.3 34.2-30.5 69.4-30.5s53.3 16.2 69.4 30.5c15.3 13.7 28.5 25.5 56 25.5s40.7-11.8 56-25.5c16-14.3 34.2-30.5 69.4-30.5s53.3 16.2 69.4 30.5c15.3 13.7 28.5 25.5 56 25.5v20z"
+                                        fill="#44C0C6"></path>
+                                    <path
+                                        d="M965 947.7c-35.2 0-53.3-16.2-69.4-30.5-15.3-13.7-28.5-25.5-56-25.5s-40.7 11.8-56 25.5c-16 14.3-34.2 30.5-69.4 30.5s-53.3-16.2-69.4-30.5c-15.3-13.7-28.5-25.5-56-25.5s-40.7 11.8-56 25.5c-16 14.3-34.2 30.5-69.4 30.5s-53.3-16.2-69.4-30.5c-15.3-13.7-28.5-25.5-56-25.5v-20c35.2 0 53.3 16.2 69.4 30.5 15.3 13.7 28.5 25.5 56 25.5s40.7-11.8 56-25.5c16-14.3 34.2-30.5 69.4-30.5s53.3 16.2 69.4 30.5c15.3 13.7 28.5 25.5 56 25.5s40.7-11.8 56-25.5c16-14.3 34.2-30.5 69.4-30.5s53.3 16.2 69.4 30.5c15.3 13.7 28.5 25.5 56 25.5v20zM802.3 827.2c-41.9 0-63.8-15.9-83.1-29.9-18.5-13.4-36-26.1-71.4-26.1s-52.9 12.7-71.4 26.1c-19.3 14-41.2 29.9-83.1 29.9-41.9 0-63.8-15.9-83.1-29.9-18.5-13.4-36-26.1-71.4-26.1-35.4 0-52.9 12.7-71.4 26.1-19.3 14-41.2 29.9-83.1 29.9-41.9 0-63.8-15.9-83.1-29.9-18.5-13.4-36-26.1-71.4-26.1v-20c41.9 0 63.8 15.9 83.1 29.9 18.5 13.4 36 26.1 71.4 26.1 35.4 0 52.9-12.7 71.4-26.1 19.3-14 41.2-29.9 83.1-29.9 41.9 0 63.8 15.9 83.1 29.9 18.5 13.4 36 26.1 71.4 26.1 35.4 0 52.9-12.7 71.4-26.1 19.3-14 41.2-29.9 83.1-29.9s63.8 15.9 83.1 29.9c18.5 13.4 36 26.1 71.4 26.1v20z"
+                                        fill="currentColor"></path>
+                                    <path
+                                        d="M514.3 84.6c0 34.6-107.3 62.6-141.9 62.6s-62.6-28-62.6-62.6 28-62.6 62.6-62.6 141.9 28 141.9 62.6z"
+                                        fill="#B6B7B7"></path>
+                                    <path
+                                        d="M372.4 157.2c-40 0-72.6-32.6-72.6-72.6S332.4 12 372.4 12c20.1 0 57.6 8.1 87.3 18.9 42.8 15.6 64.6 33.6 64.6 53.7s-21.7 38.1-64.6 53.7c-29.6 10.7-67.2 18.9-87.3 18.9z m0-125.2c-29 0-52.6 23.6-52.6 52.6s23.6 52.6 52.6 52.6c15.6 0 50-6.6 80.5-17.7 37.9-13.8 51.4-27.4 51.4-34.9s-13.5-21.1-51.4-34.9C422.4 38.6 388 32 372.4 32z"
+                                        fill="currentColor"></path>
+                                    <path
+                                        d="M514.3 84.6c0 34.6 107.3 62.6 141.9 62.6s62.6-28 62.6-62.6-28-62.6-62.5-62.6-142 28-142 62.6z"
+                                        fill="#B6B7B7"></path>
+                                    <path
+                                        d="M656.3 157.2c-20.1 0-57.6-8.1-87.3-18.9-42.8-15.6-64.6-33.6-64.6-53.7s21.7-38.1 64.6-53.7C598.6 20.1 636.2 12 656.3 12c40 0 72.6 32.6 72.6 72.6s-32.6 72.6-72.6 72.6z m0-125.2c-15.6 0-50 6.6-80.5 17.7-37.9 13.8-51.4 27.4-51.4 34.9s13.5 21.1 51.4 34.9c30.5 11.1 64.9 17.7 80.5 17.7 29 0 52.6-23.6 52.6-52.6S685.2 32 656.3 32z"
+                                        fill="currentColor"></path>
+                                    <path d="M517.1 89m-57.2 0a57.2 57.2 0 1 0 114.4 0 57.2 57.2 0 1 0-114.4 0Z"
+                                        fill="#B6B7B7"></path>
+                                    <path
+                                        d="M517.1 156.1c-37 0-67.2-30.1-67.2-67.2s30.1-67.2 67.2-67.2 67.2 30.1 67.2 67.2-30.2 67.2-67.2 67.2z m0-114.3c-26 0-47.2 21.2-47.2 47.2s21.2 47.2 47.2 47.2c26 0 47.2-21.2 47.2-47.2s-21.2-47.2-47.2-47.2z"
+                                        fill="currentColor"></path>
+                                </svg>
+                            </div>
+                            <h4 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Água</h4>
+                            <p class="text-gray-700 dark:text-gray-300 mb-5 leading-relaxed text-sm">
+                                Gestão completa de sistemas de abastecimento de água do município, incluindo redes,
+                                pontos de distribuição e controle de qualidade.
+                            </p>
+                            <div class="flex flex-wrap gap-2 mb-6">
+                                <span
+                                    class="px-3 py-1 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 rounded-full text-xs font-medium">Infraestrutura</span>
+                                <span
+                                    class="px-3 py-1 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 rounded-full text-xs font-medium">Hídrica</span>
+                            </div>
+                            <a href="agua.html"
+                                class="inline-flex items-center gap-2 text-emerald-600 dark:text-emerald-400 font-semibold hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors group-hover:gap-3">
+                                <span>Ver Documentação</span>
+                                <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none"
+                                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div
+                        class="group relative bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-2 border-blue-100 dark:border-blue-900/50 hover:border-blue-300 dark:hover:border-blue-700 overflow-hidden">
+                        <div
+                            class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-100/50 to-transparent dark:from-blue-900/20 rounded-bl-full">
+                        </div>
+                        <div class="relative">
+                            <div
+                                class="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-lg">
+                                <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 512 512">
+                                    <polygon points="249.961,465.272 247.121,512 268.909,512 266.069,465.272 ">
+                                    </polygon>
+                                    <polygon points="332.119,444.27 357.294,483.754 374.917,470.943 345.147,434.802 ">
+                                    </polygon>
+                                    <polygon points="385.418,379.188 428.994,396.334 435.729,375.609 390.399,363.875 ">
+                                    </polygon>
+                                    <polygon points="80.309,375.609 87.045,396.334 130.616,379.188 125.64,363.875 ">
+                                    </polygon>
+                                    <polygon points="141.117,470.934 158.745,483.745 183.916,444.27 170.888,434.793 ">
+                                    </polygon>
+                                    <path
+                                        d="M306.348,70.571h-33.57V0h-33.565v70.571h-33.57c0,137.997-152.91,100.701-152.91,246.159h406.535 C459.267,171.272,306.348,208.568,306.348,70.571z">
+                                    </path>
+                                    <path
+                                        d="M255.998,396.663c33.257,0,60.791-24.198,66.128-55.944h-132.26 C195.202,372.465,222.74,396.663,255.998,396.663z">
+                                    </path>
+                                </svg>
+                            </div>
+                            <h4 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Iluminação</h4>
+                            <p class="text-gray-700 dark:text-gray-300 mb-5 leading-relaxed text-sm">
+                                Gestão completa de iluminação pública, cadastro de pontos de luz, postes e controle de
+                                manutenção preventiva.
+                            </p>
+                            <div class="flex flex-wrap gap-2 mb-6">
+                                <span
+                                    class="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 rounded-full text-xs font-medium">Infraestrutura</span>
+                                <span
+                                    class="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 rounded-full text-xs font-medium">Pública</span>
+                            </div>
+                            <a href="iluminacao.html"
+                                class="inline-flex items-center gap-2 text-blue-600 dark:text-blue-400 font-semibold hover:text-blue-700 dark:hover:text-blue-300 transition-colors group-hover:gap-3">
+                                <span>Ver Documentação</span>
+                                <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none"
+                                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div
+                        class="group relative bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-2 border-amber-100 dark:border-amber-900/50 hover:border-amber-300 dark:hover:border-amber-700 overflow-hidden">
+                        <div
+                            class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-amber-100/50 to-transparent dark:from-amber-900/20 rounded-bl-full">
+                        </div>
+                        <div class="relative">
+                            <div
+                                class="w-16 h-16 bg-gradient-to-br from-amber-500 to-orange-500 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-lg">
+                                <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 512 512">
+                                    <polygon points="412.061,152.986 373.039,152.986 447.993,359.014 512,359.014 ">
+                                    </polygon>
+                                    <polygon points="99.939,152.986 0,359.014 64.006,359.014 138.961,152.986 ">
+                                    </polygon>
+                                    <path
+                                        d="M265.767,152.986l0.367,12.226H245.86l0.373-12.226h-77.996l-56.201,206.027h127.943l0.911-29.861h30.222 l0.906,29.861h128.019l-56.231-206.027H265.767z M245.15,188.742h21.7l0.823,27.121h-23.346L245.15,188.742z M242.238,284.627 l1.13-37.223h25.263l1.13,37.223H242.238z">
+                                    </path>
+                                </svg>
+                            </div>
+                            <h4 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Estradas</h4>
+                            <p class="text-gray-700 dark:text-gray-300 mb-5 leading-relaxed text-sm">
+                                Gestão de estradas rurais e vias públicas, controle de condições e manutenção
+                                preventiva.
+                            </p>
+                            <div class="flex flex-wrap gap-2 mb-6">
+                                <span
+                                    class="px-3 py-1 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 rounded-full text-xs font-medium">Infraestrutura</span>
+                                <span
+                                    class="px-3 py-1 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 rounded-full text-xs font-medium">Viária</span>
+                            </div>
+                            <a href="estradas.html"
+                                class="inline-flex items-center gap-2 text-amber-600 dark:text-amber-400 font-semibold hover:text-amber-700 dark:hover:text-amber-300 transition-colors group-hover:gap-3">
+                                <span>Ver Documentação</span>
+                                <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none"
+                                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div
+                        class="group relative bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-2 border-cyan-100 dark:border-cyan-900/50 hover:border-cyan-300 dark:hover:border-cyan-700 overflow-hidden">
+                        <div
+                            class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-cyan-100/50 to-transparent dark:from-cyan-900/20 rounded-bl-full">
+                        </div>
+                        <div class="relative">
+                            <div
+                                class="w-16 h-16 bg-gradient-to-br from-cyan-500 to-teal-500 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-lg">
+                                <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 410.762 410.762">
+                                    <path
+                                        d="m398.262,105.422h-51.036v-55.237c0-6.903-5.597-12.5-12.5-12.5h-121.497c-4.83,0-9.229,2.783-11.296,7.148l-49.705,104.924h-107.465v-29.835c-7.10543e-15-6.903-5.597-12.5-12.5-12.5s-12.5,5.597-12.5,12.5v76.215l-3.025-1.089c-6.495-2.338-13.657,1.032-15.995,7.527s1.032,13.657 7.527,15.995l11.493,4.137v11.725l-3.025-1.089c-6.495-2.337-13.657,1.031-15.995,7.527-2.338,6.495 1.032,13.657 7.527,15.995l11.493,4.138v11.725l-3.025-1.089c-6.495-2.339-13.657,1.032-15.995,7.527-2.338,6.496 1.032,13.657 7.527,15.995l11.493,4.137v11.725l-3.025-1.089c-6.495-2.338-13.657,1.032-15.995,7.527s1.032,13.657 7.527,15.995l11.493,4.137v22.983c0,6.903 5.597,12.5 12.5,12.5s12.5-5.597 12.5-12.5v-13.983l3.025,1.089c1.398,0.503 2.828,0.742 4.233,0.742 5.122,0 9.927-3.173 11.762-8.27 2.338-6.496-1.032-13.657-7.527-15.995l-11.493-4.137v-11.725l3.025,1.089c1.398,0.503 2.828,0.742 4.233,0.742 5.122,0 9.927-3.173 11.762-8.27 2.338-6.496-1.032-13.657-7.527-15.995l-11.493-4.137v-11.725l3.025,1.089c1.398,0.503 2.828,0.742 4.233,0.742 5.122,0 9.927-3.172 11.762-8.27 2.338-6.495-1.032-13.657-7.527-15.995l-11.493-4.138v-11.725l3.025,1.089c1.398,0.503 2.828,0.742 4.233,0.742 5.122,0 9.927-3.173 11.762-8.27 2.338-6.496-1.032-13.657-7.527-15.995l-11.493-4.137v-30.38h102.875v67.822c-30.162,6.025-52.962,32.701-52.962,64.609 0,36.332 29.558,65.89 65.89,65.89 32.057,0 58.827-23.017 64.685-53.39h33.039c5.859,30.373 32.628,53.39 64.685,53.39 36.331,0 65.889-29.558 65.889-65.89 0-15.44-5.352-29.645-14.28-40.89h23.679c6.903,0 12.5-5.597 12.5-12.5v-135.872c-0.001-6.903-5.597-12.5-12.501-12.5zm-186.087,160.876h59.19c-6.456,8.132-11.035,17.811-13.076,28.39h-33.039c-2.04-10.579-6.619-20.258-13.075-28.39zm8.964-203.613h30.623v87.073h-71.871l41.248-87.073zm43.123,112.072c6.903,0 12.5-5.596 12.5-12.5v-99.572h45.464v178.614h-149.588v-66.541h91.624zm-103.697,173.32c-22.547,0-40.89-18.343-40.89-40.89s18.343-40.89 40.89-40.89 40.89,18.343 40.89,40.89-18.343,40.89-40.89,40.89zm162.409,0c-22.547,0-40.89-18.343-40.89-40.89s18.343-40.89 40.89-40.89c22.546,0 40.889,18.343 40.889,40.89s-18.343,40.89-40.889,40.89zm62.788-106.78h-38.536v-110.876h38.536v110.876z" />
+                                </svg>
+                            </div>
+                            <h4 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Poços</h4>
+                            <p class="text-gray-700 dark:text-gray-300 mb-5 leading-relaxed text-sm">
+                                Gestão completa de poços artesianos e sistemas de captação de água, incluindo manutenção
+                                e controle técnico.
+                            </p>
+                            <div class="flex flex-wrap gap-2 mb-6">
+                                <span
+                                    class="px-3 py-1 bg-cyan-100 dark:bg-cyan-900/30 text-cyan-700 dark:text-cyan-400 rounded-full text-xs font-medium">Infraestrutura</span>
+                                <span
+                                    class="px-3 py-1 bg-cyan-100 dark:bg-cyan-900/30 text-cyan-700 dark:text-cyan-400 rounded-full text-xs font-medium">Hídrica</span>
+                            </div>
+                            <a href="pocos.html"
+                                class="inline-flex items-center gap-2 text-cyan-600 dark:text-cyan-400 font-semibold hover:text-cyan-700 dark:hover:text-cyan-300 transition-colors group-hover:gap-3">
+                                <span>Ver Documentação</span>
+                                <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none"
+                                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gestão Social -->
+            <div class="mb-12">
+                <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-3">
+                    <div
+                        class="w-10 h-10 bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg flex items-center justify-center">
+                        <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
+                        </svg>
+                    </div>
+                    Módulos de Gestão Social
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div
+                        class="group relative bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-2 border-purple-100 dark:border-purple-900/50 hover:border-purple-300 dark:hover:border-purple-700 overflow-hidden">
+                        <div
+                            class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-purple-100/50 to-transparent dark:from-purple-900/20 rounded-bl-full">
+                        </div>
+                        <div class="relative">
+                            <div
+                                class="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-lg">
+                                <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                    <path
+                                        d="M17.5291 7.77C17.4591 7.76 17.3891 7.76 17.3191 7.77C15.7691 7.72 14.5391 6.45 14.5391 4.89C14.5391 3.3 15.8291 2 17.4291 2C19.0191 2 20.3191 3.29 20.3191 4.89C20.3091 6.45 19.0791 7.72 17.5291 7.77Z">
+                                    </path>
+                                    <path
+                                        d="M20.7916 14.7004C19.6716 15.4504 18.1016 15.7304 16.6516 15.5404C17.0316 14.7204 17.2316 13.8104 17.2416 12.8504C17.2416 11.8504 17.0216 10.9004 16.6016 10.0704C18.0816 9.8704 19.6516 10.1504 20.7816 10.9004C22.3616 11.9404 22.3616 13.6504 20.7916 14.7004Z">
+                                    </path>
+                                    <path
+                                        d="M6.44016 7.77C6.51016 7.76 6.58016 7.76 6.65016 7.77C8.20016 7.72 9.43016 6.45 9.43016 4.89C9.43016 3.29 8.14016 2 6.54016 2C4.95016 2 3.66016 3.29 3.66016 4.89C3.66016 6.45 4.89016 7.72 6.44016 7.77Z">
+                                    </path>
+                                    <path
+                                        d="M6.55109 12.8506C6.55109 13.8206 6.76109 14.7406 7.14109 15.5706C5.73109 15.7206 4.26109 15.4206 3.18109 14.7106C1.60109 13.6606 1.60109 11.9506 3.18109 10.9006C4.25109 10.1806 5.76109 9.89059 7.18109 10.0506C6.77109 10.8906 6.55109 11.8406 6.55109 12.8506Z">
+                                    </path>
+                                    <path
+                                        d="M12.1208 15.87C12.0408 15.86 11.9508 15.86 11.8608 15.87C10.0208 15.81 8.55078 14.3 8.55078 12.44C8.56078 10.54 10.0908 9 12.0008 9C13.9008 9 15.4408 10.54 15.4408 12.44C15.4308 14.3 13.9708 15.81 12.1208 15.87Z">
+                                    </path>
+                                    <path
+                                        d="M8.87078 17.9406C7.36078 18.9506 7.36078 20.6106 8.87078 21.6106C10.5908 22.7606 13.4108 22.7606 15.1308 21.6106C16.6408 20.6006 16.6408 18.9406 15.1308 17.9406C13.4208 16.7906 10.6008 16.7906 8.87078 17.9406Z">
+                                    </path>
+                                </svg>
+                            </div>
+                            <h4 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Pessoas</h4>
+                            <p class="text-gray-700 dark:text-gray-300 mb-5 leading-relaxed text-sm">
+                                Gestão de pessoas do Cadastro Único (CadÚnico) e beneficiários do município com
+                                integração completa.
+                            </p>
+                            <div class="flex flex-wrap gap-2 mb-6">
+                                <span
+                                    class="px-3 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400 rounded-full text-xs font-medium">Social</span>
+                                <span
+                                    class="px-3 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400 rounded-full text-xs font-medium">CadÚnico</span>
+                            </div>
+                            <a href="pessoas.html"
+                                class="inline-flex items-center gap-2 text-purple-600 dark:text-purple-400 font-semibold hover:text-purple-700 dark:hover:text-purple-300 transition-colors group-hover:gap-3">
+                                <span>Ver Documentação</span>
+                                <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none"
+                                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div
+                        class="group relative bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-2 border-indigo-100 dark:border-indigo-900/50 hover:border-indigo-300 dark:hover:border-indigo-700 overflow-hidden">
+                        <div
+                            class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-indigo-100/50 to-transparent dark:from-indigo-900/20 rounded-bl-full">
+                        </div>
+                        <div class="relative">
+                            <div
+                                class="w-16 h-16 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-lg">
+                                <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 961.396 961.396">
+                                    <path
+                                        d="M744.49,876.396V572.694l-50,63.266v240.438c0,19.299-15.7,35-35,35H130.14c-19.299,0-35-15.701-35-35v-654.44 c0-19.299,15.701-35,35-35h6.318v632.859c0,16.566,13.431,30,30,30h456.711c16.569,0,30-13.434,30-30V683.306 c-22.849,20.059-50.48,34.438-80.269,41.442l-30.717,7.225l-36.785,8.652l-0.084-37.789l-0.067-31.556 c-0.093-41.837,14.145-82.955,40.086-115.78l107.836-136.447V186.957h6.317c19.299,0,35,15.701,35,35v144.815l50-63.266v-81.549 c0-46.869-38.131-85-85-85h-66.194c0.829,5.071,1.27,10.272,1.27,15.574v9.425v25.001v5.078v30.726h-30.727H232.626H201.9 v-30.726v-5.078v-25.001v-9.425c0-5.302,0.439-10.503,1.269-15.574H130.14c-46.869,0-85,38.131-85,85v654.439 c0,46.867,38.131,85,85,85h529.35C706.359,961.396,744.49,923.266,744.49,876.396z M386.748,677.104L270.644,793.207 c-5.858,5.857-15.355,5.857-21.213,0l-34.341-34.341l-24.188-24.188c-5.858-5.856-5.858-15.354,0-21.213l23.735-23.733 c5.858-5.857,15.355-5.857,21.213,0l24.188,24.188l81.762-81.762c5.858-5.858,15.355-5.858,21.214,0l23.733,23.732 C392.605,661.748,392.605,671.246,386.748,677.104z M386.748,500.188L270.644,616.292c-5.858,5.858-15.355,5.858-21.213,0 l-34.341-34.341l-24.188-24.188c-5.858-5.856-5.858-15.354,0-21.213l23.735-23.732c5.858-5.858,15.355-5.858,21.213,0 l24.188,24.188l81.762-81.763c5.858-5.858,15.355-5.858,21.214,0l23.733,23.734C392.605,484.832,392.605,494.33,386.748,500.188z M214.637,335.899c5.858-5.858,15.355-5.858,21.213,0l24.188,24.188l81.762-81.763c5.858-5.858,15.355-5.858,21.214,0 l23.733,23.734c5.858,5.858,5.858,15.355,0,21.213L270.644,439.375c-5.858,5.858-15.355,5.858-21.213,0l-34.341-34.341 l-24.188-24.188c-5.858-5.856-5.858-15.354,0-21.213L214.637,335.899z">
+                                    </path>
+                                    <path
+                                        d="M498.466,87.161h-13.072c0-5.242-0.465-10.376-1.352-15.363c-0.941-5.303-2.371-10.438-4.226-15.363 C467.39,23.459,435.553,0,398.232,0c-37.321,0-69.158,23.459-81.584,56.435c-1.856,4.925-3.284,10.06-4.227,15.363 c-0.887,4.987-1.351,10.121-1.351,15.363h-13.074c-30.734,0-56.501,21.215-63.489,49.796c-1.221,4.993-1.882,10.205-1.882,15.574 v9.425v25.001v5.078h331.209v-5.078v-25.001v-9.425c0-5.369-0.66-10.582-1.882-15.574 C554.966,108.376,529.201,87.161,498.466,87.161z">
+                                    </path>
+                                    <path
+                                        d="M910.88,278.289c0.623-0.786,1.184-1.601,1.694-2.435c6.535-10.632,4.23-24.708-5.801-32.637l-10.176-8.041 c-10.033-7.93-24.264-6.918-33.096,1.899c-0.691,0.69-1.354,1.423-1.976,2.208l-7.596,9.612l-9.525,12.052 c-3.731-1.575-7.688-2.362-11.631-2.362c-8.858,0.001-17.635,3.908-23.557,11.399l-64.73,81.904l-50,63.266l-41.317,52.28 L568.873,574.1c-21.851,27.647-33.699,61.875-33.623,97.113l0.069,31.555l30.718-7.225c34.301-8.067,64.864-27.506,86.715-55.153 l0.42-0.531l41.317-52.28l50-63.268l148.607-188.036c8.557-10.825,8.447-25.715,0.666-36.327l9.531-12.059L910.88,278.289z">
+                                    </path>
+                                </svg>
+                            </div>
+                            <h4 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Demandas</h4>
+                            <p class="text-gray-700 dark:text-gray-300 mb-5 leading-relaxed text-sm">
+                                Sistema central de gestão de demandas da população, atendimentos e geração automática de
+                                ordens de serviço.
+                            </p>
+                            <div class="flex flex-wrap gap-2 mb-6">
+                                <span
+                                    class="px-3 py-1 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400 rounded-full text-xs font-medium">Central</span>
+                                <span
+                                    class="px-3 py-1 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400 rounded-full text-xs font-medium">Atendimento</span>
+                            </div>
+                            <a href="demandas.html"
+                                class="inline-flex items-center gap-2 text-indigo-600 dark:text-indigo-400 font-semibold hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors group-hover:gap-3">
+                                <span>Ver Documentação</span>
+                                <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none"
+                                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Agricultura -->
+            <div class="mb-12">
+                <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-3">
+                    <div
+                        class="w-10 h-10 bg-gradient-to-br from-green-500 to-green-600 rounded-lg flex items-center justify-center">
+                        <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 006.16-12.12A14.98 14.98 0 009.631 8.41m5.96 5.96a14.926 14.926 0 01-5.841 2.58m-.119-8.54a6 6 0 00-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 00-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 01-2.448-2.448 14.9 14.9 0 01.311-.06m-2.699 2.7c.103.021.207.041.311.06a15.09 15.09 0 002.448-2.448 14.9 14.9 0 00-.311-.06m0 0a14.997 14.997 0 01-3.07-3.07M14.37 9.16a14.93 14.93 0 005.84 2.58m0 0a14.997 14.997 0 01-3.07-3.07M9.16 14.37a14.93 14.93 0 01-5.84-2.58m0 0a14.997 14.997 0 013.07-3.07m0 0a14.93 14.93 0 015.84 2.58" />
+                        </svg>
+                    </div>
+                    Módulos de Agricultura
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div
+                        class="group relative bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-2 border-green-100 dark:border-green-900/50 hover:border-green-300 dark:hover:border-green-700 overflow-hidden">
+                        <div
+                            class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-green-100/50 to-transparent dark:from-green-900/20 rounded-bl-full">
+                        </div>
+                        <div class="relative">
+                            <div
+                                class="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-lg">
+                                <svg class="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 006.16-12.12A14.98 14.98 0 009.631 8.41m5.96 5.96a14.926 14.926 0 01-5.841 2.58m-.119-8.54a6 6 0 00-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 00-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 01-2.448-2.448 14.9 14.9 0 01.311-.06m-2.699 2.7c.103.021.207.041.311.06a15.09 15.09 0 002.448-2.448 14.9 14.9 0 00-.311-.06m0 0a14.997 14.997 0 01-3.07-3.07M14.37 9.16a14.93 14.93 0 005.84 2.58m0 0a14.997 14.997 0 01-3.07-3.07M9.16 14.37a14.93 14.93 0 01-5.84-2.58m0 0a14.997 14.997 0 013.07-3.07m0 0a14.93 14.93 0 015.84 2.58" />
+                                </svg>
+                            </div>
+                            <h4 class="text-xl font-bold text-gray-900 dark:text-white mb-3">CAF</h4>
+                            <p class="text-gray-700 dark:text-gray-300 mb-5 leading-relaxed text-sm">
+                                Cadastro de Agricultores Familiares integrado ao sistema, com gestão de propriedades
+                                rurais e produção.
+                            </p>
+                            <div class="flex flex-wrap gap-2 mb-6">
+                                <span
+                                    class="px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 rounded-full text-xs font-medium">Agricultura</span>
+                                <span
+                                    class="px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 rounded-full text-xs font-medium">CAF</span>
+                            </div>
+                            <a href="caf.html"
+                                class="inline-flex items-center gap-2 text-green-600 dark:text-green-400 font-semibold hover:text-green-700 dark:hover:text-green-300 transition-colors group-hover:gap-3">
+                                <span>Ver Documentação</span>
+                                <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none"
+                                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div
+                        class="group relative bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-2 border-lime-100 dark:border-lime-900/50 hover:border-lime-300 dark:hover:border-lime-700 overflow-hidden">
+                        <div
+                            class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-lime-100/50 to-transparent dark:from-lime-900/20 rounded-bl-full">
+                        </div>
+                        <div class="relative">
+                            <div
+                                class="w-16 h-16 bg-gradient-to-br from-lime-500 to-lime-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-lg">
+                                <svg class="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
+                                </svg>
+                            </div>
+                            <h4 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Programas de Agricultura
+                            </h4>
+                            <p class="text-gray-700 dark:text-gray-300 mb-5 leading-relaxed text-sm">
+                                Gestão de programas agrícolas, políticas públicas rurais, projetos e acompanhamento de
+                                resultados.
+                            </p>
+                            <div class="flex flex-wrap gap-2 mb-6">
+                                <span
+                                    class="px-3 py-1 bg-lime-100 dark:bg-lime-900/30 text-lime-700 dark:text-lime-400 rounded-full text-xs font-medium">Agricultura</span>
+                                <span
+                                    class="px-3 py-1 bg-lime-100 dark:bg-lime-900/30 text-lime-700 dark:text-lime-400 rounded-full text-xs font-medium">Programas</span>
+                            </div>
+                            <a href="programas-agricultura.html"
+                                class="inline-flex items-center gap-2 text-lime-600 dark:text-lime-400 font-semibold hover:text-lime-700 dark:hover:text-lime-300 transition-colors group-hover:gap-3">
+                                <span>Ver Documentação</span>
+                                <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none"
+                                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gestão Operacional -->
+            <div class="mb-12">
+                <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-3">
+                    <div
+                        class="w-10 h-10 bg-gradient-to-br from-orange-500 to-orange-600 rounded-lg flex items-center justify-center">
+                        <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655-5.653a2.548 2.548 0 010-3.586L11.42 15.17z" />
+                        </svg>
+                    </div>
+                    Módulos de Gestão Operacional
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div
+                        class="group relative bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-2 border-orange-100 dark:border-orange-900/50 hover:border-orange-300 dark:hover:border-orange-700 overflow-hidden">
+                        <div
+                            class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-orange-100/50 to-transparent dark:from-orange-900/20 rounded-bl-full">
+                        </div>
+                        <div class="relative">
+                            <div
+                                class="w-16 h-16 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-lg">
+                                <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 480.16 480.16">
+                                    <rect x="221.837" y="383.75" width="58.118" height="20"></rect>
+                                    <path
+                                        d="M394.438,330.221c-11.215-3.841-28.098-10.968-35.499-16.463v-18.566c25.231-14.443,42.65-39.743,48.906-70.967 c16.126-3.851,27.455-19.682,27.455-34.038c0-13.424-9.503-22.888-24.922-25.686v-11.417c0.137-4.198,1.055-53.931-30.314-86.589 c-17.506-18.226-41.394-27.467-71-27.467c-29.555,0-53.291,9.076-70.72,27.005c-17.404-17.926-41.069-27.005-70.538-27.005 c-29.699,0-53.638,9.263-71.151,27.532c-31.279,32.627-30.31,82.223-30.163,86.527v11.414 c-15.418,2.798-24.922,12.262-24.922,25.686c0,14.36,11.335,30.197,27.469,34.042c6.16,30.474,22.974,55.408,47.197,69.997 v16.367c-7.242,6.294-22.037,15.04-31.184,19.878C1.877,357.64,0.039,407.985,0.002,410.122C0.001,410.18,0,410.239,0,410.297 v20.835c0,5.523,4.478,10,10,10h460.16c5.522,0,10-4.477,10-10v-20.878C480.15,408.093,478.96,357.045,394.438,330.221z M410.379,185.053c2.727,0.945,4.922,2.516,4.922,5.134c0,3.149-1.92,7.183-4.954,10.267 C410.356,199.823,410.379,185.053,410.379,185.053z M61.57,190.187c0-2.618,2.195-4.189,4.922-5.134 c0,0,0.023,14.77,0.032,15.401C63.49,197.37,61.57,193.336,61.57,190.187z M390.38,198.56L390.38,198.56 c-0.001,4.898-0.341,9.958-1.008,15.01c-4.116,30.462-20.451,54.744-44.813,66.618c-0.041,0.02-0.081,0.04-0.122,0.06 c-10.527,5.309-22.428,8-35.372,8c-12.944,0-24.845-2.692-35.372-8c-0.051-0.025-0.102-0.05-0.153-0.075 c-8.45-4.082-16.004-9.801-22.551-16.996c7.409-11.404,12.736-24.62,15.669-38.943c16.143-3.838,27.486-19.681,27.486-34.046 c0-13.424-9.503-22.888-24.922-25.686v-8.265c15.191-3.265,31.633-8.48,40.026-18.001c14.767,8.324,44.369,22.158,81.132,24.366 V198.56z M338.939,303.914v10.582c-2.238,2.308-6.475,6-12.619,8.487c-4.306,1.757-9.005,2.648-13.967,2.648 c-6.421,0-13.067-1.467-19.722-4.347c-5.879-2.569-10.562-5.696-13.442-7.849v-9.521c9.386,2.874,19.38,4.333,29.875,4.333 C319.56,308.247,329.553,306.788,338.939,303.914z M276.312,335.415l-1.506,4.419c-3.64-1.695-7.439-3.311-11.417-4.854 c2.109-1.242,4.162-2.535,6.08-3.899C271.407,332.434,273.706,333.922,276.312,335.415z M259.189,295.196v18.616 c-4.441,3.444-11.615,7.102-17.131,9.914c-0.605,0.309-1.202,0.613-1.789,0.914c-9.23-5.344-16.602-10.304-20.893-14.044v-16.361 c7.002-4.205,13.374-9.28,19.061-15.18C244.666,285.465,251.608,290.862,259.189,295.196z M269.189,200.454 c0.009-0.631,0.032-15.401,0.032-15.401c2.728,0.945,4.922,2.517,4.922,5.134C274.143,193.336,272.223,197.37,269.189,200.454z M309.064,59.028c23.905,0,42.913,7.145,56.495,21.237c18.603,19.301,23.31,47.435,24.472,62.253 c-45.345-3.252-79.016-26.631-79.363-26.876c-3.051-2.166-7.056-2.45-10.379-0.733c-3.324,1.716-5.413,5.145-5.413,8.886 c0,1.304-5.044,6.971-26.575,12.115c-1.556-14.247-5.868-35.021-17.517-53.846C264.553,66.787,284.117,59.028,309.064,59.028z M111.093,80.4c13.595-14.182,32.677-21.373,56.714-21.373c27.445,0,48.393,9.444,62.256,28.068 c14.1,18.957,17.8,43.033,18.756,55.417c-45.338-3.267-79.07-26.633-79.417-26.878c-3.051-2.162-7.055-2.441-10.374-0.725 c-3.322,1.717-5.408,5.144-5.408,8.883c0,1.444-6.275,8.482-35.269,14.045c-11.615,2.229-23.361,3.545-31.527,4.277 C87.978,127.268,92.666,99.622,111.093,80.4z M87.503,213.599c-0.671-5.074-1.011-10.134-1.011-15.039v-36.332 c8.608-0.722,21.951-2.134,35.44-4.712c9.744-1.862,34.666-6.624,45.964-19.345c14.751,8.315,44.457,22.215,81.324,24.429v35.959 c0,4.898-0.34,9.958-1.001,14.972c-2.356,16.946-8.554,32.257-17.921,44.276c-0.038,0.049-0.075,0.098-0.112,0.147 c-6.985,9.314-15.703,16.646-25.998,21.839c-10.858,5.61-23.099,8.454-36.382,8.454c-13.284,0-25.524-2.844-36.447-8.488 C107.603,267.706,91.614,243.573,87.503,213.599z M199.376,303.399v7.46c-2.858,2.828-8.279,7.572-15.421,10.952 c-10.683,5.07-21.608,5.073-32.307-0.004c-7.122-3.371-12.55-8.122-15.412-10.952v-7.461c9.905,3.221,20.469,4.854,31.571,4.854 C178.918,308.248,189.491,306.612,199.376,303.399z M20,421.133v-10.61c0.071-1.069,0.909-10.065,9.313-21.672 c15.131-20.899,63.773-40.009,64.274-40.271c2.436-1.273,20.149-10.647,32.291-20.075c2.527,2.197,5.662,4.641,9.306,6.977 l-10.061,30.184c-0.684,2.051-0.684,4.269-0.001,6.32l16.356,49.147H20z M173.057,421.133h-10.5L145.15,368.83l8.376-25.127 c9.448,2.506,19.118,2.505,28.561,0.001l8.376,25.126L173.057,421.133z M315.611,416.948l-1.395,4.184H194.135l16.356-49.147 c0.683-2.051,0.683-4.269-0.002-6.32l-10.062-30.184c3.639-2.333,6.771-4.772,9.295-6.966 c7.537,5.851,17.393,11.749,25.436,16.22c4.094,2.353,6.88,3.8,6.997,3.861c0.504,0.261,1.028,0.479,1.568,0.651 c12.328,3.927,22.779,8.328,31.981,13.473c38.138,21.141,39.838,46.08,39.907,47.705V416.948z M326.849,383.369 c-6.125-10.506-16.533-22.684-34.212-33.856l2.152-6.313c5.871,1.612,11.748,2.432,17.565,2.432c3.854,0,7.624-0.365,11.28-1.08 l8.085,24.265L326.849,383.369z M460.16,421.132H335.612v-0.891L351.744,372c0.687-2.053,0.689-4.274,0.006-6.329l-9.455-28.441 c2.96-1.82,5.486-3.73,7.554-5.525c13.23,8.686,33.465,15.851,38.227,17.476c0.07,0.024,48.005,18.605,62.989,39.514 c8.438,11.773,9.056,20.895,9.095,21.738V421.132z">
+                                    </path>
+                                    <rect x="362.995" y="383.75" width="58.118" height="20"></rect>
+                                </svg>
+                            </div>
+                            <h4 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Funcionários</h4>
+                            <p class="text-gray-700 dark:text-gray-300 mb-5 leading-relaxed text-sm">
+                                Gestão de funcionários públicos, cadastro de servidores, recursos humanos e controle de
+                                lotações.
+                            </p>
+                            <div class="flex flex-wrap gap-2 mb-6">
+                                <span
+                                    class="px-3 py-1 bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-400 rounded-full text-xs font-medium">RH</span>
+                                <span
+                                    class="px-3 py-1 bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-400 rounded-full text-xs font-medium">Gestão</span>
+                            </div>
+                            <a href="funcionarios.html"
+                                class="inline-flex items-center gap-2 text-orange-600 dark:text-orange-400 font-semibold hover:text-orange-700 dark:hover:text-orange-300 transition-colors group-hover:gap-3">
+                                <span>Ver Documentação</span>
+                                <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none"
+                                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div
+                        class="group relative bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-2 border-red-100 dark:border-red-900/50 hover:border-red-300 dark:hover:border-red-700 overflow-hidden">
+                        <div
+                            class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-red-100/50 to-transparent dark:from-red-900/20 rounded-bl-full">
+                        </div>
+                        <div class="relative">
+                            <div
+                                class="w-16 h-16 bg-gradient-to-br from-red-500 to-red-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-lg">
+                                <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 512 512">
+                                    <path
+                                        d="M485.08,404.527h2.564l10.002-117.716L512,256.324l-4.436-65.503c1.08-13.604-10.862-21.261-18.3-24.398 l-13.544,33.481l-3.66-28.927l2.26-1.788l-0.607-7.868l5.583-1.966c-0.574-0.809-0.928-1.586-0.928-2.252c0-1.838,0-4.141,0-7.278 c2.226-2.622,3.913-7.944,4.908-13.966c1.4-0.54,2.311-1.349,3.509-7.682c0.826-4.47-0.49-7.228-0.793-7.228 c0.556-4.057,1.315-12.077-0.674-16.1c0,0,1.366-2.614,1.366-6.097c-5.735,0.868-24.053-11.614-29.518-1.451 c-7.944-0.878-12.667,11.006-9.075,23.648c0,0-4.452-0.219-2.665,6.384c1.653,6.216,3.003,7.632,5.33,8.526 c1.012,6.022,2.682,11.344,4.909,13.966c0,3.138,0,5.44,0,7.278c0,0.396-0.118,0.818-0.32,1.274l7.219,2.555l-0.641,8.256 l2.26,1.788l-3.761,29.838l-17.036-33.903c-2.412,0.911-5.448,2.125-8.568,3.661l-5.735,42.64l-2.48-36.745 c1.4-17.71-15.332-27.173-24.119-30.454c-0.54-0.202-1.113-0.464-1.721-0.793l-14.101,34.881l-3.98-31.457l2.463-1.957 l-0.675-8.543l6.578-2.32c-0.034-0.168-0.068-0.329-0.068-0.489c0-2.235,0-5.035,0-8.872c2.699-3.196,4.757-9.69,5.988-17.035 c1.704-0.658,2.817-1.653,4.267-9.37c1.03-5.456-0.573-8.813-0.978-8.813c0.691-4.95,1.636-14.733-0.81-19.642 c0,0,1.67-3.188,1.67-7.438c-7,1.054-29.35-14.169-36.028-1.771c-9.665-1.071-15.433,13.435-11.048,28.851 c0,0-5.431-0.278-3.256,7.793c2.024,7.573,3.66,9.302,6.51,10.39c1.232,7.346,3.273,13.839,5.988,17.035c0,3.382,0,5.946,0,8.046 l9.057,3.214l-0.691,8.964l2.446,1.957l-4.1,32.444l-17.727-35.294c-0.168,0.076-0.337,0.152-0.489,0.22 c-4.588,1.704-14.186,5.094-22.012,10.441l-7.809,58.073l-3.609-53.384v-0.008c0.135-1.687,0.068-3.315-0.152-4.866 c-2.21-17.179-23.243-26.768-33.076-30.529l-19.633,41.72l-4.858-38.44l2.986-2.378l-0.844-10.946l8.096-2.868 c0-2.597,0-5.844,0-10.272c3.171-3.744,5.583-11.352,7.017-19.97c3.34-1.257,5.246-3.29,7.641-12.17 c2.53-9.454-3.829-9.125-3.829-9.125c5.144-18.073-1.619-35.05-12.954-33.802c-7.826-14.522-34.004,3.314-42.201,2.074 c0,4.976,1.957,8.712,1.957,8.712c-2.851,5.744-1.754,17.222-0.945,23.016c-0.472-0.008-6.224,0.059-3.778,9.125 c2.396,8.88,4.284,10.913,7.641,12.17c1.434,8.618,3.828,16.226,7,19.97c0,4.428,0,7.675,0,10.272l9.563,3.382l-0.809,10.432 l3.002,2.378l-5.178,40.937l-20.814-44.217c-10.745,4.09-34.814,15.138-33.228,35.396l-2.699,39.975l-6.004-44.656 c-7.826-5.346-17.44-8.737-22.012-10.441c-0.168-0.068-0.338-0.144-0.506-0.22l-17.727,35.294l-4.1-32.444l2.446-1.957 l-0.692-8.964l9.057-3.214c0-2.1,0-4.664,0-8.046c2.699-3.196,4.773-9.69,5.988-17.035c2.85-1.088,4.486-2.817,6.527-10.39 c2.159-8.071-3.272-7.793-3.272-7.793c4.385-15.416-1.382-29.922-11.048-28.851c-6.679-12.398-29.028,2.825-36.028,1.771 c0,4.25,1.67,7.438,1.67,7.438c-2.428,4.909-1.501,14.692-0.809,19.642c-0.405,0-2.008,3.357-0.978,8.813 c1.467,7.717,2.563,8.712,4.284,9.37c1.214,7.346,3.255,13.839,5.971,17.035c0,3.838,0,6.638,0,8.872 c0,0.16-0.034,0.32-0.051,0.489l6.562,2.32l-0.674,8.543l2.462,1.957l-3.964,31.457l-14.117-34.881 c-0.608,0.329-1.198,0.591-1.721,0.793c-8.787,3.281-25.503,12.743-24.103,30.454l-2.496,36.821l-5.752-42.716 c-3.103-1.536-6.139-2.75-8.551-3.661L51.58,200.823l-3.762-29.847l2.26-1.788l-0.641-8.256l7.236-2.555 c-0.219-0.456-0.338-0.878-0.338-1.274c0-1.838,0-4.141,0-7.278c2.21-2.622,3.914-7.944,4.909-13.966 c2.345-0.894,3.677-2.31,5.346-8.526c1.771-6.603-2.665-6.384-2.665-6.384c3.593-12.642-1.147-24.525-9.074-23.648 c-5.466-10.163-23.8,2.319-29.535,1.451c0,3.483,1.366,6.097,1.366,6.097c-1.99,4.022-1.23,12.043-0.657,16.1 c-0.32,0-1.636,2.758-0.793,7.228c1.181,6.334,2.092,7.143,3.492,7.682c1.012,6.022,2.682,11.344,4.908,13.966 c0,3.138,0,5.44,0,7.278c0,0.666-0.337,1.442-0.91,2.252l5.566,1.966l-0.624,7.868l2.26,1.788l-3.642,28.911l-13.545-33.464 c-7.438,3.138-19.38,10.795-18.318,24.398L0,256.324l14.354,30.487l10.019,117.716h2.563l-0.05,1.805l-15.299,17.525l5.094,6.367 l30.597-10.213v-15.484h1.501l0.22-87.363l17.407,87.363h4.115l0.168,1.113l-2.968,15.265l6.275,9.124l12.076-0.911l4.739-9.799 l-1.434-14.793h1.434l-7.168-117.716l5.347-11.351l8.518,18.098l12.212,143.598h3.12l-0.051,2.202l-18.654,21.37l6.224,7.776 l37.31-12.474v-18.874h1.821l0.287-106.574l21.236,106.574h5.01l0.22,1.358l-3.626,18.63l7.64,11.123l14.742-1.121l5.785-11.951 l-1.754-18.04h1.754l-8.754-143.598l10.441-22.172l12.667,26.936v154.696h3.829l-0.017,0.81l-23.294,26.7l7.759,9.707 l46.604-15.576v-21.641l14.623-111.314l14.64,111.314h1.502v21.641l46.586,15.576l7.776-9.707l-23.31-26.7l-0.018-0.81h2.345 V298.323l14.016-29.804l11.807,25.039l-8.754,143.598h1.754l-1.754,18.04l5.768,11.951l14.742,1.121l7.658-11.123l-3.644-18.63 l0.22-1.358h5.01l21.252-106.574l0.27,106.574h1.821v18.874l37.327,12.474l6.207-7.776l-18.654-21.37l-0.051-2.202h3.12 l12.212-143.598l8.518-18.098l5.347,11.351l-7.168,117.716h1.434l-1.434,14.793l4.739,9.799l12.076,0.911l6.275-9.124 l-2.968-15.265l0.168-1.113h4.116l17.406-87.363l0.236,87.363h1.502v15.484l30.58,10.213l5.094-6.367l-15.299-17.525 L485.08,404.527z">
+                                    </path>
+                                </svg>
+                            </div>
+                            <h4 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Equipes</h4>
+                            <p class="text-gray-700 dark:text-gray-300 mb-5 leading-relaxed text-sm">
+                                Gestão de equipes de campo, alocação de recursos, controle de atividades e estatísticas
+                                de produtividade.
+                            </p>
+                            <div class="flex flex-wrap gap-2 mb-6">
+                                <span
+                                    class="px-3 py-1 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 rounded-full text-xs font-medium">Operacional</span>
+                                <span
+                                    class="px-3 py-1 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 rounded-full text-xs font-medium">Equipes</span>
+                            </div>
+                            <a href="equipes.html"
+                                class="inline-flex items-center gap-2 text-red-600 dark:text-red-400 font-semibold hover:text-red-700 dark:hover:text-red-300 transition-colors group-hover:gap-3">
+                                <span>Ver Documentação</span>
+                                <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none"
+                                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div
+                        class="group relative bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-2 border-yellow-100 dark:border-yellow-900/50 hover:border-yellow-300 dark:hover:border-yellow-700 overflow-hidden">
+                        <div
+                            class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-yellow-100/50 to-transparent dark:from-yellow-900/20 rounded-bl-full">
+                        </div>
+                        <div class="relative">
+                            <div
+                                class="w-16 h-16 bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-lg">
+                                <svg class="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
+                                </svg>
+                            </div>
+                            <h4 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Materiais</h4>
+                            <p class="text-gray-700 dark:text-gray-300 mb-5 leading-relaxed text-sm">
+                                Gestão completa de materiais e estoque, controle de inventário, entrada/saída e alertas
+                                de estoque baixo.
+                            </p>
+                            <div class="flex flex-wrap gap-2 mb-6">
+                                <span
+                                    class="px-3 py-1 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400 rounded-full text-xs font-medium">Estoque</span>
+                                <span
+                                    class="px-3 py-1 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400 rounded-full text-xs font-medium">Inventário</span>
+                            </div>
+                            <a href="materiais.html"
+                                class="inline-flex items-center gap-2 text-yellow-600 dark:text-yellow-400 font-semibold hover:text-yellow-700 dark:hover:text-yellow-300 transition-colors group-hover:gap-3">
+                                <span>Ver Documentação</span>
+                                <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none"
+                                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div
+                        class="group relative bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-2 border-pink-100 dark:border-pink-900/50 hover:border-pink-300 dark:hover:border-pink-700 overflow-hidden">
+                        <div
+                            class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-pink-100/50 to-transparent dark:from-pink-900/20 rounded-bl-full">
+                        </div>
+                        <div class="relative">
+                            <div
+                                class="w-16 h-16 bg-gradient-to-br from-pink-500 to-pink-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-lg">
+                                <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                    <path
+                                        d="M10.87 3.14669L10.6784 2.42157V2.42157L10.87 3.14669ZM13.13 3.14669L12.9384 3.87181V3.87181L13.13 3.14669ZM3.3835 16.403L4.10471 16.1972L3.3835 16.403ZM3.37998 10.9361L4.10118 11.1419L3.37998 10.9361ZM20.62 10.9361L21.3412 10.7303V10.7303L20.62 10.9361ZM20.6165 16.403L21.3377 16.6088L20.6165 16.403ZM15.9929 20.6187L15.8509 19.8822L15.9929 20.6187ZM8.00711 20.6187L8.1491 19.8822L8.00711 20.6187ZM8.77297 6.56041L8.91496 7.29685L8.77297 6.56041ZM15.227 6.56041L15.369 5.82397L15.227 6.56041ZM16.3006 6.7674L16.1586 7.50384V7.50384L16.3006 6.7674ZM20.527 10.6102L19.8058 10.816V10.816L20.527 10.6102ZM7.69941 6.7674L7.55742 6.03096L7.69941 6.7674ZM3.47297 10.6102L2.75176 10.4044H2.75176L3.47297 10.6102ZM11.0616 3.87181C11.6763 3.7094 12.3237 3.7094 12.9384 3.87181L13.3216 2.42157C12.4557 2.19281 11.5443 2.19281 10.6784 2.42157L11.0616 3.87181ZM16.927 7.06315C16.927 4.88128 15.4419 2.98176 13.3216 2.42157L12.9384 3.87181C14.4126 4.26128 15.427 5.57456 15.427 7.06315H16.927ZM8.57297 7.06315C8.57297 5.57455 9.58742 4.26128 11.0616 3.87181L10.6784 2.42157C8.55808 2.98176 7.07297 4.88127 7.07297 7.06315H8.57297ZM7.8414 7.50384L8.91496 7.29685L8.63098 5.82397L7.55742 6.03096L7.8414 7.50384ZM15.085 7.29685L16.1586 7.50384L16.4426 6.03096L15.369 5.82397L15.085 7.29685ZM19.8058 10.816L19.8988 11.1419L21.3412 10.7303L21.2482 10.4044L19.8058 10.816ZM4.10118 11.1419L4.19418 10.816L2.75176 10.4044L2.65877 10.7303L4.10118 11.1419ZM4.10471 16.1972C3.63385 14.5472 3.63087 12.79 4.10118 11.1419L2.65877 10.7303C2.11113 12.6493 2.1152 14.6917 2.66229 16.6088L4.10471 16.1972ZM19.8988 11.1419C20.3691 12.79 20.3662 14.5472 19.8953 16.1972L21.3377 16.6088C21.8848 14.6917 21.8889 12.6493 21.3412 10.7303L19.8988 11.1419ZM15.8509 19.8822C13.3077 20.3726 10.6923 20.3726 8.1491 19.8822L7.86512 21.3551C10.5959 21.8816 13.4041 21.8816 16.1349 21.3551L15.8509 19.8822ZM8.91496 7.29685C10.9524 6.90402 13.0477 6.90402 15.085 7.29685L15.369 5.82397C13.144 5.39498 10.856 5.39498 8.63098 5.82397L8.91496 7.29685ZM8.1491 19.8822C6.20493 19.5074 4.63939 18.0709 4.10471 16.1972L2.66229 16.6088C3.3533 19.0303 5.36966 20.874 7.86512 21.3551L8.1491 19.8822ZM16.1349 21.3551C18.6303 20.874 20.6467 19.0303 21.3377 16.6088L19.8953 16.1972C19.3606 18.0708 17.7951 19.5074 15.8509 19.8822L16.1349 21.3551ZM16.1586 7.50384C17.9164 7.84275 19.3239 9.12718 19.8058 10.816L21.2482 10.4044C20.6087 8.16326 18.747 6.47528 16.4426 6.03096L16.1586 7.50384ZM7.55742 6.03096C5.25297 6.47528 3.39132 8.16325 2.75176 10.4044L4.19418 10.816C4.67613 9.12717 6.08361 7.84275 7.8414 7.50384L7.55742 6.03096ZM3.38575 11.7917C8.93989 13.8462 15.0601 13.8462 20.6143 11.7917L20.0939 10.3849C14.8755 12.3151 9.12447 12.3151 3.90612 10.3849L3.38575 11.7917Z">
+                                    </path>
+                                    <path d="M8 10.5V14" stroke="currentColor" stroke-width="1.5"
+                                        stroke-linecap="round"></path>
+                                    <path d="M16 10.5V14" stroke="currentColor" stroke-width="1.5"
+                                        stroke-linecap="round"></path>
+                                </svg>
+                            </div>
+                            <h4 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Ordens de Serviço</h4>
+                            <p class="text-gray-700 dark:text-gray-300 mb-5 leading-relaxed text-sm">
+                                Sistema completo de gestão de ordens de serviço, execução, controle de manutenção e
+                                histórico de serviços.
+                            </p>
+                            <div class="flex flex-wrap gap-2 mb-6">
+                                <span
+                                    class="px-3 py-1 bg-pink-100 dark:bg-pink-900/30 text-pink-700 dark:text-pink-400 rounded-full text-xs font-medium">Execução</span>
+                                <span
+                                    class="px-3 py-1 bg-pink-100 dark:bg-pink-900/30 text-pink-700 dark:text-pink-400 rounded-full text-xs font-medium">Serviços</span>
+                            </div>
+                            <a href="ordens.html"
+                                class="inline-flex items-center gap-2 text-pink-600 dark:text-pink-400 font-semibold hover:text-pink-700 dark:hover:text-pink-300 transition-colors group-hover:gap-3">
+                                <span>Ver Documentação</span>
+                                <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none"
+                                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sistema -->
+            <div class="mb-12">
+                <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-3">
+                    <div
+                        class="w-10 h-10 bg-gradient-to-br from-gray-500 to-gray-600 rounded-lg flex items-center justify-center">
+                        <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25m18 0A2.25 2.25 0 0018.75 3H5.25A2.25 2.25 0 003 5.25m18 0V12a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 12V5.25" />
+                        </svg>
+                    </div>
+                    Módulos de Sistema
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div
+                        class="group relative bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-2 border-gray-100 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 overflow-hidden">
+                        <div
+                            class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-gray-100/50 to-transparent dark:from-gray-800/20 rounded-bl-full">
+                        </div>
+                        <div class="relative">
+                            <div
+                                class="w-16 h-16 bg-gradient-to-br from-gray-500 to-gray-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-lg">
+                                <svg class="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+                                </svg>
+                            </div>
+                            <h4 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Homepage</h4>
+                            <p class="text-gray-700 dark:text-gray-300 mb-5 leading-relaxed text-sm">
+                                Gestão da página inicial do sistema, banners, carousel de imagens e personalização
+                                visual.
+                            </p>
+                            <div class="flex flex-wrap gap-2 mb-6">
+                                <span
+                                    class="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full text-xs font-medium">Sistema</span>
+                                <span
+                                    class="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full text-xs font-medium">Interface</span>
+                            </div>
+                            <a href="homepage.html"
+                                class="inline-flex items-center gap-2 text-gray-600 dark:text-gray-400 font-semibold hover:text-gray-700 dark:hover:text-gray-300 transition-colors group-hover:gap-3">
+                                <span>Ver Documentação</span>
+                                <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none"
+                                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div
+                        class="group relative bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-2 border-slate-100 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 overflow-hidden">
+                        <div
+                            class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-slate-100/50 to-transparent dark:from-slate-800/20 rounded-bl-full">
+                        </div>
+                        <div class="relative">
+                            <div
+                                class="w-16 h-16 bg-gradient-to-br from-slate-500 to-slate-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-lg">
+                                <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 502 502">
+                                    <path
+                                        d="M363.05,97.025c5.54,4.119,10.913,8.592,15.969,13.296c1.926,1.792,4.37,2.679,6.809,2.679 c2.68,0,5.354-1.071,7.324-3.188c3.762-4.043,3.534-10.371-0.51-14.133c-5.591-5.202-11.533-10.149-17.661-14.705 c-4.433-3.295-10.697-2.374-13.991,2.06C357.695,87.466,358.617,93.73,363.05,97.025z">
+                                    </path>
+                                    <path
+                                        d="M88.349,215.226c-29.071,0-52.721,23.651-52.721,52.721c0,29.071,23.65,52.722,52.721,52.722 s52.721-23.651,52.721-52.722C141.07,238.876,117.42,215.226,88.349,215.226z M88.349,300.668 c-18.042,0-32.721-14.679-32.721-32.722c0-18.042,14.679-32.721,32.721-32.721s32.721,14.679,32.721,32.721 C121.07,285.99,106.392,300.668,88.349,300.668z">
+                                    </path>
+                                    <path
+                                        d="M304.018,85.999c0-29.071-23.651-52.721-52.721-52.721c-29.071,0-52.722,23.65-52.722,52.721 c0,29.071,23.652,52.721,52.722,52.721S304.018,115.07,304.018,85.999z M218.575,85.999c0-18.042,14.679-32.721,32.722-32.721 c18.042,0,32.721,14.679,32.721,32.721c0,18.042-14.679,32.721-32.721,32.721C233.254,118.72,218.575,104.041,218.575,85.999z">
+                                    </path>
+                                    <path
+                                        d="M457.038,276.589C458.334,267.155,459,257.566,459,248c0-45.997-14.711-89.589-42.543-126.065 c-3.351-4.391-9.626-5.234-14.016-1.884c-4.391,3.351-5.234,9.625-1.884,14.016C425.707,167.027,439,206.425,439,248 c0,6.782-0.369,13.575-1.09,20.303c-7.699-2.268-15.835-3.507-24.259-3.507c-47.42,0-85.999,38.579-85.999,85.999 c0,13.751,6.741,33.337,20.076,58.439C318.573,426.765,285.304,436,251,436c-49.67,0-95.989-18.927-131.28-53.443 c4.769-6.991,9.912-14.747,15.081-22.924c26.241-41.51,39.547-72.357,39.547-91.686c0-47.42-38.579-85.999-85.999-85.999 c-4.709,0-9.325,0.396-13.831,1.127c16.3-44.196,49.006-81.026,90.971-102.528c-0.114,1.805-0.191,3.619-0.191,5.452 c0,19.329,13.306,50.176,39.547,91.686c19.021,30.088,37.726,54.572,38.513,55.6c1.892,2.471,4.827,3.919,7.939,3.919 s6.047-1.449,7.939-3.92c0.787-1.027,19.492-25.511,38.513-55.599c26.242-41.51,39.547-72.357,39.547-91.686 C337.296,38.579,298.717,0,251.297,0c-36.913,0-68.461,23.381-80.633,56.107C112.775,80.38,68.422,130.189,51.092,190.445 C22.277,204.352,2.35,233.866,2.35,267.947c0,19.329,13.306,50.176,39.547,91.686c19.021,30.088,37.726,54.572,38.513,55.6 c1.892,2.471,4.827,3.919,7.939,3.919s6.047-1.449,7.939-3.919c0.383-0.5,5.004-6.55,11.831-16.081 c17.369,16.45,37.224,29.657,59.179,39.319C193.731,450.102,221.893,456,251,456c37.754,0,74.383-10.117,106.53-29.326 c3.001,5.085,6.22,10.351,9.669,15.807c19.021,30.088,37.726,54.572,38.513,55.6c1.892,2.471,4.827,3.919,7.939,3.919 s6.047-1.449,7.939-3.919c0.787-1.028,19.492-25.511,38.513-55.6c26.241-41.51,39.547-72.357,39.547-91.686 C499.65,319.193,482.504,291.536,457.038,276.589z M251.297,20c36.392,0,65.999,29.607,65.999,65.999 c0,28.12-42.186,91.813-65.999,124.476c-23.813-32.663-65.999-96.356-65.999-124.476C185.298,49.607,214.905,20,251.297,20z M88.349,392.422C64.536,359.759,22.35,296.066,22.35,267.947c0-36.392,29.607-65.999,65.999-65.999 c36.392,0,65.999,29.607,65.999,65.999C154.348,296.066,112.162,359.759,88.349,392.422z M413.651,475.271 c-23.813-32.663-65.999-96.356-65.999-124.476c0-36.392,29.607-65.999,65.999-65.999c36.392,0,65.999,29.607,65.999,65.999 C479.65,378.915,437.464,442.607,413.651,475.271z">
+                                    </path>
+                                    <path
+                                        d="M413.651,298.074c-29.071,0-52.721,23.65-52.721,52.721c0,29.071,23.65,52.721,52.721,52.721 c29.071,0,52.721-23.65,52.721-52.721C466.372,321.724,442.722,298.074,413.651,298.074z M413.651,383.516 c-18.042,0-32.721-14.679-32.721-32.721c0-18.042,14.679-32.721,32.721-32.721c18.042,0,32.721,14.679,32.721,32.721 C446.372,368.837,431.693,383.516,413.651,383.516z">
+                                    </path>
+                                </svg>
+                            </div>
+                            <h4 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Localidades</h4>
+                            <p class="text-gray-700 dark:text-gray-300 mb-5 leading-relaxed text-sm">
+                                Módulo central de gestão territorial do município, cadastro de bairros, distritos e
+                                mapeamento geográfico.
+                            </p>
+                            <div class="flex flex-wrap gap-2 mb-6">
+                                <span
+                                    class="px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-full text-xs font-medium">Central</span>
+                                <span
+                                    class="px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-full text-xs font-medium">Territorial</span>
+                            </div>
+                            <a href="localidades.html"
+                                class="inline-flex items-center gap-2 text-slate-600 dark:text-slate-400 font-semibold hover:text-slate-700 dark:hover:text-slate-300 transition-colors group-hover:gap-3">
+                                <span>Ver Documentação</span>
+                                <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none"
+                                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div
+                        class="group relative bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-2 border-violet-100 dark:border-violet-900/50 hover:border-violet-300 dark:hover:border-violet-700 overflow-hidden">
+                        <div
+                            class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-violet-100/50 to-transparent dark:from-violet-900/20 rounded-bl-full">
+                        </div>
+                        <div class="relative">
+                            <div
+                                class="w-16 h-16 bg-gradient-to-br from-violet-500 to-violet-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-lg">
+                                <svg class="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
+                                </svg>
+                            </div>
+                            <h4 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Notificações</h4>
+                            <p class="text-gray-700 dark:text-gray-300 mb-5 leading-relaxed text-sm">
+                                Sistema de notificações em tempo real, alertas do sistema, comunicações internas e
+                                histórico de mensagens.
+                            </p>
+                            <div class="flex flex-wrap gap-2 mb-6">
+                                <span
+                                    class="px-3 py-1 bg-violet-100 dark:bg-violet-900/30 text-violet-700 dark:text-violet-400 rounded-full text-xs font-medium">Sistema</span>
+                                <span
+                                    class="px-3 py-1 bg-violet-100 dark:bg-violet-900/30 text-violet-700 dark:text-violet-400 rounded-full text-xs font-medium">Comunicação</span>
+                            </div>
+                            <a href="notificacoes.html"
+                                class="inline-flex items-center gap-2 text-violet-600 dark:text-violet-400 font-semibold hover:text-violet-700 dark:hover:text-violet-300 transition-colors group-hover:gap-3">
+                                <span>Ver Documentação</span>
+                                <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none"
+                                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div
+                        class="group relative bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-2 border-rose-100 dark:border-rose-900/50 hover:border-rose-300 dark:hover:border-rose-700 overflow-hidden">
+                        <div
+                            class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-rose-100/50 to-transparent dark:from-rose-900/20 rounded-bl-full">
+                        </div>
+                        <div class="relative">
+                            <div
+                                class="w-16 h-16 bg-gradient-to-br from-rose-500 to-rose-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-lg">
+                                <svg class="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
+                                </svg>
+                            </div>
+                            <h4 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Relatórios</h4>
+                            <p class="text-gray-700 dark:text-gray-300 mb-5 leading-relaxed text-sm">
+                                Sistema completo de relatórios e estatísticas, exportação de dados (PDF, Excel, CSV) e
+                                análises personalizadas.
+                            </p>
+                            <div class="flex flex-wrap gap-2 mb-6">
+                                <span
+                                    class="px-3 py-1 bg-rose-100 dark:bg-rose-900/30 text-rose-700 dark:text-rose-400 rounded-full text-xs font-medium">Sistema</span>
+                                <span
+                                    class="px-3 py-1 bg-rose-100 dark:bg-rose-900/30 text-rose-700 dark:text-rose-400 rounded-full text-xs font-medium">Relatórios</span>
+                            </div>
+                            <a href="relatorios.html"
+                                class="inline-flex items-center gap-2 text-rose-600 dark:text-rose-400 font-semibold hover:text-rose-700 dark:hover:text-rose-300 transition-colors group-hover:gap-3">
+                                <span>Ver Documentação</span>
+                                <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none"
+                                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div
+                        class="group relative bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-2 border-sky-100 dark:border-sky-900/50 hover:border-sky-300 dark:hover:border-sky-700 overflow-hidden">
+                        <div
+                            class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-sky-100/50 to-transparent dark:from-sky-900/20 rounded-bl-full">
+                        </div>
+                        <div class="relative">
+                            <div
+                                class="w-16 h-16 bg-gradient-to-br from-sky-500 to-sky-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-lg">
+                                <svg class="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 01-.825-.242m9.345-8.334a2.126 2.126 0 00-.476-.095 48.64 48.64 0 00-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0011.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155" />
+                                </svg>
+                            </div>
+                            <h4 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Chat</h4>
+                            <p class="text-gray-700 dark:text-gray-300 mb-5 leading-relaxed text-sm">
+                                Sistema de chat institucional para suporte e comunicação, com atendimento em tempo real
+                                e histórico de conversas.
+                            </p>
+                            <div class="flex flex-wrap gap-2 mb-6">
+                                <span
+                                    class="px-3 py-1 bg-sky-100 dark:bg-sky-900/30 text-sky-700 dark:text-sky-400 rounded-full text-xs font-medium">Sistema</span>
+                                <span
+                                    class="px-3 py-1 bg-sky-100 dark:bg-sky-900/30 text-sky-700 dark:text-sky-400 rounded-full text-xs font-medium">Comunicação</span>
+                            </div>
+                            <a href="chat.html"
+                                class="inline-flex items-center gap-2 text-sky-600 dark:text-sky-400 font-semibold hover:text-sky-700 dark:hover:text-sky-300 transition-colors group-hover:gap-3">
+                                <span>Ver Documentação</span>
+                                <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none"
+                                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Architecture Section -->
+        <section id="arquitetura" class="mb-16">
+            <div
+                class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-gray-200 dark:border-slate-700 overflow-hidden">
+                <div class="p-8 lg:p-12">
+                    <div class="flex items-start gap-4 mb-8">
+                        <div
+                            class="flex-shrink-0 w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center">
+                            <svg class="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24"
+                                stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M3.75 21h16.5M4.5 3h15m-16.5 18V9.75m0 0l3-3m-3 3l3 3m8.25-3V9.75m0 0l-3-3m3 3l-3 3M9.75 9.75h.008v.008H9.75zm0 3h.008v.008H9.75zm0 3h.008v.008H9.75z" />
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Arquitetura do Sistema
+                            </h2>
+                            <p class="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+                                O sistema foi projetado com integração completa entre todos os módulos, garantindo que
+                                as informações fluam de forma coerente e sem redundâncias.
+                            </p>
+
+                            <div
+                                class="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-slate-700 dark:to-slate-800 rounded-xl p-8 mb-6">
+                                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-6 text-center">
+                                    Arquitetura Modular e Fluxo de Dados</h3>
+
+                                <!-- Camada 1: Dados Base -->
+                                <div class="mb-6">
+                                    <div class="text-center mb-4">
+                                        <span
+                                            class="inline-flex items-center gap-2 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 px-4 py-2 rounded-full text-sm font-semibold">
+                                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                                stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125" />
+                                            </svg>
+                                            Camada de Dados Base
+                                        </span>
+                                    </div>
+                                    <div class="flex items-center justify-center gap-4 flex-wrap">
+                                        <div
+                                            class="bg-white dark:bg-slate-800 px-5 py-3 rounded-xl shadow-md border-2 border-purple-200 dark:border-purple-700 hover:border-purple-400 transition-colors">
+                                            <div class="text-xs font-medium text-purple-600 dark:text-purple-400 mb-1">
+                                                Módulo</div>
+                                            <div class="text-base font-bold text-gray-900 dark:text-white">Pessoas</div>
+                                            <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">CadÚnico</div>
+                                        </div>
+                                        <div
+                                            class="bg-white dark:bg-slate-800 px-5 py-3 rounded-xl shadow-md border-2 border-slate-200 dark:border-slate-700 hover:border-slate-400 transition-colors">
+                                            <div class="text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">
+                                                Módulo</div>
+                                            <div class="text-base font-bold text-gray-900 dark:text-white">Localidades
+                                            </div>
+                                            <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">Territorial</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Seta para baixo -->
+                                <div class="flex justify-center mb-4">
+                                    <svg class="w-8 h-8 text-emerald-500" fill="none" viewBox="0 0 24 24"
+                                        stroke-width="2" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M19.5 13.5L12 21m0 0l-7.5-7.5M12 21V3" />
+                                    </svg>
+                                </div>
+
+                                <!-- Camada 2: Solicitações -->
+                                <div class="mb-6">
+                                    <div class="text-center mb-4">
+                                        <span
+                                            class="inline-flex items-center gap-2 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400 px-4 py-2 rounded-full text-sm font-semibold">
+                                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                                stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M9 12h3.75M9 15h3.75M9 18h3.75M3.75 6.75h16.5M3.75 9.75h16.5m-16.5 3h16.5M3.75 15.75h16.5" />
+                                            </svg>
+                                            Camada de Solicitações
+                                        </span>
+                                    </div>
+                                    <div class="flex items-center justify-center">
+                                        <div
+                                            class="bg-white dark:bg-slate-800 px-6 py-4 rounded-xl shadow-md border-2 border-indigo-200 dark:border-indigo-700 hover:border-indigo-400 transition-colors">
+                                            <div class="text-xs font-medium text-indigo-600 dark:text-indigo-400 mb-1">
+                                                Módulo Central</div>
+                                            <div class="text-lg font-bold text-gray-900 dark:text-white">Demandas</div>
+                                            <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">Solicitações da
+                                                População</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Seta para baixo -->
+                                <div class="flex justify-center mb-4">
+                                    <svg class="w-8 h-8 text-emerald-500" fill="none" viewBox="0 0 24 24"
+                                        stroke-width="2" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M19.5 13.5L12 21m0 0l-7.5-7.5M12 21V3" />
+                                    </svg>
+                                </div>
+
+                                <!-- Camada 3: Execução -->
+                                <div class="mb-6">
+                                    <div class="text-center mb-4">
+                                        <span
+                                            class="inline-flex items-center gap-2 bg-pink-100 dark:bg-pink-900/30 text-pink-700 dark:text-pink-400 px-4 py-2 rounded-full text-sm font-semibold">
+                                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                                stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655-5.653a2.548 2.548 0 010-3.586L11.42 15.17z" />
+                                            </svg>
+                                            Camada de Execução
+                                        </span>
+                                    </div>
+                                    <div class="flex items-center justify-center gap-3 flex-wrap">
+                                        <div
+                                            class="bg-white dark:bg-slate-800 px-5 py-3 rounded-xl shadow-md border-2 border-pink-200 dark:border-pink-700 hover:border-pink-400 transition-colors">
+                                            <div class="text-xs font-medium text-pink-600 dark:text-pink-400 mb-1">
+                                                Módulo</div>
+                                            <div class="text-base font-bold text-gray-900 dark:text-white">Ordens</div>
+                                            <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">Serviço</div>
+                                        </div>
+                                        <div
+                                            class="bg-white dark:bg-slate-800 px-5 py-3 rounded-xl shadow-md border-2 border-red-200 dark:border-red-700 hover:border-red-400 transition-colors">
+                                            <div class="text-xs font-medium text-red-600 dark:text-red-400 mb-1">Módulo
+                                            </div>
+                                            <div class="text-base font-bold text-gray-900 dark:text-white">Equipes</div>
+                                            <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">Campo</div>
+                                        </div>
+                                        <div
+                                            class="bg-white dark:bg-slate-800 px-5 py-3 rounded-xl shadow-md border-2 border-orange-200 dark:border-orange-700 hover:border-orange-400 transition-colors">
+                                            <div class="text-xs font-medium text-orange-600 dark:text-orange-400 mb-1">
+                                                Módulo</div>
+                                            <div class="text-base font-bold text-gray-900 dark:text-white">Funcionários
+                                            </div>
+                                            <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">RH</div>
+                                        </div>
+                                        <div
+                                            class="bg-white dark:bg-slate-800 px-5 py-3 rounded-xl shadow-md border-2 border-yellow-200 dark:border-yellow-700 hover:border-yellow-400 transition-colors">
+                                            <div class="text-xs font-medium text-yellow-600 dark:text-yellow-400 mb-1">
+                                                Módulo</div>
+                                            <div class="text-base font-bold text-gray-900 dark:text-white">Materiais
+                                            </div>
+                                            <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">Estoque</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Linha divisória -->
+                                <div class="border-t-2 border-dashed border-gray-300 dark:border-gray-600 my-8"></div>
+
+                                <!-- Módulos de Infraestrutura -->
+                                <div class="mb-6">
+                                    <div class="text-center mb-4">
+                                        <span
+                                            class="inline-flex items-center gap-2 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 px-4 py-2 rounded-full text-sm font-semibold">
+                                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                                stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M3.75 21h16.5M4.5 3h15m-16.5 18V9.75m0 0l3-3m-3 3l3 3m8.25-3V9.75m0 0l-3-3m3 3l-3 3M9.75 9.75h.008v.008H9.75zm0 3h.008v.008H9.75zm0 3h.008v.008H9.75z" />
+                                            </svg>
+                                            Módulos de Infraestrutura
+                                        </span>
+                                    </div>
+                                    <div class="flex items-center justify-center gap-3 flex-wrap">
+                                        <div
+                                            class="bg-white dark:bg-slate-800 px-4 py-2.5 rounded-lg shadow-md border border-emerald-200 dark:border-emerald-700">
+                                            <div class="text-xs font-semibold text-emerald-600 dark:text-emerald-400">
+                                                Água</div>
+                                        </div>
+                                        <div
+                                            class="bg-white dark:bg-slate-800 px-4 py-2.5 rounded-lg shadow-md border border-blue-200 dark:border-blue-700">
+                                            <div class="text-xs font-semibold text-blue-600 dark:text-blue-400">
+                                                Iluminação</div>
+                                        </div>
+                                        <div
+                                            class="bg-white dark:bg-slate-800 px-4 py-2.5 rounded-lg shadow-md border border-amber-200 dark:border-amber-700">
+                                            <div class="text-xs font-semibold text-amber-600 dark:text-amber-400">
+                                                Estradas</div>
+                                        </div>
+                                        <div
+                                            class="bg-white dark:bg-slate-800 px-4 py-2.5 rounded-lg shadow-md border border-cyan-200 dark:border-cyan-700">
+                                            <div class="text-xs font-semibold text-cyan-600 dark:text-cyan-400">Poços
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Módulos de Agricultura -->
+                                <div class="mb-6">
+                                    <div class="text-center mb-4">
+                                        <span
+                                            class="inline-flex items-center gap-2 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 px-4 py-2 rounded-full text-sm font-semibold">
+                                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                                stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M12 3v17.25m0 0c-1.472 0-2.882.265-4.185.75M12 20.25c1.472 0 2.882.265 4.185.75M18.75 4.97A48.224 48.224 0 0012 4.5c-2.48 0-4.785.685-6.75 1.97m13.5 0c1.01.003 2.01.107 2.995.292m-10.5 0a51.964 51.964 0 014.5 0m0 0c.93.003 1.857.092 2.75.292M6.75 4.97l-.016.005M6.75 4.97l-.016.005M6.75 4.97l-.016.005m13.516.005m-13.516 0l.016-.005m13.516-.005L18.75 4.97m-13.5 13.5c1.01.003 2.01.107 2.995.292M6.75 20.25c-1.472 0-2.882-.265-4.185-.75M18.75 20.25c1.472 0 2.882-.265 4.185-.75m-10.5 0a51.964 51.964 0 01-4.5 0m10.5 0a48.225 48.225 0 005.25-15.28" />
+                                            </svg>
+                                            Módulos de Agricultura
+                                        </span>
+                                    </div>
+                                    <div class="flex items-center justify-center gap-3 flex-wrap">
+                                        <div
+                                            class="bg-white dark:bg-slate-800 px-4 py-2.5 rounded-lg shadow-md border border-green-200 dark:border-green-700">
+                                            <div class="text-xs font-semibold text-green-600 dark:text-green-400">CAF
+                                            </div>
+                                        </div>
+                                        <div
+                                            class="bg-white dark:bg-slate-800 px-4 py-2.5 rounded-lg shadow-md border border-lime-200 dark:border-lime-700">
+                                            <div class="text-xs font-semibold text-lime-600 dark:text-lime-400">
+                                                Programas</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Módulos de Sistema -->
+                                <div>
+                                    <div class="text-center mb-4">
+                                        <span
+                                            class="inline-flex items-center gap-2 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-4 py-2 rounded-full text-sm font-semibold">
+                                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                                stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25m18 0A2.25 2.25 0 0018.75 3H5.25A2.25 2.25 0 003 5.25m18 0V12a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 12V5.25" />
+                                            </svg>
+                                            Módulos de Sistema
+                                        </span>
+                                    </div>
+                                    <div class="flex items-center justify-center gap-3 flex-wrap">
+                                        <div
+                                            class="bg-white dark:bg-slate-800 px-4 py-2.5 rounded-lg shadow-md border border-violet-200 dark:border-violet-700">
+                                            <div class="text-xs font-semibold text-violet-600 dark:text-violet-400">
+                                                Notificações</div>
+                                        </div>
+                                        <div
+                                            class="bg-white dark:bg-slate-800 px-4 py-2.5 rounded-lg shadow-md border border-rose-200 dark:border-rose-700">
+                                            <div class="text-xs font-semibold text-rose-600 dark:text-rose-400">
+                                                Relatórios</div>
+                                        </div>
+                                        <div
+                                            class="bg-white dark:bg-slate-800 px-4 py-2.5 rounded-lg shadow-md border border-gray-200 dark:border-gray-700">
+                                            <div class="text-xs font-semibold text-gray-600 dark:text-gray-400">Homepage
+                                            </div>
+                                        </div>
+                                        <div
+                                            class="bg-white dark:bg-slate-800 px-4 py-2.5 rounded-lg shadow-md border border-sky-200 dark:border-sky-700">
+                                            <div class="text-xs font-semibold text-sky-600 dark:text-sky-400">Chat</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Legenda de Integração -->
+                                <div class="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
+                                    <div class="text-center">
+                                        <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                                            <strong class="text-gray-900 dark:text-white">Fluxo de Integração:</strong>
+                                            Todos os módulos se integram através de relacionamentos Eloquent, permitindo
+                                            rastreamento completo e dados compartilhados.
+                                        </p>
+                                        <div
+                                            class="flex items-center justify-center gap-6 flex-wrap text-xs text-gray-500 dark:text-gray-400">
+                                            <div class="flex items-center gap-2">
+                                                <div class="w-3 h-3 rounded-full bg-emerald-500"></div>
+                                                <span>Dados Base</span>
+                                            </div>
+                                            <div class="flex items-center gap-2">
+                                                <div class="w-3 h-3 rounded-full bg-indigo-500"></div>
+                                                <span>Solicitações</span>
+                                            </div>
+                                            <div class="flex items-center gap-2">
+                                                <div class="w-3 h-3 rounded-full bg-pink-500"></div>
+                                                <span>Execução</span>
+                                            </div>
+                                            <div class="flex items-center gap-2">
+                                                <div class="w-3 h-3 rounded-full bg-blue-500"></div>
+                                                <span>Infraestrutura</span>
+                                            </div>
+                                            <div class="flex items-center gap-2">
+                                                <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                                                <span>Agricultura</span>
+                                            </div>
+                                            <div class="flex items-center gap-2">
+                                                <div class="w-3 h-3 rounded-full bg-gray-500"></div>
+                                                <span>Sistema</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Características
+                                        da Arquitetura</h4>
+                                    <ul class="space-y-2 text-gray-700 dark:text-gray-300">
+                                        <li class="flex items-start gap-2">
+                                            <svg class="w-5 h-5 text-emerald-500 mt-0.5 flex-shrink-0"
+                                                fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd"
+                                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                            <span><strong>Modularidade:</strong> Cada módulo é uma unidade independente
+                                                de código</span>
+                                        </li>
+                                        <li class="flex items-start gap-2">
+                                            <svg class="w-5 h-5 text-emerald-500 mt-0.5 flex-shrink-0"
+                                                fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd"
+                                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                            <span><strong>Flexibilidade:</strong> Módulos podem ser habilitados ou
+                                                desabilitados conforme necessário</span>
+                                        </li>
+                                        <li class="flex items-start gap-2">
+                                            <svg class="w-5 h-5 text-emerald-500 mt-0.5 flex-shrink-0"
+                                                fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd"
+                                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                            <span><strong>Escalabilidade:</strong> Novos módulos podem ser adicionados
+                                                sem afetar os existentes</span>
+                                        </li>
+                                        <li class="flex items-start gap-2">
+                                            <svg class="w-5 h-5 text-emerald-500 mt-0.5 flex-shrink-0"
+                                                fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd"
+                                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                            <span><strong>Manutenibilidade:</strong> Código organizado por
+                                                funcionalidade, facilitando manutenção</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Integração
+                                        entre Módulos</h4>
+                                    <p class="text-gray-700 dark:text-gray-300 mb-4 leading-relaxed">
+                                        Todos os módulos mantêm relacionamentos bem definidos, criando uma rede de dados
+                                        interconectada que permite rastreamento completo desde a demanda inicial até a
+                                        execução final.
+                                    </p>
+                                    <div
+                                        class="bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded-lg p-4">
+                                        <p class="text-sm text-gray-700 dark:text-gray-300">
+                                            <strong class="text-emerald-600 dark:text-emerald-400">Exemplo:</strong> Uma
+                                            demanda de água gera automaticamente uma ordem de serviço, que consome
+                                            materiais do estoque e é executada por uma equipe, com todo o histórico
+                                            registrado.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Technologies Section -->
+        <section id="tecnologias" class="mb-16">
+            <div
+                class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-gray-200 dark:border-slate-700 overflow-hidden">
+                <div class="p-8 lg:p-12">
+                    <div class="flex items-start gap-4 mb-8">
+                        <div
+                            class="flex-shrink-0 w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-xl flex items-center justify-center">
+                            <svg class="w-6 h-6 text-purple-600 dark:text-purple-400" fill="none" viewBox="0 0 24 24"
+                                stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" />
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Tecnologias Utilizadas
+                            </h2>
+                            <p class="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+                                O sistema utiliza as mais modernas tecnologias web para garantir performance, segurança
+                                e uma excelente experiência de usuário.
+                            </p>
+
+                            <div class="grid md:grid-cols-2 gap-8">
+                                <div>
+                                    <h3
+                                        class="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                                        <svg class="w-5 h-5 text-emerald-500" fill="none" viewBox="0 0 24 24"
+                                            stroke-width="1.5" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" />
+                                        </svg>
+                                        Backend
+                                    </h3>
+                                    <ul class="space-y-3">
+                                        <li class="flex items-start gap-3 p-3 bg-gray-50 dark:bg-slate-700 rounded-lg">
+                                            <svg class="w-5 h-5 text-emerald-500 mt-0.5 flex-shrink-0"
+                                                fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd"
+                                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                            <div>
+                                                <strong class="text-gray-900 dark:text-white">Laravel</strong>
+                                                <p class="text-sm text-gray-600 dark:text-gray-400">Framework PHP
+                                                    moderno e robusto</p>
+                                            </div>
+                                        </li>
+                                        <li class="flex items-start gap-3 p-3 bg-gray-50 dark:bg-slate-700 rounded-lg">
+                                            <svg class="w-5 h-5 text-emerald-500 mt-0.5 flex-shrink-0"
+                                                fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd"
+                                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                            <div>
+                                                <strong class="text-gray-900 dark:text-white">Laravel Modules</strong>
+                                                <p class="text-sm text-gray-600 dark:text-gray-400">Sistema de módulos
+                                                    modulares</p>
+                                            </div>
+                                        </li>
+                                        <li class="flex items-start gap-3 p-3 bg-gray-50 dark:bg-slate-700 rounded-lg">
+                                            <svg class="w-5 h-5 text-emerald-500 mt-0.5 flex-shrink-0"
+                                                fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd"
+                                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                            <div>
+                                                <strong class="text-gray-900 dark:text-white">Eloquent ORM</strong>
+                                                <p class="text-sm text-gray-600 dark:text-gray-400">Mapeamento
+                                                    objeto-relacional</p>
+                                            </div>
+                                        </li>
+                                        <li class="flex items-start gap-3 p-3 bg-gray-50 dark:bg-slate-700 rounded-lg">
+                                            <svg class="w-5 h-5 text-emerald-500 mt-0.5 flex-shrink-0"
+                                                fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd"
+                                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                            <div>
+                                                <strong class="text-gray-900 dark:text-white">MySQL/PostgreSQL</strong>
+                                                <p class="text-sm text-gray-600 dark:text-gray-400">Banco de dados
+                                                    relacional</p>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h3
+                                        class="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                                        <svg class="w-5 h-5 text-emerald-500" fill="none" viewBox="0 0 24 24"
+                                            stroke-width="1.5" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25m18 0A2.25 2.25 0 0018.75 3H5.25A2.25 2.25 0 003 5.25m18 0V12a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 12V5.25" />
+                                        </svg>
+                                        Frontend
+                                    </h3>
+                                    <ul class="space-y-3">
+                                        <li class="flex items-start gap-3 p-3 bg-gray-50 dark:bg-slate-700 rounded-lg">
+                                            <svg class="w-5 h-5 text-emerald-500 mt-0.5 flex-shrink-0"
+                                                fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd"
+                                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                            <div>
+                                                <strong class="text-gray-900 dark:text-white">Tailwind CSS v4.1</strong>
+                                                <p class="text-sm text-gray-600 dark:text-gray-400">Framework CSS
+                                                    utility-first</p>
+                                            </div>
+                                        </li>
+                                        <li class="flex items-start gap-3 p-3 bg-gray-50 dark:bg-slate-700 rounded-lg">
+                                            <svg class="w-5 h-5 text-emerald-500 mt-0.5 flex-shrink-0"
+                                                fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd"
+                                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                            <div>
+                                                <strong class="text-gray-900 dark:text-white">HyperUI</strong>
+                                                <p class="text-sm text-gray-600 dark:text-gray-400">Componentes UI
+                                                    modernos</p>
+                                            </div>
+                                        </li>
+                                        <li class="flex items-start gap-3 p-3 bg-gray-50 dark:bg-slate-700 rounded-lg">
+                                            <svg class="w-5 h-5 text-emerald-500 mt-0.5 flex-shrink-0"
+                                                fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd"
+                                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                            <div>
+                                                <strong class="text-gray-900 dark:text-white">Flowbite</strong>
+                                                <p class="text-sm text-gray-600 dark:text-gray-400">Componentes baseados
+                                                    em Tailwind</p>
+                                            </div>
+                                        </li>
+                                        <li class="flex items-start gap-3 p-3 bg-gray-50 dark:bg-slate-700 rounded-lg">
+                                            <svg class="w-5 h-5 text-emerald-500 mt-0.5 flex-shrink-0"
+                                                fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd"
+                                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                            <div>
+                                                <strong class="text-gray-900 dark:text-white">Blade</strong>
+                                                <p class="text-sm text-gray-600 dark:text-gray-400">Template engine do
+                                                    Laravel</p>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Credits Section -->
+        <section class="mb-16">
+            <div
+                class="bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 rounded-2xl shadow-xl border-2 border-emerald-200 dark:border-emerald-800 overflow-hidden">
+                <div class="p-8 lg:p-12">
+                    <div class="flex items-start gap-4">
+                        <div class="flex-shrink-0 w-12 h-12 bg-emerald-500 rounded-xl flex items-center justify-center">
+                            <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Créditos</h2>
+                            <div class="space-y-4">
+                                <div>
+                                    <p class="text-lg text-gray-700 dark:text-gray-300 mb-2">
+                                        <strong class="text-emerald-600 dark:text-emerald-400">Desenvolvedor:</strong>
+                                        Reinan Rodrigues
+                                    </p>
+                                    <p class="text-lg text-gray-700 dark:text-gray-300 mb-4">
+                                        <strong class="text-emerald-600 dark:text-emerald-400">Empresa:</strong> Vertex
+                                        Solutions LTDA
+                                    </p>
+                                </div>
+                                <div
+                                    class="bg-white dark:bg-slate-800 rounded-xl p-4 border border-emerald-200 dark:border-emerald-800">
+                                    <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                                        Todos os módulos foram desenvolvidos seguindo as melhores práticas de
+                                        desenvolvimento Laravel e arquitetura modular. O sistema foi criado com foco em
+                                        usabilidade, segurança e performance.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 dark:bg-slate-950 text-slate-300 border-t border-slate-800">
+        <div class="container mx-auto px-4 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <div class="mb-4">
+                        <img src="assets/img/logo-vertex-semagri.svg" alt="Vertex SEMAGRI" class="h-10">
+                    </div>
+                    <p class="text-sm text-slate-400">
+                        Sistema de Gestão Municipal Modular desenvolvido para secretarias de agricultura e
+                        desenvolvimento rural.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold text-white mb-4">Links Úteis</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li>
+                            <a href="https://laravel.com/docs" target="_blank" rel="noopener noreferrer"
+                                class="text-slate-400 hover:text-emerald-400 transition-colors">
+                                Documentação Laravel
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://nwidart.com/laravel-modules/" target="_blank" rel="noopener noreferrer"
+                                class="text-slate-400 hover:text-emerald-400 transition-colors">
+                                Laravel Modules
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://tailwindcss.com" target="_blank" rel="noopener noreferrer"
+                                class="text-slate-400 hover:text-emerald-400 transition-colors">
+                                Tailwind CSS
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.hyperui.dev/" target="_blank" rel="noopener noreferrer"
+                                class="text-slate-400 hover:text-emerald-400 transition-colors">
+                                HyperUI
+                            </a>
+                        </li>
+                        <li>
+                            <a href="changelog.html" class="text-slate-400 hover:text-emerald-400 transition-colors">
+                                Changelog (Versões)
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold text-white mb-4">Contato</h3>
+                    <p class="text-sm text-slate-400 mb-2">Vertex Solutions LTDA</p>
+                    <p class="text-sm text-slate-400">Desenvolvido com dedicação e excelência</p>
+                </div>
+            </div>
+            <div class="mt-8 pt-8 border-t border-slate-800 text-center text-sm text-slate-500">
+                <p>&copy; 2024 Vertex Solutions LTDA. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button id="backToTop"
+        class="fixed bottom-8 right-8 w-14 h-14 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-full shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-300 opacity-0 invisible z-50 flex items-center justify-center">
+        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+        </svg>
+    </button>
+
+    <script>
+        // Smooth scroll para links âncora
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href !== '#' && href.length > 1) {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        const offsetTop = target.offsetTop - 80;
+                        window.scrollTo({
+                            top: offsetTop,
+                            behavior: 'smooth'
+                        });
+                    }
+                }
+            });
+        });
+
+        // Back to Top Button
+        const backToTopBtn = document.getElementById('backToTop');
+        if (backToTopBtn) {
+            window.addEventListener('scroll', function () {
+                if (window.pageYOffset > 300) {
+                    backToTopBtn.classList.remove('opacity-0', 'invisible');
+                    backToTopBtn.classList.add('opacity-100', 'visible');
+                } else {
+                    backToTopBtn.classList.add('opacity-0', 'invisible');
+                    backToTopBtn.classList.remove('opacity-100', 'visible');
+                }
+            });
+
+            backToTopBtn.addEventListener('click', function () {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        }
+    </script>
+</body>
+
+</html>
