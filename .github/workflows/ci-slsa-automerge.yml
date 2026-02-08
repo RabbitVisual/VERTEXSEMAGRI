@@ -81,6 +81,7 @@ jobs:
 
     steps:
       - name: Auto approve
+        if: github.actor != 'github-actions[bot]'
         uses: hmarr/auto-approve-action@v4
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}

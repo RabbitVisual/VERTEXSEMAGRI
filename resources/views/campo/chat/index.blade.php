@@ -100,6 +100,16 @@
 <script>
     let sessaoAtual = null;
 
+    /**
+     * Escapar HTML para evitar XSS
+     */
+    function escapeHtml(text) {
+        if (!text) return '';
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
     async function carregarConversas() {
         // Se offline, tentar carregar do cache
         if (!navigator.onLine) {
@@ -152,12 +162,12 @@
                                 <div class="flex-1 min-w-0">
                                     <div class="flex items-center gap-2">
                                         <p class="font-semibold text-gray-900 dark:text-white truncate ${temNaoLidas ? 'font-bold' : ''}">
-                                            ${nomeDestinatario}
+                                            ${escapeHtml(nomeDestinatario)}
                                         </p>
                                         ${temNaoLidas ? `<span class="px-2 py-0.5 text-xs font-bold text-white bg-red-500 rounded-full">${sessao.unread_count_user}</span>` : ''}
                                     </div>
                                     <p class="text-xs text-gray-500 dark:text-gray-400 truncate mt-1">
-                                        ${ultimaMensagem.length > 50 ? ultimaMensagem.substring(0, 50) + '...' : ultimaMensagem}
+                                        ${escapeHtml(ultimaMensagem.length > 50 ? ultimaMensagem.substring(0, 50) + '...' : ultimaMensagem)}
                                     </p>
                                     ${sessao.last_activity_at ? `<p class="text-xs text-gray-400 dark:text-gray-500 mt-1">${new Date(sessao.last_activity_at).toLocaleDateString('pt-BR')}</p>` : ''}
                                 </div>
@@ -213,9 +223,9 @@
                         return `
                             <div class="mb-4 flex ${isUser ? 'justify-end' : 'justify-start'}">
                                 <div class="max-w-xs lg:max-w-md">
-                                    ${!isUser ? `<p class="text-xs text-gray-500 dark:text-gray-400 mb-1 px-1">${senderName}</p>` : ''}
+                                    ${!isUser ? `<p class="text-xs text-gray-500 dark:text-gray-400 mb-1 px-1">${escapeHtml(senderName)}</p>` : ''}
                                     <div class="px-4 py-2 rounded-lg ${isUser ? 'bg-indigo-600 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white'}">
-                                        <p class="text-sm whitespace-pre-wrap">${msg.message}</p>
+                                        <p class="text-sm whitespace-pre-wrap">${escapeHtml(msg.message)}</p>
                                         <p class="text-xs mt-1 opacity-75">${date.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</p>
                                     </div>
                                 </div>
@@ -472,12 +482,12 @@
                                     <div class="flex-1 min-w-0">
                                         <div class="flex items-center gap-2">
                                             <p class="font-semibold text-gray-900 dark:text-white truncate ${temNaoLidas ? 'font-bold' : ''}">
-                                                ${nomeDestinatario}
+                                                ${escapeHtml(nomeDestinatario)}
                                             </p>
                                             ${temNaoLidas ? `<span class="px-2 py-0.5 text-xs font-bold text-white bg-red-500 rounded-full">${sessao.unread_count_user}</span>` : ''}
                                         </div>
                                         <p class="text-xs text-gray-500 dark:text-gray-400 truncate mt-1">
-                                            ${ultimaMensagem.length > 50 ? ultimaMensagem.substring(0, 50) + '...' : ultimaMensagem}
+                                            ${escapeHtml(ultimaMensagem.length > 50 ? ultimaMensagem.substring(0, 50) + '...' : ultimaMensagem)}
                                         </p>
                                         <p class="text-xs text-gray-400 dark:text-gray-500 mt-1">📴 Offline</p>
                                     </div>
