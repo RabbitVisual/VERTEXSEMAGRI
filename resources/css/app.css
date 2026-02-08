@@ -1,7 +1,7 @@
 /* Tailwind CSS v4.1 */
 @import 'tailwindcss';
 @import './fonts.css';
-@import './fw-pro/css/all.css';
+@import '../fw-pro/css/all.css';
 
 /* Flowbite 4.0 - Theme and Plugin */
 @import "flowbite/src/themes/default";
