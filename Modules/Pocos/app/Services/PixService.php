@@ -193,7 +193,7 @@ class PixService
                 'status' => 'pago',
                 'e2eid' => $e2eid,
                 'end_to_end_id' => $e2eid,
-                'data_pagamento' => now(), // TODO: Usar horario correto do evento se disponivel
+                'data_pagamento' => $pixData['horario'] ?? now(),
                 'valor_pago' => $pixData['valor'] ?? $pagamentoPix->valor, // Confirmar valor pago
                 'chave_pix_origem' => $pixData['chave'] ?? null,
                 'info_pagador' => json_encode($pixData['pagador'] ?? []),
