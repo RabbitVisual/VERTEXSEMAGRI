@@ -3,314 +3,313 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Solicitação de Materiais</title>
+    <title>Ofício nº {{ $numero_oficio ?? '...' }} - Solicitação de Materiais</title>
     <style>
         @page {
-            margin: 2cm;
+            margin: 1.5cm;
             size: A4;
+            @bottom-right {
+                content: "Página " counter(page) " de " counter(pages);
+                font-size: 8pt;
+                color: #64748b;
+            }
         }
 
         body {
             font-family: 'Times New Roman', serif;
             font-size: 11pt;
-            line-height: 1.4;
-            color: #000;
+            line-height: 1.6;
+            color: #1e293b;
+            margin: 0;
+            padding: 0;
         }
 
-        .header {
+        /* Branding Header */
+        .branding {
             text-align: center;
+            border-bottom: 2px solid #10b981;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+
+        .branding h1 {
+            color: #0d9488;
+            font-size: 16pt;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .branding p {
+            font-size: 9pt;
+            color: #64748b;
+            margin: 5px 0 0;
+            font-weight: bold;
+        }
+
+        /* Official Document Header */
+        .doc-header {
+            margin-bottom: 40px;
+        }
+
+        .numero-oficio {
+            font-size: 12pt;
+            font-weight: bold;
+            color: #0f172a;
+            margin-bottom: 20px;
+        }
+
+        .identificacao {
+            margin-bottom: 25px;
+        }
+
+        .label {
+            font-weight: bold;
+            color: #475569;
+            width: 100px;
+            display: inline-block;
+        }
+
+        /* Content */
+        .content {
+            text-align: justify;
+            margin-bottom: 40px;
+        }
+
+        .vocativo {
+            font-weight: bold;
             margin-bottom: 15px;
         }
 
-        .header h1 {
-            font-size: 13pt;
-            font-weight: bold;
-            margin-bottom: 5px;
+        .texto {
+            text-indent: 1.5cm;
+            margin-bottom: 15px;
         }
 
-        .header .numero-oficio {
-            font-size: 11pt;
-            font-weight: bold;
-            margin-bottom: 10px;
+        .justificativa-box {
+            background-color: #f8fafc;
+            border-left: 4px solid #10b981;
+            padding: 15px;
+            margin: 20px 0;
+            font-style: italic;
+            font-size: 10pt;
         }
 
-        .info-block {
-            margin-bottom: 12px;
-        }
-
-        .info-line {
-            margin-bottom: 4px;
-            font-size: 11pt;
-        }
-
-        .info-label {
-            font-weight: bold;
-        }
-
-        .content {
-            text-align: justify;
-            margin-bottom: 12px;
-        }
-
-        .content p {
-            margin-bottom: 8px;
-            text-indent: 1cm;
-            font-size: 11pt;
-        }
-
-        .content .no-indent {
-            text-indent: 0;
-        }
-
-        .content h3 {
-            font-size: 11pt;
-            font-weight: bold;
-            margin-top: 10px;
-            margin-bottom: 6px;
-            text-indent: 0;
-        }
-
-        .content ol, .content ul {
-            margin-left: 1cm;
-            margin-bottom: 8px;
-            padding-left: 1.5cm;
-        }
-
-        .content li {
-            margin-bottom: 4px;
-            font-size: 10.5pt;
-        }
-
-        .signature-block {
-            margin-top: 20px;
-            text-align: center;
-        }
-
-        .signature-line {
-            border-top: 1px solid #000;
-            width: 400px;
-            margin: 30px auto 5px;
-            padding-top: 5px;
-            font-size: 10.5pt;
-        }
-
-        .table-container {
-            margin-top: 15px;
+        /* Signatures */
+        .signature-section {
+            margin-top: 60px;
             page-break-inside: avoid;
         }
 
-        table {
+        .signature-table {
             width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 10px;
-            font-size: 9pt;
+            border: none;
         }
 
-        table thead {
-            background-color: #f0f0f0;
-        }
-
-        table th {
-            border: 1px solid #000;
-            padding: 5px;
-            text-align: left;
-            font-weight: bold;
-            font-size: 9pt;
-        }
-
-        table td {
-            border: 1px solid #000;
-            padding: 5px;
-            text-align: left;
-            font-size: 9pt;
-        }
-
-        table td:first-child {
+        .signature-line {
+            border-top: 1px solid #94a3b8;
+            padding-top: 8px;
             text-align: center;
-            width: 35px;
+            font-size: 10pt;
+            width: 80%;
+            margin: 0 auto;
         }
 
-        table td:nth-child(4),
-        table td:nth-child(5) {
-            text-align: center;
-            width: 60px;
-        }
-
-        table td:nth-child(6) {
+        .cargo {
             font-size: 8.5pt;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
+        /* Table Style (Appendix) */
         .page-break {
             page-break-before: always;
         }
 
-        .footer {
-            margin-top: 15px;
-            font-size: 8pt;
+        .anexo-header {
+            margin-bottom: 25px;
             text-align: center;
-            color: #666;
+        }
+
+        .items-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-bottom: 20px;
+            font-size: 9.5pt;
+        }
+
+        .items-table th {
+            background-color: #f1f5f9;
+            color: #334155;
+            font-weight: bold;
+            text-align: left;
+            padding: 12px 8px;
+            border-bottom: 2px solid #cbd5e1;
+            text-transform: uppercase;
+            font-size: 8pt;
+        }
+
+        .items-table td {
+            padding: 10px 8px;
+            border-bottom: 1px solid #e2e8f0;
+            vertical-align: top;
+        }
+
+        .items-table tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        .item-nome {
+            font-weight: bold;
+            color: #0f172a;
+        }
+
+        .item-spec {
+            font-size: 8.5pt;
+            color: #64748b;
+            margin-top: 3px;
+        }
+
+        /* Footer */
+        .footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            font-size: 7.5pt;
+            color: #94a3b8;
+            border-top: 1px solid #f1f5f9;
+            padding-top: 8px;
         }
     </style>
 </head>
 <body>
-    <!-- Cabeçalho -->
-    <div class="header">
-        <h1>OFÍCIO DE SOLICITAÇÃO DE MATERIAIS</h1>
-        @if($numero_oficio)
-            <div class="numero-oficio">N.º {{ $numero_oficio }}/{{ $ano }} - SI/SA</div>
-        @else
-            <div class="numero-oficio">SI/SA</div>
-        @endif
+    <!-- Official Branding -->
+    <div class="branding">
+        <h1>Prefeitura Municipal de Coração de Maria</h1>
+        <p>Secretaria Municipal de Agricultura | Setor de Infraestrutura</p>
     </div>
 
-    <!-- Informações do Ofício -->
-    <div class="info-block">
-        <div class="info-line">
-            <span class="info-label">Local e Data:</span> {{ $cidade }}, {{ $data->format('d') }} de {{ $data->translatedFormat('F') }} de {{ $data->format('Y') }}.
+    <!-- Official Document Header -->
+    <div class="doc-header">
+        <div class="numero-oficio">
+            OFÍCIO Nº {{ $numero_oficio ?? '____' }}/{{ $ano ?? now()->year }} - SI/SA
         </div>
-        <div class="info-line">
-            <span class="info-label">Para:</span> À Sua Excelência, o(a) Senhor(a)
-        </div>
-        <div class="info-line" style="margin-left: 20px;">
-            <strong>{{ $secretario_nome }}</strong>
-        </div>
-        <div class="info-line" style="margin-left: 20px;">
-            {{ $secretario_cargo }}
-        </div>
-        <div class="info-line">
-            <span class="info-label">Assunto:</span> Solicitação de materiais e equipamentos para o Setor de Infraestrutura - Secretaria de Agricultura.
-        </div>
-    </div>
 
-    <!-- Conteúdo Principal -->
-    <div class="content">
-        <p class="no-indent"><strong>Prezado(a) Senhor(a) Secretário(a),</strong></p>
-
-        <p>O <strong>Setor de Infraestrutura (SI)</strong>, vinculado à <strong>Secretaria Municipal de Agricultura (SA)</strong>, vem solicitar a aquisição e/ou reposição dos materiais e equipamentos listados abaixo, necessários para a manutenção e operação dos serviços essenciais deste Setor.</p>
-
-        <p><strong>Justificativa:</strong> A solicitação fundamenta-se na necessidade de: (1) Repor itens abaixo do nível mínimo de segurança; (2) Substituir materiais danificados ou com vida útil esgotada; (3) Garantir conformidade com Normas Regulamentadoras (NRs) através da aquisição de EPIs.</p>
-
-        <p>Os itens solicitados destinam-se exclusivamente à utilização em projetos de infraestrutura agrícola, em observância aos princípios da Administração Pública.</p>
-
-        <p>Solicitamos o encaminhamento desta demanda ao setor competente para <strong>autorização, empenho e providências financeiras</strong> cabíveis.</p>
-
-        <p class="no-indent">Atenciosamente,</p>
-    </div>
-
-    <!-- Assinatura -->
-    <div class="signature-block">
-        <div class="signature-line">
-            {{ $servidor_nome }}<br>
-            {{ $servidor_cargo }}<br>
-            Secretaria Municipal de Agricultura
-            @if($servidor_telefone || $servidor_email)
-                <br>
-                @if($servidor_telefone)
-                    {{ $servidor_telefone }}
-                @endif
-                @if($servidor_telefone && $servidor_email)
-                    /
-                @endif
-                @if($servidor_email)
-                    {{ $servidor_email }}
-                @endif
-            @endif
-        </div>
-    </div>
-
-    <!-- Página 2 - Anexo -->
-    <div class="page-break"></div>
-
-    <div class="header">
-        <h1>ANEXO I - RELAÇÃO DE MATERIAIS E EQUIPAMENTOS</h1>
-        @if(isset($numero_oficio) && !empty($numero_oficio))
-            <div style="font-size: 10pt; margin-top: 5px; color: #666;">
-                Anexo ao Ofício N.º {{ $numero_oficio }}
+        <div class="identificacao">
+            <div><span class="label">DATA:</span> {{ $data->format('d/m/Y') }}</div>
+            <div><span class="label">PARA:</span> <strong>{{ $secretario_nome }}</strong></div>
+            <div style="margin-left: 100px;" class="cargo">{{ $secretario_cargo }}</div>
+            <div style="margin-top: 10px;">
+                <span class="label">ASSUNTO:</span> <strong>Solicitação de Materiais e Insumos</strong>
             </div>
-        @endif
+        </div>
     </div>
 
-    <div class="content" style="margin-bottom: 15px;">
-        <p class="no-indent" style="font-size: 10.5pt;">Relação detalhada dos materiais e equipamentos solicitados:</p>
+    <!-- Content Area -->
+    <div class="content">
+        <p class="vocativo">Senhor(a) Secretário(a),</p>
+
+        <p class="texto">
+            Vimos, por meio deste, solicitar a aquisição dos materiais e equipamentos listados no <strong>Anexo I</strong> deste documento. Esta demanda é essencial para assegurar a continuidade das operações do Setor de Infraestrutura desta Secretaria, visando o atendimento eficiente das demandas de campo e a manutenção preventiva de nossos ativos.
+        </p>
+
+        <p class="texto">
+            A referida solicitação justifica-se pela necessidade de manter os níveis operacionais de estoque e atender a projetos específicos em andamento, como detalhado nas justificativas individuais de cada item.
+        </p>
+
+        <p class="texto">
+            Certos de vossa compreensão e apoio constante às atividades de infraestrutura agrícola de nosso município, aguardamos as providências administrativas necessárias.
+        </p>
+
+        <p style="margin-top: 30px;">Respeitosamente,</p>
     </div>
 
-    <!-- Tabela de Materiais -->
-    <div class="table-container">
-        <table>
-            <thead>
-                <tr>
-                    <th>Item</th>
-                    <th>Material/Equipamento</th>
-                    <th>Especificação</th>
-                    <th>Qtd.</th>
-                    <th>Un.</th>
-                    <th>Justificativa</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($materiais as $index => $item)
-                    @if($item['is_customizado'] ?? false)
-                        {{-- Material Customizado (Não Cadastrado) --}}
-                        <tr>
-                            <td>{{ $index + 1 }}</td>
-                            <td><strong>{{ $item['nome_customizado'] }}</strong></td>
-                            <td style="font-size: 8.5pt;">
-                                {{ $item['especificacao_customizada'] ?? '-' }}
-                            </td>
-                            <td>{{ formatar_quantidade($item['quantidade'], $item['unidade_medida_customizada'] ?? null) }}</td>
-                            <td>{{ ucfirst($item['unidade_medida_customizada']) }}</td>
-                            <td style="font-size: 8.5pt;">{{ $item['justificativa'] }}</td>
-                        </tr>
-                    @else
-                        {{-- Material do Sistema --}}
-                        @php
-                            $material = $item['material'];
-                            $camposEspecificos = $material->campos_especificos ?? [];
-                            $especificacoes = [];
-
-                            // Montar especificações técnicas
-                            if (!empty($camposEspecificos)) {
-                                foreach ($camposEspecificos as $key => $value) {
-                                    if ($value) {
-                                        $label = ucfirst(str_replace('_', ' ', $key));
-                                        $especificacoes[] = "{$label}: {$value}";
-                                    }
-                                }
-                            }
-
-                            $especificacaoTexto = !empty($especificacoes)
-                                ? implode('; ', $especificacoes)
-                                : ($material->categoria_formatada ?? '');
-                        @endphp
-                        <tr>
-                            <td>{{ $index + 1 }}</td>
-                            <td><strong>{{ $material->nome }}</strong></td>
-                            <td style="font-size: 8.5pt;">
-                                {{ $especificacaoTexto }}
-                                @if($material->codigo)
-                                    <br><small>Cód: {{ $material->codigo }}</small>
-                                @endif
-                            </td>
-                            <td>{{ formatar_quantidade($item['quantidade'], $material->unidade_medida) }}</td>
-                            <td>{{ ucfirst($material->unidade_medida) }}</td>
-                            <td style="font-size: 8.5pt;">{{ $item['justificativa'] }}</td>
-                        </tr>
-                    @endif
-                @endforeach
-            </tbody>
+    <!-- Signatures -->
+    <div class="signature-section">
+        <table class="signature-table">
+            <tr>
+                <td style="width: 50%;">
+                    <div class="signature-line">
+                        <strong>{{ $servidor_nome }}</strong><br>
+                        <span class="cargo">{{ $servidor_cargo }}</span>
+                    </div>
+                </td>
+                <td style="width: 50%;">
+                    <div class="signature-line">
+                        <strong>{{ $secretario_nome }}</strong><br>
+                        <span class="cargo">{{ $secretario_cargo }}</span>
+                    </div>
+                </td>
+            </tr>
         </table>
     </div>
 
-    @if(!empty($observacoes))
-    <div class="content" style="margin-top: 10px;">
-        <p class="no-indent" style="font-size: 10pt;"><strong>Observações:</strong> {{ $observacoes }}</p>
+    <!-- Page Break for Appendix -->
+    <div class="page-break"></div>
+
+    <div class="anexo-header">
+        <h2 style="font-size: 13pt; margin-bottom: 5px;">ANEXO I</h2>
+        <p class="cargo" style="color: #94a3b8;">Relação Detalhada de Itens Solicitados</p>
+        <p style="font-size: 8pt; color: #cbd5e1;">Ofício nº {{ $numero_oficio ?? '...' }}</p>
     </div>
+
+    <table class="items-table">
+        <thead>
+            <tr>
+                <th style="width: 5%;">Item</th>
+                <th style="width: 45%;">Material / Identificação</th>
+                <th style="width: 15%; text-align: center;">Qtd / Unid</th>
+                <th style="width: 35%;">Justificativa Operacional</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($materiais as $index => $item)
+                @if($item['is_customizado'] ?? false)
+                    <tr>
+                        <td style="text-align: center;">{{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}</td>
+                        <td>
+                            <div class="item-nome">{{ $item['nome_customizado'] }}</div>
+                            <div class="item-spec">{{ $item['especificacao_customizada'] ?? 'Material de uso geral' }}</div>
+                        </td>
+                        <td style="text-align: center;">
+                            <strong>{{ formatar_quantidade($item['quantidade'], $item['unidade_medida_customizada'] ?? null) }}</strong><br>
+                            <span class="cargo" style="font-size: 7pt;">{{ strtoupper($item['unidade_medida_customizada']) }}</span>
+                        </td>
+                        <td><div class="item-spec" style="color: #1e293b; font-style: italic;">{{ $item['justificativa'] }}</div></td>
+                    </tr>
+                @else
+                    <tr>
+                        <td style="text-align: center;">{{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}</td>
+                        <td>
+                            <div class="item-nome">{{ $item['material']->nome }}</div>
+                            <div class="item-spec">
+                                {{ $item['material']->categoria_formatada ?? 'Insumos' }}
+                                @if($item['material']->codigo) | Cód: {{ $item['material']->codigo }} @endif
+                            </div>
+                        </td>
+                        <td style="text-align: center;">
+                            <strong>{{ formatar_quantidade($item['quantidade'], $item['material']->unidade_medida) }}</strong><br>
+                            <span class="cargo" style="font-size: 7pt;">{{ strtoupper($item['material']->unidade_medida) }}</span>
+                        </td>
+                        <td><div class="item-spec" style="color: #1e293b; font-style: italic;">{{ $item['justificativa'] }}</div></td>
+                    </tr>
+                @endif
+            @endforeach
+        </tbody>
+    </table>
+
+    @if(!empty($observacoes))
+        <div class="justificativa-box">
+            <strong style="font-style: normal; color: #475569; text-transform: uppercase; font-size: 8pt;">Observações Adicionais:</strong><br>
+            {{ $observacoes }}
+        </div>
     @endif
 
-    <!-- Rodapé -->
     <div class="footer">
-        <p>Documento gerado em {{ now()->format('d/m/Y H:i') }} por {{ $usuario->name ?? 'Sistema' }}</p>
+        Este documento é de uso interno da Secretaria Municipal de Agricultura. Gerado pelo Sistema VERTEXSEMAGRI em {{ now()->format('d/m/Y H:i') }}.
     </div>
 </body>
 </html>
-

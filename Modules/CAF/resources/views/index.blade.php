@@ -1,5 +1,8 @@
-<x-caf::layouts.master>
-    <h1>Hello World</h1>
+@extends('Co-Admin.layouts.app')
 
-    <p>Module: {!! config('caf.name') !!}</p>
-</x-caf::layouts.master>
+@section('content')
+    <div class="p-6">
+        <h1>CAF Module</h1>
+        <p>Module: {!! config('caf.name') !!}</p>
+    </div>
+@endsection

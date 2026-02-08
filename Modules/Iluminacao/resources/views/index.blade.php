@@ -24,15 +24,15 @@
             </h1>
             <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Gerenciamento de pontos de iluminação pública</p>
         </div>
-        
+
         <div class="flex flex-wrap gap-2 items-center">
-            <a href="{{ route('iluminacao.export-neoenergia') }}" 
+            <a href="{{ route('iluminacao.export-neoenergia') }}"
                @click="loading = true; setTimeout(() => loading = false, 3000)"
                class="inline-flex items-center px-3 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md font-semibold text-xs text-gray-700 dark:text-gray-300 uppercase tracking-widest shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 transition ease-in-out duration-150">
                 <x-iluminacao::icon name="arrow-down-tray" class="w-4 h-4 mr-2" />
                 Exportar
             </a>
-            
+
             <form action="{{ route('iluminacao.import-neoenergia') }}" method="POST" enctype="multipart/form-data" class="flex items-center gap-1" @submit="loading = true">
                 @csrf
                 <label class="cursor-pointer inline-flex items-center px-3 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md font-semibold text-xs text-gray-700 dark:text-gray-300 uppercase tracking-widest shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 transition ease-in-out duration-150">
@@ -95,7 +95,7 @@
                 'name' => 'localidade_id',
                 'label' => 'Localidade',
                 'type' => 'select',
-                'options' => ->pluck('nome', 'id')->prepend('Todas', '')->toArray(),
+                'options' => $localidades->pluck('nome', 'id')->prepend('Todas', '')->toArray(),
                 'value' => ['localidade_id'] ?? ''
             ]
         ]"
@@ -104,7 +104,7 @@
     />
 
     <!-- Tabela -->
-    @if(->count() > 0)
+    @if($pontos->count() > 0)
         <div class="overflow-x-auto bg-white dark:bg-gray-800 shadow-md sm:rounded-lg">
             <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -118,53 +118,53 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach( as )
+                    @foreach($pontos as $ponto)
                         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                             <td class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                                {{ ->codigo }}
+                                {{ $ponto->codigo }}
                             </td>
                             <td class="px-6 py-4">
                                 <div class="flex items-center">
                                     <x-iluminacao::icon name="map-pin" class="w-4 h-4 mr-1 text-gray-400" />
-                                    {{ ->localidade->nome ?? 'N/A' }}
+                                    {{ $ponto->localidade->nome ?? 'N/A' }}
                                 </div>
                             </td>
-                            <td class="px-6 py-4 truncate max-w-xs" title="{{ ->endereco }}">
-                                {{ ->endereco }}
+                            <td class="px-6 py-4 truncate max-w-xs" title="{{ $ponto->endereco }}">
+                                {{ $ponto->endereco }}
                             </td>
                             <td class="px-6 py-4">
-                                {{ ->tipo_lampada ?? '-' }}
-                                @if(->potencia)
-                                    <span class="text-xs text-gray-400">({{ ->potencia }}W)</span>
+                                {{ $ponto->tipo_lampada ?? '-' }}
+                                @if($ponto->potencia)
+                                    <span class="text-xs text-gray-400">({{ $ponto->potencia }}W)</span>
                                 @endif
                             </td>
                             <td class="px-6 py-4">
                                 @php
-                                     = [
+                                     $statusColors = [
                                         'funcionando' => 'success',
                                         'com_defeito' => 'warning',
                                         'desligado' => 'danger'
                                     ];
-                                     = [
+                                     $statusIcons = [
                                         'funcionando' => 'check-circle',
                                         'com_defeito' => 'exclamation-triangle',
                                         'desligado' => 'x-circle'
                                     ];
                                 @endphp
-                                <x-iluminacao::badge :variant="[->status] ?? 'secondary'">
-                                    <x-iluminacao::icon :name="[->status] ?? 'question-mark-circle'" class="w-3 h-3 mr-1" />
-                                    {{ ucfirst(str_replace('_', ' ', ->status)) }}
+                                <x-iluminacao::badge :variant="$statusColors[$ponto->status] ?? 'secondary'">
+                                    <x-iluminacao::icon :name="$statusIcons[$ponto->status] ?? 'question-mark-circle'" class="w-3 h-3 mr-1" />
+                                    {{ ucfirst(str_replace('_', ' ', $ponto->status)) }}
                                 </x-iluminacao::badge>
                             </td>
                             <td class="px-6 py-4">
                                 <div class="flex items-center space-x-3">
-                                    <a href="{{ route('iluminacao.show', ) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">
+                                    <a href="{{ route('iluminacao.show', $ponto) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">
                                         <x-iluminacao::icon name="eye" class="w-5 h-5" />
                                     </a>
-                                    <a href="{{ route('iluminacao.edit', ) }}" class="font-medium text-yellow-600 dark:text-yellow-500 hover:underline">
+                                    <a href="{{ route('iluminacao.edit', $ponto) }}" class="font-medium text-yellow-600 dark:text-yellow-500 hover:underline">
                                         <x-iluminacao::icon name="pencil" class="w-5 h-5" />
                                     </a>
-                                    <form action="{{ route('iluminacao.destroy', ) }}" method="POST" class="inline-block" onsubmit="return confirm('Tem certeza que deseja deletar este ponto?');">
+                                    <form action="{{ route('iluminacao.destroy', $ponto) }}" method="POST" class="inline-block" onsubmit="return confirm('Tem certeza que deseja deletar este ponto?');">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="font-medium text-red-600 dark:text-red-500 hover:underline">
@@ -179,7 +179,7 @@
             </table>
         </div>
         <div class="mt-4">
-            {{ ->appends()->links() }}
+            {{ $pontos->appends($filters)->links() }}
         </div>
     @else
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 text-center">

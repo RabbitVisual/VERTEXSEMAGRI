@@ -4,7 +4,7 @@ namespace Modules\Materiais\Providers;
 
 use Modules\Materiais\App\Models\Material;
 use Modules\Materiais\App\Observers\MaterialObserver;
-use Modules\Materiais\App\Console\SyncNcmCommand; // Corrected namespace if moved
+use Modules\Materiais\App\Console\Commands\SyncNcmCommand;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Nwidart\Modules\Traits\PathNamespace;

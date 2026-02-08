@@ -1,5 +1,8 @@
-<x-programasagricultura::layouts.master>
-    <h1>Hello World</h1>
+@extends('Co-Admin.layouts.app')
 
-    <p>Module: {!! config('programasagricultura.name') !!}</p>
-</x-programasagricultura::layouts.master>
+@section('content')
+    <div class="p-6">
+        <h1>Programas de Agricultura Module</h1>
+        <p>Module: {!! config('programasagricultura.name') !!}</p>
+    </div>
+@endsection

@@ -15,7 +15,129 @@
             </h1>
             <nav aria-label="breadcrumb" class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
                 <a href="{{ route('admin.dashboard') }}" class="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Admin</a>
-                <x-icon name="magnifying-glass" class="w-5 h-5" />
+                <x-icon name="chevron-right" class="w-4 h-4" />
+                <span class="text-gray-900 dark:text-white font-medium">Materiais</span>
+            </nav>
+        </div>
+        <div class="flex gap-2">
+            <a href="{{ route('admin.dashboard') }}" class="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:ring-4 focus:ring-gray-200 dark:bg-slate-700 dark:text-gray-300 dark:border-slate-600 dark:hover:bg-slate-600 dark:focus:ring-slate-700 transition-colors">
+                <x-icon name="arrow-left" class="w-5 h-5" />
+                Voltar
+            </a>
+            <a href="{{ route('materiais.index') }}" class="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-white bg-emerald-600 rounded-lg hover:bg-emerald-700 focus:ring-4 focus:ring-emerald-300 dark:bg-emerald-600 dark:hover:bg-emerald-700 dark:focus:ring-emerald-800 transition-colors">
+                <x-icon name="eye" class="w-5 h-5" />
+                Ver Painel Padrão
+            </a>
+        </div>
+    </div>
+
+    <!-- Flash Messages -->
+    @if(session('success'))
+    <div class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
+        <div class="flex items-center">
+            <x-icon name="circle-check" class="w-5 h-5 mr-3" />
+            <span>{{ session('success') }}</span>
+        </div>
+    </div>
+    @endif
+
+    <!-- Estatísticas -->
+    @if(isset($estatisticas))
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 md:gap-6 mb-8">
+        <div class="p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-slate-800 dark:border-slate-700">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Total</p>
+                    <p class="text-2xl font-bold text-gray-900 dark:text-white mt-1">{{ $estatisticas['total'] ?? 0 }}</p>
+                </div>
+                <div class="p-3 bg-indigo-100 rounded-lg dark:bg-indigo-900/30">
+                    <x-icon name="box-archive" class="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
+                </div>
+            </div>
+        </div>
+        <div class="p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-slate-800 dark:border-slate-700">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Ativos</p>
+                    <p class="text-2xl font-bold text-gray-900 dark:text-white mt-1">{{ $estatisticas['ativos'] ?? 0 }}</p>
+                </div>
+                <div class="p-3 bg-emerald-100 rounded-lg dark:bg-emerald-900/30">
+                    <x-icon name="circle-check" class="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
+                </div>
+            </div>
+        </div>
+        <div class="p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-slate-800 dark:border-slate-700">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Baixo Estoque</p>
+                    <p class="text-2xl font-bold text-gray-900 dark:text-white mt-1">{{ $estatisticas['baixo_estoque'] ?? 0 }}</p>
+                </div>
+                <div class="p-3 bg-amber-100 rounded-lg dark:bg-amber-900/30">
+                    <x-icon name="triangle-exclamation" class="w-6 h-6 text-amber-600 dark:text-amber-400" />
+                </div>
+            </div>
+        </div>
+        <div class="p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-slate-800 dark:border-slate-700">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Sem Estoque</p>
+                    <p class="text-2xl font-bold text-gray-900 dark:text-white mt-1">{{ $estatisticas['sem_estoque'] ?? 0 }}</p>
+                </div>
+                <div class="p-3 bg-red-100 rounded-lg dark:bg-red-900/30">
+                    <x-icon name="circle-xmark" class="w-6 h-6 text-red-600 dark:text-red-400" />
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
+
+    <!-- Filtros - Flowbite Card -->
+    <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700">
+        <div class="px-6 py-4 border-b border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-900/50">
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+                <x-icon name="filter" class="w-5 h-5 text-gray-500" />
+                Filtros de Busca
+            </h3>
+        </div>
+        <form method="GET" action="{{ route('admin.materiais.index') }}" class="p-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div>
+                    <label for="search" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Buscar</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                            <x-icon name="magnifying-glass" class="w-4 h-4 text-gray-500" />
+                        </div>
+                        <input type="text" name="search" id="search" value="{{ $filters['search'] ?? '' }}" placeholder="Código, nome..." class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full pl-10 p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-emerald-500 dark:focus:border-emerald-500">
+                    </div>
+                </div>
+                <div>
+                    <label for="categoria_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Categoria</label>
+                    <select name="categoria_id" id="categoria_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:text-white dark:focus:ring-emerald-500 dark:focus:border-emerald-500">
+                        <option value="">Todas</option>
+                        @foreach($categorias as $cat)
+                            <option value="{{ $cat->id }}" {{ ($filters['categoria_id'] ?? '') == $cat->id ? 'selected' : '' }}>{{ $cat->nome }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div>
+                    <label for="ativo" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Status</label>
+                    <select name="ativo" id="ativo" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:text-white dark:focus:ring-emerald-500 dark:focus:border-emerald-500">
+                        <option value="">Todos</option>
+                        <option value="1" {{ ($filters['ativo'] ?? '') == '1' ? 'selected' : '' }}>Ativos</option>
+                        <option value="0" {{ ($filters['ativo'] ?? '') == '0' ? 'selected' : '' }}>Inativos</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="baixo_estoque" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Baixo Estoque</label>
+                    <select name="baixo_estoque" id="baixo_estoque" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:text-white dark:focus:ring-emerald-500 dark:focus:border-emerald-500">
+                        <option value="">Todos</option>
+                        <option value="1" {{ ($filters['baixo_estoque'] ?? '') == '1' ? 'selected' : '' }}>Sim</option>
+                    </select>
+                </div>
+            </div>
+            <div class="mt-4 flex gap-2">
+                <button type="submit" class="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-white bg-emerald-600 rounded-lg hover:bg-emerald-700 focus:ring-4 focus:ring-emerald-300 dark:bg-emerald-600 dark:hover:bg-emerald-700 dark:focus:ring-emerald-800 transition-colors">
+                    <x-icon name="filter" class="w-5 h-5" />
                     Filtrar
                 </button>
                 <a href="{{ route('admin.materiais.index') }}" class="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:ring-4 focus:ring-gray-200 dark:bg-slate-700 dark:text-gray-300 dark:border-slate-600 dark:hover:bg-slate-600 dark:focus:ring-slate-700 transition-colors">
@@ -48,12 +170,14 @@
                     <tr class="bg-white border-b dark:bg-slate-800 dark:border-slate-700 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors">
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">{{ $material->codigo }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">{{ $material->nome }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400">{{ ucfirst($material->categoria ?? '-') }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400">
+                            {{ $material->subcategoria->categoria->nome ?? '-' }}
+                        </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm">
                             <strong class="{{ $material->estaComEstoqueBaixo() ? 'text-red-600 dark:text-red-400' : 'text-gray-900 dark:text-white' }}">
                                 {{ formatar_quantidade($material->quantidade_estoque, $material->unidade_medida) }}
                             </strong>
-                            @if($material->quantidade_minima && $material->quantidade_estoque <= $material->quantidade_minima)
+                            @if($material->estaComEstoqueBaixo())
                                 <span class="ml-2 px-2.5 py-0.5 text-xs font-medium rounded-full bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-300">Baixo</span>
                             @endif
                         </td>
