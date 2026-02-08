@@ -213,13 +213,25 @@
         export-route="{{ route('demandas.index') }}"
     >
         @forelse($demandas as $demanda)
-            <tr class="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-all duration-200">
+            @php
+                $isHighSimilarity = ($demanda->score_similaridade_max ?? 0) > 80;
+                $rowClass = $isHighSimilarity ? 'bg-amber-50 dark:bg-amber-900/10 hover:bg-amber-100 dark:hover:bg-amber-900/20' : 'hover:bg-gray-50 dark:hover:bg-gray-800/50';
+            @endphp
+            <tr class="{{ $rowClass }} transition-all duration-200">
                 <td class="px-6 py-4 whitespace-nowrap">
                     <div class="flex items-center gap-2">
                         <div class="p-2 bg-gradient-to-br from-indigo-100 to-indigo-200 dark:from-indigo-900/30 dark:to-indigo-800/30 rounded-xl shadow-sm">
                             <x-module-icon module="Demandas" class="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
                         </div>
-                        <span class="font-semibold text-indigo-600 dark:text-indigo-400">{{ $demanda->codigo ?? 'N/A' }}</span>
+                        <div class="flex flex-col">
+                            <span class="font-semibold text-indigo-600 dark:text-indigo-400">{{ $demanda->codigo ?? 'N/A' }}</span>
+                            @if($isHighSimilarity)
+                                <div class="flex items-center gap-1 mt-1 text-xs text-amber-600 dark:text-amber-400" title="Geographic Similarity: {{ $demanda->score_similaridade_max }}% - Nearby Demand detected">
+                                    <x-icon name="triangle-exclamation" class="w-3 h-3" />
+                                    <span>Duplicata Provável</span>
+                                </div>
+                            @endif
+                        </div>
                     </div>
                 </td>
                 <td class="px-6 py-4">

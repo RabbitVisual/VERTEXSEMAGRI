@@ -150,7 +150,7 @@
         <div class="container mx-auto px-4">
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <!-- Consultar Demanda Card -->
-                <a href="{{ route('demandas.publico.index') }}" class="group block">
+                <a href="{{ route('demandas.public.consulta') }}" class="group block">
                     <div class="bg-white dark:bg-slate-800 rounded-3xl p-8 border border-emerald-100 dark:border-slate-700 shadow-xl hover:shadow-2xl hover:scale-[1.02] transition-all duration-500 overflow-hidden relative">
                         <div class="absolute top-0 right-0 w-32 h-32 bg-cyan-500/10 rounded-bl-full -mr-16 -mt-16 group-hover:scale-110 transition-transform"></div>
                         <div class="w-14 h-14 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-2xl flex items-center justify-center mb-6 group-hover:rotate-6 transition-transform shadow-lg shadow-cyan-500/30">
