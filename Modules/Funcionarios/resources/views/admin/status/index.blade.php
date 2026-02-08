@@ -52,30 +52,7 @@
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6 border-b border-gray-200 dark:border-gray-700">
         <div>
             <h1 class="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-3">
-                <svg class="w-7 h-7 text-emerald-600 dark:text-emerald-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
-                </svg>
-                Monitoramento em Tempo Real
-            </h1>
-            <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                Status atual dos funcionários em campo
-                <span class="inline-flex items-center gap-1 ml-2 text-xs text-emerald-600 dark:text-emerald-500">
-                    <span class="w-2 h-2 bg-emerald-500 rounded-full pulse-animation"></span>
-                    Atualização automática a cada 15s
-                </span>
-            </p>
-        </div>
-        <div class="flex items-center gap-2">
-            <a href="{{ route('admin.funcionarios.index') }}" class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-700">
-                <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
-                </svg>
-                Voltar
-            </a>
-            <button onclick="atualizarAgora()" class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-white bg-emerald-600 rounded-lg hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500">
-                <svg class="w-4 h-4 mr-2" id="refresh-icon" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
-                </svg>
+                <x-icon name="rotate-right" class="w-5 h-5" />
                 Atualizar
             </button>
         </div>

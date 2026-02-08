@@ -9,17 +9,7 @@
         <div>
             <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white flex items-center gap-3 mb-2">
                 <div class="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl flex items-center justify-center shadow-lg">
-                    <svg class="w-6 h-6 md:w-7 md:h-7 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5M9 11.25v1.5M12 9v3.75m3-3.75v3.75m-3 .75h3.75m-3.75 0h-3.75" />
-                    </svg>
-                </div>
-                <span>Dashboard Administrativo</span>
-            </h1>
-            <nav aria-label="breadcrumb" class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
-                <a href="{{ route('admin.dashboard') }}" class="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Admin</a>
-                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-                </svg>
+                    <x-icon name="chevron-right" class="w-4 h-4" />
                 <span class="text-gray-900 dark:text-white font-medium">Dashboard</span>
             </nav>
         </div>
@@ -36,102 +26,18 @@
                     <p class="text-xs text-emerald-600 dark:text-emerald-400 mt-1">{{ $stats['active_users'] }} ativos</p>
                 </div>
                 <div class="p-3 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg">
-                    <svg class="w-8 h-8 text-emerald-600 dark:text-emerald-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <!-- Card Logs Hoje -->
-        <div class="p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-slate-800 dark:border-slate-700 hover:shadow-md transition-shadow">
-            <div class="flex items-center justify-between">
-                <div>
-                    <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Logs Hoje</p>
-                    <p class="text-2xl font-bold text-gray-900 dark:text-white mt-2">{{ $stats['logs_today'] }}</p>
-                    <p class="text-xs text-blue-600 dark:text-blue-400 mt-1">{{ $stats['logs_week'] }} esta semana</p>
-                </div>
-                <div class="p-3 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
-                    <svg class="w-8 h-8 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <!-- Card Total de Logs -->
-        <div class="p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-slate-800 dark:border-slate-700 hover:shadow-md transition-shadow">
-            <div class="flex items-center justify-between">
-                <div>
-                    <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Total de Logs</p>
-                    <p class="text-2xl font-bold text-gray-900 dark:text-white mt-2">{{ number_format($stats['total_logs']) }}</p>
-                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Registros de auditoria</p>
-                </div>
-                <div class="p-3 bg-green-100 dark:bg-green-900/30 rounded-lg">
-                    <svg class="w-8 h-8 text-green-600 dark:text-green-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125" />
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <!-- Card Usuários Inativos -->
-        <div class="p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-slate-800 dark:border-slate-700 hover:shadow-md transition-shadow">
-            <div class="flex items-center justify-between">
-                <div>
-                    <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Usuários Inativos</p>
-                    <p class="text-2xl font-bold text-gray-900 dark:text-white mt-2">{{ $stats['inactive_users'] }}</p>
-                    <p class="text-xs text-amber-600 dark:text-amber-400 mt-1">Necessitam atenção</p>
-                </div>
-                <div class="p-3 bg-amber-100 dark:bg-amber-900/30 rounded-lg">
-                    <svg class="w-8 h-8 text-amber-600 dark:text-amber-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.645-5.864-1.766A13.076 13.076 0 016.172 9m12.828 9a13.076 13.076 0 00-5.864-1.766M6.172 9l5.864 1.766M6.172 9l-1.766 5.864m7.728 0l1.766-5.864m-7.728 0l5.864-1.766" />
-                    </svg>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Alertas - Flowbite Alert -->
-    @if(isset($stats['solicitacoes_campo_pendentes']) && $stats['solicitacoes_campo_pendentes'] > 0)
-    <div id="alert-solicitacoes" class="flex items-center p-4 mb-4 text-amber-800 border border-amber-300 rounded-lg bg-amber-50 dark:bg-amber-900/20 dark:text-amber-400 dark:border-amber-800" role="alert">
-        <svg class="flex-shrink-0 w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-            <path fill-rule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"/>
-        </svg>
-        <div class="ml-3 text-sm font-medium flex-1">
-            <strong class="font-bold">Solicitações Pendentes:</strong> Há <strong>{{ $stats['solicitacoes_campo_pendentes'] }}</strong> solicitação(ões) de materiais aguardando processamento.
-        </div>
-        <a href="{{ route('admin.materiais.solicitacoes-campo.index') }}" class="ml-auto -mx-1.5 -my-1.5 bg-amber-50 text-amber-500 rounded-lg focus:ring-2 focus:ring-amber-400 p-1.5 hover:bg-amber-200 inline-flex h-8 w-8 dark:bg-amber-900/20 dark:text-amber-400 dark:hover:bg-amber-900/30" data-dismiss-target="#alert-solicitacoes" aria-label="Close">
-            <span class="sr-only">Ver Solicitações</span>
-            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-            </svg>
-        </a>
-    </div>
-    @endif
-
-    <!-- Formulários Manuais - Flowbite Card -->
-    <div class="p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-slate-800 dark:border-slate-700">
-        <div class="flex items-start gap-4">
-            <div class="flex-shrink-0 p-3 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
-                <svg class="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
-                </svg>
+                    <x-icon name="file-pdf" class="w-5 h-5" />
             </div>
             <div class="flex-1">
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-1">Formulários Manuais para Manutenção</h3>
                 <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Gere formulários para preenchimento manual quando o sistema estiver em manutenção ou indisponível.</p>
                 <div class="flex flex-wrap gap-3">
                     <a href="{{ route('admin.formularios.demanda') }}" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
-                        </svg>
+                        <x-icon name="file-pdf" class="w-5 h-5" />
                         Formulário de Demanda
                     </a>
                     <a href="{{ route('admin.formularios.ordem') }}" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-indigo-700 rounded-lg hover:bg-indigo-800 focus:ring-4 focus:ring-indigo-300 dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800">
-                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
-                        </svg>
+                        <x-icon name="file-pdf" class="w-5 h-5" />
                         Formulário de Ordem de Serviço
                     </a>
                 </div>

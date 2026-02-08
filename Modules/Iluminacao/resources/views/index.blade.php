@@ -3,7 +3,18 @@
 @section('title', 'Pontos de Luz')
 
 @section('content')
-<div class="space-y-6">
+<div x-data="{ loading: false }" class="space-y-6">
+    <!-- Loading Overlay -->
+    <div x-show="loading" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50" style="display: none;">
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl flex flex-col items-center">
+            <svg class="animate-spin h-10 w-10 text-indigo-600 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <p class="text-gray-700 dark:text-gray-300 font-medium">Processando...</p>
+        </div>
+    </div>
+
     <!-- Page Header -->
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 border-b border-gray-200 dark:border-gray-700">
         <div>
@@ -13,10 +24,29 @@
             </h1>
             <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Gerenciamento de pontos de iluminação pública</p>
         </div>
-        <x-iluminacao::button href="{{ route('iluminacao.create') }}" variant="primary">
-            <x-iluminacao::icon name="plus-circle" class="w-4 h-4 mr-2" />
-            Novo Ponto
-        </x-iluminacao::button>
+        
+        <div class="flex flex-wrap gap-2 items-center">
+            <a href="{{ route('iluminacao.export-neoenergia') }}" 
+               @click="loading = true; setTimeout(() => loading = false, 3000)"
+               class="inline-flex items-center px-3 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md font-semibold text-xs text-gray-700 dark:text-gray-300 uppercase tracking-widest shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 transition ease-in-out duration-150">
+                <x-iluminacao::icon name="arrow-down-tray" class="w-4 h-4 mr-2" />
+                Exportar
+            </a>
+            
+            <form action="{{ route('iluminacao.import-neoenergia') }}" method="POST" enctype="multipart/form-data" class="flex items-center gap-1" @submit="loading = true">
+                @csrf
+                <label class="cursor-pointer inline-flex items-center px-3 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md font-semibold text-xs text-gray-700 dark:text-gray-300 uppercase tracking-widest shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 transition ease-in-out duration-150">
+                    <x-iluminacao::icon name="document-text" class="w-4 h-4 mr-2" />
+                    <span class="truncate max-w-[100px]">Importar CSV</span>
+                    <input type="file" name="file" accept=".csv,.txt" class="hidden" onchange="this.form.submit()">
+                </label>
+            </form>
+
+            <x-iluminacao::button href="{{ route('iluminacao.create') }}" variant="primary">
+                <x-iluminacao::icon name="plus-circle" class="w-4 h-4 mr-2" />
+                Novo Ponto
+            </x-iluminacao::button>
+        </div>
     </div>
 
     <!-- Alertas -->
@@ -50,125 +80,118 @@
                     '' => 'Todos',
                     'funcionando' => 'Funcionando',
                     'com_defeito' => 'Com Defeito',
-                    'desligado' => 'Desligado'
+                    'desligado' => 'Desligado',
                 ],
+                'value' => ['status'] ?? ''
             ],
             [
                 'name' => 'tipo_lampada',
                 'label' => 'Tipo Lâmpada',
-                'type' => 'select',
-                'options' => [
-                    '' => 'Todos',
-                    'led' => 'LED',
-                    'fluorescente' => 'Fluorescente',
-                    'incandescente' => 'Incandescente',
-                    'vapor_sodio' => 'Vapor de Sódio',
-                    'mercurio' => 'Mercúrio'
-                ],
+                'type' => 'text',
+                'value' => ['tipo_lampada'] ?? '',
+                'placeholder' => 'Ex: LED'
             ],
             [
                 'name' => 'localidade_id',
                 'label' => 'Localidade',
                 'type' => 'select',
-                'options' => $localidades->pluck('nome', 'id')->toArray() + ['' => 'Todas'],
+                'options' => ->pluck('nome', 'id')->prepend('Todas', '')->toArray(),
+                'value' => ['localidade_id'] ?? ''
             ]
         ]"
-        search-placeholder="Buscar por código ou endereço..."
+        search-placeholder="Buscar por código, endereço, trafo ou barramento..."
+        :search-value="['search'] ?? ''"
     />
 
-    <!-- Tabela de Pontos -->
-    <x-iluminacao::data-table
-        :headers="['Código', 'Endereço', 'Localidade', 'Tipo Lâmpada', 'Potência', 'Status']"
-        :data="$pontos"
-        export-route="{{ route('iluminacao.index') }}"
-    >
-        @forelse($pontos as $ponto)
-            <tr class="hover:bg-gray-50 dark:hover:bg-gray-800/50">
-                <td class="px-6 py-4 whitespace-nowrap">
-                    <strong class="text-indigo-600 dark:text-indigo-400">{{ $ponto->codigo ?? 'N/A' }}</strong>
-                </td>
-                <td class="px-6 py-4">
-                    <div class="text-sm text-gray-900 dark:text-white">{{ $ponto->endereco }}</div>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                    @if($ponto->localidade)
-                        <a href="{{ route('localidades.show', $ponto->localidade->id) }}" class="text-indigo-600 dark:text-indigo-400 hover:underline inline-flex items-center gap-1">
-                            <x-iluminacao::icon name="map-pin" class="w-4 h-4" />
-                            {{ $ponto->localidade->nome }}
-                        </a>
-                    @else
-                        <span class="text-gray-400">N/A</span>
-                    @endif
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                    <x-iluminacao::badge variant="info">
-                        {{ ucfirst(str_replace('_', ' ', $ponto->tipo_lampada ?? 'N/A')) }}
-                    </x-iluminacao::badge>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                    @if($ponto->potencia)
-                        <strong class="text-gray-900 dark:text-white">{{ $ponto->potencia }}W</strong>
-                    @else
-                        <span class="text-gray-400">-</span>
-                    @endif
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                    @php
-                        $statusColors = [
-                            'funcionando' => 'success',
-                            'com_defeito' => 'warning',
-                            'desligado' => 'danger'
-                        ];
-                        $statusIcons = [
-                            'funcionando' => 'check-circle',
-                            'com_defeito' => 'exclamation-triangle',
-                            'desligado' => 'x-circle'
-                        ];
-                    @endphp
-                    <x-iluminacao::badge :variant="$statusColors[$ponto->status] ?? 'secondary'">
-                        <x-iluminacao::icon :name="$statusIcons[$ponto->status] ?? 'question-mark-circle'" class="w-3 h-3 mr-1" />
-                        {{ ucfirst(str_replace('_', ' ', $ponto->status)) }}
-                    </x-iluminacao::badge>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    <div class="flex items-center justify-end gap-2">
-                        <a href="{{ route('iluminacao.show', $ponto) }}"
-                           class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-900 dark:hover:text-indigo-300"
-                           title="Ver detalhes">
-                            <x-iluminacao::icon name="eye" class="w-5 h-5" />
-                        </a>
-                        <a href="{{ route('iluminacao.edit', $ponto) }}"
-                           class="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-300"
-                           title="Editar">
-                            <x-iluminacao::icon name="pencil" class="w-5 h-5" />
-                        </a>
-                        <form action="{{ route('iluminacao.destroy', $ponto) }}"
-                              method="POST"
-                              class="inline"
-                              onsubmit="return confirm('Deseja realmente deletar este ponto?')">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit"
-                                    class="text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300"
-                                    title="Deletar">
-                                <x-iluminacao::icon name="trash" class="w-5 h-5" />
-                            </button>
-                        </form>
-                    </div>
-                </td>
-            </tr>
-        @empty
-            <tr>
-                <td colspan="7" class="px-6 py-12 text-center">
-                    <x-iluminacao::icon name="inbox" class="w-12 h-12 mx-auto text-gray-400 mb-3" />
-                    <p class="text-gray-500 dark:text-gray-400 mb-4">Nenhum ponto encontrado</p>
-                    <x-iluminacao::button href="{{ route('iluminacao.create') }}" variant="primary">
-                        <x-iluminacao::icon name="plus-circle" class="w-4 h-4 mr-2" />
-                        Criar Primeiro Ponto
-                    </x-iluminacao::button>
-                </td>
-            </tr>
-        @endforelse
-    </x-iluminacao::data-table>
+    <!-- Tabela -->
+    @if(->count() > 0)
+        <div class="overflow-x-auto bg-white dark:bg-gray-800 shadow-md sm:rounded-lg">
+            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+                        <th scope="col" class="px-6 py-3">Código</th>
+                        <th scope="col" class="px-6 py-3">Localidade</th>
+                        <th scope="col" class="px-6 py-3">Endereço</th>
+                        <th scope="col" class="px-6 py-3">Tipo Lâmpada</th>
+                        <th scope="col" class="px-6 py-3">Status</th>
+                        <th scope="col" class="px-6 py-3">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach( as )
+                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                            <td class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                {{ ->codigo }}
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="flex items-center">
+                                    <x-iluminacao::icon name="map-pin" class="w-4 h-4 mr-1 text-gray-400" />
+                                    {{ ->localidade->nome ?? 'N/A' }}
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 truncate max-w-xs" title="{{ ->endereco }}">
+                                {{ ->endereco }}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ ->tipo_lampada ?? '-' }}
+                                @if(->potencia)
+                                    <span class="text-xs text-gray-400">({{ ->potencia }}W)</span>
+                                @endif
+                            </td>
+                            <td class="px-6 py-4">
+                                @php
+                                     = [
+                                        'funcionando' => 'success',
+                                        'com_defeito' => 'warning',
+                                        'desligado' => 'danger'
+                                    ];
+                                     = [
+                                        'funcionando' => 'check-circle',
+                                        'com_defeito' => 'exclamation-triangle',
+                                        'desligado' => 'x-circle'
+                                    ];
+                                @endphp
+                                <x-iluminacao::badge :variant="[->status] ?? 'secondary'">
+                                    <x-iluminacao::icon :name="[->status] ?? 'question-mark-circle'" class="w-3 h-3 mr-1" />
+                                    {{ ucfirst(str_replace('_', ' ', ->status)) }}
+                                </x-iluminacao::badge>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="flex items-center space-x-3">
+                                    <a href="{{ route('iluminacao.show', ) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">
+                                        <x-iluminacao::icon name="eye" class="w-5 h-5" />
+                                    </a>
+                                    <a href="{{ route('iluminacao.edit', ) }}" class="font-medium text-yellow-600 dark:text-yellow-500 hover:underline">
+                                        <x-iluminacao::icon name="pencil" class="w-5 h-5" />
+                                    </a>
+                                    <form action="{{ route('iluminacao.destroy', ) }}" method="POST" class="inline-block" onsubmit="return confirm('Tem certeza que deseja deletar este ponto?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="font-medium text-red-600 dark:text-red-500 hover:underline">
+                                            <x-iluminacao::icon name="trash" class="w-5 h-5" />
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+        <div class="mt-4">
+            {{ ->appends()->links() }}
+        </div>
+    @else
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 text-center">
+            <x-iluminacao::icon name="inbox" class="w-12 h-12 mx-auto text-gray-400 mb-3" />
+            <p class="text-gray-500 dark:text-gray-400 mb-4">Nenhum ponto encontrado</p>
+            <div class="flex justify-center gap-2">
+                <x-iluminacao::button href="{{ route('iluminacao.create') }}" variant="primary">
+                    <x-iluminacao::icon name="plus-circle" class="w-4 h-4 mr-2" />
+                    Novo Ponto
+                </x-iluminacao::button>
+            </div>
+        </div>
+    @endif
 </div>
 @endsection

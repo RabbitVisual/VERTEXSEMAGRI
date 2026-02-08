@@ -22,6 +22,7 @@ class Demanda extends Model
         'localidade_id',
         'pessoa_id', // Pessoa do CadÚnico (opcional)
         'poco_id', // Poço relacionado (opcional, quando tipo é 'poco')
+        'ponto_luz_id', // Ponto de luz relacionado
         'tipo', // agua, luz, estrada, poco
         'prioridade', // baixa, media, alta, urgente
         'motivo',

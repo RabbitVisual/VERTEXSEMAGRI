@@ -14,6 +14,7 @@ class OrdemServicoMaterial extends Model
         'quantidade',
         'valor_unitario',
         'status_reserva',
+        'poste_id',
     ];
 
     protected $casts = [
@@ -31,5 +32,9 @@ class OrdemServicoMaterial extends Model
     {
         return $this->belongsTo(\Modules\Materiais\App\Models\Material::class);
     }
-}
 
+    public function poste()
+    {
+        return $this->belongsTo(\Modules\Iluminacao\App\Models\Poste::class);
+    }
+}
