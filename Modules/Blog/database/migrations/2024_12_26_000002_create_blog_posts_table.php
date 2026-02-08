@@ -51,7 +51,6 @@ return new class extends Migration
             $table->index(['category_id', 'status']);
             $table->index(['is_featured', 'published_at']);
             $table->index('author_id');
-            $table->fullText(['title', 'content', 'excerpt']);
         });
     }
 

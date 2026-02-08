@@ -33,7 +33,7 @@ class MateriaisServiceProvider extends ServiceProvider
         $this->app->register(RouteServiceProvider::class);
     }
 
-    protected function registerCommands(): void {}
+    protected function registerCommands(): void { $this->commands([\Modules\Materiais\App\Console\SyncMateriaisCommand::class]); }
 
     protected function registerCommandSchedules(): void {}
 
