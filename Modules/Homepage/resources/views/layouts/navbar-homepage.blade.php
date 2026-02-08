@@ -52,9 +52,12 @@
                 @if(\Nwidart\Modules\Facades\Module::isEnabled('Blog'))
                 <a href="{{ route('blog.index') }}" class="nav-link text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 font-medium transition-colors relative group">
                     <span class="flex items-center gap-2">
-                        <x-icon name="magnifying-glass" class="w-5 h-5" />
-                    <span>Consultar Demanda</span>
+                        <x-icon name="newspaper" class="w-4 h-4" />
+                        Blog
+                    </span>
+                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-emerald-600 transition-all group-hover:w-full"></span>
                 </a>
+                @endif
 
                 <!-- Botão Portal do Morador -->
                 @if(\Nwidart\Modules\Facades\Module::isEnabled('Pocos') && Route::has('morador-poco.index'))

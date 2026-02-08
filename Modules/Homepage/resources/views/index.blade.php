@@ -130,6 +130,31 @@
                                                    class="inline-flex items-center gap-2 bg-white text-emerald-600 px-8 py-4 rounded-xl font-semibold hover:bg-yellow-50 hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl">
                                                     <span>{{ $slide->link_text ?? 'Saiba mais' }}</span>
                                                     <x-icon name="magnifying-glass" class="w-5 h-5" />
+                                                </a>
+                                            </div>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+    </section>
+    @endif
+
+    <!-- Serviços Públicos Section -->
+    @if($configs['servicos_publicos_enabled'] ?? true)
+    <section class="py-12 -mt-12 relative z-20">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Consultar Demanda Card -->
+                <a href="{{ route('demandas.publico.index') }}" class="group block">
+                    <div class="bg-white dark:bg-slate-800 rounded-3xl p-8 border border-emerald-100 dark:border-slate-700 shadow-xl hover:shadow-2xl hover:scale-[1.02] transition-all duration-500 overflow-hidden relative">
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-cyan-500/10 rounded-bl-full -mr-16 -mt-16 group-hover:scale-110 transition-transform"></div>
+                        <div class="w-14 h-14 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-2xl flex items-center justify-center mb-6 group-hover:rotate-6 transition-transform shadow-lg shadow-cyan-500/30">
+                            <x-icon name="magnifying-glass" class="w-7 h-7 text-white" />
                         </div>
                         <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">
                             Consultar Demanda
@@ -139,31 +164,24 @@
                         </p>
                         <ul class="space-y-2 mb-6">
                             <li class="flex items-start gap-2.5">
-                                <x-icon name="file-pdf" class="w-5 h-5" />
+                                <x-icon name="file-pdf" class="w-5 h-5 text-cyan-500" />
                                 <span class="text-sm text-gray-600 dark:text-gray-400">Emitir segunda via de boleto</span>
                             </li>
                             <li class="flex items-start gap-2.5">
-                                <svg class="w-5 h-5 text-cyan-500 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
+                                <x-icon name="invoice" class="w-5 h-5 text-cyan-500" />
                                 <span class="text-sm text-gray-600 dark:text-gray-400">Consultar faturas em aberto</span>
                             </li>
                             <li class="flex items-start gap-2.5">
-                                <svg class="w-5 h-5 text-cyan-500 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h11.25c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z" />
-                                </svg>
+                                <x-icon name="history" class="w-5 h-5 text-cyan-500" />
                                 <span class="text-sm text-gray-600 dark:text-gray-400">Histórico completo de pagamentos</span>
                             </li>
                         </ul>
                         <div class="inline-flex items-center gap-2 text-cyan-600 dark:text-cyan-400 font-semibold hover:text-cyan-700 dark:hover:text-cyan-300 transition-colors group-hover:gap-3">
                             <span>Acessar portal</span>
-                            <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                            </svg>
+                            <x-icon name="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                         </div>
                     </div>
                 </a>
-                @endif
             </div>
 
             <!-- Informações Adicionais -->
@@ -171,9 +189,7 @@
                 <div class="bg-white dark:bg-slate-800 rounded-2xl p-8 border-2 border-gray-200 dark:border-slate-700 shadow-lg">
                     <div class="flex items-start gap-4">
                         <div class="flex-shrink-0 w-12 h-12 bg-emerald-100 dark:bg-emerald-900/30 rounded-xl flex items-center justify-center">
-                            <svg class="w-6 h-6 text-emerald-600 dark:text-emerald-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
-                            </svg>
+                            <x-icon name="circle-info" class="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
                         </div>
                         <div class="flex-1">
                             <h4 class="text-lg font-bold text-gray-900 dark:text-white mb-3">Sobre os Serviços Públicos Online</h4>
@@ -191,6 +207,7 @@
         </div>
     </section>
     @endif
+
 
     <!-- Contato Section -->
     @if($configs['contato_enabled'] ?? true)
