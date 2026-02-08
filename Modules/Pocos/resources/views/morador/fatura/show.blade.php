@@ -7,10 +7,10 @@
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6 md:pb-8 border-b border-gray-200 dark:border-slate-700">
         <div class="flex items-center gap-4">
             <a href="{{ route('morador-poco.dashboard') }}" class="w-12 h-12 rounded-2xl bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800 flex items-center justify-center text-gray-400 hover:text-blue-600 transition-all active:scale-95 shadow-sm">
-                <x-icon name="arrow-left" class="w-5 h-5" />
+                <x-icon name="arrow-left" style="duotone" class="w-6 h-6" />
             </a>
             <div>
-                <h1 class="text-3xl font-black text-gray-900 dark:text-white uppercase tracking-tight">Fatura Detalhada</h1>
+                <h1 class="text-3xl font-black font-poppins text-gray-900 dark:text-white uppercase tracking-tight">Fatura Detalhada</h1>
                 <p class="text-sm text-gray-600 dark:text-gray-400">Referência: <span class="font-black text-blue-600">{{ $boleto->mensalidade->mes_ano }}</span></p>
             </div>
         </div>
@@ -60,7 +60,7 @@
                     <div class="p-5 bg-emerald-50/50 dark:bg-emerald-900/20 border border-emerald-100 dark:border-emerald-800/30 rounded-2xl">
                         <div class="flex items-center gap-3 mb-3">
                             <div class="w-8 h-8 rounded-full bg-emerald-100 dark:bg-emerald-900/40 flex items-center justify-center text-emerald-600">
-                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
+                                <x-icon name="check" style="solid" class="w-5 h-5" />
                             </div>
                             <p class="text-sm font-black text-emerald-900 dark:text-emerald-300 uppercase tracking-tight">Pagamento Efetivado</p>
                         </div>
@@ -70,9 +70,12 @@
                     <div class="p-5 {{ $solicitacaoBaixa->status === 'aprovada' ? 'bg-emerald-50/50 border-emerald-100' : ($solicitacaoBaixa->status === 'rejeitada' ? 'bg-red-50/50 border-red-100' : 'bg-blue-50/50 border-blue-100') }} dark:bg-slate-900/50 border rounded-2xl shadow-sm">
                         <div class="flex items-start gap-3">
                             <div class="mt-0.5">
-                                @if($solicitacaoBaixa->status === 'pendente') <svg class="w-6 h-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
-                                @elseif($solicitacaoBaixa->status === 'aprovada') <svg class="w-6 h-6 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
-                                @else <svg class="w-6 h-6 text-red-500" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
+                                @if($solicitacaoBaixa->status === 'pendente')
+                                    <x-icon name="clock" style="solid" class="w-6 h-6 text-blue-500" />
+                                @elseif($solicitacaoBaixa->status === 'aprovada')
+                                    <x-icon name="check-circle" style="solid" class="w-6 h-6 text-emerald-500" />
+                                @else
+                                    <x-icon name="xmark-circle" style="solid" class="w-6 h-6 text-red-500" />
                                 @endif
                             </div>
                             <div class="flex-1">
@@ -92,7 +95,6 @@
                 </div>
             </div>
         </div>
-        </div>
 
         <!-- Canal de Quitação -->
         @if(!$pagamento)
@@ -107,7 +109,7 @@
                         <div class="flex-1 text-center md:text-left">
                             <div class="flex items-center justify-center md:justify-start gap-3 mb-4">
                                 <div class="w-10 h-10 rounded-xl bg-emerald-100 dark:bg-emerald-900/40 flex items-center justify-center text-emerald-600">
-                                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z" /></svg>
+                                    <x-icon name="qrcode" style="solid" class="w-6 h-6" />
                                 </div>
                                 <h4 class="text-xl font-black text-emerald-900 dark:text-emerald-300 uppercase tracking-tight">Pagamento Instantâneo (PIX)</h4>
                             </div>
@@ -137,7 +139,7 @@
             <div class="bg-slate-50 dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800 rounded-3xl p-8">
                 <div class="flex items-center gap-6">
                     <div class="w-16 h-16 rounded-2xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 shadow-inner">
-                        <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
+                        <x-icon name="hand-holding-dollar" style="duotone" class="w-8 h-8" />
                     </div>
                     <div>
                         <h4 class="text-xl font-black text-slate-900 dark:text-white uppercase tracking-tight">Recebimento Presencial</h4>
@@ -154,7 +156,7 @@
         <div class="mt-10 pt-10 border-t border-gray-100 dark:border-slate-800">
             <div class="bg-blue-50/50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800/30 rounded-3xl p-8 relative overflow-hidden group">
                 <div class="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
-                    <svg class="w-32 h-32 text-blue-900" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                    <x-icon name="file-invoice-dollar" style="duotone" class="w-32 h-32 text-blue-900" />
                 </div>
                 <div class="relative flex flex-col md:flex-row md:items-center gap-8">
                     <div class="flex-1">
@@ -177,23 +179,22 @@
             <div class="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
                 @if($pagamento)
                 <a href="{{ route('morador-poco.fatura.comprovante', $boleto->id) }}" class="w-full sm:w-auto flex items-center justify-center gap-3 px-10 py-4 rounded-2xl bg-emerald-600 text-white text-xs font-black hover:bg-emerald-700 transition-all shadow-2xl active:scale-95 uppercase tracking-widest">
-                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
+                    <x-icon name="download" style="solid" class="w-5 h-5" />
                     Baixar Comprovante (PDF)
                 </a>
                 @elseif($solicitacaoBaixa && $solicitacaoBaixa->status === 'pendente')
                 <div class="w-full sm:w-auto flex items-center justify-center gap-2.5 px-6 py-4 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 text-[10px] font-black text-slate-400 uppercase tracking-widest">
-                    <svg class="w-4 h-4 shadow-sm" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"/></svg>
+                    <x-icon name="lock" style="duotone" class="w-4 h-4 shadow-sm" />
                     <span>Fatura em Análise • 2ª Via Bloqueada</span>
                 </div>
                 @else
                 <a href="{{ route('morador-poco.fatura.segunda-via', $boleto->id) }}" class="w-full sm:w-auto flex items-center justify-center gap-3 px-10 py-4 rounded-2xl bg-slate-900 dark:bg-blue-600 text-white text-xs font-black hover:bg-slate-800 dark:hover:bg-blue-700 transition-all shadow-2xl active:scale-95 uppercase tracking-widest">
-                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg>
+                    <x-icon name="download" style="solid" class="w-5 h-5" />
                     Pagar / Obter 2ª Via (PDF)
                 </a>
                 @endif
             </div>
         </div>
-    </div>
     </div>
 </div>
 
@@ -237,7 +238,7 @@
                         <label class="block text-[10px] font-black text-gray-400 dark:text-slate-500 uppercase tracking-widest mb-2 px-1">Arquivo do Comprovante (Opcional)</label>
                         <label class="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-100 dark:border-slate-700 rounded-[2rem] bg-gray-50/50 dark:bg-slate-900/50 hover:bg-white dark:hover:bg-slate-800 hover:border-blue-500/30 transition-all cursor-pointer group">
                             <div class="flex flex-col items-center justify-center pt-5 pb-6">
-                                <svg class="w-8 h-8 mb-3 text-gray-400 group-hover:text-blue-500 transition-colors" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" /></svg>
+                                <x-icon name="cloud-arrow-up" style="duotone" class="w-8 h-8 mb-3 text-gray-400 group-hover:text-blue-500 transition-colors" />
                                 <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Clique ou arraste o PDF/IMG</p>
                             </div>
                             <input type="file" name="comprovante" accept="image/*,.pdf" class="hidden">
@@ -274,8 +275,6 @@ function closeSolicitarBaixaModal() {
 }
 </script>
 @endpush
-    </div>
-</div>
 
 @if($boleto->mensalidade->forma_recebimento == 'pix' && $boleto->mensalidade->chave_pix)
 @push('scripts')

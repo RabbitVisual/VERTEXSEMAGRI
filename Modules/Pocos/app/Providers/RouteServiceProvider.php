@@ -26,6 +26,7 @@ class RouteServiceProvider extends ServiceProvider
     {
         $this->mapApiRoutes();
         $this->mapWebRoutes();
+        $this->mapComunidadeRoutes();
     }
 
     /**
@@ -36,6 +37,16 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapWebRoutes(): void
     {
         Route::middleware('web')->group(module_path($this->name, '/routes/web.php'));
+    }
+
+    /**
+     * Define the "comunidade" routes for the application.
+     *
+     * These routes all receive session state, CSRF protection, etc.
+     */
+    protected function mapComunidadeRoutes(): void
+    {
+        Route::middleware('web')->group(module_path($this->name, '/routes/comunidade.php'));
     }
 
     /**

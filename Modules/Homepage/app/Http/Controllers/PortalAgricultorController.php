@@ -329,4 +329,3 @@ class PortalAgricultorController extends Controller
         ]);
     }
 }
-

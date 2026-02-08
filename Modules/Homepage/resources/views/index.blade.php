@@ -635,6 +635,76 @@
                     </div>
                 </a>
                 @endif
+
+                <!-- Consulta de Demandas -->
+                <a href="{{ route('demandas.public.consulta') }}" class="group relative bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-2 border-emerald-100 dark:border-emerald-900/50 hover:border-emerald-300 dark:hover:border-emerald-700 overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-emerald-100/50 to-transparent dark:from-emerald-900/20 rounded-bl-full"></div>
+                    <div class="relative">
+                        <div class="w-16 h-16 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-lg">
+                            <x-icon name="magnifying-glass" style="duotone" class="w-8 h-8 text-white" />
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">
+                            Consultar Demanda
+                        </h3>
+                        <p class="text-gray-700 dark:text-gray-300 mb-5 leading-relaxed text-sm">
+                            Acompanhe o status da sua solicitação em tempo real usando o código do protocolo.
+                        </p>
+                        <ul class="space-y-2 mb-6">
+                            <li class="flex items-start gap-2.5">
+                                <x-icon name="barcode-read" style="duotone" class="w-5 h-5 text-emerald-500 mt-0.5 flex-shrink-0" />
+                                <span class="text-sm text-gray-600 dark:text-gray-400">Consulta por código/protocolo</span>
+                            </li>
+                            <li class="flex items-start gap-2.5">
+                                <x-icon name="clock" style="duotone" class="w-5 h-5 text-emerald-500 mt-0.5 flex-shrink-0" />
+                                <span class="text-sm text-gray-600 dark:text-gray-400">Acompanhamento em tempo real</span>
+                            </li>
+                            <li class="flex items-start gap-2.5">
+                                <x-icon name="file-contract" style="duotone" class="w-5 h-5 text-emerald-500 mt-0.5 flex-shrink-0" />
+                                <span class="text-sm text-gray-600 dark:text-gray-400">Histórico completo da solicitação</span>
+                            </li>
+                        </ul>
+                        <div class="inline-flex items-center gap-2 text-emerald-600 dark:text-emerald-400 font-semibold hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors group-hover:gap-3">
+                            <span>Consultar agora</span>
+                            <x-icon name="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Portal do Morador (Poço Artesiano) -->
+                @if(\Nwidart\Modules\Facades\Module::isEnabled('Pocos') && Route::has('morador-poco.index'))
+                <a href="{{ route('morador-poco.index') }}" class="group relative bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-2 border-cyan-100 dark:border-cyan-900/50 hover:border-cyan-300 dark:hover:border-cyan-700 overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-cyan-100/50 to-transparent dark:from-cyan-900/20 rounded-bl-full"></div>
+                    <div class="relative">
+                        <div class="w-16 h-16 bg-gradient-to-br from-cyan-500 to-teal-500 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-lg">
+                            <x-icon name="house-user" style="duotone" class="w-8 h-8 text-white" />
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">
+                            Portal do Morador
+                        </h3>
+                        <p class="text-gray-700 dark:text-gray-300 mb-5 leading-relaxed text-sm">
+                            Acesse seu painel de morador para consultar faturas, emitir segunda via de boletos e acompanhar seus pagamentos do poço artesiano.
+                        </p>
+                        <ul class="space-y-2 mb-6">
+                            <li class="flex items-start gap-2.5">
+                                <x-icon name="file-invoice-dollar" style="duotone" class="w-5 h-5 text-cyan-500 mt-0.5 flex-shrink-0" />
+                                <span class="text-sm text-gray-600 dark:text-gray-400">Emitir segunda via de boleto</span>
+                            </li>
+                            <li class="flex items-start gap-2.5">
+                                <x-icon name="magnifying-glass-dollar" style="duotone" class="w-5 h-5 text-cyan-500 mt-0.5 flex-shrink-0" />
+                                <span class="text-sm text-gray-600 dark:text-gray-400">Consultar faturas em aberto</span>
+                            </li>
+                            <li class="flex items-start gap-2.5">
+                                <x-icon name="clock-rotate-left" style="duotone" class="w-5 h-5 text-cyan-500 mt-0.5 flex-shrink-0" />
+                                <span class="text-sm text-gray-600 dark:text-gray-400">Histórico completo de pagamentos</span>
+                            </li>
+                        </ul>
+                        <div class="inline-flex items-center gap-2 text-cyan-600 dark:text-cyan-400 font-semibold hover:text-cyan-700 dark:hover:text-cyan-300 transition-colors group-hover:gap-3">
+                            <span>Acessar portal</span>
+                            <x-icon name="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                        </div>
+                    </div>
+                </a>
+                @endif
             </div>
         </div>
     </section>
