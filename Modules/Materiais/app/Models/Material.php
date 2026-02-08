@@ -188,19 +188,25 @@ class Material extends Model
     {
         DB::beginTransaction();
         try {
-            $this->increment('quantidade_estoque', $quantidade);
+            // Lock the record for update to prevent race conditions
+            $material = Material::lockForUpdate()->find($this->id);
+
+            $material->increment('quantidade_estoque', $quantidade);
 
             $movimentacao = MaterialMovimentacao::create([
-                'material_id' => $this->id,
+                'material_id' => $material->id,
                 'tipo' => 'entrada',
                 'status' => 'confirmado',
                 'quantidade' => $quantidade,
-                'valor_unitario' => $valorUnitario ?? $this->valor_unitario,
+                'valor_unitario' => $valorUnitario ?? $material->valor_unitario,
                 'motivo' => $motivo,
                 'ordem_servico_id' => $ordemServicoId,
                 'user_id' => auth()->id(),
                 'funcionario_id' => $funcionarioId,
             ]);
+
+            // Atualiza a instância atual para refletir o novo estoque
+            $this->quantidade_estoque = $material->quantidade_estoque;
 
             DB::commit();
             return $movimentacao;
@@ -215,25 +221,31 @@ class Material extends Model
      */
     public function removerEstoque(float $quantidade, string $motivo, ?int $ordemServicoId = null, ?float $valorUnitario = null, ?int $funcionarioId = null): MaterialMovimentacao
     {
-        if (!$this->temEstoqueSuficiente($quantidade)) {
-            throw new \Exception("Estoque insuficiente. Disponível: {$this->quantidade_estoque}, Solicitado: {$quantidade}");
-        }
-
         DB::beginTransaction();
         try {
-            $this->decrement('quantidade_estoque', $quantidade);
+            // Lock the record for update to prevent race conditions
+            $material = Material::lockForUpdate()->find($this->id);
+
+            if (!$material->temEstoqueSuficiente($quantidade)) {
+                throw new \Exception("Estoque insuficiente. Disponível: {$material->quantidade_estoque}, Solicitado: {$quantidade}");
+            }
+
+            $material->decrement('quantidade_estoque', $quantidade);
 
             $movimentacao = MaterialMovimentacao::create([
-                'material_id' => $this->id,
+                'material_id' => $material->id,
                 'tipo' => 'saida',
                 'status' => 'confirmado',
                 'quantidade' => $quantidade,
-                'valor_unitario' => $valorUnitario ?? $this->valor_unitario,
+                'valor_unitario' => $valorUnitario ?? $material->valor_unitario,
                 'motivo' => $motivo,
                 'ordem_servico_id' => $ordemServicoId,
                 'user_id' => auth()->id(),
                 'funcionario_id' => $funcionarioId,
             ]);
+
+            // Atualiza a instância atual
+            $this->quantidade_estoque = $material->quantidade_estoque;
 
             DB::commit();
             return $movimentacao;
@@ -248,25 +260,31 @@ class Material extends Model
      */
     public function reservarEstoque(float $quantidade, int $ordemServicoId, string $motivo, ?float $valorUnitario = null, ?int $funcionarioId = null): MaterialMovimentacao
     {
-        if (!$this->temEstoqueSuficiente($quantidade)) {
-            throw new \Exception("Estoque insuficiente. Disponível: {$this->quantidade_estoque}, Solicitado: {$quantidade}");
-        }
-
         DB::beginTransaction();
         try {
-            $this->decrement('quantidade_estoque', $quantidade);
+            // Lock the record for update
+            $material = Material::lockForUpdate()->find($this->id);
+
+            if (!$material->temEstoqueSuficiente($quantidade)) {
+                throw new \Exception("Estoque insuficiente. Disponível: {$material->quantidade_estoque}, Solicitado: {$quantidade}");
+            }
+
+            $material->decrement('quantidade_estoque', $quantidade);
 
             $movimentacao = MaterialMovimentacao::create([
-                'material_id' => $this->id,
+                'material_id' => $material->id,
                 'tipo' => 'saida',
                 'status' => 'reservado',
                 'quantidade' => $quantidade,
-                'valor_unitario' => $valorUnitario ?? $this->valor_unitario,
+                'valor_unitario' => $valorUnitario ?? $material->valor_unitario,
                 'motivo' => $motivo,
                 'ordem_servico_id' => $ordemServicoId,
                 'user_id' => auth()->id(),
                 'funcionario_id' => $funcionarioId,
             ]);
+
+            // Atualiza a instância atual
+            $this->quantidade_estoque = $material->quantidade_estoque;
 
             DB::commit();
             return $movimentacao;
@@ -283,7 +301,10 @@ class Material extends Model
     {
         DB::beginTransaction();
         try {
-            $reservas = MaterialMovimentacao::where('material_id', $this->id)
+            // Lock just to be safe
+            $material = Material::lockForUpdate()->find($this->id);
+
+            $reservas = MaterialMovimentacao::where('material_id', $material->id)
                 ->where('ordem_servico_id', $ordemServicoId)
                 ->where('status', 'reservado')
                 ->where('tipo', 'saida')
@@ -307,16 +328,21 @@ class Material extends Model
     {
         DB::beginTransaction();
         try {
-            $reservas = MaterialMovimentacao::where('material_id', $this->id)
+            $material = Material::lockForUpdate()->find($this->id);
+
+            $reservas = MaterialMovimentacao::where('material_id', $material->id)
                 ->where('ordem_servico_id', $ordemServicoId)
                 ->where('status', 'reservado')
                 ->where('tipo', 'saida')
                 ->get();
 
             foreach ($reservas as $reserva) {
-                $this->increment('quantidade_estoque', $reserva->quantidade);
+                $material->increment('quantidade_estoque', $reserva->quantidade);
                 $reserva->update(['status' => 'cancelado']);
             }
+
+            // Atualiza a instância atual
+            $this->quantidade_estoque = $material->quantidade_estoque;
 
             DB::commit();
         } catch (\Exception $e) {
