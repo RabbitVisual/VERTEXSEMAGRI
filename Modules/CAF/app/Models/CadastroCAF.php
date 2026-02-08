@@ -232,5 +232,19 @@ class CadastroCAF extends Model
         }
         return $this->protocolo;
     }
-}
 
+    /**
+     * Retorna estatísticas gerais dos cadastros
+     */
+    public static function getStats(): array
+    {
+        return self::selectRaw("
+            count(*) as total,
+            count(case when status = 'rascunho' then 1 end) as rascunhos,
+            count(case when status = 'em_andamento' then 1 end) as em_andamento,
+            count(case when status = 'completo' then 1 end) as completos,
+            count(case when status = 'aprovado' then 1 end) as aprovados,
+            count(case when status = 'enviado_caf' then 1 end) as enviados_caf
+        ")->first()->toArray();
+    }
+}

@@ -55,6 +55,12 @@ return new class extends Migration
             if (DB::getDriverName() !== 'sqlite') {
                 $table->fullText(['title', 'content', 'excerpt']);
             }
+
+            // Fulltext index only for MySQL
+            if (DB::getDriverName() !== 'sqlite') {
+                $table->fullText(['title', 'content', 'excerpt']);
+            }
+            // $table->fullText(['title', 'content', 'excerpt']);
         });
     }
 

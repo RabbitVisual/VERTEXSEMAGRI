@@ -53,14 +53,7 @@ class AdminCAFController extends Controller
         $localidades = Localidade::where('ativo', true)->orderBy('nome')->get();
 
         // Estatísticas
-        $stats = CadastroCAF::selectRaw("
-            count(*) as total,
-            count(case when status = 'rascunho' then 1 end) as rascunhos,
-            count(case when status = 'em_andamento' then 1 end) as em_andamento,
-            count(case when status = 'completo' then 1 end) as completos,
-            count(case when status = 'aprovado' then 1 end) as aprovados,
-            count(case when status = 'enviado_caf' then 1 end) as enviados_caf
-        ")->first()->toArray();
+        $stats = CadastroCAF::getStats();
 
         return view('caf::admin.index', compact('cadastros', 'localidades', 'stats'));
     }

@@ -11,8 +11,8 @@ return new class extends Migration
         // Criar tabela de pessoas do Cadastro Único
         Schema::create('pessoas_cad', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('cd_ibge')->nullable()->index(); // Código IBGE do município
-            $table->string('cod_familiar_fam', 11)->nullable()->index(); // Código da família
+            $table->bigInteger('cd_ibge')->nullable(); // Código IBGE do município
+            $table->string('cod_familiar_fam', 11)->nullable(); // Código da família
             $table->tinyInteger('cod_est_cadastral_memb')->nullable(); // Estado cadastral
             $table->tinyInteger('ind_trabalho_infantil_pessoa')->nullable(); // Trabalho infantil
             $table->string('nom_pessoa', 70)->nullable()->index(); // Nome
@@ -156,6 +156,12 @@ return new class extends Migration
             
             // Índices adicionais
             $table->index('localidade_id');
+            $table->index('cod_familiar_fam');
+            $table->index('cd_ibge');
+            $table->index('localidade_id');
+            // $table->index('cod_familiar_fam');
+            // $table->index('localidade_id');
+            // $table->index('cd_ibge');
         });
     }
 
@@ -164,4 +170,3 @@ return new class extends Migration
         Schema::dropIfExists('pessoas_cad');
     }
 };
-

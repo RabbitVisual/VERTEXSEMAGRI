@@ -4,6 +4,7 @@ namespace Modules\Demandas\App\Services;
 
 use Modules\Demandas\App\Models\Demanda;
 use Modules\Demandas\App\Models\DemandaInteressado;
+use Modules\Localidades\App\Models\Localidade;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -78,6 +79,9 @@ class SimilaridadeDemandaService
 
     // Cache de palavras-chave por demanda
     private array $cacheKeywords = [];
+
+    // Cache de localidades para evitar queries repetidas
+    private array $cacheLocalidades = [];
 
     /**
      * Busca demandas similares à nova demanda sendo criada
@@ -181,22 +185,64 @@ class SimilaridadeDemandaService
     }
 
     /**
-     * Calcula similaridade de localidade
+     * Calcula similaridade de localidade usando distância geográfica (Haversine)
      */
-    private function calcularSimilaridadeLocalidade(?int $localidade1, ?int $localidade2): float
+    private function calcularSimilaridadeLocalidade(?int $localidade1Id, ?int $localidade2Id): float
     {
-        if ($localidade1 === null || $localidade2 === null) {
+        if ($localidade1Id === null || $localidade2Id === null) {
             return 0;
         }
 
         // Mesma localidade = 100%
-        if ($localidade1 === $localidade2) {
+        if ($localidade1Id === $localidade2Id) {
             return 100;
         }
 
-        // TODO: Implementar verificação de localidades próximas geograficamente
-        // Por enquanto, localidades diferentes = 0%
+        // Carregar do cache ou banco
+        if (!array_key_exists($localidade1Id, $this->cacheLocalidades)) {
+            $this->cacheLocalidades[$localidade1Id] = Localidade::find($localidade1Id);
+        }
+        if (!array_key_exists($localidade2Id, $this->cacheLocalidades)) {
+            $this->cacheLocalidades[$localidade2Id] = Localidade::find($localidade2Id);
+        }
+
+        $loc1 = $this->cacheLocalidades[$localidade1Id];
+        $loc2 = $this->cacheLocalidades[$localidade2Id];
+
+        // Se não encontrar ou não tiver coordenadas, retorna 0
+        if (!$loc1 || !$loc2 || !$loc1->latitude || !$loc1->longitude || !$loc2->latitude || !$loc2->longitude) {
+            return 0;
+        }
+
+        $distancia = $this->calcularDistancia($loc1->latitude, $loc1->longitude, $loc2->latitude, $loc2->longitude);
+
+        // Score baseado na distância (km)
+        if ($distancia <= 0.1) return 95; // Muito perto (< 100m)
+        if ($distancia <= 1) return 85;   // Perto (< 1km)
+        if ($distancia <= 5) return 60;   // Mesma região (< 5km)
+        if ($distancia <= 10) return 40;  // Distância média (< 10km)
+        if ($distancia <= 20) return 20;  // Longe mas mesma zona (< 20km)
+
         return 0;
+    }
+
+    /**
+     * Calcula a distância em km usando a fórmula de Haversine
+     */
+    private function calcularDistancia($lat1, $lon1, $lat2, $lon2): float
+    {
+        $earthRadius = 6371; // km
+
+        $dLat = deg2rad($lat2 - $lat1);
+        $dLon = deg2rad($lon2 - $lon1);
+
+        $a = sin($dLat/2) * sin($dLat/2) +
+             cos(deg2rad($lat1)) * cos(deg2rad($lat2)) *
+             sin($dLon/2) * sin($dLon/2);
+
+        $c = 2 * atan2(sqrt($a), sqrt(1-$a));
+
+        return $earthRadius * $c;
     }
 
     /**
@@ -772,4 +818,3 @@ class SimilaridadeDemandaService
         };
     }
 }
-
