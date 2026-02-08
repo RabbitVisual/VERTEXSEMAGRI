@@ -1,34 +1,53 @@
-/* Fontes Locais - Sistema 100% Offline */
-
-/* Usar fontes do sistema como padrão, com fallback profissional */
-/* Estrutura pronta para adicionar fontes locais quando necessário */
-
+/* Inter - Regular (400) */
 @font-face {
-    font-family: 'System Sans';
+    font-family: 'Inter';
     font-style: normal;
     font-weight: 400;
     font-display: swap;
-    src: local('Segoe UI'), local('Roboto'), local('Helvetica Neue'), local('Arial'), system-ui, sans-serif;
+    src: url('../fonts/inter-v20-latin-regular.woff2') format('woff2');
 }
 
+/* Inter - Medium (500) */
 @font-face {
-    font-family: 'System Sans';
+    font-family: 'Inter';
     font-style: normal;
     font-weight: 500;
     font-display: swap;
-    src: local('Segoe UI Semibold'), local('Roboto Medium'), local('Helvetica Neue Medium'), system-ui, sans-serif;
+    src: url('../fonts/inter-v20-latin-500.woff2') format('woff2');
 }
 
+/* Inter - SemiBold (600) */
 @font-face {
-    font-family: 'System Sans';
+    font-family: 'Inter';
     font-style: normal;
     font-weight: 600;
     font-display: swap;
-    src: local('Segoe UI Bold'), local('Roboto Bold'), local('Helvetica Neue Bold'), system-ui, sans-serif;
+    src: url('../fonts/inter-v20-latin-600.woff2') format('woff2');
 }
 
-/* Classe utilitária para usar fontes do sistema */
-.font-system {
-    font-family: 'System Sans', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+/* Inter - Bold (700) */
+@font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url('../fonts/inter-v20-latin-700.woff2') format('woff2');
 }
 
+/* Poppins - Regular (400) */
+@font-face {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('../fonts/poppins-v24-latin-regular.woff2') format('woff2');
+}
+
+/* Poppins - Bold (700) */
+@font-face {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url('../fonts/poppins-v24-latin-700.woff2') format('woff2');
+}
