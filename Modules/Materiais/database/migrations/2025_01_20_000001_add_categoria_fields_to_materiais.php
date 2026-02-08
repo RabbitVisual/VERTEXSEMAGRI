@@ -21,30 +21,24 @@ return new class extends Migration
             }
         });
 
-        // Atualizar enum de categorias para incluir novas categorias
-        // Como não podemos alterar enum diretamente, vamos usar DB::statement
         if (Schema::hasColumn('materiais', 'categoria')) {
-            // Primeiro, vamos criar uma migration que altera o enum
-            // Mas como isso é complexo, vamos fazer via alteração da coluna
-            if (DB::getDriverName() !== 'sqlite') {
-        if (Schema::hasColumn('materiais', 'categoria') && DB::getDriverName() !== 'sqlite') {
-            // MySQL-specific syntax
-            DB::statement("ALTER TABLE materiais MODIFY COLUMN categoria ENUM(
-                'lampadas',
-                'reatores',
-                'fios',
-                'canos',
-                'conexoes',
-                'combustivel',
-                'pecas_pocos',
-                'rele_fotoeletronico',
-                'bomba_poco_artesiano',
-                'roupa_eletricista',
-                'epi',
-                'ferramentas',
-                'outros'
-            ) NOT NULL");
-        }
+            if (DB::getDriverName() === 'mysql') {
+                DB::statement("ALTER TABLE materiais MODIFY COLUMN categoria ENUM(
+                    'lampadas',
+                    'reatores',
+                    'fios',
+                    'canos',
+                    'conexoes',
+                    'combustivel',
+                    'pecas_pocos',
+                    'rele_fotoeletronico',
+                    'bomba_poco_artesiano',
+                    'roupa_eletricista',
+                    'epi',
+                    'ferramentas',
+                    'outros'
+                ) NOT NULL");
+            }
         }
         // Skip ENUM modification for SQLite
     }
@@ -55,20 +49,7 @@ return new class extends Migration
             $table->dropColumn(['campos_especificos', 'ultimo_alerta_estoque']);
         });
 
-        // Reverter enum para versão anterior
-        if (DB::getDriverName() !== 'sqlite') {
-            DB::statement("ALTER TABLE materiais MODIFY COLUMN categoria ENUM(
-            'lampadas',
-            'reatores',
-            'fios',
-            'canos',
-            'conexoes',
-            'combustivel',
-            'pecas_pocos',
-            'outros'
-        ) NOT NULL");
-        if (DB::getDriverName() !== 'sqlite') {
-            // Reverter enum para versão anterior (MySQL only)
+        if (DB::getDriverName() === 'mysql') {
             DB::statement("ALTER TABLE materiais MODIFY COLUMN categoria ENUM(
                 'lampadas',
                 'reatores',

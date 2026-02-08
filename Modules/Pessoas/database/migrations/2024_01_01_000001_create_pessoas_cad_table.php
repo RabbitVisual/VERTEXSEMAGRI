@@ -146,22 +146,16 @@ return new class extends Migration
             $table->tinyInteger('ind_atend_nenhum_memb')->nullable(); // Não foi atendido
             $table->integer('ref_cad')->nullable()->index(); // Referência Cadastro Único
             $table->integer('ref_pbf')->nullable()->index(); // Referência Bolsa Família
-            
+
             // Campos adicionais para integração com o sistema
             $table->foreignId('localidade_id')->nullable()->constrained('localidades')->onDelete('set null');
             $table->text('observacoes')->nullable();
             $table->boolean('ativo')->default(true);
             $table->timestamps();
             $table->softDeletes();
-            
+
             // Índices adicionais
             $table->index('localidade_id');
-            $table->index('cod_familiar_fam');
-            $table->index('cd_ibge');
-            $table->index('localidade_id');
-            // $table->index('cod_familiar_fam');
-            // $table->index('localidade_id');
-            // $table->index('cd_ibge');
         });
     }
 
