@@ -155,7 +155,6 @@ return new class extends Migration
             $table->softDeletes();
             
             // Índices adicionais
-            $table->index('localidade_id');
         });
     }
 

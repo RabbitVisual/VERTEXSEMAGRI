@@ -52,11 +52,6 @@ return new class extends Migration
             $table->index(['category_id', 'status']);
             $table->index(['is_featured', 'published_at']);
             $table->index('author_id');
-            
-            // Fulltext only for MySQL/PostgreSQL
-            if (DB::getDriverName() !== 'sqlite') {
-                $table->fullText(['title', 'content', 'excerpt']);
-            }
         });
     }
 
