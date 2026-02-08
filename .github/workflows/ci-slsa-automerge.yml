@@ -55,7 +55,7 @@ jobs:
         run: npm run build
 
       - name: Run Tests
-        run: php artisan test
+        run: vendor/bin/phpunit
 
       - name: Prepare Artifacts for SLSA
         run: |
