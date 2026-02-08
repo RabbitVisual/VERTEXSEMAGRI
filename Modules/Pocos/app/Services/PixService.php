@@ -20,12 +20,12 @@ class PixService
     {
         // Carregar configurações do banco ou .env
         $this->config = [
-            'client_id' => config('pix.client_id', env('PIX_CLIENT_ID')),
-            'client_secret' => config('pix.client_secret', env('PIX_CLIENT_SECRET')),
-            'certificate' => config('pix.certificate_path', env('PIX_CERTIFICATE_PATH')),
-            'sandbox' => config('pix.environment', env('PIX_ENVIRONMENT', 'sandbox')) === 'sandbox',
-            'debug' => config('pix.debug', env('PIX_DEBUG', false)),
-            'timeout' => config('pix.timeout', env('PIX_TIMEOUT', 30)),
+            'client_id' => config('pix.client_id'),
+            'client_secret' => config('pix.client_secret'),
+            'certificate' => config('pix.certificate_path'),
+            'sandbox' => config('pix.psp.environment', 'sandbox') === 'sandbox', // Key fix: pix.environment was incorrect
+            'debug' => config('pix.debug', false),
+            'timeout' => config('pix.timeout', 30),
         ];
     }
 
@@ -56,7 +56,7 @@ class PixService
         // Se a plataforma tiver chave centralizadora configurada, usamos ela.
         // Caso contrário, tentamos usar a chave do líder (apenas se for chave gerida pela mesma conta Efipay, o que é raro).
         // Para marketplace real, usa-se a chave da Plataforma e o Split.
-        $chavePlataforma = config('pix.chave_plataforma', env('PIX_CHAVE_PLATAFORMA'));
+        $chavePlataforma = config('pix.chave_plataforma');
         $chaveDestino = $chavePlataforma ?: $lider->chave_pix;
 
         if (empty($chaveDestino)) {
@@ -231,10 +231,10 @@ class PixService
             $valorTotal = $pagamentoPix->valor;
             $taxaPlataforma = 0;
             $valorLiquido = $valorTotal;
-            $splitAtivo = filter_var(config('pix.split_ativo', env('PIX_SPLIT_ATIVO', false)), FILTER_VALIDATE_BOOLEAN);
+            $splitAtivo = filter_var(config('pix.split_ativo', false), FILTER_VALIDATE_BOOLEAN);
 
             // Calcular taxas apenas se tiver chave de plataforma definida (Centralização) e Split ativo
-            $chavePlataforma = config('pix.chave_plataforma', env('PIX_CHAVE_PLATAFORMA'));
+            $chavePlataforma = config('pix.chave_plataforma');
 
             if ($splitAtivo && !empty($chavePlataforma) && $chavePlataforma !== $pagamentoPix->lider->chave_pix) {
                 // Tentar obter valores numéricos
