@@ -12,13 +12,13 @@
     <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-6">
         <form action="{{ route('admin.iluminacao.postes.store') }}" method="POST" class="space-y-6">
             @csrf
-
+            
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Código (Neoenergia/Plaqueta) *</label>
                     <input type="text" name="codigo" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                 </div>
-
+                
                 <div>
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tipo de Lâmpada</label>
                     <select name="tipo_lampada" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">

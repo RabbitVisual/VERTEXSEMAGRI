@@ -15,9 +15,6 @@
     function findCsrfToken() {
 
         // Debug: Mostrar todas as meta tags encontradas
-        const allMetaTags = document.querySelectorAll('meta');
-        allMetaTags.forEach((meta, index) => {
-        });
 
         // Estratégia 1: Meta tag (Padrão Laravel)
         const csrfMeta = document.querySelector('meta[name="csrf-token"]');
@@ -93,6 +90,7 @@
 
             check();
         });
+
     }
 
     // Função global para chamar o modal
@@ -242,45 +240,35 @@
         deleteForm.submit();
     }
 
-    function handleConfirmDelete(e) {
-        e.preventDefault();
-        executeDelete();
-    }
-
-    function handleModalClick(e) {
-        if (e.target === this) closeDeleteModal();
-    }
-
-    function handleDocumentKeydown(e) {
-        const modal = document.getElementById('delete-modal');
-        if (e.key === 'Escape' && modal && !modal.classList.contains('hidden')) {
-            closeDeleteModal();
-        }
-    }
-
     function attachEventListeners() {
         const cancelBtn = document.getElementById('cancel-delete');
         const confirmBtn = document.getElementById('confirm-delete');
         const modal = document.getElementById('delete-modal');
 
-        // Remove listeners antigos usando removeEventListener para evitar duplicação
+        // Remove listeners antigos (cloneNode hack) para evitar duplicação se init rodar 2x
         if (cancelBtn) {
-            cancelBtn.removeEventListener('click', closeDeleteModal);
-            cancelBtn.addEventListener('click', closeDeleteModal);
+            const newCancel = cancelBtn.cloneNode(true);
+            cancelBtn.parentNode.replaceChild(newCancel, cancelBtn);
+            newCancel.addEventListener('click', closeDeleteModal);
         }
 
         if (confirmBtn) {
-            confirmBtn.removeEventListener('click', handleConfirmDelete);
-            confirmBtn.addEventListener('click', handleConfirmDelete);
+            const newConfirm = confirmBtn.cloneNode(true);
+            confirmBtn.parentNode.replaceChild(newConfirm, confirmBtn);
+            newConfirm.addEventListener('click', function(e) {
+                e.preventDefault(); // Prevenir comportamento padrão
+                executeDelete();
         }
 
         if (modal) {
-            modal.removeEventListener('click', handleModalClick);
-            modal.addEventListener('click', handleModalClick);
+            modal.addEventListener('click', function(e) {
+                if (e.target === this) closeDeleteModal();
         }
 
-        document.removeEventListener('keydown', handleDocumentKeydown);
-        document.addEventListener('keydown', handleDocumentKeydown);
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && modal && !modal.classList.contains('hidden')) {
+                closeDeleteModal();
+            }
     }
 
     function initializeBlogAdmin() {
@@ -312,7 +300,6 @@
             document.addEventListener('DOMContentLoaded', function() {
                 // Aguardar um pouco mais para garantir que tudo esteja carregado
                 setTimeout(initializeBlogAdmin, 100);
-            });
         } else {
             // Document está em 'interactive' - aguardar um pouco
             setTimeout(initializeBlogAdmin, 200);
@@ -324,7 +311,6 @@
                 initializeBlogAdmin();
             }
         });
-    }
 
     // Iniciar inicialização segura
     safeInitialize();

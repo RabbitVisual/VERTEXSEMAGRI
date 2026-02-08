@@ -60,51 +60,14 @@
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    Código
-                                </label>
-                                @if($ponto->codigo)
-                                    <div class="relative">
-                                        <input
-                                            type="text"
-                                            value="{{ $ponto->codigo }}"
-                                            disabled
-                                            readonly
-                                            class="w-full px-4 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-gray-100 dark:bg-slate-700 text-gray-900 dark:text-white font-mono cursor-not-allowed"
-                                        />
-                                        <div class="absolute inset-0 flex items-center justify-end pr-3 pointer-events-none">
-                                            <svg class="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                                            </svg>
-                                        </div>
-                                    </div>
-                                @else
-                                    <div class="relative">
-                                        <input
-                                            type="text"
-                                            value=""
-                                            placeholder="Será gerado automaticamente"
-                                            disabled
-                                            readonly
-                                            class="w-full px-4 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-gray-100 dark:bg-slate-700 text-gray-500 dark:text-gray-400 cursor-not-allowed"
-                                        />
-                                        <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
-                                            <svg class="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                                            </svg>
-                                        </div>
-                                    </div>
-                                @endif
-                                <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
-                                    <svg class="w-4 h-4 inline mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
-                                    @if($ponto->codigo)
-                                        Código já atribuído. Será gerado automaticamente se estiver vazio ao salvar.
-                                    @else
-                                        Será gerado automaticamente ao salvar
-                                    @endif
-                                </p>
+                                <x-iluminacao::form.input
+                                    label="Código"
+                                    name="codigo"
+                                    type="text"
+                                    value="{{ old('codigo', $ponto->codigo) }}"
+                                    readonly
+                                    disabled
+                                />
                             </div>
                             <div>
                                 <x-iluminacao::form.select
@@ -115,7 +78,7 @@
                                     <option value="">Selecione</option>
                                     @foreach($localidades as $loc)
                                         <option value="{{ $loc->id }}" {{ old('localidade_id', $ponto->localidade_id) == $loc->id ? 'selected' : '' }}>
-                                            {{ $loc->nome }}
+                                            {{ $loc->nome }}@if($loc->codigo) ({{ $loc->codigo }})@endif
                                         </option>
                                     @endforeach
                                 </x-iluminacao::form.select>
@@ -126,10 +89,51 @@
                             label="Endereço"
                             name="endereco"
                             type="text"
-                            required
                             value="{{ old('endereco', $ponto->endereco) }}"
                             placeholder="Endereço completo do ponto"
                         />
+                    </div>
+
+                    <!-- Identificação de Hardware -->
+                    <div class="space-y-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                        <h4 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3 flex items-center gap-2">
+                            <x-iluminacao::icon name="chip" class="w-4 h-4" />
+                            Identificação de Hardware
+                        </h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <x-iluminacao::form.input
+                                    label="Quantidade"
+                                    name="quantidade"
+                                    type="number"
+                                    min="1"
+                                    value="{{ old('quantidade', $ponto->quantidade ?? 1) }}"
+                                />
+                            </div>
+                            <div>
+                                <x-iluminacao::form.input
+                                    label="Horas Diárias"
+                                    name="horas_diarias"
+                                    type="number"
+                                    step="0.1"
+                                    value="{{ old('horas_diarias', $ponto->horas_diarias ?? '') }}"
+                                    placeholder="Ex: 12.0"
+                                />
+                            </div>
+
+                            <x-iluminacao::form.input
+                                label="Barramento"
+                                name="barramento"
+                                value="{{ old('barramento', $ponto->barramento ?? '') }}"
+                                placeholder="Código do Barramento"
+                            />
+                            <x-iluminacao::form.input
+                                label="Trafo"
+                                name="trafo"
+                                value="{{ old('trafo', $ponto->trafo ?? '') }}"
+                                placeholder="ID do Transformador"
+                            />
+                        </div>
                     </div>
 
                     <!-- Especificações Técnicas -->
@@ -146,6 +150,7 @@
                                     name="tipo_lampada"
                                     type="text"
                                     value="{{ old('tipo_lampada', $ponto->tipo_lampada) }}"
+                                    placeholder="Ex: LED, Fluorescente, etc."
                                 />
                             </div>
                             <div>
@@ -154,6 +159,7 @@
                                     name="potencia"
                                     type="number"
                                     value="{{ old('potencia', $ponto->potencia) }}"
+                                    placeholder="Watts"
                                 />
                             </div>
                             <div>
@@ -176,6 +182,7 @@
                                     name="tipo_poste"
                                     type="text"
                                     value="{{ old('tipo_poste', $ponto->tipo_poste) }}"
+                                    placeholder="Ex: Concreto, Metálico, etc."
                                 />
                             </div>
                             <div>
@@ -185,6 +192,7 @@
                                     type="number"
                                     step="0.01"
                                     value="{{ old('altura_poste', $ponto->altura_poste) }}"
+                                    placeholder="Metros"
                                 />
                             </div>
                         </div>
@@ -194,6 +202,7 @@
                             name="tipo_fiacao"
                             type="text"
                             value="{{ old('tipo_fiacao', $ponto->tipo_fiacao) }}"
+                            placeholder="Tipo de fiação utilizada"
                         />
                     </div>
 
@@ -205,22 +214,69 @@
                         </h4>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <x-iluminacao::form.input
-                                label="Latitude"
-                                name="latitude"
-                                type="number"
-                                step="any"
-                                value="{{ old('latitude', $ponto->latitude) }}"
-                                placeholder="-12.2336"
-                            />
-                            <x-iluminacao::form.input
-                                label="Longitude"
-                                name="longitude"
-                                type="number"
-                                step="any"
-                                value="{{ old('longitude', $ponto->longitude) }}"
-                                placeholder="-38.7454"
-                            />
+                            <div x-data="{
+                                val: '{{ old('latitude', $ponto->latitude) }}',
+                                convertDMS(input) {
+                                    // Basic DMS conversion logic
+                                    let regex = /(\d+)[°\s]+(\d+)[\'\s]+(\d+(?:\.\d+)?)[\"\s]*([NSns])?/;
+                                    let match = input.match(regex);
+                                    if (match) {
+                                        let deg = parseFloat(match[1]);
+                                        let min = parseFloat(match[2]);
+                                        let sec = parseFloat(match[3]);
+                                        let dir = match[4] ? match[4].toUpperCase() : null;
+                                        
+                                        let dec = deg + min/60 + sec/3600;
+                                        if (dir === 'S') dec = -dec;
+                                        
+                                        this.val = dec.toFixed(6);
+                                    }
+                                }
+                            }">
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                    Latitude
+                                </label>
+                                <input
+                                    type="text"
+                                    name="latitude"
+                                    x-model="val"
+                                    @blur="convertDMS(val)"
+                                    placeholder="-12.2336 ou 12° 14' 01\" S"
+                                    class="w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
+                                />
+                            </div>
+                            
+                            <div x-data="{
+                                val: '{{ old('longitude', $ponto->longitude) }}',
+                                convertDMS(input) {
+                                    let regex = /(\d+)[°\s]+(\d+)[\'\s]+(\d+(?:\.\d+)?)[\"\s]*([EWew])?/;
+                                    let match = input.match(regex);
+                                    if (match) {
+                                        let deg = parseFloat(match[1]);
+                                        let min = parseFloat(match[2]);
+                                        let sec = parseFloat(match[3]);
+                                        let dir = match[4] ? match[4].toUpperCase() : null;
+                                        
+                                        let dec = deg + min/60 + sec/3600;
+                                        if (dir === 'W' || !dir) dec = -dec;
+                                        if (dir === 'W') dec = -Math.abs(dec);
+                                        
+                                        this.val = dec.toFixed(6);
+                                    }
+                                }
+                            }">
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                    Longitude
+                                </label>
+                                <input
+                                    type="text"
+                                    name="longitude"
+                                    x-model="val"
+                                    @blur="convertDMS(val)"
+                                    placeholder="-38.7454 ou 38° 44' 43\" W"
+                                    class="w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
+                                />
+                            </div>
                         </div>
 
                         <!-- Mapa Interativo -->
@@ -245,13 +301,13 @@
                                 label="Data de Instalação"
                                 name="data_instalacao"
                                 type="date"
-                                value="{{ old('data_instalacao', $ponto->data_instalacao?->format('Y-m-d')) }}"
+                                value="{{ old('data_instalacao', $ponto->data_instalacao ? $ponto->data_instalacao->format('Y-m-d') : '') }}"
                             />
                             <x-iluminacao::form.input
                                 label="Última Manutenção"
                                 name="ultima_manutencao"
                                 type="date"
-                                value="{{ old('ultima_manutencao', $ponto->ultima_manutencao?->format('Y-m-d')) }}"
+                                value="{{ old('ultima_manutencao', $ponto->ultima_manutencao ? $ponto->ultima_manutencao->format('Y-m-d') : '') }}"
                             />
                         </div>
                     </div>
@@ -268,17 +324,18 @@
                             name="observacoes"
                             rows="3"
                             value="{{ old('observacoes', $ponto->observacoes) }}"
+                            placeholder="Informações adicionais sobre o ponto"
                         />
                     </div>
 
                     <!-- Botões de Ação -->
                     <div class="flex items-center justify-end gap-3 pt-4 border-t border-gray-200 dark:border-gray-700">
-                        <x-iluminacao::button href="{{ route('iluminacao.show', $ponto) }}" variant="outline">
+                        <x-iluminacao::button href="{{ route('iluminacao.index') }}" variant="outline">
                             Cancelar
                         </x-iluminacao::button>
                         <x-iluminacao::button type="submit" variant="primary">
                             <x-iluminacao::icon name="check-circle" class="w-4 h-4 mr-2" />
-                            Atualizar Ponto
+                            Salvar Alterações
                         </x-iluminacao::button>
                     </div>
                 </form>
@@ -291,25 +348,34 @@
                 <x-slot name="header">
                     <h3 class="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
                         <x-iluminacao::icon name="information-circle" class="w-5 h-5" />
-                        Informações
+                        Dicas
                     </h3>
                 </x-slot>
 
                 <div class="space-y-4">
-                    <div>
-                        <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">ID</label>
-                        <div class="text-base font-semibold text-gray-900 dark:text-white">#{{ $ponto->id }}</div>
+                    <div class="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+                        <div class="flex items-start gap-3">
+                            <x-iluminacao::icon name="information-circle" class="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
+                            <div class="flex-1">
+                                <h4 class="text-sm font-semibold text-blue-900 dark:text-blue-200 mb-1">Edição</h4>
+                                <p class="text-xs text-blue-800 dark:text-blue-300">
+                                    O histórico de alterações é mantido automaticamente.
+                                </p>
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Criado em</label>
-                        <div class="text-sm text-gray-900 dark:text-white">{{ $ponto->created_at->format('d/m/Y H:i') }}</div>
+                    
+                    <div class="p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg border border-purple-200 dark:border-purple-800">
+                        <div class="flex items-start gap-3">
+                            <x-iluminacao::icon name="map-pin" class="w-5 h-5 text-purple-600 dark:text-purple-400 flex-shrink-0 mt-0.5" />
+                            <div class="flex-1">
+                                <h4 class="text-sm font-semibold text-purple-900 dark:text-purple-200 mb-1">Coordenadas</h4>
+                                <p class="text-xs text-purple-800 dark:text-purple-300">
+                                    O sistema aceita coordenadas decimais (-12.23) ou DMS (12° 14' 01" S).
+                                </p>
+                            </div>
+                        </div>
                     </div>
-                    @if($ponto->updated_at)
-                    <div>
-                        <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Atualizado em</label>
-                        <div class="text-sm text-gray-900 dark:text-white">{{ $ponto->updated_at->format('d/m/Y H:i') }}</div>
-                    </div>
-                    @endif
                 </div>
             </x-iluminacao::card>
         </div>

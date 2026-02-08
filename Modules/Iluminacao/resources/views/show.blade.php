@@ -43,6 +43,11 @@
                 <x-iluminacao::icon name="link" class="w-4 h-4 inline mr-2" />
                 Relacionamentos
             </button>
+            <button data-tab-target="historico" class="border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300 whitespace-nowrap py-4 px-1 text-sm font-medium">
+                <x-iluminacao::icon name="clock" class="w-4 h-4 inline mr-2" />
+                Histórico
+            </button>
+
         </nav>
     </div>
 
@@ -141,7 +146,28 @@
                                 />
                             </div>
                             @endif
-                        </div>
+                        
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                                <div>
+                                    <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Barramento</label>
+                                    <div class="text-sm text-gray-900 dark:text-white">{{ $ponto->barramento ?? 'N/A' }}</div>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Trafo</label>
+                                    <div class="text-sm text-gray-900 dark:text-white">{{ $ponto->trafo ?? 'N/A' }}</div>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                                <div>
+                                    <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Quantidade</label>
+                                    <div class="text-sm text-gray-900 dark:text-white">{{ $ponto->quantidade ?? 1 }}</div>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Horas Diárias</label>
+                                    <div class="text-sm text-gray-900 dark:text-white">{{ $ponto->horas_diarias ?? 'N/A' }}</div>
+                                </div>
+                            </div>
+</div>
                     </x-iluminacao::card>
 
                     <!-- Especificações Técnicas -->
@@ -386,6 +412,60 @@
         </div>
     </div>
 </div>
+
+
+        <!-- Tab Histórico -->
+        <div data-tab-panel="historico" class="hidden">
+            <x-iluminacao::card>
+                <x-slot name="header">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+                        <x-iluminacao::icon name="clock" class="w-5 h-5" />
+                        Linha do Tempo
+                    </h3>
+                </x-slot>
+
+                <div class="space-y-8 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-slate-300 before:to-transparent">
+                    @forelse($ponto->historico as $evento)
+                    <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+                        <!-- Icon -->
+                        <div class="flex items-center justify-center w-10 h-10 rounded-full border border-white bg-slate-300 group-[.is-active]:bg-emerald-500 text-slate-500 group-[.is-active]:text-emerald-50 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2">
+                            <x-iluminacao::icon name="check-circle" class="w-5 h-5" />
+                        </div>
+                        <!-- Card -->
+                        <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-4 rounded border border-slate-200 shadow">
+                            <div class="flex items-center justify-between space-x-2 mb-1">
+                                <div class="font-bold text-slate-900">{{ $evento->tipo_evento }}</div>
+                                <time class="font-caveat font-medium text-indigo-500">{{ $evento->data_evento ? $evento->data_evento->format('d/m/Y H:i') : '' }}</time>
+                            </div>
+                            <div class="text-slate-500">{{ $evento->descricao }}</div>
+                            @if($evento->material)
+                                <div class="mt-2 text-sm text-slate-600 bg-slate-50 p-2 rounded">
+                                    <span class="font-semibold">Material:</span> {{ $evento->material->nome ?? 'N/A' }} 
+                                    @if($evento->quantidade_material)
+                                        (Qty: {{ $evento->quantidade_material }})
+                                    @endif
+                                </div>
+                            @endif
+                            @if($evento->demanda)
+                                 <div class="mt-1 text-sm text-indigo-600">
+                                    <a href="{{ route('demandas.show', $evento->demanda->id) }}" class="hover:underline">
+                                        Via Demanda #{{ $evento->demanda->codigo ?? $evento->demanda->id }}
+                                    </a>
+                                 </div>
+                            @endif
+                             @if($evento->user_id)
+                                 <div class="mt-1 text-xs text-gray-400">
+                                    Por: {{ $evento->usuario->name ?? 'Sistema' }}
+                                 </div>
+                            @endif
+                        </div>
+                    </div>
+                    @empty
+                    <div class="text-center py-8 text-gray-500">Nenhum histórico registrado.</div>
+                    @endforelse
+                </div>
+            </x-iluminacao::card>
+        </div>
 
 @push('scripts')
 <script>

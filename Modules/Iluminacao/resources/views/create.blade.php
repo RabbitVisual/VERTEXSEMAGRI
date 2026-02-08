@@ -108,10 +108,51 @@
                             label="Endereço"
                             name="endereco"
                             type="text"
-                            required
                             value="{{ old('endereco') }}"
                             placeholder="Endereço completo do ponto"
                         />
+                    </div>
+
+                    <!-- Identificação de Hardware -->
+                    <div class="space-y-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                        <h4 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3 flex items-center gap-2">
+                            <x-iluminacao::icon name="chip" class="w-4 h-4" />
+                            Identificação de Hardware
+                        </h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <x-iluminacao::form.input
+                                    label="Quantidade"
+                                    name="quantidade"
+                                    type="number"
+                                    min="1"
+                                    value="{{ old('quantidade', 1) }}"
+                                />
+                            </div>
+                            <div>
+                                <x-iluminacao::form.input
+                                    label="Horas Diárias"
+                                    name="horas_diarias"
+                                    type="number"
+                                    step="0.1"
+                                    value="{{ old('horas_diarias') }}"
+                                    placeholder="Ex: 12.0"
+                                />
+                            </div>
+
+                            <x-iluminacao::form.input
+                                label="Barramento"
+                                name="barramento"
+                                value="{{ old('barramento') }}"
+                                placeholder="Código do Barramento"
+                            />
+                            <x-iluminacao::form.input
+                                label="Trafo"
+                                name="trafo"
+                                value="{{ old('trafo') }}"
+                                placeholder="ID do Transformador"
+                            />
+                        </div>
                     </div>
 
                     <!-- Especificações Técnicas -->
@@ -192,22 +233,75 @@
                         </h4>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <x-iluminacao::form.input
-                                label="Latitude"
-                                name="latitude"
-                                type="number"
-                                step="any"
-                                value="{{ old('latitude') }}"
-                                placeholder="-12.2336"
-                            />
-                            <x-iluminacao::form.input
-                                label="Longitude"
-                                name="longitude"
-                                type="number"
-                                step="any"
-                                value="{{ old('longitude') }}"
-                                placeholder="-38.7454"
-                            />
+                            <div x-data="{
+                                val: '{{ old('latitude') }}',
+                                convertDMS(input) {
+                                    // Basic DMS conversion logic
+                                    // Matches 23 34 12 S or 23° 34' 12\" S
+                                    let regex = /(\d+)[°\s]+(\d+)[\'\s]+(\d+(?:\.\d+)?)[\"\s]*([NSns])?/;
+                                    let match = input.match(regex);
+                                    if (match) {
+                                        let deg = parseFloat(match[1]);
+                                        let min = parseFloat(match[2]);
+                                        let sec = parseFloat(match[3]);
+                                        let dir = match[4] ? match[4].toUpperCase() : null;
+                                        
+                                        let dec = deg + min/60 + sec/3600;
+                                        if (dir === 'S') dec = -dec;
+                                        // If no direction but input looks positive, assume negative for South America? No, standard is standard.
+                                        // But users might just type '23 34 12'.
+                                        
+                                        this.val = dec.toFixed(6);
+                                    }
+                                }
+                            }">
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                    Latitude
+                                </label>
+                                <input
+                                    type="text"
+                                    name="latitude"
+                                    x-model="val"
+                                    @blur="convertDMS(val)"
+                                    placeholder="-12.2336 ou 12° 14' 01\" S"
+                                    class="w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
+                                />
+                            </div>
+                            
+                            <div x-data="{
+                                val: '{{ old('longitude') }}',
+                                convertDMS(input) {
+                                    let regex = /(\d+)[°\s]+(\d+)[\'\s]+(\d+(?:\.\d+)?)[\"\s]*([EWew])?/;
+                                    let match = input.match(regex);
+                                    if (match) {
+                                        let deg = parseFloat(match[1]);
+                                        let min = parseFloat(match[2]);
+                                        let sec = parseFloat(match[3]);
+                                        let dir = match[4] ? match[4].toUpperCase() : null;
+                                        
+                                        let dec = deg + min/60 + sec/3600;
+                                        if (dir === 'W' || !dir) dec = -dec; // Assume W if no dir for longitude in Brazil? Or strict.
+                                        // Standard is W is negative.
+                                        // If input is 38 44 43, assume negative for Brazil?
+                                        // Let's rely on standard 'W' or explicit negative.
+                                        if (dir === 'W') dec = -Math.abs(dec);
+                                        
+                                        this.val = dec.toFixed(6);
+                                    }
+                                }
+                            }">
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                    Longitude
+                                </label>
+                                <input
+                                    type="text"
+                                    name="longitude"
+                                    x-model="val"
+                                    @blur="convertDMS(val)"
+                                    placeholder="-38.7454 ou 38° 44' 43\" W"
+                                    class="w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
+                                />
+                            </div>
                         </div>
 
                         <!-- Mapa Interativo -->
@@ -303,6 +397,18 @@
                                 <h4 class="text-sm font-semibold text-amber-900 dark:text-amber-200 mb-1">Status</h4>
                                 <p class="text-xs text-amber-800 dark:text-amber-300">
                                     Atualize o status conforme o estado atual do ponto de iluminação.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg border border-purple-200 dark:border-purple-800">
+                        <div class="flex items-start gap-3">
+                            <x-iluminacao::icon name="map-pin" class="w-5 h-5 text-purple-600 dark:text-purple-400 flex-shrink-0 mt-0.5" />
+                            <div class="flex-1">
+                                <h4 class="text-sm font-semibold text-purple-900 dark:text-purple-200 mb-1">Coordenadas</h4>
+                                <p class="text-xs text-purple-800 dark:text-purple-300">
+                                    O sistema aceita coordenadas decimais (-12.23) ou DMS (12° 14' 01" S).
                                 </p>
                             </div>
                         </div>

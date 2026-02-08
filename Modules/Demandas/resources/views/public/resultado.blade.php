@@ -11,89 +11,47 @@
             <!-- Header -->
             <div class="text-center mb-10">
                 <div class="inline-flex items-center gap-2 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 px-4 py-2 rounded-full text-sm font-semibold mb-4">
-                    <x-icon name="magnifying-glass" class="w-5 h-5" />
-                    Protocolo: {{ $demanda->codigo }}
-                </div>
-                <h1 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-2">
-                    Acompanhamento de Solicitação
-                </h1>
-                <p class="text-gray-600 dark:text-gray-400">
-                    Última atualização: {{ $demanda->updated_at->format('d/m/Y H:i') }}
-                </p>
-            </div>
-
-            <!-- Detalhes Card -->
-            <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border-2 border-gray-200 dark:border-slate-700 overflow-hidden mb-8">
-                <!-- Status Bar -->
-                @php
-                    $gradient = 'from-emerald-500 to-teal-600';
-                    if($demanda->status === 'aberta') $gradient = 'from-blue-500 to-blue-600';
-                    elseif($demanda->status === 'em_andamento') $gradient = 'from-amber-500 to-amber-600';
-                    elseif($demanda->status === 'cancelada') $gradient = 'from-red-500 to-red-600';
-                @endphp
-                <div id="statusHeader" class="bg-gradient-to-r {{ $gradient }} px-8 py-6">
-                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 text-white">
-                        <div>
-                            <p class="text-emerald-50/80 text-sm font-medium mb-1">Status Atual</p>
-                            <h2 class="text-2xl font-bold" id="statusTexto">{{ $demanda->status_texto }}</h2>
-                        </div>
-                        <div class="text-right">
-                            <p class="text-emerald-50/80 text-xs font-medium uppercase tracking-wider">Abertura</p>
-                            <p class="font-bold">{{ $demanda->data_abertura->format('d/m/Y') }}</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="p-8">
-                    <div class="grid md:grid-cols-2 gap-8 mb-8">
-                        <!-- Coluna 1: Informações da Demanda -->
-                        <div>
-                            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-                                <x-icon name="list-bullet" class="w-5 h-5 text-emerald-500" />
+                    <x-icon name="file-pdf" class="w-5 h-5" />
                                 Detalhes da Solicitação
                             </h3>
-                            <dl class="space-y-4">
+                            <dl class="space-y-3">
                                 <div>
-                                    <dt class="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Motivo da Demanda</dt>
-                                    <dd class="mt-1 text-base text-gray-900 dark:text-white font-medium">{{ $demanda->motivo }}</dd>
+                                    <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Motivo da Demanda</dt>
+                                    <dd class="mt-1 text-base text-gray-900 dark:text-white leading-relaxed">{{ $demanda->motivo }}</dd>
                                 </div>
+                                @if($demanda->data_conclusao)
                                 <div>
-                                    <dt class="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Tipo de Serviço</dt>
-                                    <dd class="mt-1 text-base text-gray-900 dark:text-white font-medium">{{ $demanda->tipo_texto }}</dd>
-                                </div>
-                            </dl>
-                        </div>
-
-                        <!-- Coluna 2: Localização e Prioridade -->
-                        <div>
-                            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-                                <x-icon name="map-pin" class="w-5 h-5 text-emerald-500" />
-                                Localização e Prioridade
-                            </h3>
-                            <dl class="space-y-4">
-                                <div>
-                                    <dt class="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Localidade</dt>
-                                    <dd class="mt-1 text-base text-gray-900 dark:text-white font-medium">{{ $demanda->localidade->nome ?? 'N/A' }}</dd>
-                                </div>
-                                <div>
-                                    <dt class="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Prioridade</dt>
-                                    <dd class="mt-1 text-base font-bold
-                                        @if($demanda->prioridade === 'urgente') text-red-600
-                                        @elseif($demanda->prioridade === 'alta') text-amber-600
-                                        @else text-emerald-600 @endif">
-                                        {{ $demanda->prioridade_texto }}
+                                    <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Data de Conclusão</dt>
+                                    <dd class="mt-1 text-base text-gray-900 dark:text-white">
+                                        {{ $demanda->data_conclusao->format('d/m/Y H:i') }}
                                     </dd>
                                 </div>
+                                @endif
+                                @php
+                                    $diasAberta = $demanda->diasAberta();
+                                @endphp
+                                @if($diasAberta !== null && $diasAberta > 0)
+                                <div>
+                                    <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Tempo Aberta</dt>
+                                    <dd class="mt-1 text-base text-gray-900 dark:text-white">
+                                        {{ $diasAberta }} dia(s)
+                                    </dd>
+                                </div>
+                                @endif
+                                @if($demanda->total_interessados && $demanda->total_interessados > 1)
+                                <div>
+                                    <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Pessoas Afetadas</dt>
+                                    <dd class="mt-1 text-base text-gray-900 dark:text-white flex items-center gap-2">
+                                        <span class="inline-flex items-center justify-center w-7 h-7 rounded-full bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 text-sm font-bold">
+                                            {{ $demanda->total_interessados }}
+                                        </span>
+                                        <span>pessoas reportaram esta mesma demanda</span>
+                                    </dd>
+                                </div>
+                                @endif
                             </dl>
                         </div>
                     </div>
-
-                    @if($demanda->descricao)
-                    <div class="border-t border-gray-100 dark:border-slate-700 pt-6 mt-6">
-                        <p class="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">Descrição Adicional</p>
-                        <p class="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">{{ $demanda->descricao }}</p>
-                    </div>
-                    @endif
 
                     <!-- Pessoas Relacionadas (Interessados) -->
                     @php
@@ -789,3 +747,4 @@
 </style>
 @endpush
 @endsection
+

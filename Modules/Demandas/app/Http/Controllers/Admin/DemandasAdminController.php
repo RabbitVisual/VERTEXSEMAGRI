@@ -5,11 +5,20 @@ namespace Modules\Demandas\App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Modules\Demandas\App\Models\Demanda;
 use Modules\Localidades\App\Models\Localidade;
+use Modules\Demandas\App\Services\SimilaridadeDemandaService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Str;
 
 class DemandasAdminController extends Controller
 {
+    protected $similaridadeService;
+
+    public function __construct(SimilaridadeDemandaService $similaridadeService)
+    {
+        $this->similaridadeService = $similaridadeService;
+    }
+
     public function index(Request $request)
     {
         $filters = $request->only(['status', 'tipo', 'prioridade', 'localidade_id', 'search']);
@@ -49,6 +58,37 @@ class DemandasAdminController extends Controller
         }
 
         $demandas = $query->orderBy('created_at', 'desc')->paginate(20);
+
+        // Análise de Similaridade para cada demanda listada
+        // Isso permite alertar visualmente sobre possíveis duplicidades
+        foreach ($demandas as $demanda) {
+            if (in_array($demanda->status, ['aberta', 'em_andamento'])) {
+                // Busca similares
+                $similares = $this->similaridadeService->buscarSimilares([
+                    'localidade_id' => $demanda->localidade_id,
+                    'tipo' => $demanda->tipo,
+                    'descricao' => $demanda->descricao,
+                    'motivo' => $demanda->motivo,
+                ], 5);
+
+                // Filtra a própria demanda da lista de resultados
+                $similares = $similares->filter(function($item) use ($demanda) {
+                    return $item['demanda']->id !== $demanda->id;
+                });
+
+                $melhorMatch = $similares->first();
+
+                // Se houver similaridade alta (> 80%), adiciona alerta
+                if ($melhorMatch && $melhorMatch['score'] >= 80) {
+                    $demanda->duplicidade_alert = [
+                        'score' => $melhorMatch['score'],
+                        'demanda_id' => $melhorMatch['demanda']->id,
+                        'codigo' => $melhorMatch['demanda']->codigo,
+                        'resumo' => Str::limit($melhorMatch['demanda']->descricao ?? $melhorMatch['demanda']->motivo, 50)
+                    ];
+                }
+            }
+        }
 
         $localidades = collect([]);
         if (Schema::hasTable('localidades')) {

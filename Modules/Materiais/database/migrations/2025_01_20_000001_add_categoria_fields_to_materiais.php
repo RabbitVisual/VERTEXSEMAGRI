@@ -18,10 +18,7 @@ return new class extends Migration
         });
 
         // Atualizar enum de categorias para incluir novas categorias
-        // Como não podemos alterar enum diretamente, vamos usar DB::statement
-        if (Schema::hasColumn('materiais', 'categoria') && DB::connection()->getDriverName() !== 'sqlite') {
-            // Primeiro, vamos criar uma migration que altera o enum
-            // Mas como isso é complexo, vamos fazer via alteração da coluna
+        if (Schema::hasColumn('materiais', 'categoria') && DB::getDriverName() !== 'sqlite') {
             DB::statement("ALTER TABLE materiais MODIFY COLUMN categoria ENUM(
                 'lampadas',
                 'reatores',
@@ -46,9 +43,9 @@ return new class extends Migration
             $table->dropColumn(['campos_especificos', 'ultimo_alerta_estoque']);
         });
 
-        if (DB::connection()->getDriverName() !== 'sqlite') {
-            // Reverter enum para versão anterior
-            DB::statement("ALTER TABLE materiais MODIFY COLUMN categoria ENUM(
+        // Reverter enum para versão anterior (only for MySQL)
+        if (DB::getDriverName() !== 'sqlite') {
+             DB::statement("ALTER TABLE materiais MODIFY COLUMN categoria ENUM(
                 'lampadas',
                 'reatores',
                 'fios',

@@ -228,16 +228,16 @@ class BackupController extends Controller
         if ($tempCredentialsFile === false) {
              throw new \Exception('Could not create temporary credentials file');
         }
-
+        
         // Secure permissions immediately (0600)
         chmod($tempCredentialsFile, 0600);
-
+        
         $credentialsContent = "[client]\n";
         $credentialsContent .= "user='" . addcslashes($username, "'\\") . "'\n";
         $credentialsContent .= "password='" . addcslashes($password, "'\\") . "'\n";
         $credentialsContent .= "host='" . addcslashes($host, "'\\") . "'\n";
         $credentialsContent .= "port='" . addcslashes($port, "'\\") . "'\n";
-
+        
         file_put_contents($tempCredentialsFile, $credentialsContent);
 
         try {

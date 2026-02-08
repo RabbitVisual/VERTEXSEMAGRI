@@ -21,19 +21,17 @@ class SimilaridadeDemandaServiceTest extends TestCase
         // This must be set BEFORE parent::setUp() because the app boots there
         putenv('DB_CONNECTION=sqlite');
         putenv('DB_DATABASE=:memory:');
-
+        
         parent::setUp();
-
+        
         // Also ensure config is set correctly after boot
         config(['database.default' => 'sqlite']);
         config(['database.connections.sqlite.database' => ':memory:']);
-
-        parent::setUp();
-
+        
         // Ensure we start with a clean state for these tables
         Schema::dropIfExists('demandas');
         Schema::dropIfExists('localidades');
-
+        
         // Manually create minimal tables required for the test
         Schema::create('localidades', function (Blueprint $table) {
             $table->id();
@@ -71,10 +69,10 @@ class SimilaridadeDemandaServiceTest extends TestCase
             $table->timestamps();
             $table->softDeletes();
         });
-
+        
         $this->service = new SimilaridadeDemandaService();
     }
-
+    
     protected function tearDown(): void
     {
         Schema::dropIfExists('demandas');
@@ -172,7 +170,7 @@ class SimilaridadeDemandaServiceTest extends TestCase
             'media' => $scoreMedia,
             'longe' => $scoreLonge,
         ]);
-
+        
         $this->assertTrue($scoreMesma >= $scoreMuitoPerto, "Mesma localidade deve ter score maior ou igual a muito perto");
         $this->assertTrue($scoreMuitoPerto > $scorePerto, "Muito perto deve ser maior que perto");
         $this->assertTrue($scorePerto > $scoreMedia, "Perto deve ser maior que media");

@@ -62,12 +62,6 @@
                                 <span class="px-2.5 py-0.5 text-xs font-medium rounded-full {{ $statusClass }}">{{ ucfirst(str_replace('_', ' ', $ordem->status)) }}</span>
                             </dd>
                         </div>
-                        <div>
-                            <dt class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Custo Total</dt>
-                            <dd class="text-sm text-gray-900 dark:text-white font-bold">
-                                R$ {{ number_format($ordem->custo_total, 2, ',', '.') }}
-                            </dd>
-                        </div>
                         @if($ordem->demanda)
                         <div>
                             <dt class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Demanda Relacionada</dt>

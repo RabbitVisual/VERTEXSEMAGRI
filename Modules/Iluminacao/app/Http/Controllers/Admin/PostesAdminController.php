@@ -46,7 +46,7 @@ class PostesAdminController extends Controller
             'trafo' => 'nullable|string',
             'barramento' => 'boolean',
         ]);
-
+        
         Poste::create($validated);
         return redirect()->route('admin.iluminacao.postes.index')->with('success', 'Poste criado com sucesso.');
     }

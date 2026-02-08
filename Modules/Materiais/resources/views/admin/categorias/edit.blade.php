@@ -10,13 +10,6 @@
             <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white flex items-center gap-3 mb-2">
                 <div class="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl flex items-center justify-center shadow-lg">
                     <x-icon name="chevron-right" class="w-4 h-4" />
-                    <x-icon name="pen" class="w-6 h-6 md:w-7 md:h-7 text-white" />
-                </div>
-                <span>Editar Categoria</span>
-            </h1>
-            <nav aria-label="breadcrumb" class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
-                <a href="{{ route('admin.dashboard') }}" class="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Admin</a>
-                <x-icon name="chevron-right" class="w-4 h-4" />
                 <a href="{{ route('admin.materiais.categorias.index') }}" class="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Categorias</a>
                 <x-icon name="chevron-right" class="w-4 h-4" />
                 <span class="text-gray-900 dark:text-white font-medium">{{ $categoria->nome }}</span>
@@ -31,7 +24,9 @@
     <!-- Flash Messages -->
     @if($errors->any())
     <div id="alert-error" class="flex items-center p-4 mb-4 text-red-800 border border-red-300 rounded-lg bg-red-50 dark:bg-red-900/20 dark:text-red-400 dark:border-red-800" role="alert">
-        <x-icon name="circle-xmark" class="flex-shrink-0 w-5 h-5" />
+        <svg class="flex-shrink-0 w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+        </svg>
         <div class="ml-3 text-sm font-medium">
             <ul class="list-disc list-inside space-y-1">
                 @foreach($errors->all() as $error)
@@ -102,7 +97,9 @@
 
                 <div class="flex gap-3 pt-4 border-t border-gray-200 dark:border-slate-700">
                     <button type="submit" class="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-white bg-emerald-600 rounded-lg hover:bg-emerald-700 focus:ring-4 focus:ring-emerald-300 dark:bg-emerald-600 dark:hover:bg-emerald-700 dark:focus:ring-emerald-800 transition-colors">
-                        <x-icon name="check" class="w-5 h-5" />
+                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                        </svg>
                         Atualizar Categoria
                     </button>
                     <a href="{{ route('admin.materiais.categorias.index') }}" class="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:ring-4 focus:ring-gray-200 dark:bg-slate-700 dark:text-gray-300 dark:border-slate-600 dark:hover:bg-slate-600 dark:focus:ring-slate-700 transition-colors">

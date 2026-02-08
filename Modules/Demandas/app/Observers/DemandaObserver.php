@@ -73,10 +73,10 @@ class DemandaObserver
 
             // Buscar similaridade com outras demandas abertas
             $dados = $demanda->toArray();
-
+            
             // Buscar 5 resultados para garantir que encontramos outros além da própria demanda
             $similares = $this->similaridadeService->buscarSimilares($dados, 5);
-
+            
             // Filtrar a própria demanda dos resultados (se já existir no banco)
             $similares = $similares->filter(function ($item) use ($demanda) {
                 return $item['demanda']->id !== $demanda->id;

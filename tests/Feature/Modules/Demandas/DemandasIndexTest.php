@@ -16,12 +16,12 @@ class DemandasIndexTest extends TestCase
     {
         putenv('DB_CONNECTION=sqlite');
         putenv('DB_DATABASE=:memory:');
-
+        
         parent::setUp();
-
+        
         config(['database.default' => 'sqlite']);
         config(['database.connections.sqlite.database' => ':memory:']);
-
+        
         // Setup schemas manually
         Schema::create('users', function (Blueprint $table) {
             $table->id();
@@ -81,7 +81,7 @@ class DemandasIndexTest extends TestCase
             $table->timestamps();
             $table->softDeletes();
         });
-
+        
         Schema::create('pessoas_cad', function (Blueprint $table) {
             $table->id();
             $table->string('nom_pessoa')->nullable();
@@ -157,23 +157,23 @@ class DemandasIndexTest extends TestCase
         // We can mock the view to avoid rendering the full layout which causes dependency hell with roles/permissions in tests
         // OR we can just check the view data if we didn't use `get()`.
         // Since `get()` renders the view, we need the dependencies.
-
+        
         // Mocking the layout is hard. Instead, let's just make sure the `Demanda` model has the right data and the Controller passes it.
         // But the requirement is to verify the UI.
-
+        
         // Let's try to minimal bypass by mocking the user having roles if the code checks `$user->hasRole(...)`.
         // Since Spatie uses the DB, and we created the tables, it should work but returns false/empty.
-
+        
         $response = $this->actingAs($user)->get(route('demandas.index'));
 
         $response->assertStatus(200);
-
+        
         // Assert high similarity warning is present for DEM-001
         $response->assertSee('DEM-001');
         $response->assertSee('triangle-exclamation'); // The icon name
         $response->assertSee('Duplicata Provável');
-
-        // For DEM-002, we don't expect the warning.
+        
+        // For DEM-002, we don't expect the warning. 
         // We can assert it sees DEM-002 but NOT the warning *associated* with it is hard in HTML string.
         // But verifying the text "Duplicata Provável" exists is enough to prove the logic *can* render it.
     }

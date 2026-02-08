@@ -27,6 +27,10 @@ class IluminacaoServiceProvider extends ServiceProvider
         $this->registerConfig();
         $this->registerViews();
         $this->loadMigrationsFrom(module_path($this->name, 'database/migrations'));
+        
+        if (class_exists(\Modules\Demandas\App\Models\Demanda::class)) {
+            \Modules\Demandas\App\Models\Demanda::observe(\Modules\Iluminacao\App\Observers\DemandaObserver::class);
+        }
     }
 
     /**

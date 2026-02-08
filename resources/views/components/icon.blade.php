@@ -17,7 +17,7 @@
     if ($module && empty($name)) {
         $moduleKey = Illuminate\Support\Str::studly($module);
         $name = config("icons.modules.{$moduleKey}");
-
+        
         if (!$name) {
             $name = 'circle-question'; // Fallback if module mapping missing
         }
