@@ -3,87 +3,38 @@
 namespace Modules\Demandas\App\Observers;
 
 use Modules\Demandas\App\Models\Demanda;
-use Modules\Demandas\App\Mail\DemandaStatusChanged;
+use Modules\Demandas\App\Services\SimilaridadeDemandaService;
 use Modules\Demandas\App\Mail\DemandaCriada;
+use Modules\Demandas\App\Mail\DemandaStatusChanged;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
 
 class DemandaObserver
 {
+    protected $similaridadeService;
+
+    public function __construct(SimilaridadeDemandaService $similaridadeService)
+    {
+        $this->similaridadeService = $similaridadeService;
+    }
+
     /**
      * Handle the Demanda "created" event.
      */
     public function created(Demanda $demanda): void
     {
-        // Enviar email de confirmação de criação se há email cadastrado
-        // Isso garante que o email seja enviado mesmo se a demanda for criada via outros métodos
+        // Enviar email de confirmação se houver email do solicitante
         if ($demanda->solicitante_email && $demanda->codigo) {
             try {
-                // Carregar relacionamentos necessários
-                if (!$demanda->relationLoaded('localidade')) {
-                    $demanda->load('localidade');
-                }
-                if (!$demanda->relationLoaded('pessoa')) {
-                    $demanda->load('pessoa');
-                }
-
-                // Validar email antes de enviar
-                if (!filter_var($demanda->solicitante_email, FILTER_VALIDATE_EMAIL)) {
-                    Log::warning('Email inválido para demanda', [
-                        'demanda_id' => $demanda->id,
-                        'codigo' => $demanda->codigo,
-                        'email' => $demanda->solicitante_email,
-                    ]);
-                    return;
-                }
-
-                // Enviar email de forma síncrona (não usar fila)
                 Mail::to($demanda->solicitante_email)
                     ->send(new DemandaCriada($demanda));
-
-                Log::info('Email de confirmação de demanda enviado com sucesso via Observer', [
-                    'demanda_id' => $demanda->id,
-                    'codigo' => $demanda->codigo,
-                    'email' => $demanda->solicitante_email,
-                    'timestamp' => now()->toDateTimeString(),
-                ]);
-            } catch (\Symfony\Component\Mailer\Exception\TransportExceptionInterface | \Swift_TransportException $e) {
-                // Erro de transporte (SMTP, conexão, etc)
-                Log::error('Erro de transporte ao enviar email de confirmação de demanda', [
-                    'demanda_id' => $demanda->id,
-                    'codigo' => $demanda->codigo,
-                    'email' => $demanda->solicitante_email,
-                    'error' => $e->getMessage(),
-                    'error_code' => method_exists($e, 'getCode') ? $e->getCode() : 0,
-                ]);
             } catch (\Exception $e) {
-                // Outros erros
-                Log::error('Erro ao enviar email de confirmação de demanda via Observer', [
-                    'demanda_id' => $demanda->id,
-                    'codigo' => $demanda->codigo,
-                    'email' => $demanda->solicitante_email,
-                    'error' => $e->getMessage(),
-                    'error_code' => $e->getCode(),
-                    'file' => $e->getFile(),
-                    'line' => $e->getLine(),
-                    'trace' => $e->getTraceAsString(),
-                ]);
-            }
-        } else {
-            if (!$demanda->solicitante_email) {
-                Log::warning('Demanda criada sem email do solicitante', [
-                    'demanda_id' => $demanda->id,
-                    'codigo' => $demanda->codigo,
-                    'solicitante' => $demanda->solicitante_nome,
-                ]);
-            }
-            if (!$demanda->codigo) {
-                Log::warning('Demanda criada sem código', [
-                    'demanda_id' => $demanda->id,
-                    'solicitante' => $demanda->solicitante_nome,
-                ]);
+                Log::error('Erro ao enviar email de criação de demanda: ' . $e->getMessage());
             }
         }
+
+        // Calcular e persistir score de similaridade
+        $this->atualizarScoreSimilaridade($demanda);
     }
 
     /**
@@ -91,41 +42,57 @@ class DemandaObserver
      */
     public function updated(Demanda $demanda): void
     {
-        // Verificar se o status mudou
-        if ($demanda->wasChanged('status') && $demanda->solicitante_email) {
-            $oldStatus = $demanda->getOriginal('status');
-
+        // Enviar email se status mudou
+        if ($demanda->isDirty('status') && $demanda->solicitante_email) {
             try {
                 Mail::to($demanda->solicitante_email)
-                    ->send(new DemandaStatusChanged($demanda, $oldStatus));
+                    ->send(new DemandaStatusChanged($demanda));
             } catch (\Exception $e) {
-                Log::error('Erro ao enviar email de notificação de demanda: ' . $e->getMessage());
+                Log::error('Erro ao enviar email de mudança de status: ' . $e->getMessage());
             }
+        }
+
+        // Recalcular score se campos relevantes mudaram
+        if ($demanda->isDirty(['localidade_id', 'tipo', 'motivo', 'descricao'])) {
+            $this->atualizarScoreSimilaridade($demanda);
         }
     }
 
     /**
-     * Handle the Demanda "deleted" event.
+     * Atualiza o score de similaridade máxima da demanda
      */
-    public function deleted(Demanda $demanda): void
+    protected function atualizarScoreSimilaridade(Demanda $demanda): void
     {
-        //
-    }
+        try {
+            // Não verificar demandas concluídas ou canceladas
+            if (in_array($demanda->status, ['concluida', 'cancelada'])) {
+                $demanda->score_similaridade_max = 0;
+                $demanda->saveQuietly();
+                return;
+            }
 
-    /**
-     * Handle the Demanda "restored" event.
-     */
-    public function restored(Demanda $demanda): void
-    {
-        //
-    }
+            // Buscar similaridade com outras demandas abertas
+            $dados = $demanda->toArray();
 
-    /**
-     * Handle the Demanda "force deleted" event.
-     */
-    public function forceDeleted(Demanda $demanda): void
-    {
-        //
+            // Buscar 5 resultados para garantir que encontramos outros além da própria demanda
+            $similares = $this->similaridadeService->buscarSimilares($dados, 5);
+
+            // Filtrar a própria demanda dos resultados (se já existir no banco)
+            $similares = $similares->filter(function ($item) use ($demanda) {
+                return $item['demanda']->id !== $demanda->id;
+            });
+
+            if ($similares->isNotEmpty()) {
+                $melhorMatch = $similares->first();
+                $demanda->score_similaridade_max = $melhorMatch['score'];
+            } else {
+                $demanda->score_similaridade_max = 0;
+            }
+
+            $demanda->saveQuietly();
+
+        } catch (\Exception $e) {
+            Log::error('Erro ao atualizar score de similaridade: ' . $e->getMessage());
+        }
     }
 }
-
