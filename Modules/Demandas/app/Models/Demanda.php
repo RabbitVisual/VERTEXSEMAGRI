@@ -384,5 +384,45 @@ class Demanda extends Model
             ] : null,
         ];
     }
+
+    /**
+     * Retorna estatísticas gerais das demandas
+     * Otimizado para realizar uma única consulta ao banco de dados
+     */
+    public static function getDashboardStats(): array
+    {
+        $stats = self::leftJoin('ordens_servico', function($join) {
+                $join->on('demandas.id', '=', 'ordens_servico.demanda_id')
+                     ->whereNull('ordens_servico.deleted_at');
+            })
+            ->selectRaw("
+                COUNT(DISTINCT demandas.id) as total,
+                COUNT(DISTINCT CASE WHEN demandas.status = 'aberta' THEN demandas.id END) as abertas,
+                COUNT(DISTINCT CASE WHEN demandas.status = 'em_andamento' THEN demandas.id END) as em_andamento,
+                COUNT(DISTINCT CASE WHEN demandas.status = 'concluida' THEN demandas.id END) as concluidas,
+                COUNT(DISTINCT CASE WHEN demandas.prioridade = 'urgente' THEN demandas.id END) as urgentes,
+                COUNT(DISTINCT CASE WHEN demandas.tipo = 'agua' THEN demandas.id END) as tipo_agua,
+                COUNT(DISTINCT CASE WHEN demandas.tipo = 'luz' THEN demandas.id END) as tipo_luz,
+                COUNT(DISTINCT CASE WHEN demandas.tipo = 'estrada' THEN demandas.id END) as tipo_estrada,
+                COUNT(DISTINCT CASE WHEN demandas.tipo = 'poco' THEN demandas.id END) as tipo_poco,
+                COUNT(DISTINCT CASE WHEN ordens_servico.id IS NULL THEN demandas.id END) as sem_os
+            ")
+            ->first();
+
+        return [
+            'total' => (int) $stats->total,
+            'abertas' => (int) $stats->abertas,
+            'em_andamento' => (int) $stats->em_andamento,
+            'concluidas' => (int) $stats->concluidas,
+            'urgentes' => (int) $stats->urgentes,
+            'sem_os' => (int) $stats->sem_os,
+            'por_tipo' => [
+                'agua' => (int) $stats->tipo_agua,
+                'luz' => (int) $stats->tipo_luz,
+                'estrada' => (int) $stats->tipo_estrada,
+                'poco' => (int) $stats->tipo_poco,
+            ],
+        ];
+    }
 }
 
