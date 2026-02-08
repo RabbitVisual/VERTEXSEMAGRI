@@ -22,6 +22,7 @@ return new class extends Migration
         if (Schema::hasColumn('materiais', 'categoria')) {
             // Primeiro, vamos criar uma migration que altera o enum
             // Mas como isso é complexo, vamos fazer via alteração da coluna
+            if (DB::getDriverName() !== 'sqlite') {
             DB::statement("ALTER TABLE materiais MODIFY COLUMN categoria ENUM(
                 'lampadas',
                 'reatores',
@@ -38,6 +39,7 @@ return new class extends Migration
                 'outros'
             ) NOT NULL");
         }
+        }
     }
 
     public function down(): void
@@ -47,7 +49,8 @@ return new class extends Migration
         });
 
         // Reverter enum para versão anterior
-        DB::statement("ALTER TABLE materiais MODIFY COLUMN categoria ENUM(
+        if (DB::getDriverName() !== 'sqlite') {
+            DB::statement("ALTER TABLE materiais MODIFY COLUMN categoria ENUM(
             'lampadas',
             'reatores',
             'fios',
@@ -57,6 +60,7 @@ return new class extends Migration
             'pecas_pocos',
             'outros'
         ) NOT NULL");
+        }
     }
 };
 
