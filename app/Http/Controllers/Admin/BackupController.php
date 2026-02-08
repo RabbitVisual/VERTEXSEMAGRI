@@ -212,7 +212,7 @@ class BackupController extends Controller
     /**
      * Criar backup usando mysqldump (método nativo MySQL - mais rápido e completo)
      */
-    private function createBackupWithMysqldump($filePath)
+    private function createBackupWithMysqldump($filePath, $dryRun = false)
     {
         $connection = DB::connection();
         $config = $connection->getConfig();
@@ -223,52 +223,77 @@ class BackupController extends Controller
         $username = $config['username'];
         $password = $config['password'];
 
-        // Construir comando mysqldump
-        $command = sprintf(
-            'mysqldump --host=%s --port=%s --user=%s --password=%s --single-transaction --routines --triggers --events --quick --lock-tables=false %s > %s',
-            escapeshellarg($host),
-            escapeshellarg($port),
-            escapeshellarg($username),
-            escapeshellarg($password),
-            escapeshellarg($database),
-            escapeshellarg($filePath)
-        );
+        // Secure credential passing via temporary file
+        $tempCredentialsFile = tempnam(sys_get_temp_dir(), 'mysql-credentials');
+        if ($tempCredentialsFile === false) {
+             throw new \Exception('Could not create temporary credentials file');
+        }
 
-        // Executar comando usando função global
-        $output = [];
-        $returnVar = 0;
+        // Secure permissions immediately (0600)
+        chmod($tempCredentialsFile, 0600);
 
-        if (function_exists('exec')) {
-            @\exec($command . ' 2>&1', $output, $returnVar);
-        } else {
-            // Fallback para shell_exec se exec não estiver disponível
-            $result = @\shell_exec($command . ' 2>&1');
-            if ($result === null) {
-                $returnVar = 1;
-                $output = ['Erro ao executar mysqldump: função shell_exec retornou null'];
+        $credentialsContent = "[client]\n";
+        $credentialsContent .= "user='" . addcslashes($username, "'\\") . "'\n";
+        $credentialsContent .= "password='" . addcslashes($password, "'\\") . "'\n";
+        $credentialsContent .= "host='" . addcslashes($host, "'\\") . "'\n";
+        $credentialsContent .= "port='" . addcslashes($port, "'\\") . "'\n";
+
+        file_put_contents($tempCredentialsFile, $credentialsContent);
+
+        try {
+            // Construir comando mysqldump
+            // Use --defaults-extra-file for credentials
+            $command = sprintf(
+                'mysqldump --defaults-extra-file=%s --single-transaction --routines --triggers --events --quick --lock-tables=false %s > %s',
+                escapeshellarg($tempCredentialsFile),
+                escapeshellarg($database),
+                escapeshellarg($filePath)
+            );
+
+            if ($dryRun) {
+                return $command;
+            }
+
+            // Executar comando usando função global
+            $output = [];
+            $returnVar = 0;
+
+            if (function_exists('exec')) {
+                @\exec($command . ' 2>&1', $output, $returnVar);
             } else {
-                $output = explode("\n", trim($result));
+                // Fallback para shell_exec
+                $result = @\shell_exec($command . ' 2>&1');
+                if ($result === null) {
+                    $returnVar = 1;
+                    $output = ['Erro ao executar mysqldump: função shell_exec retornou null'];
+                } else {
+                    $output = explode("\n", trim($result));
+                }
+            }
+
+            if ($returnVar !== 0) {
+                throw new \Exception('Erro ao executar mysqldump: ' . implode("\n", $output));
+            }
+
+            if (!File::exists($filePath) || File::size($filePath) === 0) {
+                throw new \Exception('Backup criado mas arquivo está vazio ou não existe');
+            }
+
+            // Adicionar cabeçalho personalizado ao arquivo
+            $content = File::get($filePath);
+            $header = "-- Backup do banco de dados: {$database}\n";
+            $header .= "-- Data: " . date('Y-m-d H:i:s') . "\n";
+            $header .= "-- Gerado pelo Sistema SEMAGRI\n";
+            $header .= "-- Método: mysqldump (nativo MySQL)\n\n";
+
+            File::put($filePath, $header . $content);
+        } finally {
+            // Clean up credentials file
+            if (file_exists($tempCredentialsFile)) {
+                @unlink($tempCredentialsFile);
             }
         }
-
-        if ($returnVar !== 0) {
-            throw new \Exception('Erro ao executar mysqldump: ' . implode("\n", $output));
-        }
-
-        if (!File::exists($filePath) || File::size($filePath) === 0) {
-            throw new \Exception('Backup criado mas arquivo está vazio ou não existe');
-        }
-
-        // Adicionar cabeçalho personalizado ao arquivo
-        $content = File::get($filePath);
-        $header = "-- Backup do banco de dados: {$database}\n";
-        $header .= "-- Data: " . date('Y-m-d H:i:s') . "\n";
-        $header .= "-- Gerado pelo Sistema SEMAGRI\n";
-        $header .= "-- Método: mysqldump (nativo MySQL)\n\n";
-
-        File::put($filePath, $header . $content);
     }
-
     /**
      * Criar backup usando queries SQL (método seguro e compatível)
      * Não depende de exec(), shell_exec() ou mysqldump

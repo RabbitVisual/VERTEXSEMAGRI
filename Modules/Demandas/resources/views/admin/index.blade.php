@@ -278,7 +278,24 @@
                                 <span class="text-indigo-600 dark:text-indigo-400 text-xs">({{ $demanda->solicitante_apelido }})</span>
                             @endif
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400">{{ $demanda->localidade->nome ?? '-' }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400">
+                            <div>{{ $demanda->localidade->nome ?? '-' }}</div>
+                            @if(isset($demanda->duplicidade_alert))
+                                <div class="mt-1">
+                                    <span class="inline-flex items-center gap-1.5 px-2 py-1 rounded text-xs font-medium bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400 group relative cursor-help">
+                                        <x-icon name="layer-group" style="duotone" class="w-3 h-3 text-amber-600" />
+                                        Possível Duplicidade ({{ $demanda->duplicidade_alert['score'] }}%)
+
+                                        <!-- Tooltip -->
+                                        <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 p-3 bg-white dark:bg-slate-800 text-gray-700 dark:text-gray-300 text-xs rounded-lg shadow-xl border border-gray-200 dark:border-slate-700 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
+                                            <p class="font-bold mb-1">Demanda Similar Encontrada:</p>
+                                            <p>Código: <span class="font-mono">{{ $demanda->duplicidade_alert['codigo'] }}</span></p>
+                                            <p class="mt-1 line-clamp-2 italic">{{ $demanda->duplicidade_alert['resumo'] }}</p>
+                                        </div>
+                                    </span>
+                                </div>
+                            @endif
+                        </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400">
                             @php
                                 $tipos = ['agua' => 'Água', 'luz' => 'Luz', 'estrada' => 'Estrada', 'poco' => 'Poço'];
