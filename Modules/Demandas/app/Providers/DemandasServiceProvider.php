@@ -87,4 +87,3 @@ class DemandasServiceProvider extends ServiceProvider
         return $paths;
     }
 }
-

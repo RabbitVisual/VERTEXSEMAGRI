@@ -17,6 +17,17 @@ class SimilaridadeDemandaServiceTest extends TestCase
 
     protected function setUp(): void
     {
+        // Force SQLite memory database for this test
+        // This must be set BEFORE parent::setUp() because the app boots there
+        putenv('DB_CONNECTION=sqlite');
+        putenv('DB_DATABASE=:memory:');
+
+        parent::setUp();
+
+        // Also ensure config is set correctly after boot
+        config(['database.default' => 'sqlite']);
+        config(['database.connections.sqlite.database' => ':memory:']);
+
         parent::setUp();
 
         // Ensure we start with a clean state for these tables
