@@ -19,21 +19,50 @@
         'secondary' => 'text-violet-50',
     ];
 
-    $iconMap = [
-        'clipboard-check' => '<path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />',
-        'folder-open' => '<path stroke-linecap="round" stroke-linejoin="round" d="M3.75 9.776c.112-.017.227-.026.344-.026h15.812c.117 0 .232.009.344.026m-16.5 0a2.25 2.25 0 00-1.883 2.542l.857 6a2.25 2.25 0 002.227 1.932H19.05a2.25 2.25 0 002.227-1.932l.857-6a2.25 2.25 0 00-1.883-2.542m-16.5 0V6A2.25 2.25 0 016 3.75h3.879a1.5 1.5 0 011.06.44l2.122 2.12a1.5 1.5 0 001.06.44H18A2.25 2.25 0 0120.25 9v.776" />',
-        'clock-history' => '<path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />',
-        'check-circle' => '<path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />',
-        'exclamation-triangle' => '<path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />',
-        'document-x' => '<path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m6.75 12H9m1.5-12H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />',
-        'cube' => '<path stroke-linecap="round" stroke-linejoin="round" d="m21 7.5-9-5.25L3 7.5m18 0-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" />',
-        'x-circle' => '<path stroke-linecap="round" stroke-linejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />',
-        'currency-dollar' => '<path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />',
-    ];
-
     $colorClass = $colorClasses[$color] ?? $colorClasses['primary'];
     $textClass = $textClasses[$color] ?? $textClasses['primary'];
-    $iconPath = $icon ? ($iconMap[$icon] ?? '') : '';
+
+    // Map old icon names to new FA names if necessary
+    $iconMap = [
+        'clipboard-check' => 'clipboard-check',
+        'folder-open' => 'folder-open',
+        'clock-history' => 'clock-rotate-left',
+        'check-circle' => 'circle-check',
+        'exclamation-triangle' => 'triangle-exclamation',
+        'document-x' => 'file-circle-xmark',
+        'cube' => 'cube',
+        'x-circle' => 'circle-xmark',
+        'currency-dollar' => 'dollar-sign',
+        'archive-box' => 'box-archive',
+        'arrow-path' => 'rotate',
+        'arrow-down-circle' => 'circle-arrow-down',
+        'arrow-up-circle' => 'circle-arrow-up',
+        'circle' => 'circle',
+        'building-office' => 'building',
+        'link' => 'link',
+        'information-circle' => 'circle-info',
+        'inbox' => 'inbox',
+        'bolt' => 'bolt',
+        'magnifying-glass' => 'magnifying-glass',
+        'cog' => 'gear',
+        'document-text' => 'file-lines',
+        'pencil' => 'pen',
+        'trash' => 'trash',
+        'printer' => 'print',
+        'map-pin' => 'map-pin',
+        'calendar' => 'calendar',
+        'clock' => 'clock',
+        'droplet' => 'droplet',
+        'light-bulb' => 'lightbulb',
+        'road' => 'road',
+        'phone' => 'phone',
+        'envelope' => 'envelope',
+        'arrow-left' => 'arrow-left',
+        'x-mark' => 'xmark',
+        'arrow-right' => 'arrow-right',
+    ];
+
+    $iconName = $icon ? ($iconMap[$icon] ?? $icon) : null;
 @endphp
 
 <div class="relative rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border-2 border-transparent hover:border-opacity-50 h-full flex flex-col {{ $link ? 'cursor-pointer transform hover:scale-105' : '' }}">
@@ -60,12 +89,10 @@
                     <p class="text-xs opacity-90 mt-2 font-medium leading-tight">{{ $subtitle }}</p>
                 @endif
             </div>
-            @if($icon && $iconPath)
+            @if($iconName)
                 <div class="flex-shrink-0 opacity-90 z-10">
                     <div class="p-1.5 bg-white/20 rounded-lg backdrop-blur-sm">
-                        <svg class="h-5 w-5 md:h-6 md:w-6" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                            {!! $iconPath !!}
-                        </svg>
+                        <x-icon :name="$iconName" class="h-5 w-5 md:h-6 md:w-6" />
                     </div>
                 </div>
             @endif
@@ -75,4 +102,3 @@
         <a href="{{ $link }}" class="absolute inset-0 z-10" aria-label="{{ $title }}"></a>
     @endif
 </div>
-
