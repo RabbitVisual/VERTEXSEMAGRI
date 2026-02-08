@@ -9,6 +9,11 @@
         <div>
             <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white flex items-center gap-3 mb-2">
                 <div class="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl flex items-center justify-center shadow-lg">
+                    <x-icon name="magnifying-glass" class="w-5 h-5" />
+                        Filtrar
+                    </button>
+                    <a href="{{ route('admin.materiais.solicitacoes-campo.index') }}" class="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:ring-4 focus:ring-gray-200 dark:bg-slate-700 dark:text-gray-300 dark:border-slate-600 dark:hover:bg-slate-600 dark:focus:ring-slate-700 transition-colors">
+                        <x-icon name="rotate-right" class="w-5 h-5" />
                     <x-icon name="clipboard-list" class="w-6 h-6 md:w-7 md:h-7 text-white" />
                 </div>
                 <span>Solicitações de Materiais do Campo</span>
@@ -143,6 +148,7 @@
                                                 href="{{ route('admin.materiais.solicitacoes-campo.processar', $solicitacao->id) }}"
                                                 class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-white bg-emerald-600 rounded-lg hover:bg-emerald-700 focus:ring-4 focus:ring-emerald-300 dark:bg-emerald-600 dark:hover:bg-emerald-700 dark:focus:ring-emerald-800 transition-colors"
                                             >
+                                                <x-icon name="eye" class="w-5 h-5" />
                                                 <x-icon name="check" class="w-4 h-4" />
                                                 Processar
                                             </a>

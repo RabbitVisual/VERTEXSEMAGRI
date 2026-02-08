@@ -15,9 +15,7 @@
         </div>
         <div class="flex flex-wrap gap-2">
             <x-pessoas::button href="{{ route('pessoas.index') }}" variant="outline">
-                <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
-                </svg>
+                <x-icon name="arrow-left" class="w-5 h-5" />
                 Voltar
             </x-pessoas::button>
         </div>

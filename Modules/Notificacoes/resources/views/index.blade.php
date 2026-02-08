@@ -15,71 +15,11 @@
             </h1>
             <nav aria-label="breadcrumb" class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
                 <a href="{{ route('co-admin.dashboard') }}" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Dashboard</a>
-                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-                </svg>
-                <span class="text-gray-900 dark:text-white font-medium">Notificações</span>
-            </nav>
-        </div>
-        <div class="flex items-center gap-3">
-            @if($unreadCount > 0)
-                <span class="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300 border border-red-200 dark:border-red-800">
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
-                    </svg>
-                    {{ $unreadCount }} {{ $unreadCount === 1 ? 'não lida' : 'não lidas' }}
-                </span>
-                <form action="{{ route('notificacoes.read-all') }}" method="POST" class="inline">
-                    @csrf
-                    <button type="submit" class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-300 dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800 transition-colors">
-                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        Marcar todas como lidas
-                    </button>
-                </form>
-            @endif
-        </div>
-    </div>
-
-    <!-- Filtros -->
-    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
-        <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50">
-            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Filtros</h3>
-        </div>
-        <div class="p-6">
-            <form method="GET" action="{{ route('notificacoes.index') }}" class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div>
-                    <label for="type" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tipo</label>
-                    <select id="type" name="type" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-indigo-500 dark:focus:border-indigo-500">
-                        <option value="">Todos os tipos</option>
-                        <option value="info" {{ ($filters['type'] ?? '') == 'info' ? 'selected' : '' }}>Informação</option>
-                        <option value="success" {{ ($filters['type'] ?? '') == 'success' ? 'selected' : '' }}>Sucesso</option>
-                        <option value="warning" {{ ($filters['type'] ?? '') == 'warning' ? 'selected' : '' }}>Aviso</option>
-                        <option value="error" {{ ($filters['type'] ?? '') == 'error' ? 'selected' : '' }}>Erro</option>
-                        <option value="alert" {{ ($filters['type'] ?? '') == 'alert' ? 'selected' : '' }}>Alerta</option>
-                        <option value="system" {{ ($filters['type'] ?? '') == 'system' ? 'selected' : '' }}>Sistema</option>
-                    </select>
-                </div>
-                <div>
-                    <label for="is_read" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Status</label>
-                    <select id="is_read" name="is_read" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-indigo-500 dark:focus:border-indigo-500">
-                        <option value="">Todas</option>
-                        <option value="0" {{ ($filters['is_read'] ?? '') === '0' ? 'selected' : '' }}>Não lidas</option>
-                        <option value="1" {{ ($filters['is_read'] ?? '') === '1' ? 'selected' : '' }}>Lidas</option>
-                    </select>
-                </div>
-                <div class="flex items-end gap-2">
-                    <button type="submit" class="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-300 dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800 transition-colors">
-                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-                        </svg>
+                <x-icon name="magnifying-glass" class="w-5 h-5" />
                         Filtrar
                     </button>
                     <a href="{{ route('notificacoes.index') }}" class="inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:ring-4 focus:ring-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600 dark:focus:ring-gray-700 transition-colors">
-                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
-                        </svg>
+                        <x-icon name="rotate-right" class="w-5 h-5" />
                     </a>
                 </div>
             </form>

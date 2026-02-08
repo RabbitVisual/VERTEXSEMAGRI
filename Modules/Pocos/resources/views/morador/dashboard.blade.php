@@ -19,66 +19,7 @@
                     <h1 class="text-3xl md:text-4xl font-black text-gray-900 dark:text-white tracking-tight">Olá, {{ explode(' ', $usuario->nome)[0] }}!</h1>
                     <div class="flex flex-wrap items-center gap-3 mt-2">
                         <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest border border-slate-200/50 dark:border-slate-700/50">
-                            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" /></svg>
-                            {{ $usuario->poco->nome_mapa ?? $usuario->poco->codigo }}
-                        </span>
-                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100/50 dark:bg-emerald-900/20 text-[10px] font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-widest border border-emerald-100 dark:border-emerald-800/30">
-                            Morador Ativo
-                        </span>
-                    </div>
-                </div>
-            </div>
-            <div class="flex items-center gap-4 group">
-                <div class="text-right">
-                    <p class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-[0.2em] mb-1">Seu Acesso</p>
-                    <code class="text-2xl font-mono font-black text-blue-600 dark:text-blue-400 tracking-wider group-hover:scale-105 transition-transform block">{{ $usuario->codigo_acesso }}</code>
-                </div>
-                <div class="w-12 h-12 rounded-2xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 flex items-center justify-center shadow-sm group-hover:shadow-md transition-all">
-                    <svg class="w-6 h-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1121.75 8.25z" /></svg>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Faturas Vencidas -->
-    @if($faturasVencidas->count() > 0)
-    <div class="bg-red-50 dark:bg-red-900/10 border border-red-100 dark:border-red-900/20 rounded-2xl p-6">
-        <div class="flex items-start gap-4">
-            <div class="w-12 h-12 rounded-xl bg-red-100 dark:bg-red-900/30 flex items-center justify-center flex-shrink-0 animate-pulse">
-                <svg class="w-6 h-6 text-red-600 dark:text-red-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"/>
-                </svg>
-            </div>
-            <div class="flex-1">
-                <h3 class="text-lg font-bold text-red-900 dark:text-red-200 mb-1">Faturas Pendentes</h3>
-                <p class="text-sm text-red-700 dark:text-red-300 mb-4 opacity-80">Você possui pagamentos em atraso. Regularize para evitar suspensão.</p>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    @foreach($faturasVencidas as $fatura)
-                    <div class="flex items-center justify-between p-4 bg-white/60 dark:bg-slate-800/60 backdrop-blur rounded-xl border border-red-100 dark:border-red-800/30 shadow-sm">
-                        <div>
-                            <p class="font-bold text-gray-900 dark:text-white">{{ $fatura->mensalidade->mes_ano }}</p>
-                            <p class="text-xs text-red-600 dark:text-red-400 font-medium">Vencido em {{ $fatura->data_vencimento->format('d/m/Y') }}</p>
-                        </div>
-                        <div class="text-right">
-                            <p class="font-black text-red-600 dark:text-red-400">R$ {{ number_format($fatura->valor, 2, ',', '.') }}</p>
-                            <a href="{{ route('morador-poco.fatura.show', $fatura->id) }}" class="text-xs font-bold text-blue-600 hover:text-blue-700 dark:text-blue-400 uppercase tracking-tighter">Detalhes</a>
-                        </div>
-                    </div>
-                    @endforeach
-                </div>
-            </div>
-        </div>
-    </div>
-    @endif
-
-    <!-- Faturas em Aberto -->
-    <div class="premium-card overflow-hidden">
-        <div class="px-6 py-4 border-b border-gray-100 dark:border-slate-800 bg-gray-50/50 dark:bg-slate-800/50 flex items-center justify-between">
-            <h2 class="text-lg font-bold text-gray-900 dark:text-white">Faturas em Aberto</h2>
-            <div class="w-8 h-8 rounded-lg bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center">
-                <svg class="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
-                </svg>
+                            <x-icon name="file-pdf" class="w-5 h-5" />
             </div>
         </div>
         <div class="p-6">

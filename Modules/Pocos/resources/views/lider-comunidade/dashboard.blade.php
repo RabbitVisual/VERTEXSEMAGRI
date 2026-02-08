@@ -12,17 +12,7 @@
             </h1>
             <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-gray-500 dark:text-gray-400">
                 <span class="flex items-center gap-1.5">
-                    <svg class="w-4 h-4 text-blue-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
-                    </svg>
-                    {{ $poco->localidade->nome ?? 'Localidade N/A' }}
-                </span>
-                <span class="w-1 h-1 rounded-full bg-gray-300 dark:bg-slate-600 hidden sm:block"></span>
-                <span class="flex items-center gap-1.5">
-                    <svg class="w-4 h-4 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-                    </svg>
+                    <x-icon name="magnifying-glass" class="w-5 h-5" />
                     Poço: <span class="font-bold text-gray-700 dark:text-slate-200">{{ $poco->nome_mapa ?? $poco->codigo }}</span>
                 </span>
             </div>

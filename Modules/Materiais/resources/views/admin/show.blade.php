@@ -37,6 +37,7 @@
     @if(session('success'))
     <div class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
         <div class="flex items-center">
+            <x-icon name="eye" class="w-5 h-5" />
             <x-icon name="circle-info" class="flex-shrink-0 inline w-4 h-4 me-3" />
             <span>{{ session('success') }}</span>
         </div>
