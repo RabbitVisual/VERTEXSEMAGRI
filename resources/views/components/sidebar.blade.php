@@ -1,3 +1,12 @@
+<aside class="w-64 bg-white border-r h-full hidden md:block" id="mobile-sidebar">
+    <div class="p-4">
+        <h1 class="text-xl font-bold">Vertex</h1>
+        <nav class="mt-4">
+            <ul>
+                <li><a href="#" class="block py-2">Dashboard</a></li>
+                <li><a href="#" class="block py-2">Demandas</a></li>
+            </ul>
+        </nav>
 <aside
     class="fixed top-0 left-0 z-40 h-screen transition-transform bg-white border-r border-gray-200 dark:bg-slate-900 dark:border-slate-800 flex flex-col"
     :class="sidebarCollapsed ? 'w-20' : 'w-64'"

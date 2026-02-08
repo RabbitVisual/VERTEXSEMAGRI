@@ -43,6 +43,8 @@ return new class extends Migration
             $table->index(['user_id', 'is_read']);
             $table->index(['role', 'is_read']);
             $table->index('created_at');
+        });
+        }
         }); }
     }
 

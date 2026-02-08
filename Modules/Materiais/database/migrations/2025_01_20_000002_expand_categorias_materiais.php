@@ -10,6 +10,8 @@ return new class extends Migration
     public function up(): void
     {
         // Expandir enum de categorias com novas categorias profissionais
+        if (Schema::hasColumn('materiais', 'categoria')) {
+            if (DB::getDriverName() !== 'sqlite') {
         if (Schema::hasColumn('materiais', 'categoria') && DB::getDriverName() !== 'sqlite') {
             DB::statement("ALTER TABLE materiais MODIFY COLUMN categoria ENUM(
                 'lampadas',
@@ -48,12 +50,15 @@ return new class extends Migration
                 'outros'
             ) NOT NULL");
         }
+        }
         // Skip ENUM modification for SQLite
     }
 
     public function down(): void
     {
         // Reverter para versão anterior
+        if (Schema::hasColumn('materiais', 'categoria')) {
+            if (DB::getDriverName() !== 'sqlite') {
         if (Schema::hasColumn('materiais', 'categoria') && DB::getDriverName() !== 'sqlite') {
             DB::statement("ALTER TABLE materiais MODIFY COLUMN categoria ENUM(
                 'lampadas',
@@ -70,6 +75,7 @@ return new class extends Migration
                 'ferramentas',
                 'outros'
             ) NOT NULL");
+        }
         }
         // Skip
     }
