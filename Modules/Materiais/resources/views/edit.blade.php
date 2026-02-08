@@ -9,7 +9,7 @@
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div class="flex items-center gap-4">
                 <div class="p-3 bg-white/20 rounded-xl backdrop-blur-sm">
-                    <x-module-icon module="Materiais" class="w-8 h-8 text-white" />
+                    <x-icon module="Materiais" class="w-8 h-8 text-white" />
                 </div>
                 <div>
                     <h1 class="text-3xl font-bold">Editar Material</h1>
@@ -22,7 +22,7 @@
                 </div>
             </div>
             <x-materiais::button href="{{ route('materiais.show', $material) }}" variant="outline" class="bg-white/10 text-white border-white/30 hover:bg-white/20">
-                <x-materiais::icon name="arrow-left" class="w-5 h-5 mr-2" />
+                <x-icon name="arrow-left" class="w-5 h-5 mr-2" />
                 Voltar
             </x-materiais::button>
         </div>
@@ -32,7 +32,7 @@
     @if(session('success'))
         <x-materiais::alert type="success" dismissible>
             <div class="flex items-center gap-2">
-                <x-materiais::icon name="check-circle" class="w-5 h-5" />
+                <x-icon name="circle-check" class="w-5 h-5" />
                 <span class="font-medium">{{ session('success') }}</span>
             </div>
         </x-materiais::alert>
@@ -41,7 +41,7 @@
     @if($errors->any())
         <x-materiais::alert type="danger" dismissible>
             <div class="flex items-start gap-2">
-                <x-materiais::icon name="exclamation-triangle" class="w-5 h-5 flex-shrink-0 mt-0.5" />
+                <x-icon name="triangle-exclamation" class="w-5 h-5 flex-shrink-0 mt-0.5" />
                 <div>
                     <p class="font-medium mb-2">Por favor, corrija os seguintes erros:</p>
                     <ul class="list-disc list-inside space-y-1 text-sm">
@@ -61,7 +61,7 @@
                 <x-slot name="header">
                     <div class="flex items-center gap-3">
                         <div class="p-2 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg">
-                            <x-materiais::icon name="information-circle" class="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+                            <x-icon name="circle-info" class="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
                         </div>
                         <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
                             Informações do Material
@@ -77,7 +77,7 @@
                     <div class="space-y-4">
                         <div class="flex items-center gap-2 pb-3 border-b border-gray-200 dark:border-gray-700">
                             <div class="p-1.5 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
-                                <x-materiais::icon name="information-circle" class="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                                <x-icon name="circle-info" class="w-4 h-4 text-blue-600 dark:text-blue-400" />
                             </div>
                             <h4 class="text-sm font-semibold text-gray-700 dark:text-gray-300">
                                 Informações Básicas
@@ -153,7 +153,7 @@
                     <div class="space-y-4 pt-4 border-t border-gray-200 dark:border-gray-700">
                         <div class="flex items-center gap-2 pb-3">
                             <div class="p-1.5 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg">
-                                <x-materiais::icon name="archive-box" class="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                                <x-icon name="box-archive" class="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                             </div>
                             <h4 class="text-sm font-semibold text-gray-700 dark:text-gray-300">
                                 Estoque e Valores
@@ -191,7 +191,7 @@
                     <div id="campos-especificos" class="space-y-4 pt-4 border-t border-gray-200 dark:border-gray-700">
                         <div class="flex items-center gap-2 pb-3">
                             <div class="p-1.5 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
-                                <x-materiais::icon name="cog" class="w-4 h-4 text-purple-600 dark:text-purple-400" />
+                                <x-icon name="gear" class="w-4 h-4 text-purple-600 dark:text-purple-400" />
                             </div>
                             <h4 class="text-sm font-semibold text-gray-700 dark:text-gray-300">
                                 Informações Específicas da Categoria
@@ -206,7 +206,7 @@
                     <div class="space-y-4 pt-4 border-t border-gray-200 dark:border-gray-700">
                         <div class="flex items-center gap-2 pb-3">
                             <div class="p-1.5 bg-gray-100 dark:bg-gray-700 rounded-lg">
-                                <x-materiais::icon name="document-text" class="w-4 h-4 text-gray-600 dark:text-gray-400" />
+                                <x-icon name="file-lines" class="w-4 h-4 text-gray-600 dark:text-gray-400" />
                             </div>
                             <h4 class="text-sm font-semibold text-gray-700 dark:text-gray-300">
                                 Informações Adicionais
@@ -247,11 +247,11 @@
                     <!-- Botões de Ação -->
                     <div class="flex items-center justify-end gap-3 pt-6 border-t-2 border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50 -mx-6 -mb-6 px-6 py-4 rounded-b-xl">
                         <x-materiais::button href="{{ route('materiais.show', $material) }}" variant="outline" class="border-2">
-                            <x-materiais::icon name="x-mark" class="w-4 h-4 mr-2" />
+                            <x-icon name="xmark" class="w-4 h-4 mr-2" />
                             Cancelar
                         </x-materiais::button>
                         <x-materiais::button type="submit" variant="primary" class="shadow-lg hover:shadow-xl transition-shadow">
-                            <x-materiais::icon name="check-circle" class="w-4 h-4 mr-2" />
+                            <x-icon name="circle-check" class="w-4 h-4 mr-2" />
                             Atualizar Material
                         </x-materiais::button>
                     </div>
@@ -265,7 +265,7 @@
                 <x-slot name="header">
                     <div class="flex items-center gap-3">
                         <div class="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
-                            <x-materiais::icon name="information-circle" class="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                            <x-icon name="circle-info" class="w-5 h-5 text-blue-600 dark:text-blue-400" />
                         </div>
                         <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
                             Informações do Sistema
@@ -293,12 +293,12 @@
                         <div>
                             @if($material->quantidade_estoque <= $material->quantidade_minima)
                                 <x-materiais::badge variant="danger">
-                                    <x-materiais::icon name="exclamation-triangle" class="w-3 h-3 mr-1" />
+                                    <x-icon name="triangle-exclamation" class="w-3 h-3 mr-1" />
                                     Estoque Baixo
                                 </x-materiais::badge>
                             @else
                                 <x-materiais::badge variant="success">
-                                    <x-materiais::icon name="check-circle" class="w-3 h-3 mr-1" />
+                                    <x-icon name="circle-check" class="w-3 h-3 mr-1" />
                                     Estoque OK
                                 </x-materiais::badge>
                             @endif
@@ -386,7 +386,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         if (campo.descricao) {
                             campoHTML += `
                                 <p class="text-xs text-gray-500 dark:text-gray-400">
-                                    <x-materiais::icon name="information-circle" class="w-3 h-3 inline mr-1" />
+                                    <x-icon name="circle-info" class="w-3 h-3 inline mr-1" />
                                     ${campo.descricao}
                                 </p>
                             `;

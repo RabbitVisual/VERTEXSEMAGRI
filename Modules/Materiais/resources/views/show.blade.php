@@ -9,7 +9,7 @@
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div class="flex items-center gap-4">
                 <div class="p-3 bg-white/20 rounded-xl backdrop-blur-sm">
-                    <x-module-icon module="Materiais" class="w-8 h-8 text-white" />
+                    <x-icon module="Materiais" class="w-8 h-8 text-white" />
                 </div>
                 <div>
                     <h1 class="text-3xl font-bold flex items-center gap-3">
@@ -25,11 +25,11 @@
             </div>
             <div class="flex flex-wrap gap-2">
                 <x-materiais::button href="{{ route('materiais.edit', $material) }}" variant="outline-primary" class="!bg-white !text-indigo-600 hover:!bg-indigo-50 !border-indigo-600 shadow-lg">
-                    <x-materiais::icon name="pencil" class="w-5 h-5 mr-2" />
+                    <x-icon name="pen" class="w-5 h-5 mr-2" />
                     Editar Material
                 </x-materiais::button>
                 <x-materiais::button href="{{ route('materiais.index') }}" variant="outline" class="bg-white/10 text-white border-white/30 hover:bg-white/20">
-                    <x-materiais::icon name="arrow-left" class="w-5 h-5 mr-2" />
+                    <x-icon name="arrow-left" class="w-5 h-5 mr-2" />
                     Voltar
                 </x-materiais::button>
             </div>
@@ -40,7 +40,7 @@
     @if(session('success'))
         <x-materiais::alert type="success" dismissible>
             <div class="flex items-center gap-2">
-                <x-materiais::icon name="check-circle" class="w-5 h-5" />
+                <x-icon name="circle-check" class="w-5 h-5" />
                 <span class="font-medium">{{ session('success') }}</span>
             </div>
         </x-materiais::alert>
@@ -50,15 +50,15 @@
     <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
         <nav class="flex space-x-1 p-1 bg-gray-50 dark:bg-gray-900/50" aria-label="Tabs">
             <button data-tab-target="detalhes" class="flex-1 border-b-2 border-indigo-500 text-indigo-600 dark:text-indigo-400 whitespace-nowrap py-3 px-4 text-sm font-semibold bg-white dark:bg-gray-800 rounded-t-lg transition-colors">
-                <x-materiais::icon name="information-circle" class="w-4 h-4 inline mr-2" />
+                <x-icon name="circle-info" class="w-4 h-4 inline mr-2" />
                 Detalhes
             </button>
             <button data-tab-target="movimentacoes" class="flex-1 border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300 whitespace-nowrap py-3 px-4 text-sm font-medium hover:bg-white dark:hover:bg-gray-800 rounded-t-lg transition-colors">
-                <x-materiais::icon name="arrow-path" class="w-4 h-4 inline mr-2" />
+                <x-icon name="rotate" class="w-4 h-4 inline mr-2" />
                 Movimentações
             </button>
             <button data-tab-target="relacionamentos" class="flex-1 border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300 whitespace-nowrap py-3 px-4 text-sm font-medium hover:bg-white dark:hover:bg-gray-800 rounded-t-lg transition-colors">
-                <x-materiais::icon name="link" class="w-4 h-4 inline mr-2" />
+                <x-icon name="link" class="w-4 h-4 inline mr-2" />
                 Relacionamentos
             </button>
         </nav>
@@ -76,7 +76,7 @@
                         <x-slot name="header">
                             <div class="flex items-center gap-3">
                                 <div class="p-2 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg">
-                                    <x-materiais::icon name="information-circle" class="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+                                    <x-icon name="circle-info" class="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
                                 </div>
                                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
                                     Informações do Material
@@ -95,12 +95,12 @@
                                     <div>
                                         @if($material->ativo)
                                             <x-materiais::badge variant="success">
-                                                <x-materiais::icon name="check-circle" class="w-3 h-3 mr-1" />
+                                                <x-icon name="circle-check" class="w-3 h-3 mr-1" />
                                                 Ativo
                                             </x-materiais::badge>
                                         @else
                                             <x-materiais::badge variant="danger">
-                                                <x-materiais::icon name="x-circle" class="w-3 h-3 mr-1" />
+                                                <x-icon name="circle-xmark" class="w-3 h-3 mr-1" />
                                                 Inativo
                                             </x-materiais::badge>
                                         @endif
@@ -133,13 +133,13 @@
                                 <div>
                                     <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Quantidade em Estoque</label>
                                     <div class="text-base font-semibold {{ $material->quantidade_estoque <= $material->quantidade_minima ? 'text-red-600 dark:text-red-400' : 'text-gray-900 dark:text-white' }} flex items-center gap-1">
-                                        <x-materiais::icon name="archive-box" class="w-4 h-4" />
+                                        <x-icon name="box-archive" class="w-4 h-4" />
                                         {{ formatar_quantidade($material->quantidade_estoque, $material->unidade_medida) }}
                                         <span class="text-sm text-gray-500">{{ $material->unidade_medida }}</span>
                                     </div>
                                     @if($material->quantidade_estoque <= $material->quantidade_minima)
                                         <p class="text-xs text-red-600 dark:text-red-400 mt-1 flex items-center gap-1">
-                                            <x-materiais::icon name="exclamation-triangle" class="w-3 h-3" />
+                                            <x-icon name="triangle-exclamation" class="w-3 h-3" />
                                             Estoque abaixo do mínimo!
                                         </p>
                                     @endif
@@ -164,7 +164,7 @@
                                 <div>
                                     <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Valor Unitário</label>
                                     <div class="text-lg font-semibold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
-                                        <x-materiais::icon name="currency-dollar" class="w-4 h-4" />
+                                        <x-icon name="dollar-sign" class="w-4 h-4" />
                                         R$ {{ number_format($material->valor_unitario, 2, ',', '.') }}
                                     </div>
                                 </div>
@@ -183,7 +183,7 @@
                                 <div>
                                     <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Fornecedor</label>
                                     <div class="text-sm text-gray-900 dark:text-white flex items-center gap-1">
-                                        <x-materiais::icon name="building-office" class="w-4 h-4" />
+                                        <x-icon name="building" class="w-4 h-4" />
                                         {{ $material->fornecedor }}
                                     </div>
                                 </div>
@@ -192,7 +192,7 @@
                                 <div>
                                     <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Localização no Estoque</label>
                                     <div class="text-sm text-gray-900 dark:text-white flex items-center gap-1">
-                                        <x-materiais::icon name="map-pin" class="w-4 h-4" />
+                                        <x-icon name="map-pin" class="w-4 h-4" />
                                         {{ $material->localizacao_estoque }}
                                     </div>
                                 </div>
@@ -204,7 +204,7 @@
                             <div class="pt-4 border-t border-gray-200 dark:border-gray-700">
                                 <div class="flex items-center gap-2 mb-4">
                                     <div class="p-1.5 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
-                                        <x-materiais::icon name="cog" class="w-4 h-4 text-purple-600 dark:text-purple-400" />
+                                        <x-icon name="gear" class="w-4 h-4 text-purple-600 dark:text-purple-400" />
                                     </div>
                                     <h4 class="text-sm font-semibold text-gray-700 dark:text-gray-300">
                                         Informações Específicas da Categoria
@@ -248,7 +248,7 @@
                         <x-slot name="header">
                             <div class="flex items-center gap-3">
                                 <div class="p-2 bg-amber-100 dark:bg-amber-900/30 rounded-lg">
-                                    <x-materiais::icon name="bolt" class="w-5 h-5 text-amber-600 dark:text-amber-400" />
+                                    <x-icon name="bolt" class="w-5 h-5 text-amber-600 dark:text-amber-400" />
                                 </div>
                                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
                                     Ações Rápidas
@@ -258,22 +258,22 @@
 
                         <div class="space-y-3">
                             <x-materiais::button href="{{ route('materiais.edit', $material) }}" variant="primary" class="w-full">
-                                <x-materiais::icon name="pencil" class="w-4 h-4 mr-2" />
+                                <x-icon name="pen" class="w-4 h-4 mr-2" />
                                 Editar Material
                             </x-materiais::button>
                             <button type="button" onclick="document.getElementById('modal-adicionar-estoque').classList.remove('hidden')" class="w-full px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-medium transition-colors flex items-center justify-center">
-                                <x-materiais::icon name="arrow-down-circle" class="w-4 h-4 mr-2" />
+                                <x-icon name="circle-arrow-down" class="w-4 h-4 mr-2" />
                                 Adicionar Estoque
                             </button>
                             <button type="button" onclick="document.getElementById('modal-remover-estoque').classList.remove('hidden')" class="w-full px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium transition-colors flex items-center justify-center">
-                                <x-materiais::icon name="arrow-up-circle" class="w-4 h-4 mr-2" />
+                                <x-icon name="circle-arrow-up" class="w-4 h-4 mr-2" />
                                 Remover Estoque
                             </button>
                             <form action="{{ route('materiais.destroy', $material) }}" method="POST" onsubmit="return confirm('Deseja realmente deletar este material?')">
                                 @csrf
                                 @method('DELETE')
                                 <x-materiais::button type="submit" variant="danger" class="w-full">
-                                    <x-materiais::icon name="trash" class="w-4 h-4 mr-2" />
+                                    <x-icon name="trash" class="w-4 h-4 mr-2" />
                                     Deletar
                                 </x-materiais::button>
                             </form>
@@ -285,7 +285,7 @@
                         <x-slot name="header">
                             <div class="flex items-center gap-3">
                                 <div class="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
-                                    <x-materiais::icon name="information-circle" class="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                                    <x-icon name="circle-info" class="w-5 h-5 text-blue-600 dark:text-blue-400" />
                                 </div>
                                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
                                     Informações do Sistema
@@ -327,7 +327,7 @@
                         <x-slot name="header">
                             <div class="flex items-center gap-3">
                                 <div class="p-2 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg">
-                                    <x-materiais::icon name="archive-box" class="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+                                    <x-icon name="box-archive" class="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
                                 </div>
                                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
                                     Status do Estoque
@@ -358,7 +358,7 @@
                             </div>
                             @if($material->quantidade_estoque <= $material->quantidade_minima)
                                 <x-materiais::alert type="danger">
-                                    <x-materiais::icon name="exclamation-triangle" class="w-4 h-4 mr-2" />
+                                    <x-icon name="triangle-exclamation" class="w-4 h-4 mr-2" />
                                     Estoque abaixo do mínimo!
                                 </x-materiais::alert>
                             @endif
@@ -374,7 +374,7 @@
                 <x-slot name="header">
                     <div class="flex items-center gap-3">
                         <div class="p-2 bg-violet-100 dark:bg-violet-900/30 rounded-lg">
-                            <x-materiais::icon name="arrow-path" class="w-5 h-5 text-violet-600 dark:text-violet-400" />
+                            <x-icon name="rotate" class="w-5 h-5 text-violet-600 dark:text-violet-400" />
                         </div>
                         <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
                             Histórico de Movimentações
@@ -417,7 +417,7 @@
                                     <tr class="hover:bg-gray-50 dark:hover:bg-gray-800/50">
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
                                             <div class="flex items-center gap-1">
-                                                <x-materiais::icon name="calendar" class="w-4 h-4" />
+                                                <x-icon name="calendar" class="w-4 h-4" />
                                                 {{ $movimentacao->created_at->format('d/m/Y H:i') }}
                                             </div>
                                         </td>
@@ -433,7 +433,7 @@
                                                 ];
                                             @endphp
                                             <x-materiais::badge :variant="$tipoColors[$movimentacao->tipo] ?? 'secondary'">
-                                                <x-materiais::icon :name="$tipoIcons[$movimentacao->tipo] ?? 'circle'" class="w-3 h-3 mr-1" />
+                                                <x-icon :name="$tipoIcons[$movimentacao->tipo] ?? 'circle'" class="w-3 h-3 mr-1" />
                                                 {{ ucfirst($movimentacao->tipo) }}
                                             </x-materiais::badge>
                                         </td>
@@ -475,7 +475,7 @@
                     </div>
                 @else
                     <div class="text-center py-12">
-                        <x-materiais::icon name="inbox" class="w-12 h-12 mx-auto text-gray-400 mb-3" />
+                        <x-icon name="inbox" class="w-12 h-12 mx-auto text-gray-400 mb-3" />
                         <p class="text-gray-500 dark:text-gray-400">Nenhuma movimentação registrada</p>
                     </div>
                 @endif
@@ -488,7 +488,7 @@
                 <x-slot name="header">
                     <div class="flex items-center gap-3">
                         <div class="p-2 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
-                            <x-materiais::icon name="link" class="w-5 h-5 text-purple-600 dark:text-purple-400" />
+                            <x-icon name="link" class="w-5 h-5 text-purple-600 dark:text-purple-400" />
                         </div>
                         <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
                             Ordens de Serviço que Utilizaram
@@ -531,7 +531,7 @@
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                             @if(Route::has('ordens.show'))
                                                 <a href="{{ route('ordens.show', $os->id) }}" class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-900 dark:hover:text-indigo-300">
-                                                    <x-materiais::icon name="eye" class="w-5 h-5" />
+                                                    <x-icon name="eye" class="w-5 h-5" />
                                                 </a>
                                             @endif
                                         </td>
@@ -544,13 +544,13 @@
                         <div class="mt-4 text-center">
                             <x-materiais::button href="{{ route('ordens.index') }}" variant="outline">
                                 Ver todas as OS
-                                <x-materiais::icon name="arrow-right" class="w-4 h-4 ml-2" />
+                                <x-icon name="arrow-right" class="w-4 h-4 ml-2" />
                             </x-materiais::button>
                         </div>
                     @endif
                 @else
                     <div class="text-center py-12">
-                        <x-materiais::icon name="inbox" class="w-12 h-12 mx-auto text-gray-400 mb-3" />
+                        <x-icon name="inbox" class="w-12 h-12 mx-auto text-gray-400 mb-3" />
                         <p class="text-gray-500 dark:text-gray-400">Este material ainda não foi utilizado em nenhuma ordem de serviço</p>
                     </div>
                 @endif
@@ -566,7 +566,7 @@
             <div class="flex items-center justify-between mb-4">
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Adicionar Estoque</h3>
                 <button onclick="document.getElementById('modal-adicionar-estoque').classList.add('hidden')" class="text-gray-400 hover:text-gray-600">
-                    <x-materiais::icon name="x-mark" class="w-6 h-6" />
+                    <x-icon name="xmark" class="w-6 h-6" />
                 </button>
             </div>
             <form action="{{ route('materiais.adicionar-estoque', $material) }}" method="POST">
@@ -609,7 +609,7 @@
             <div class="flex items-center justify-between mb-4">
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Remover Estoque</h3>
                 <button onclick="document.getElementById('modal-remover-estoque').classList.add('hidden')" class="text-gray-400 hover:text-gray-600">
-                    <x-materiais::icon name="x-mark" class="w-6 h-6" />
+                    <x-icon name="xmark" class="w-6 h-6" />
                 </button>
             </div>
             <form action="{{ route('materiais.remover-estoque', $material) }}" method="POST">

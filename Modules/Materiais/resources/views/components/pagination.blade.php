@@ -19,11 +19,11 @@
                 {{-- Previous Page Link --}}
                 @if ($paginator->onFirstPage())
                     <span class="relative inline-flex items-center rounded-l-lg border-r border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700 px-3 py-2 text-sm font-medium text-gray-400 dark:text-gray-500 cursor-not-allowed">
-                        <x-materiais::icon name="arrow-left" class="w-4 h-4" />
+                        <x-icon name="arrow-left" class="w-4 h-4" />
                     </span>
                 @else
                     <a href="{{ $paginator->previousPageUrl() }}" class="relative inline-flex items-center rounded-l-lg border-r border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 hover:text-indigo-600 dark:hover:text-indigo-400 focus:z-10 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors">
-                        <x-materiais::icon name="arrow-left" class="w-4 h-4" />
+                        <x-icon name="arrow-left" class="w-4 h-4" />
                     </a>
                 @endif
 
@@ -72,11 +72,11 @@
                 {{-- Next Page Link --}}
                 @if ($paginator->hasMorePages())
                     <a href="{{ $paginator->nextPageUrl() }}" class="relative inline-flex items-center rounded-r-lg bg-white dark:bg-gray-800 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 hover:text-indigo-600 dark:hover:text-indigo-400 focus:z-10 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors">
-                        <x-materiais::icon name="arrow-right" class="w-4 h-4" />
+                        <x-icon name="arrow-right" class="w-4 h-4" />
                     </a>
                 @else
                     <span class="relative inline-flex items-center rounded-r-lg bg-gray-50 dark:bg-gray-700 px-3 py-2 text-sm font-medium text-gray-400 dark:text-gray-500 cursor-not-allowed">
-                        <x-materiais::icon name="arrow-right" class="w-4 h-4" />
+                        <x-icon name="arrow-right" class="w-4 h-4" />
                     </span>
                 @endif
             </span>
@@ -91,12 +91,12 @@
         <div class="flex gap-2">
             @if ($paginator->onFirstPage())
                 <span class="relative inline-flex items-center rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 px-3 py-2 text-xs font-medium text-gray-400 dark:text-gray-500 cursor-not-allowed">
-                    <x-materiais::icon name="arrow-left" class="w-4 h-4 mr-1" />
+                    <x-icon name="arrow-left" class="w-4 h-4 mr-1" />
                     Anterior
                 </span>
             @else
                 <a href="{{ $paginator->previousPageUrl() }}" class="relative inline-flex items-center rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-xs font-medium text-gray-700 dark:text-gray-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 transition-colors">
-                    <x-materiais::icon name="arrow-left" class="w-4 h-4 mr-1" />
+                    <x-icon name="arrow-left" class="w-4 h-4 mr-1" />
                     Anterior
                 </a>
             @endif
@@ -104,12 +104,12 @@
             @if ($paginator->hasMorePages())
                 <a href="{{ $paginator->nextPageUrl() }}" class="relative inline-flex items-center rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-xs font-medium text-gray-700 dark:text-gray-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 transition-colors">
                     Próximo
-                    <x-materiais::icon name="arrow-right" class="w-4 h-4 ml-1" />
+                    <x-icon name="arrow-right" class="w-4 h-4 ml-1" />
                 </a>
             @else
                 <span class="relative inline-flex items-center rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 px-3 py-2 text-xs font-medium text-gray-400 dark:text-gray-500 cursor-not-allowed">
                     Próximo
-                    <x-materiais::icon name="arrow-right" class="w-4 h-4 ml-1" />
+                    <x-icon name="arrow-right" class="w-4 h-4 ml-1" />
                 </span>
             @endif
         </div>
