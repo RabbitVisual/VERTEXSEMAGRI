@@ -14,44 +14,7 @@
         <div class="chat-header mb-4">
             <div class="chat-header__title">
                 <div class="icon-wrapper">
-                    <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 01-2.555-.337A5.972 5.972 0 015.41 20.97a5.969 5.969 0 01-.474-.065 4.48 4.48 0 00.978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25z" />
-                    </svg>
-                </div>
-                <div>
-                    <h1>Chat de Atendimento</h1>
-                    <p class="stats">
-                        <span id="stats-waiting" class="waiting">{{ $stats['waiting'] ?? 0 }}</span> aguardando •
-                        <span id="stats-active" class="active">{{ $stats['active'] ?? 0 }}</span> em atendimento
-                    </p>
-                </div>
-            </div>
-            <div class="chat-header__actions">
-                <a href="{{ route('co-admin.chat.index') }}" class="chat-btn secondary">
-                    <svg class="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zM3.75 12h.007v.008H3.75V12zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm-.375 5.25h.007v.008H3.75v-.008zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
-                    </svg>
-                    Histórico
-                </a>
-                <button id="toggle-sidebar-mobile" class="chat-btn icon-only secondary md:hidden">
-                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-                    </svg>
-                </button>
-            </div>
-        </div>
-
-        <!-- Chat Container -->
-        <div class="chat-container chat-layout">
-            <!-- Sidebar - Lista de Conversas -->
-            <div id="chat-sidebar" class="chat-sidebar">
-                <!-- Busca -->
-                <div class="chat-sidebar__search">
-                    <div class="search-input-wrapper">
-                        <input type="text" id="search-sessions" placeholder="Buscar conversas...">
-                        <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-                        </svg>
+                    <x-icon name="magnifying-glass" class="w-5 h-5" />
                     </div>
                 </div>
 
@@ -99,26 +62,7 @@
                     </div>
                     @empty
                     <div class="chat-sidebar__empty">
-                        <svg fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 01-2.555-.337A5.972 5.972 0 015.41 20.97a5.969 5.969 0 01-.474-.065 4.48 4.48 0 00.978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25z" />
-                        </svg>
-                        <p>Nenhuma conversa ativa</p>
-                        <p>As novas conversas aparecerão aqui</p>
-                    </div>
-                    @endforelse
-                </div>
-            </div>
-
-            <!-- Área Principal do Chat -->
-            <div class="chat-main">
-                @if($activeSession)
-                <!-- Header da Conversa -->
-                <div class="chat-conversation-header">
-                    <div class="chat-conversation-header__info">
-                        <button id="back-to-list" class="back-btn">
-                            <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
-                            </svg>
+                        <x-icon name="arrow-left" class="w-5 h-5" />
                         </button>
                         <div class="avatar">
                             {{ strtoupper(substr($activeSession->visitor_name ?? 'V', 0, 1)) }}

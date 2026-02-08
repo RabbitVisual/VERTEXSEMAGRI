@@ -3,46 +3,58 @@
     'module' => null,
     'style' => 'duotone',
     'class' => '',
+    'size' => null,
     'bordered' => false,
-    'pulled' => null, // 'left' or 'right'
-    'size' => null, // 'xs', 'sm', 'lg', 'xl', '2xl', etc.
+    'pulled' => null,
+    'rotate' => null,
+    'flip' => null,
+    'spin' => false,
+    'pulse' => false,
 ])
 
 @php
-    // Se um módulo for fornecido, tenta buscar o ícone padrão dele
+    // 1. Resolve Name from Module (if applicable)
     if ($module && empty($name)) {
-        // Normaliza o nome do módulo (ex: 'agua' -> 'Agua')
-        $moduleName = Illuminate\Support\Str::studly($module);
-        $name = config("icons.modules.{$moduleName}");
+        $moduleKey = Illuminate\Support\Str::studly($module);
+        $name = config("icons.modules.{$moduleKey}");
 
-        // Se não encontrar, fallback visual para erro (ex: circle-question)
         if (!$name) {
-            $name = 'circle-question';
+            $name = 'circle-question'; // Fallback if module mapping missing
         }
     }
 
-    $styleMap = [
-        'duotone'       => 'fa-duotone',
-        'solid'         => 'fa-solid',
-        'regular'       => 'fa-regular',
-        'light'         => 'fa-light',
-        'thin'          => 'fa-thin',
-        'brands'        => 'fa-brands',
-        'sharp'         => 'fa-sharp fa-solid', // Atalho para sharp solid
-        'sharp-solid'   => 'fa-sharp fa-solid',
+    // 2. Safety Fallback
+    if (empty($name)) {
+        $name = 'circle-question';
+    }
+
+    // 3. Resolve Style Prefix (Font Awesome 7 Pro)
+    $stylePrefix = match ($style) {
+        'duotone' => 'fa-duotone',
+        'solid' => 'fa-solid',
+        'regular' => 'fa-regular',
+        'light' => 'fa-light',
+        'thin' => 'fa-thin',
+        'brands' => 'fa-brands',
+        'sharp' => 'fa-sharp fa-solid',
+        'sharp-solid' => 'fa-sharp fa-solid',
         'sharp-regular' => 'fa-sharp fa-regular',
-        'sharp-light'   => 'fa-sharp fa-light',
-        'sharp-thin'    => 'fa-sharp fa-thin',
-    ];
+        'sharp-light' => 'fa-sharp fa-light',
+        'sharp-thin' => 'fa-sharp fa-thin',
+        default => 'fa-duotone',
+    };
 
-    $faStyle = $styleMap[$style] ?? $styleMap['duotone'];
-
+    // 4. Construct Classes
     $classes = [
-        $faStyle,
+        $stylePrefix,
         "fa-{$name}",
+        $size ? "fa-{$size}" : '',
         $bordered ? 'fa-border' : '',
         $pulled ? "fa-pull-{$pulled}" : '',
-        $size ? "fa-{$size}" : '',
+        $rotate ? "fa-rotate-{$rotate}" : '',
+        $flip ? "fa-flip-{$flip}" : '',
+        $spin ? 'fa-spin' : '',
+        $pulse ? 'fa-pulse' : '',
         $class
     ];
 

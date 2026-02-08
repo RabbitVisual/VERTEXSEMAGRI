@@ -5,40 +5,8 @@
             <div class="flex items-center gap-4">
                 <!-- Mobile menu button -->
                 <button type="button" @click="sidebarOpen = !sidebarOpen" class="lg:hidden inline-flex items-center justify-center p-2 rounded-lg text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 transition-all duration-200">
-                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-                    </svg>
-                </button>
-
-                <!-- Logo -->
-                <a href="{{ route('campo.dashboard') }}" class="flex items-center gap-3 hover:opacity-80 transition-opacity group">
-                    <div class="relative">
-                        <img src="{{ asset('images/logo-vertex-semagri.svg') }}" alt="Vertex SEMAGRI" class="h-10 md:h-12 w-auto transition-transform group-hover:scale-105">
-                    </div>
-                    <div class="hidden sm:block">
-                        <div class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Painel</div>
-                        <div class="text-sm font-bold text-gray-900 dark:text-white">Campo</div>
-                    </div>
-                </a>
-            </div>
-
-            <!-- Right Section: Actions -->
-            <div class="flex items-center gap-2 sm:gap-4">
-                @auth
-                    <!-- Connection Status Badge - HyperUI Badge Style -->
-                    <div id="connection-status" class="connection-badge online">
-                        <span class="status-dot"></span>
-                        <span class="hidden sm:inline">Online</span>
-                    </div>
-
-                    <!-- Sync Button - HyperUI Button Style -->
-                    <button type="button" onclick="sincronizarAgora()" class="relative w-10 h-10 md:w-11 md:h-11 rounded-lg bg-gray-100 dark:bg-slate-700 hover:bg-gray-200 dark:hover:bg-slate-600 flex items-center justify-center transition-all duration-300 hover:scale-105 active:scale-95 shadow-sm" title="Sincronizar dados">
-                        <svg id="sync-indicator" class="w-5 h-5 text-orange-500 hidden" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
-                        </svg>
-                        <svg class="w-5 h-5 text-gray-600 dark:text-gray-300" id="sync-icon-default" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
-                        </svg>
+                    <x-icon name="rotate-right" class="w-5 h-5" />
+                        <x-icon name="rotate-right" class="w-5 h-5" />
                         <span id="pending-count-badge" class="pending-badge hidden">0</span>
                     </button>
 
