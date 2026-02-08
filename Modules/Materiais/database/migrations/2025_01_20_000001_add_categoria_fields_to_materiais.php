@@ -17,26 +17,24 @@ return new class extends Migration
             $table->timestamp('ultimo_alerta_estoque')->nullable()->after('campos_especificos');
         });
 
-        // Atualizar enum de categorias para incluir novas categorias
-        // Como não podemos alterar enum diretamente, vamos usar DB::statement
         if (Schema::hasColumn('materiais', 'categoria')) {
-            // Primeiro, vamos criar uma migration que altera o enum
-            // Mas como isso é complexo, vamos fazer via alteração da coluna
-            DB::statement("ALTER TABLE materiais MODIFY COLUMN categoria ENUM(
-                'lampadas',
-                'reatores',
-                'fios',
-                'canos',
-                'conexoes',
-                'combustivel',
-                'pecas_pocos',
-                'rele_fotoeletronico',
-                'bomba_poco_artesiano',
-                'roupa_eletricista',
-                'epi',
-                'ferramentas',
-                'outros'
-            ) NOT NULL");
+            if (DB::getDriverName() === 'mysql') {
+                DB::statement("ALTER TABLE materiais MODIFY COLUMN categoria ENUM(
+                    'lampadas',
+                    'reatores',
+                    'fios',
+                    'canos',
+                    'conexoes',
+                    'combustivel',
+                    'pecas_pocos',
+                    'rele_fotoeletronico',
+                    'bomba_poco_artesiano',
+                    'roupa_eletricista',
+                    'epi',
+                    'ferramentas',
+                    'outros'
+                ) NOT NULL");
+            }
         }
     }
 
@@ -46,17 +44,17 @@ return new class extends Migration
             $table->dropColumn(['campos_especificos', 'ultimo_alerta_estoque']);
         });
 
-        // Reverter enum para versão anterior
-        DB::statement("ALTER TABLE materiais MODIFY COLUMN categoria ENUM(
-            'lampadas',
-            'reatores',
-            'fios',
-            'canos',
-            'conexoes',
-            'combustivel',
-            'pecas_pocos',
-            'outros'
-        ) NOT NULL");
+        if (DB::getDriverName() === 'mysql') {
+            DB::statement("ALTER TABLE materiais MODIFY COLUMN categoria ENUM(
+                'lampadas',
+                'reatores',
+                'fios',
+                'canos',
+                'conexoes',
+                'combustivel',
+                'pecas_pocos',
+                'outros'
+            ) NOT NULL");
+        }
     }
 };
-

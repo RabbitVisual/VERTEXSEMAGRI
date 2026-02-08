@@ -278,38 +278,45 @@
         deleteForm.submit();
     }
 
+    function handleConfirmDelete(e) {
+        e.preventDefault();
+        executeDelete();
+    }
+
+    function handleModalClick(e) {
+        if (e.target === this) closeDeleteModal();
+    }
+
+    function handleDocumentKeydown(e) {
+        const modal = document.getElementById('delete-modal');
+        if (e.key === 'Escape' && modal && !modal.classList.contains('hidden')) {
+            closeDeleteModal();
+        }
+    }
+
     function attachEventListeners() {
         const cancelBtn = document.getElementById('cancel-delete');
         const confirmBtn = document.getElementById('confirm-delete');
         const modal = document.getElementById('delete-modal');
 
-        // Remove listeners antigos (cloneNode hack) para evitar duplicação se init rodar 2x
+        // Remove listeners antigos usando removeEventListener para evitar duplicação
         if (cancelBtn) {
-            const newCancel = cancelBtn.cloneNode(true);
-            cancelBtn.parentNode.replaceChild(newCancel, cancelBtn);
-            newCancel.addEventListener('click', closeDeleteModal);
+            cancelBtn.removeEventListener('click', closeDeleteModal);
+            cancelBtn.addEventListener('click', closeDeleteModal);
         }
 
         if (confirmBtn) {
-            const newConfirm = confirmBtn.cloneNode(true);
-            confirmBtn.parentNode.replaceChild(newConfirm, confirmBtn);
-            newConfirm.addEventListener('click', function(e) {
-                e.preventDefault(); // Prevenir comportamento padrão
-                executeDelete();
-            });
+            confirmBtn.removeEventListener('click', handleConfirmDelete);
+            confirmBtn.addEventListener('click', handleConfirmDelete);
         }
 
         if (modal) {
-            modal.addEventListener('click', function(e) {
-                if (e.target === this) closeDeleteModal();
-            });
+            modal.removeEventListener('click', handleModalClick);
+            modal.addEventListener('click', handleModalClick);
         }
 
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && modal && !modal.classList.contains('hidden')) {
-                closeDeleteModal();
-            }
-        });
+        document.removeEventListener('keydown', handleDocumentKeydown);
+        document.addEventListener('keydown', handleDocumentKeydown);
     }
 
     function initializeBlogAdmin() {
