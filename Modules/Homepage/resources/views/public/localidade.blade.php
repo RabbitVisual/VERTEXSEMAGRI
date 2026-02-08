@@ -36,7 +36,7 @@
                             <x-module-icon module="localidades" class="w-4 h-4" />
                             {{ ucfirst($localidade->tipo ?? 'Localidade') }}
                         </div>
-                        <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-3 leading-tight">
+                        <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold font-poppins text-gray-900 dark:text-white mb-3 leading-tight">
                             {{ $localidade->nome }}
                         </h1>
                         <div class="flex flex-wrap items-center gap-4 text-gray-600 dark:text-gray-300">
@@ -46,7 +46,15 @@
                             </div>
                             @if($localidade->numero_moradores)
                             <div class="flex items-center gap-2">
-                                <x-icon name="arrow-left" class="w-5 h-5" />
+                                <x-icon name="users" style="duotone" class="w-5 h-5" />
+                                <span class="font-semibold">{{ number_format($localidade->numero_moradores, 0, ',', '.') }}</span>
+                                <span class="text-sm">moradores</span>
+                            </div>
+                            @endif
+                        </div>
+                    </div>
+                    <a href="{{ route('portal.index') }}" class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-300 rounded-xl font-medium hover:bg-gray-50 dark:hover:bg-slate-600 transition-all duration-300 shadow-md hover:shadow-lg border border-gray-200 dark:border-slate-600">
+                        <x-icon name="arrow-left" style="duotone" class="w-4 h-4" />
                         <span class="hidden sm:inline">Voltar ao Portal</span>
                         <span class="sm:hidden">Voltar</span>
                     </a>
@@ -118,7 +126,7 @@
                         <x-module-icon module="pocos" class="w-7 h-7 text-white" />
                     </div>
                     <div class="flex-1">
-                        <h2 class="text-xl md:text-2xl font-bold text-gray-900 dark:text-white">Poços Artesianos</h2>
+                        <h2 class="text-xl md:text-2xl font-bold font-poppins text-gray-900 dark:text-white">Poços Artesianos</h2>
                         <p class="text-sm text-gray-600 dark:text-gray-400">{{ count($infraestrutura['poços'] ?? []) }} poço(s) cadastrado(s)</p>
                     </div>
                 </div>
@@ -130,10 +138,7 @@
                             <div class="flex-1 min-w-0">
                                 <h3 class="font-bold text-lg text-gray-900 dark:text-white mb-1">{{ $poco['codigo'] }}</h3>
                                 <p class="text-sm text-gray-600 dark:text-gray-400 flex items-start gap-2">
-                                    <svg class="w-4 h-4 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
-                                    </svg>
+                                    <x-icon name="location-dot" style="duotone" class="w-4 h-4 mt-0.5 flex-shrink-0" />
                                     <span class="break-words">{{ $poco['endereco'] ?? 'N/A' }}</span>
                                 </p>
                             </div>
@@ -148,17 +153,13 @@
                         <div class="flex flex-wrap gap-3 mt-4">
                             @if($poco['vazao'])
                             <div class="flex items-center gap-2 text-sm">
-                                <svg class="w-4 h-4 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L4.5 21.75 12 13.5H3.75z" />
-                                </svg>
+                                <x-icon name="faucet-drip" style="duotone" class="w-4 h-4 text-blue-600 dark:text-blue-400" />
                                 <span class="text-gray-700 dark:text-gray-300"><strong>Vazão:</strong> {{ number_format($poco['vazao'], 2, ',', '.') }} L/h</span>
                             </div>
                             @endif
                             @if($poco['proxima_manutencao'])
                             <div class="flex items-center gap-2 text-sm">
-                                <svg class="w-4 h-4 text-amber-600 dark:text-amber-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
-                                </svg>
+                                <x-icon name="wrench" style="duotone" class="w-4 h-4 text-amber-600 dark:text-amber-400" />
                                 <span class="text-gray-700 dark:text-gray-300">Manutenção: {{ $poco['proxima_manutencao'] }}</span>
                             </div>
                             @endif
@@ -184,7 +185,7 @@
                         <x-module-icon module="agua" class="w-7 h-7 text-white" />
                     </div>
                     <div class="flex-1">
-                        <h2 class="text-xl md:text-2xl font-bold text-gray-900 dark:text-white">Pontos de Distribuição de Água</h2>
+                        <h2 class="text-xl md:text-2xl font-bold font-poppins text-gray-900 dark:text-white">Pontos de Distribuição de Água</h2>
                         <p class="text-sm text-gray-600 dark:text-gray-400">{{ count($infraestrutura['pontos_agua'] ?? []) }} ponto(s) cadastrado(s)</p>
                     </div>
                 </div>
@@ -196,19 +197,14 @@
                             <div class="flex-1 min-w-0">
                                 <h3 class="font-bold text-lg text-gray-900 dark:text-white mb-1">{{ $ponto['codigo'] }}</h3>
                                 <p class="text-sm text-gray-600 dark:text-gray-400 flex items-start gap-2">
-                                    <svg class="w-4 h-4 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
-                                    </svg>
+                                    <x-icon name="location-dot" style="duotone" class="w-4 h-4 mt-0.5 flex-shrink-0" />
                                     <span class="break-words">{{ $ponto['endereco'] ?? 'N/A' }}</span>
                                 </p>
                             </div>
                         </div>
                         @if($ponto['conexoes'])
                         <div class="flex items-center gap-2 text-sm mt-4">
-                            <svg class="w-4 h-4 text-cyan-600 dark:text-cyan-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
-                            </svg>
+                            <x-icon name="network-wired" style="duotone" class="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
                             <span class="text-gray-700 dark:text-gray-300"><strong>Conexões:</strong> {{ $ponto['conexoes'] }}</span>
                         </div>
                         @endif
@@ -233,7 +229,7 @@
                         <x-module-icon module="iluminacao" class="w-7 h-7 text-white" />
                     </div>
                     <div class="flex-1">
-                        <h2 class="text-xl md:text-2xl font-bold text-gray-900 dark:text-white">Iluminação Pública</h2>
+                        <h2 class="text-xl md:text-2xl font-bold font-poppins text-gray-900 dark:text-white">Iluminação Pública</h2>
                         <p class="text-sm text-gray-600 dark:text-gray-400">{{ count($infraestrutura['pontos_luz'] ?? []) }} ponto(s) cadastrado(s)</p>
                     </div>
                 </div>
@@ -245,10 +241,7 @@
                             <div class="flex-1 min-w-0">
                                 <h3 class="font-bold text-lg text-gray-900 dark:text-white mb-1">{{ $ponto['codigo'] }}</h3>
                                 <p class="text-sm text-gray-600 dark:text-gray-400 flex items-start gap-2">
-                                    <svg class="w-4 h-4 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
-                                    </svg>
+                                    <x-icon name="location-dot" style="duotone" class="w-4 h-4 mt-0.5 flex-shrink-0" />
                                     <span class="break-words">{{ $ponto['endereco'] ?? 'N/A' }}</span>
                                 </p>
                             </div>
@@ -263,16 +256,12 @@
                         @if($ponto['potencia'])
                         <div class="flex flex-wrap items-center gap-3 mt-4">
                             <div class="flex items-center gap-2 text-sm">
-                                <svg class="w-4 h-4 text-amber-600 dark:text-amber-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L4.5 21.75 12 13.5H3.75z" />
-                                </svg>
+                                <x-icon name="bolt" style="duotone" class="w-4 h-4 text-amber-600 dark:text-amber-400" />
                                 <span class="text-gray-700 dark:text-gray-300"><strong>Potência:</strong> {{ $ponto['potencia'] }}W</span>
                             </div>
                             @if($ponto['tipo_lampada'])
                             <div class="flex items-center gap-2 text-sm">
-                                <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
-                                </svg>
+                                <x-icon name="lightbulb" style="duotone" class="w-4 h-4 text-gray-500 dark:text-gray-400" />
                                 <span class="text-gray-600 dark:text-gray-400">{{ $ponto['tipo_lampada'] }}</span>
                             </div>
                             @endif
@@ -299,7 +288,7 @@
                         <x-module-icon module="estradas" class="w-7 h-7 text-white" />
                     </div>
                     <div class="flex-1">
-                        <h2 class="text-xl md:text-2xl font-bold text-gray-900 dark:text-white">Estradas e Vicinais</h2>
+                        <h2 class="text-xl md:text-2xl font-bold font-poppins text-gray-900 dark:text-white">Estradas e Vicinais</h2>
                         <p class="text-sm text-gray-600 dark:text-gray-400">{{ count($infraestrutura['estradas'] ?? []) }} trecho(s) cadastrado(s)</p>
                     </div>
                 </div>
@@ -314,9 +303,7 @@
                         <div class="flex flex-wrap gap-2 mt-4">
                             @if($estrada['extensao_km'])
                             <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300">
-                                <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L4.5 21.75 12 13.5H3.75z" />
-                                </svg>
+                                <x-icon name="ruler" style="duotone" class="w-3 h-3" />
                                 {{ number_format($estrada['extensao_km'], 2, ',', '.') }} km
                             </span>
                             @endif

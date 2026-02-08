@@ -160,7 +160,7 @@
                         <span>Prefeitura Municipal de Coração de Maria - BA</span>
                     </div>
 
-                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold font-poppins leading-tight">
                         {{ $configs['hero_title'] ?? 'Secretaria Municipal de Agricultura' }}
                     </h1>
 
@@ -236,7 +236,7 @@
                     <x-icon name="shield-check" style="duotone" class="w-4 h-4" />
                     Serviços ao Cidadão
                 </div>
-                <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-4">
+                <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold font-poppins text-gray-900 dark:text-white mb-4">
                     O Que Fazemos Por Você
                 </h2>
                 <p class="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto leading-relaxed">
@@ -260,7 +260,7 @@
                         </p>
                         <ul class="space-y-2.5 mb-6">
                             <li class="flex items-start gap-2.5">
-                                <x-icon name="check-circle" class="w-5 h-5 text-emerald-500 mt-0.5 flex-shrink-0" />
+                                <x-icon name="check-circle" style="duotone" class="w-5 h-5 text-emerald-500 mt-0.5 flex-shrink-0" />
                                 <span class="text-sm text-gray-600 dark:text-gray-400">Solicite melhorias na sua região</span>
                             </li>
                             <li class="flex items-start gap-2.5">
@@ -274,7 +274,7 @@
                         </ul>
                         <a href="{{ route('demandas.public.consulta') }}" class="inline-flex items-center gap-2 text-emerald-600 dark:text-emerald-400 font-semibold hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors group-hover:gap-3">
                             <span>Consultar minha demanda</span>
-                            <x-icon name="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                            <x-icon name="arrow-right" style="duotone" class="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                         </a>
                     </div>
                 </div>
@@ -492,7 +492,7 @@
                         Sobre Nós
                     </div>
 
-                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">
+                    <h2 class="text-3xl md:text-4xl font-bold font-poppins text-gray-900 dark:text-white">
                         Secretaria Municipal de Agricultura
                     </h2>
 
@@ -529,7 +529,7 @@
                     <x-icon name="hand-holding-heart" style="duotone" class="w-4 h-4" />
                     Acesso Público
                 </div>
-                <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-4">
+                <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold font-poppins text-gray-900 dark:text-white mb-4">
                     Serviços Públicos Online
                 </h2>
                 <p class="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto leading-relaxed">
@@ -646,7 +646,7 @@
         <div class="container mx-auto px-4">
             <div class="max-w-4xl mx-auto">
                 <div class="text-center mb-12">
-                    <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-4">
+                    <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold font-poppins text-gray-900 dark:text-white mb-4">
                         Entre em Contato
                     </h2>
                     <p class="text-lg text-gray-600 dark:text-gray-300">

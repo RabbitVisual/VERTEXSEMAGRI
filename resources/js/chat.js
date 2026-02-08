@@ -1,5 +1,5 @@
 // Sistema de Chat em Tempo Real com WebSockets e Fallback para Polling
-(function() {
+(function () {
     'use strict';
 
     let pollingInterval = null;
@@ -117,7 +117,6 @@
     function initWebSocket() {
         // Se não tiver Laravel Echo configurado, usar polling
         if (typeof Echo === 'undefined') {
-            console.log('Laravel Echo não está disponível, usando polling');
             startPolling();
             return;
         }
@@ -165,7 +164,6 @@
             }
 
             // Laravel Echo gerencia reconexão automaticamente
-            console.log('Laravel Echo configurado para chat');
             stopPolling();
 
         } catch (error) {
@@ -357,13 +355,12 @@
                     </span>
                 </div>
                 ` : ''}
-                <div class="px-4 py-2 rounded-lg ${
-                    isSystem
-                        ? 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-xs text-center'
-                        : isUser
-                            ? 'bg-blue-100 dark:bg-blue-900/30 text-gray-900 dark:text-white'
-                            : 'bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 text-gray-900 dark:text-white'
-                }">
+                <div class="px-4 py-2 rounded-lg ${isSystem
+                ? 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-xs text-center'
+                : isUser
+                    ? 'bg-blue-100 dark:bg-blue-900/30 text-gray-900 dark:text-white'
+                    : 'bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 text-gray-900 dark:text-white'
+            }">
                     <p class="text-sm whitespace-pre-wrap">${escapeHtml(msg.message)}</p>
                 </div>
             </div>
@@ -455,7 +452,7 @@
         try {
             const audio = new Audio('/sounds/chat/notification.mp3');
             audio.volume = 0.5;
-            audio.play().catch(err => console.log('Erro ao tocar som:', err));
+            audio.play().catch(err => { });
         } catch (e) {
             // Som não disponível
         }
@@ -492,4 +489,3 @@
     // Limpar ao sair da página
     window.addEventListener('beforeunload', cleanup);
 })();
-

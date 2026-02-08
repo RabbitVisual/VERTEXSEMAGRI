@@ -5,9 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Comprovante de Credenciais - {{ $funcionario->nome }}</title>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    @vite(['resources/css/app.css', 'resources/js/qrcode.js'])
 
     <style>
         :root {
@@ -30,7 +28,7 @@
         }
 
         body {
-            font-family: 'Roboto', sans-serif;
+            font-family: 'Inter', sans-serif;
             margin: 0;
             padding: 20px; /* Padding para visualização em tela */
             background-color: #fce7f3; /* Cor de fundo suave para tela */
@@ -247,7 +245,7 @@
 
     <!-- Botão de Impressão -->
     <button class="fab no-print" onclick="window.print()" title="Imprimir (Ctrl+P)">
-        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24" fill="white"><path d="M640-640v-120H320v120h-80v-200h480v200h-80Zm-480 80h640-640Zm560 100q17 0 28.5-11.5T760-500q0-17-11.5-28.5T720-540q-17 0-28.5 11.5T680-500q0 17 11.5 28.5T720-460Zm-80 260v-160H320v160h320Zm80 80H240v-160H80v-240q0-33 23.5-56.5T160-600h640q33 0 56.5 23.5T880-520v240H720v160Zm80-240v-160q0-17-11.5-28.5T760-560H160q-17 0-28.5 11.5T120-520v160h120v-80h480v80h120Z"/></svg>
+        <x-icon name="print" style="duotone" class="w-6 h-6 text-white" />
     </button>
 
     <div class="a4-page">
@@ -354,27 +352,34 @@
     </div>
 
     <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const urlLogin = '{{ $urlLogin }}';
             const canvas = document.getElementById('qrcode');
 
-            if (typeof QRCode !== 'undefined') {
-                 QRCode.toCanvas(canvas, urlLogin, {
-                    width: 110,
-                    margin: 0,
-                    color: {
-                        dark: '#000000',
-                        light: '#ffffff'
-                    }
-                }, function (error) {
-                    if (error) console.error(error);
-                });
-            } else {
-                console.warn('Biblioteca QRCode não carregada. Usando fallback de texto.');
-                document.getElementById('qrcode-container').innerHTML = '<span style="font-size:8pt">QR Code Indisponível (Sem Internet)</span>';
-            }
+            // Aguarda o carregamento do script do Vite
+            const checkLibrary = setInterval(function() {
+                if (window.generateQRCode) {
+                    clearInterval(checkLibrary);
+                    window.generateQRCode(urlLogin, canvas, {
+                        width: 110,
+                        margin: 0,
+                        color: {
+                            dark: '#000000',
+                            light: '#ffffff'
+                        }
+                    }).catch(error => console.error(error));
+                }
+            }, 100);
+
+            // Timeout de segurança
+            setTimeout(() => {
+                if (!window.generateQRCode) {
+                    clearInterval(checkLibrary);
+                    console.warn('Biblioteca QRCode não carregada.');
+                    document.getElementById('qrcode-container').innerHTML = '<span style="font-size:8pt">QR Code Indisponível</span>';
+                }
+            }, 5000);
         });
     </script>
 </body>

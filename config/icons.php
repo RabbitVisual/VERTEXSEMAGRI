@@ -31,5 +31,6 @@ return [
         'Pocos'                => 'arrow-down-to-line',
         'ProgramasAgricultura' => 'wheat',
         'Relatorios'           => 'file-chart-column',
+        'wheat'                => 'wheat',
     ],
 ];

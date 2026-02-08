@@ -105,27 +105,27 @@
 </head>
 <body class="antialiased bg-white dark:bg-slate-900 text-gray-900 dark:text-white transition-colors duration-300">
     @yield('content')
-    
+
     {{-- Avisos Flutuantes --}}
     @if(\Nwidart\Modules\Facades\Module::isEnabled('Avisos'))
         <x-avisos::avisos-por-posicao posicao="flutuante" />
     @endif
-    
+
     {{-- Widget de Chat --}}
     @if(\Nwidart\Modules\Facades\Module::isEnabled('Chat') && \Modules\Chat\App\Models\ChatConfig::isPublicEnabled())
         @include('chat::public.widget')
     @endif
-    
+
     {{-- Scripts devem vir depois dos componentes para que @push funcione --}}
     @stack('scripts')
-    
+
     {{-- Funções globais para avisos (garantir que estejam sempre disponíveis) --}}
     <script>
         (function() {
             // Garantir que as funções estejam disponíveis globalmente
             if (typeof window.avisosFunctionsDefined === 'undefined') {
                 window.avisosFunctionsDefined = true;
-                
+
                 window.registrarClique = function(avisoId) {
                     const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
                     if (!csrfToken) {
@@ -157,6 +157,7 @@
             }
         })();
     </script>
+    <!-- Global Loading Overlay -->
+    @include('components.loading-overlay')
 </body>
 </html>
-

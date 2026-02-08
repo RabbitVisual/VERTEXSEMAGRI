@@ -1,5 +1,5 @@
 // Sistema de Notificações em Tempo Real com WebSockets e Fallback para Polling
-(function() {
+(function () {
     'use strict';
 
     let pollingInterval = null;
@@ -335,20 +335,17 @@
     // Inicializar WebSockets (Pusher)
     function initializeWebSockets() {
         if (!USE_WEBSOCKETS || !PUSHER_KEY) {
-            console.log('WebSockets não disponíveis, usando polling');
             return false;
         }
 
         // Verificar se Pusher está disponível
         if (typeof Pusher === 'undefined') {
-            console.log('Pusher não carregado, usando polling');
             return false;
         }
 
         try {
             const userId = window.USER_ID || null;
             if (!userId) {
-                console.log('User ID não disponível para WebSockets');
                 return false;
             }
 
@@ -366,8 +363,8 @@
             // Canal privado do usuário
             const userChannel = pusher.subscribe(`private-user.${userId}`);
 
-            userChannel.bind('notificacao.criada', function(data) {
-                console.log('Nova notificação recebida via WebSocket:', data);
+            userChannel.bind('notificacao.criada', function (data) {
+                // Nova notificação recebida via WebSocket
                 addNotificationToList(data);
                 updateCount();
 
@@ -377,8 +374,8 @@
                 }
             });
 
-            userChannel.bind('notificacao.lida', function(data) {
-                console.log('Notificação lida via WebSocket:', data);
+            userChannel.bind('notificacao.lida', function (data) {
+                // Notificação lida via WebSocket
                 const item = document.querySelector(`.notification-item[data-id="${data.id}"]`);
                 if (item) {
                     item.style.opacity = '0.5';
@@ -387,7 +384,6 @@
             });
 
             websocketConnection = pusher;
-            console.log('WebSockets conectados com sucesso');
             return true;
         } catch (error) {
             console.error('Erro ao conectar WebSockets:', error);
@@ -428,7 +424,7 @@
     if (dropdown && trigger) {
         function closeOtherDropdowns() {
             const allDropdowns = document.querySelectorAll('[data-dropdown]');
-            allDropdowns.forEach(function(otherDropdown) {
+            allDropdowns.forEach(function (otherDropdown) {
                 const notificationsContainer = dropdown.closest('[data-dropdown]');
                 if (otherDropdown === notificationsContainer) {
                     return;
@@ -440,7 +436,7 @@
             });
         }
 
-        const clickHandler = function(e) {
+        const clickHandler = function (e) {
             e.preventDefault();
             e.stopPropagation();
 
@@ -449,7 +445,7 @@
             const isHidden = dropdown.classList.contains('hidden');
             if (isHidden) {
                 dropdown.classList.remove('hidden');
-                setTimeout(function() {
+                setTimeout(function () {
                     loadNotifications();
                 }, 100);
             } else {
@@ -477,8 +473,8 @@
         setTimeout(attachNotificationListener, 300);
         setTimeout(attachNotificationListener, 500);
 
-        const observer = new MutationObserver(function(mutations) {
-            mutations.forEach(function(mutation) {
+        const observer = new MutationObserver(function (mutations) {
+            mutations.forEach(function (mutation) {
                 if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
                     const isHidden = dropdown.classList.contains('hidden');
                     if (!isHidden) {
@@ -495,7 +491,7 @@
     }
 
     if (markAllReadBtn) {
-        markAllReadBtn.addEventListener('click', function(e) {
+        markAllReadBtn.addEventListener('click', function (e) {
             e.stopPropagation();
             markAllAsRead();
         });
@@ -537,7 +533,7 @@
     }
 
     // Pausar polling quando a aba não está visível (apenas se não usar WebSockets)
-    document.addEventListener('visibilitychange', function() {
+    document.addEventListener('visibilitychange', function () {
         if (!websocketConnection) {
             if (document.hidden) {
                 stopPolling();
