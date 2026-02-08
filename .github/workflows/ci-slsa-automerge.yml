@@ -12,15 +12,16 @@ permissions:
   pull-requests: write
   actions: read
   id-token: write
+  checks: write
 
 concurrency:
   group: pr-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
-# =========================================================
-# 1. BUILD + TEST
-# =========================================================
+  # =========================================================
+  # 1. BUILD + TEST
+  # =========================================================
   build:
     name: Build & Test
     runs-on: ubuntu-latest
@@ -28,23 +29,39 @@ jobs:
       digests: ${{ steps.hash.outputs.digests }}
 
     steps:
-      - name: Checkout
+      - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Setup environment
-        run: |
-          echo "Running on $(node -v || echo 'no node')"
-          echo "Running on $(php -v | head -n 1 || echo 'no php')"
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, dom, filter, json
+          coverage: none
 
-      - name: Build artifacts
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Composer Dependencies
+        run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+
+      - name: Install NPM Dependencies
+        run: npm ci
+
+      - name: Build Assets
+        run: npm run build
+
+      - name: Run Tests
+        run: php artisan test
+
+      - name: Prepare Artifacts for SLSA
         run: |
           mkdir -p dist
-          echo "artifact-1" > dist/artifact1.txt
-          echo "artifact-2" > dist/artifact2.txt
-
-      - name: Run tests
-        run: |
-          echo "All tests passed ✅"
+          # Create a manifest of critical files to sign (e.g., lock files, public assets)
+          tar -czf dist/build-artifacts.tar.gz public composer.lock package-lock.json
 
       - name: Generate SLSA subjects
         id: hash
@@ -53,54 +70,63 @@ jobs:
           files=$(ls dist/*)
           echo "digests=$(sha256sum $files | base64 -w0)" >> "$GITHUB_OUTPUT"
 
-# =========================================================
-# 2. SLSA LEVEL 3 PROVENANCE
-# =========================================================
+  # =========================================================
+  # 2. SLSA LEVEL 3 PROVENANCE
+  # =========================================================
   provenance:
     name: Generate SLSA Provenance
-    needs: build
-    uses: slsa-framework/slsa-github-generator/.github/workflows/generator_generic_slsa3.yml@v2.0.0
+    needs: [build]
     permissions:
       actions: read
       id-token: write
       contents: write
+    uses: slsa-framework/slsa-github-generator/.github/workflows/generator_generic_slsa3.yml@v2.0.0
     with:
       base64-subjects: ${{ needs.build.outputs.digests }}
       upload-assets: true
 
-# =========================================================
-# 3. AUTO APPROVE (BOT / JULES / COPILOT)
-# =========================================================
+  # =========================================================
+  # 3. AUTO APPROVE (BOT / JULES / COPILOT)
+  # =========================================================
   auto-approve:
     name: Auto Approve PR (Bot)
-    needs: build
-    if: >
+    needs: [build]
+    if: |
       github.event_name == 'pull_request' &&
       github.event.pull_request.draft == false &&
-      github.actor != 'github-actions[bot]'
-      github.event.pull_request.user.login != 'github-actions[bot]'
+      (
+        github.actor == 'jules-bot' ||
+        github.actor == 'dependabot[bot]' ||
+        github.actor == 'github-actions[bot]' ||
+        github.event.pull_request.user.type == 'Bot' ||
+        contains(github.event.pull_request.title, '[Jules]')
+      )
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
 
     steps:
       - name: Auto approve
-        if: github.actor != 'github-actions[bot]'
         uses: hmarr/auto-approve-action@v4
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
-# =========================================================
-# 4. AUTO MERGE
-# =========================================================
+  # =========================================================
+  # 4. AUTO MERGE
+  # =========================================================
   auto-merge:
     name: Enable Auto Merge
     needs: [build, auto-approve]
-    if: >
+    if: |
       always() &&
       needs.build.result == 'success' &&
       (needs.auto-approve.result == 'success' || needs.auto-approve.result == 'skipped') &&
       github.event_name == 'pull_request' &&
       github.event.pull_request.draft == false
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
 
     steps:
       - name: Enable auto-merge (squash)
