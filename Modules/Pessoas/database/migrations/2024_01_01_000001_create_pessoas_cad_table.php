@@ -155,9 +155,9 @@ return new class extends Migration
             $table->softDeletes();
             
             // Índices adicionais
-            $table->index('cod_familiar_fam');
-            $table->index('localidade_id');
-            $table->index('cd_ibge');
+            // $table->index('cod_familiar_fam');
+            // $table->index('localidade_id');
+            // $table->index('cd_ibge');
         });
     }
 

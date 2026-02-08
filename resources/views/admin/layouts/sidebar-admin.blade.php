@@ -123,12 +123,82 @@
             </div>
             <div class="space-y-1">
                 @if(\Nwidart\Modules\Facades\Module::isEnabled('Iluminacao') && Route::has('admin.iluminacao.index'))
-                <a href="{{ route('admin.iluminacao.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 {{ request()->routeIs('admin.iluminacao.*') ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-slate-700' }}">
-                    <div class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center {{ request()->routeIs('admin.iluminacao.*') ? 'bg-yellow-500 dark:bg-yellow-600' : 'bg-gray-100 dark:bg-slate-700' }}">
-                        <x-module-icon module="iluminacao" class="w-5 h-5 {{ request()->routeIs('admin.iluminacao.*') ? 'text-white' : 'text-gray-600 dark:text-gray-400' }}" />
+                @if(\Nwidart\Modules\Facades\Module::isEnabled('Iluminacao') && Route::has('admin.iluminacao.postes.index'))
+                <a href="{{ route('admin.iluminacao.postes.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 {{ request()->routeIs('admin.iluminacao.postes.*') ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-slate-700' }}">
+                    <div class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center {{ request()->routeIs('admin.iluminacao.postes.*') ? 'bg-yellow-500 dark:bg-yellow-600' : 'bg-gray-100 dark:bg-slate-700' }}">
+                        <svg class="w-5 h-5 {{ request()->routeIs('admin.iluminacao.postes.*') ? 'text-white' : 'text-gray-600 dark:text-gray-400' }}" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m4.5 0a12.05 12.05 0 004.5 0m0 0a12.05 12.05 0 00-4.5 0m4.5 0v5.25M9 18v-5.25m0 0a6.01 6.01 0 00-1.5-.189M9 12.75a6.01 6.01 0 011.5-.189m-1.5.189a6.01 6.01 0 00-1.5-.189m1.5.189v5.25m0 0a12.05 12.05 0 01-4.5 0m4.5 0v5.25" />
+                        </svg>
                     </div>
-                    <span class="flex-1">Iluminação</span>
+                    <span class="flex-1">Postes (Neoenergia)</span>
                 </a>
+                @endif
+                <a href="{{ route('admin.iluminacao.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 {{ request()->routeIs('admin.iluminacao.*') ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-slate-700' }}">
+                @if(\Nwidart\Modules\Facades\Module::isEnabled('Iluminacao') && Route::has('admin.iluminacao.postes.index'))
+                <a href="{{ route('admin.iluminacao.postes.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 {{ request()->routeIs('admin.iluminacao.postes.*') ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-slate-700' }}">
+                    <div class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center {{ request()->routeIs('admin.iluminacao.postes.*') ? 'bg-yellow-500 dark:bg-yellow-600' : 'bg-gray-100 dark:bg-slate-700' }}">
+                        <svg class="w-5 h-5 {{ request()->routeIs('admin.iluminacao.postes.*') ? 'text-white' : 'text-gray-600 dark:text-gray-400' }}" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m4.5 0a12.05 12.05 0 004.5 0m0 0a12.05 12.05 0 00-4.5 0m4.5 0v5.25M9 18v-5.25m0 0a6.01 6.01 0 00-1.5-.189M9 12.75a6.01 6.01 0 011.5-.189m-1.5.189a6.01 6.01 0 00-1.5-.189m1.5.189v5.25m0 0a12.05 12.05 0 01-4.5 0m4.5 0v5.25" />
+                        </svg>
+                    </div>
+                    <span class="flex-1">Postes (Neoenergia)</span>
+                </a>
+                @endif
+                    <div class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center {{ request()->routeIs('admin.iluminacao.*') ? 'bg-yellow-500 dark:bg-yellow-600' : 'bg-gray-100 dark:bg-slate-700' }}">
+                @if(\Nwidart\Modules\Facades\Module::isEnabled('Iluminacao') && Route::has('admin.iluminacao.postes.index'))
+                <a href="{{ route('admin.iluminacao.postes.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 {{ request()->routeIs('admin.iluminacao.postes.*') ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-slate-700' }}">
+                    <div class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center {{ request()->routeIs('admin.iluminacao.postes.*') ? 'bg-yellow-500 dark:bg-yellow-600' : 'bg-gray-100 dark:bg-slate-700' }}">
+                        <svg class="w-5 h-5 {{ request()->routeIs('admin.iluminacao.postes.*') ? 'text-white' : 'text-gray-600 dark:text-gray-400' }}" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m4.5 0a12.05 12.05 0 004.5 0m0 0a12.05 12.05 0 00-4.5 0m4.5 0v5.25M9 18v-5.25m0 0a6.01 6.01 0 00-1.5-.189M9 12.75a6.01 6.01 0 011.5-.189m-1.5.189a6.01 6.01 0 00-1.5-.189m1.5.189v5.25m0 0a12.05 12.05 0 01-4.5 0m4.5 0v5.25" />
+                        </svg>
+                    </div>
+                    <span class="flex-1">Postes (Neoenergia)</span>
+                </a>
+                @endif
+                        <x-module-icon module="iluminacao" class="w-5 h-5 {{ request()->routeIs('admin.iluminacao.*') ? 'text-white' : 'text-gray-600 dark:text-gray-400' }}" />
+                @if(\Nwidart\Modules\Facades\Module::isEnabled('Iluminacao') && Route::has('admin.iluminacao.postes.index'))
+                <a href="{{ route('admin.iluminacao.postes.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 {{ request()->routeIs('admin.iluminacao.postes.*') ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-slate-700' }}">
+                    <div class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center {{ request()->routeIs('admin.iluminacao.postes.*') ? 'bg-yellow-500 dark:bg-yellow-600' : 'bg-gray-100 dark:bg-slate-700' }}">
+                        <svg class="w-5 h-5 {{ request()->routeIs('admin.iluminacao.postes.*') ? 'text-white' : 'text-gray-600 dark:text-gray-400' }}" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m4.5 0a12.05 12.05 0 004.5 0m0 0a12.05 12.05 0 00-4.5 0m4.5 0v5.25M9 18v-5.25m0 0a6.01 6.01 0 00-1.5-.189M9 12.75a6.01 6.01 0 011.5-.189m-1.5.189a6.01 6.01 0 00-1.5-.189m1.5.189v5.25m0 0a12.05 12.05 0 01-4.5 0m4.5 0v5.25" />
+                        </svg>
+                    </div>
+                    <span class="flex-1">Postes (Neoenergia)</span>
+                </a>
+                @endif
+                    </div>
+                @if(\Nwidart\Modules\Facades\Module::isEnabled('Iluminacao') && Route::has('admin.iluminacao.postes.index'))
+                <a href="{{ route('admin.iluminacao.postes.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 {{ request()->routeIs('admin.iluminacao.postes.*') ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-slate-700' }}">
+                    <div class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center {{ request()->routeIs('admin.iluminacao.postes.*') ? 'bg-yellow-500 dark:bg-yellow-600' : 'bg-gray-100 dark:bg-slate-700' }}">
+                        <svg class="w-5 h-5 {{ request()->routeIs('admin.iluminacao.postes.*') ? 'text-white' : 'text-gray-600 dark:text-gray-400' }}" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m4.5 0a12.05 12.05 0 004.5 0m0 0a12.05 12.05 0 00-4.5 0m4.5 0v5.25M9 18v-5.25m0 0a6.01 6.01 0 00-1.5-.189M9 12.75a6.01 6.01 0 011.5-.189m-1.5.189a6.01 6.01 0 00-1.5-.189m1.5.189v5.25m0 0a12.05 12.05 0 01-4.5 0m4.5 0v5.25" />
+                        </svg>
+                    </div>
+                    <span class="flex-1">Postes (Neoenergia)</span>
+                </a>
+                @endif
+                    <span class="flex-1">Iluminação</span>
+                @if(\Nwidart\Modules\Facades\Module::isEnabled('Iluminacao') && Route::has('admin.iluminacao.postes.index'))
+                <a href="{{ route('admin.iluminacao.postes.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 {{ request()->routeIs('admin.iluminacao.postes.*') ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-slate-700' }}">
+                    <div class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center {{ request()->routeIs('admin.iluminacao.postes.*') ? 'bg-yellow-500 dark:bg-yellow-600' : 'bg-gray-100 dark:bg-slate-700' }}">
+                        <svg class="w-5 h-5 {{ request()->routeIs('admin.iluminacao.postes.*') ? 'text-white' : 'text-gray-600 dark:text-gray-400' }}" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m4.5 0a12.05 12.05 0 004.5 0m0 0a12.05 12.05 0 00-4.5 0m4.5 0v5.25M9 18v-5.25m0 0a6.01 6.01 0 00-1.5-.189M9 12.75a6.01 6.01 0 011.5-.189m-1.5.189a6.01 6.01 0 00-1.5-.189m1.5.189v5.25m0 0a12.05 12.05 0 01-4.5 0m4.5 0v5.25" />
+                        </svg>
+                    </div>
+                    <span class="flex-1">Postes (Neoenergia)</span>
+                </a>
+                @endif
+                </a>
+                @if(\Nwidart\Modules\Facades\Module::isEnabled('Iluminacao') && Route::has('admin.iluminacao.postes.index'))
+                <a href="{{ route('admin.iluminacao.postes.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 {{ request()->routeIs('admin.iluminacao.postes.*') ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-slate-700' }}">
+                    <div class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center {{ request()->routeIs('admin.iluminacao.postes.*') ? 'bg-yellow-500 dark:bg-yellow-600' : 'bg-gray-100 dark:bg-slate-700' }}">
+                        <svg class="w-5 h-5 {{ request()->routeIs('admin.iluminacao.postes.*') ? 'text-white' : 'text-gray-600 dark:text-gray-400' }}" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m4.5 0a12.05 12.05 0 004.5 0m0 0a12.05 12.05 0 00-4.5 0m4.5 0v5.25M9 18v-5.25m0 0a6.01 6.01 0 00-1.5-.189M9 12.75a6.01 6.01 0 011.5-.189m-1.5.189a6.01 6.01 0 00-1.5-.189m1.5.189v5.25m0 0a12.05 12.05 0 01-4.5 0m4.5 0v5.25" />
+                        </svg>
+                    </div>
+                    <span class="flex-1">Postes (Neoenergia)</span>
+                </a>
+                @endif
                 @endif
 
                 @if(\Nwidart\Modules\Facades\Module::isEnabled('Agua') && Route::has('admin.agua.index'))
