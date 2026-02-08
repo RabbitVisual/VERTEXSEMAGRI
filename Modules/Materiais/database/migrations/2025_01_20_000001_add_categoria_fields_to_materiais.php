@@ -11,36 +11,33 @@ return new class extends Migration
     {
         Schema::table('materiais', function (Blueprint $table) {
             // Adicionar campo JSON para campos específicos por categoria
-            if (!Schema::hasColumn('materiais', 'campos_especificos')) {
-                $table->json('campos_especificos')->nullable()->after('localizacao_estoque');
-            }
+            $table->json('campos_especificos')->nullable()->after('localizacao_estoque');
 
             // Adicionar campo para rastrear último alerta de estoque baixo
-            if (!Schema::hasColumn('materiais', 'ultimo_alerta_estoque')) {
-                $table->timestamp('ultimo_alerta_estoque')->nullable()->after('campos_especificos');
-            }
+            $table->timestamp('ultimo_alerta_estoque')->nullable()->after('campos_especificos');
         });
 
-        if (Schema::hasColumn('materiais', 'categoria')) {
-            if (DB::getDriverName() === 'mysql') {
-                DB::statement("ALTER TABLE materiais MODIFY COLUMN categoria ENUM(
-                    'lampadas',
-                    'reatores',
-                    'fios',
-                    'canos',
-                    'conexoes',
-                    'combustivel',
-                    'pecas_pocos',
-                    'rele_fotoeletronico',
-                    'bomba_poco_artesiano',
-                    'roupa_eletricista',
-                    'epi',
-                    'ferramentas',
-                    'outros'
-                ) NOT NULL");
-            }
+        // Atualizar enum de categorias para incluir novas categorias
+        // Como não podemos alterar enum diretamente, vamos usar DB::statement
+        if (Schema::hasColumn('materiais', 'categoria') && DB::connection()->getDriverName() !== 'sqlite') {
+            // Primeiro, vamos criar uma migration que altera o enum
+            // Mas como isso é complexo, vamos fazer via alteração da coluna
+            DB::statement("ALTER TABLE materiais MODIFY COLUMN categoria ENUM(
+                'lampadas',
+                'reatores',
+                'fios',
+                'canos',
+                'conexoes',
+                'combustivel',
+                'pecas_pocos',
+                'rele_fotoeletronico',
+                'bomba_poco_artesiano',
+                'roupa_eletricista',
+                'epi',
+                'ferramentas',
+                'outros'
+            ) NOT NULL");
         }
-        // Skip ENUM modification for SQLite
     }
 
     public function down(): void
@@ -49,7 +46,8 @@ return new class extends Migration
             $table->dropColumn(['campos_especificos', 'ultimo_alerta_estoque']);
         });
 
-        if (DB::getDriverName() === 'mysql') {
+        if (DB::connection()->getDriverName() !== 'sqlite') {
+            // Reverter enum para versão anterior
             DB::statement("ALTER TABLE materiais MODIFY COLUMN categoria ENUM(
                 'lampadas',
                 'reatores',

@@ -21,7 +21,7 @@ return new class extends Migration
                 $table->json('data')->nullable(); // Dados adicionais
                 $table->string('action_url')->nullable(); // URL de ação relacionada
                 $table->timestamps();
-
+                
                 $table->index(['user_id', 'is_read']);
                 $table->index(['role', 'is_read']);
                 $table->index('created_at');
