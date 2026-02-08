@@ -21,6 +21,25 @@ return new class extends Migration
             }
         });
 
+        // Atualizar enum de categorias para incluir novas categorias
+        if (Schema::hasColumn('materiais', 'categoria') && DB::getDriverName() !== 'sqlite') {
+            // MySQL-specific syntax
+            DB::statement("ALTER TABLE materiais MODIFY COLUMN categoria ENUM(
+                'lampadas',
+                'reatores',
+                'fios',
+                'canos',
+                'conexoes',
+                'combustivel',
+                'pecas_pocos',
+                'rele_fotoeletronico',
+                'bomba_poco_artesiano',
+                'roupa_eletricista',
+                'epi',
+                'ferramentas',
+                'outros'
+            ) NOT NULL");
+        }
         // Skip ENUM modification for SQLite
     }
 
@@ -29,5 +48,19 @@ return new class extends Migration
         Schema::table('materiais', function (Blueprint $table) {
             $table->dropColumn(['campos_especificos', 'ultimo_alerta_estoque']);
         });
+
+        if (DB::getDriverName() !== 'sqlite') {
+            // Reverter enum para versão anterior (MySQL only)
+            DB::statement("ALTER TABLE materiais MODIFY COLUMN categoria ENUM(
+                'lampadas',
+                'reatores',
+                'fios',
+                'canos',
+                'conexoes',
+                'combustivel',
+                'pecas_pocos',
+                'outros'
+            ) NOT NULL");
+        }
     }
 };

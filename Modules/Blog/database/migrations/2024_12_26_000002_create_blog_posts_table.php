@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
@@ -51,6 +52,11 @@ return new class extends Migration
             $table->index(['category_id', 'status']);
             $table->index(['is_featured', 'published_at']);
             $table->index('author_id');
+
+            // Fulltext index only for MySQL
+            if (DB::getDriverName() !== 'sqlite') {
+                $table->fullText(['title', 'content', 'excerpt']);
+            }
             // $table->fullText(['title', 'content', 'excerpt']);
         });
     }
