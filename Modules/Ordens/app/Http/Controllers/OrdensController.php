@@ -411,19 +411,27 @@ class OrdensController extends Controller
         $ordem = OrdemServico::findOrFail($id);
         $demandas = [];
         $equipes = [];
-        $materiais = [];
 
         if (Schema::hasTable('demandas')) {
-            $demandas = Demanda::all();
+            $demandas = Demanda::select('id', 'codigo', 'solicitante_nome', 'tipo')
+                ->where(function($query) use ($ordem) {
+                    $query->whereIn('status', ['aberta', 'em_andamento']);
+                    if ($ordem->demanda_id) {
+                        $query->orWhere('id', $ordem->demanda_id);
+                    }
+                })
+                ->orderBy('created_at', 'desc')
+                ->limit(200)
+                ->get();
         }
         if (Schema::hasTable('equipes')) {
-            $equipes = Equipe::where('ativo', true)->get();
-        }
-        if (Schema::hasTable('materiais')) {
-            $materiais = Material::where('ativo', true)->get();
+            $equipes = Equipe::where('ativo', true)
+                ->select('id', 'nome', 'codigo')
+                ->orderBy('nome')
+                ->get();
         }
 
-        return view('ordens::edit', compact('ordem', 'demandas', 'equipes', 'materiais'));
+        return view('ordens::edit', compact('ordem', 'demandas', 'equipes'));
     }
 
     public function update(Request $request, $id)

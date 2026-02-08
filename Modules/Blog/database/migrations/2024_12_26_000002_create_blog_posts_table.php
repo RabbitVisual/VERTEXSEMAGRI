@@ -57,6 +57,7 @@ return new class extends Migration
             if (DB::getDriverName() !== 'sqlite') {
                 $table->fullText(['title', 'content', 'excerpt']);
             }
+            // $table->fullText(['title', 'content', 'excerpt']);
         });
     }
 

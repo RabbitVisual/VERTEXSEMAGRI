@@ -48,6 +48,7 @@ return new class extends Migration
                 'outros'
             ) NOT NULL");
         }
+        // Skip ENUM modification for SQLite
     }
 
     public function down(): void
@@ -70,5 +71,6 @@ return new class extends Migration
                 'outros'
             ) NOT NULL");
         }
+        // Skip
     }
 };

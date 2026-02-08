@@ -157,6 +157,10 @@ return new class extends Migration
             // Índices adicionais
             $table->index('cod_familiar_fam');
             $table->index('cd_ibge');
+            $table->index('localidade_id');
+            // $table->index('cod_familiar_fam');
+            // $table->index('localidade_id');
+            // $table->index('cd_ibge');
         });
     }
 
