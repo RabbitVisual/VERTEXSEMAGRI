@@ -109,6 +109,15 @@ class OrdemServico extends Model
     }
 
     /**
+     * Retorna o custo total da ordem de serviço (alias para uso em relatórios/auditoria)
+     */
+    public function getCustoTotalAttribute(): float
+    {
+        // Futuramente pode incluir mão de obra, deslocamento, etc.
+        return $this->valor_total_materiais;
+    }
+
+    /**
      * Verifica se a ordem tem materiais
      */
     public function temMateriais(): bool
@@ -411,4 +420,3 @@ class OrdemServico extends Model
         });
     }
 }
-
