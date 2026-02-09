@@ -9,6 +9,8 @@
             margin: 15mm;
             size: A4;
         }
+        body {
+            font-family: 'Times New Roman', Times, serif;
         body { 
             font-family: 'Times New Roman', Times, serif; 
             color: #000;
@@ -17,6 +19,11 @@
             padding: 0;
             background: #fff;
         }
+        .header {
+            text-align: center;
+            border-bottom: 2px solid #000;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
         .header { 
             text-align: center; 
             border-bottom: 2px solid #000; 
@@ -60,12 +67,16 @@
             padding-top: 5px;
             font-family: Arial, sans-serif;
         }
+
         
         .content-body {
             column-count: 2;
             column-gap: 20px;
             text-align: justify;
         }
+
+        .post {
+            margin-bottom: 25px;
         
         .post { 
             margin-bottom: 25px; 
@@ -74,6 +85,9 @@
             border-bottom: 1px solid #eee;
             padding-bottom: 15px;
         }
+        .post-title {
+            font-size: 16px;
+            font-weight: bold;
         .post-title { 
             font-size: 16px; 
             font-weight: bold; 
@@ -81,6 +95,9 @@
             text-transform: uppercase;
             line-height: 1.2;
         }
+        .post-meta {
+            font-size: 10px;
+            color: #444;
         .post-meta { 
             font-size: 10px; 
             color: #444; 
@@ -88,6 +105,9 @@
             font-style: italic;
             font-family: Arial, sans-serif;
         }
+        .post-content {
+            font-size: 12px;
+            line-height: 1.4;
         .post-content { 
             font-size: 12px; 
             line-height: 1.4; 
@@ -103,6 +123,7 @@
             border: 1px solid #eee;
             filter: grayscale(100%); /* Save ink */
         }
+
         
         .footer {
             position: fixed;
@@ -119,6 +140,8 @@
 
         @media print {
             .no-print { display: none !important; }
+            body {
+                padding: 0;
             body { 
                 padding: 0; 
                 -webkit-print-color-adjust: exact;
@@ -127,6 +150,7 @@
                 column-count: 2;
             }
         }
+
         
         .no-print {
             position: fixed;
@@ -168,6 +192,10 @@
                 <text x="50" y="48" font-size="10" text-anchor="middle" font-family="serif">BRASÃO</text>
             </svg>
         </div>
+
+        <h1>Diário Oficial do Município</h1>
+        <h2>Relatório de Gestão e Transparência</h2>
+
         
         <h1>Diário Oficial do Município</h1>
         <h2>Relatório de Gestão e Transparência</h2>
@@ -184,6 +212,15 @@
         <div class="post">
             <h3 class="post-title">{{ $post->title }}</h3>
             <div class="post-meta">
+                Publicado em: {{ $post->published_at->format('d/m/Y') }} |
+                Categoria: {{ $post->category->name }}
+                @if($post->demanda) | Ref.: #{{ $post->demanda->id }} @endif
+            </div>
+
+            <div class="post-content">
+                {!! $post->content !!}
+            </div>
+
                 Publicado em: {{ $post->published_at->format('d/m/Y') }} | 
                 Categoria: {{ $post->category->name }}
                 @if($post->demanda) | Ref.: #{{ $post->demanda->id }} @endif

@@ -112,6 +112,11 @@ class BlogAdminController extends Controller
             $validated['og_image'] = $this->uploadImage($request->file('og_image'));
         }
 
+        // Processar OG Image
+        if ($request->hasFile('og_image')) {
+            $validated['og_image'] = $this->uploadImage($request->file('og_image'));
+        }
+
         // Processar galeria de imagens
         if ($request->hasFile('gallery_images')) {
             $galleryImages = [];
@@ -339,6 +344,13 @@ class BlogAdminController extends Controller
                 foreach ($post->gallery_images as $image) {
                     Storage::disk('public')->delete($image);
                 }
+            }
+
+            // Remover attachments
+             if ($post->attachments) {
+                 foreach ($post->attachments as $att) {
+                     Storage::disk('public')->delete($att['path']);
+                 }
             }
 
             // Remover attachments
