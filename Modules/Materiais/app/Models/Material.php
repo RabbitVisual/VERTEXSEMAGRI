@@ -17,6 +17,7 @@ class Material extends Model
     protected $fillable = [
         'nome',
         'codigo',
+        'ncm_id', // Novo campo para vinculação com NCM
         'categoria', // Mantido por compatibilidade
         'subcategoria_id', // Nova referência à subcategoria
         'unidade_medida', // unidade, metro, litro, kg
@@ -55,6 +56,11 @@ class Material extends Model
     public function subcategoria()
     {
         return $this->belongsTo(SubcategoriaMaterial::class, 'subcategoria_id');
+    }
+
+    public function ncm()
+    {
+        return $this->belongsTo(Ncm::class, 'ncm_id');
     }
 
     public function categoria()
@@ -379,4 +385,3 @@ class Material extends Model
         return $this->ordensServico()->count() === 0 && $this->movimentacoes()->count() === 0;
     }
 }
-

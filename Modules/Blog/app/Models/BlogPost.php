@@ -31,7 +31,8 @@ class BlogPost extends Model
         'likes_count',
         'shares_count',
         'module_data',
-        'auto_generated_from'
+        'auto_generated_from',
+        'related_demand_id'
     ];
 
     protected $casts = [
@@ -80,6 +81,11 @@ class BlogPost extends Model
     public function author()
     {
         return $this->belongsTo(User::class, 'author_id');
+    }
+
+    public function demanda()
+    {
+        return $this->belongsTo(\Modules\Demandas\App\Models\Demanda::class, 'related_demand_id');
     }
 
     /**

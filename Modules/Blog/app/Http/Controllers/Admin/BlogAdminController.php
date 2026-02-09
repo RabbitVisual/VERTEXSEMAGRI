@@ -106,7 +106,7 @@ class BlogAdminController extends Controller
         if ($request->hasFile('featured_image')) {
             $validated['featured_image'] = $this->uploadImage($request->file('featured_image'));
         }
-        
+
         // Processar OG Image
         if ($request->hasFile('og_image')) {
             $validated['og_image'] = $this->uploadImage($request->file('og_image'));
@@ -144,6 +144,12 @@ class BlogAdminController extends Controller
         }
 
         $post = BlogPost::create($validated);
+
+        // Vincular à demanda se houver related_demand_id
+        if (!empty($validated['related_demand_id'])) {
+            $post->related_demand_id = $validated['related_demand_id'];
+            $post->save();
+        }
 
         // Processar tags
         if (!empty($validated['tags'])) {
@@ -248,7 +254,7 @@ class BlogAdminController extends Controller
             }
             $validated['featured_image'] = $this->uploadImage($request->file('featured_image'));
         }
-        
+
         // Processar OG Image
         if ($request->hasFile('og_image')) {
             // Remover imagem antiga
@@ -273,7 +279,7 @@ class BlogAdminController extends Controller
             }
             $validated['gallery_images'] = $galleryImages;
         }
-        
+
         // Attachments
         if ($request->hasFile('attachments')) {
             if ($post->attachments) {
@@ -334,7 +340,7 @@ class BlogAdminController extends Controller
                     Storage::disk('public')->delete($image);
                 }
             }
-            
+
             // Remover attachments
              if ($post->attachments) {
                  foreach ($post->attachments as $att) {
@@ -379,7 +385,7 @@ class BlogAdminController extends Controller
 
         return $fullPath;
     }
-    
+
     private function uploadAttachment($file)
     {
         $filename = Str::random(40) . '.' . $file->getClientOriginalExtension();
@@ -478,7 +484,7 @@ class BlogAdminController extends Controller
             ], 500);
         }
     }
-    
+
     /**
      * Generate Monthly Bulletin
      */
@@ -486,13 +492,13 @@ class BlogAdminController extends Controller
     {
         $month = $request->input('month', now()->month);
         $year = $request->input('year', now()->year);
-        
+
         $posts = BlogPost::whereMonth('published_at', $month)
                          ->whereYear('published_at', $year)
                          ->where('status', 'published')
                          ->orderBy('published_at', 'desc')
                          ->get();
-                         
+
         return view('blog::admin.bulletin', compact('posts', 'month', 'year'));
     }
 
@@ -519,7 +525,7 @@ class BlogAdminController extends Controller
         $sanitizedAddress = preg_replace('/,\s*n?º?\s*\d+/i', '', $address);
         $sanitizedAddress = preg_replace('/\s+\d+$/', '', $sanitizedAddress); // Remove number at end if no comma
 
-        $title = "Serviço Realizado: " . ($demanda->tipoServico->nome ?? 'Manutenção');
+        $title = "Serviço Realizado: " . ($demanda->tipo_texto ?? 'Manutenção');
         $content = "
             <h2>Relatório de Execução</h2>
             <p><strong>Local:</strong> {$sanitizedAddress}</p>
@@ -533,7 +539,7 @@ class BlogAdminController extends Controller
             'title' => $title,
             'content' => $content,
             // Assuming Demanda has photos/attachments logic, but we'll return empty for now as it varies
-            'images' => [] 
+            'images' => []
         ]);
     }
 
@@ -550,7 +556,7 @@ class BlogAdminController extends Controller
         $path = $request->input('image_path');
         // Remove storage URL prefix if present to get relative path
         $relativePath = str_replace('/storage/', '', $path);
-        
+
         // Security check: ensure path is within blog/images
         if (!Str::contains($relativePath, "blog/images")) {
             return response()->json(["success" => false, "message" => "Invalid image path: " . $relativePath], 403);
@@ -561,9 +567,9 @@ class BlogAdminController extends Controller
             // Remove header (data:image/png;base64,)
             $image = str_replace('data:image/png;base64,', '', $imageData);
             $image = str_replace(' ', '+', $image);
-            
+
             Storage::disk('public')->put($relativePath, base64_decode($image));
-            
+
             return response()->json(['success' => true]);
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'message' => 'Erro ao salvar imagem: ' . $e->getMessage()], 500);
