@@ -17,10 +17,16 @@
     if ($module && empty($name)) {
         $moduleKey = Illuminate\Support\Str::studly($module);
         $name = config("icons.modules.{$moduleKey}");
-        
+
         if (!$name) {
             $name = 'circle-question'; // Fallback if module mapping missing
         }
+    }
+
+    // 2. Safety Fallback (Strict Enforcement)
+    // Ensure we never return an empty name or invalid string that could result in missing icon
+    if (empty($name) || $name === '?' || $name === '(?)') {
+        $name = 'circle-question';
     }
 
     // 2. Safety Fallback

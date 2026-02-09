@@ -84,7 +84,7 @@
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Conteúdo</h3>
 
                 <div class="blog-editor-wrapper">
-                    <div id="editor-container" class="h-96"></div>
+                    <div id="blog-content-editor" class="h-96"></div>
                     <input type="hidden" name="content" id="content">
                 </div>
             </div>

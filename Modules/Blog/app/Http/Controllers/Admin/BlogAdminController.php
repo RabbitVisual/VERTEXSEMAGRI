@@ -10,7 +10,7 @@ use Modules\Blog\App\Models\BlogTag;
 use Modules\Blog\App\Models\BlogComment;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use Intervention\Image\ImageManagerStatic as Image;
+
 
 class BlogAdminController extends Controller
 {
@@ -374,15 +374,27 @@ class BlogAdminController extends Controller
         // Criar diretório se não existir
         Storage::disk('public')->makeDirectory($path);
 
-        // Redimensionar e otimizar imagem
-        $image = Image::make($file);
-        $image->fit(1200, 800, function ($constraint) {
-            $constraint->upsize();
-        });
+        // Instanciar Manager com driver GD
+        $manager = new \Intervention\Image\ImageManager(new \Intervention\Image\Drivers\Gd\Driver());
+
+        // Ler imagem
+        $image = $manager->read($file);
+
+        // Redimensionar e otimizar imagem (cover 1200x800)
+        // Se a imagem for menor que o target, scaleDown não faria crop.
+        // Vamos usar scaleDown para garantir que não ultrapasse 1200x800, mas mantendo a proporção original para evitar cortes indesejados.
+        // O código anterior usava 'fit' que corta. Se quisermos manter o comportamento de 'fit' (crop):
+        // $image->cover(1200, 800);
+        // Mas para evitar upscaling de imagens pequenas (constraint upsize), é melhor verificar as dimensões ou usar scaleDown se a prioridade for não pixelizar.
+        // Dado que é um blog, geralmente queremos consistência (crop).
+        // Vamos usar scaleDown(1200, 800) para limitar o tamanho máximo, sem forçar crop se não precisar, ou cover se o design exigir.
+        // O código original era 'fit', então vamos de 'cover' mas verificando tamanho?
+        // Simplificação: vamos usar scaleDown para 1200 (width)
+        $image->scaleDown(width: 1200);
 
         // Salvar imagem
         $fullPath = $path . '/' . $filename;
-        Storage::disk('public')->put($fullPath, $image->encode());
+        Storage::disk('public')->put($fullPath, (string) $image->encode());
 
         return $fullPath;
     }
