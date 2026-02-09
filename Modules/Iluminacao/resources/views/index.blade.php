@@ -83,32 +83,33 @@
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 animate-slide-up">
         <x-iluminacao::stat-card
             title="Total Geral"
-            :value="$stats['total']"
+            :value="$estatisticas['pontos']['total']"
             icon="lightbulb"
             color="primary"
             subtitle="Pontos cadastrados" />
 
         <x-iluminacao::stat-card
             title="Operacionais"
-            :value="$stats['funcionando']"
+            :value="$estatisticas['pontos']['funcionando']"
             icon="circle-check"
             color="success"
             subtitle="Em pleno funcionamento" />
 
         <x-iluminacao::stat-card
             title="Com Defeito"
-            :value="$stats['com_defeito']"
+            :value="$estatisticas['pontos']['com_defeito']"
             icon="triangle-exclamation"
             color="warning"
             subtitle="Aguardando manutenção" />
 
         <x-iluminacao::stat-card
             title="Desligados"
-            :value="$stats['desligado']"
+            :value="$estatisticas['pontos']['desligado']"
             icon="bolt-slash"
             color="danger"
             subtitle="Fora de operação" />
     </div>
+
 
     <!-- Main Content Area with Filters & Table -->
     <div class="bg-white dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-slate-700/50 shadow-sm overflow-hidden animate-slide-up" style="animation-delay: 100ms">
