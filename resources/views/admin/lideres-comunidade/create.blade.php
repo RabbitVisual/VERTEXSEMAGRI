@@ -30,6 +30,65 @@
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div class="lg:col-span-2 space-y-8">
+
+                <!-- Busca de Pessoa do CadÚnico (MOVED TO TOP) -->
+                <div class="premium-card overflow-visible relative z-30">
+                    <div class="px-8 py-6 border-b border-gray-100 dark:border-slate-800 bg-blue-50/50 dark:bg-blue-900/10 flex items-center justify-between">
+                        <h2 class="text-xs font-black text-blue-600 dark:text-blue-400 uppercase tracking-[0.2em] flex items-center gap-2">
+                            <x-icon name="magnifying-glass" style="duotone" class="w-5" />
+                            Integração CadÚnico
+                        </h2>
+                    </div>
+                    <div class="p-8">
+                        <div class="mb-4">
+                            <p class="text-[11px] text-slate-500 font-bold uppercase tracking-tight">Pesquise uma pessoa para preencher os dados automaticamente.</p>
+                        </div>
+                        <div class="relative">
+                            <label for="pessoa_search" class="block mb-2 text-[10px] font-black text-gray-400 uppercase tracking-widest px-1">
+                                Pesquisar Pessoa (Nome, NIS ou CPF)
+                            </label>
+                            <div class="relative group">
+                                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                    <x-icon name="magnifying-glass" class="w-4 h-4 text-slate-400 group-focus-within:text-blue-500 transition-colors" />
+                                </div>
+                                <input type="text" id="pessoa_search" name="pessoa_search"
+                                    placeholder="Digite nome, CPF ou NIS..."
+                                    autocomplete="off"
+                                    class="w-full pl-12 pr-10 py-4 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-2xl text-sm font-bold focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all dark:text-white shadow-sm">
+                                <div class="absolute inset-y-0 right-0 pr-4 flex items-center cursor-pointer hidden" id="clear_search" onclick="limparBusca()">
+                                    <x-icon name="x-mark" class="w-4 h-4 text-slate-400 hover:text-red-500 transition-colors" />
+                                </div>
+                            </div>
+
+                            <!-- Search Results Dropdown -->
+                            <div id="pessoa_results" class="hidden absolute left-0 right-0 top-full mt-2 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-2xl shadow-2xl max-h-80 overflow-y-auto z-50 divide-y divide-gray-100 dark:divide-slate-700">
+                                <!-- Results will be populated here -->
+                            </div>
+                        </div>
+
+                        <input type="hidden" id="pessoa_id" name="pessoa_id" value="{{ old('pessoa_id') }}">
+
+                        <!-- Pessoa Selecionada Card -->
+                        <div id="pessoa_selecionada" class="{{ old('pessoa_id') ? '' : 'hidden' }} mt-6 p-5 bg-emerald-50 dark:bg-emerald-900/10 border border-emerald-100 dark:border-emerald-800/30 rounded-2xl relative animate-scale-in">
+                            <div class="flex items-start gap-4">
+                                <div class="w-12 h-12 bg-white dark:bg-slate-900 rounded-xl flex items-center justify-center text-emerald-600 shadow-sm">
+                                    <x-icon name="user-check" style="duotone" class="w-6 h-6" />
+                                </div>
+                                <div class="flex-1">
+                                    <p class="text-[11px] font-black text-emerald-900 dark:text-emerald-300 uppercase tracking-widest" id="pessoa_nome_selecionada">{{ old('nome') }}</p>
+                                    <p class="text-[10px] text-emerald-600 dark:text-emerald-500 mt-1 font-bold uppercase tracking-tight leading-relaxed" id="pessoa_info_selecionada">Pessoa vinculada do CadÚnico</p>
+                                </div>
+                                <button type="button" onclick="removerPessoa()" class="p-2 text-emerald-400 hover:text-red-500 transition-colors" title="Remover vínculo">
+                                    <x-icon name="x-mark" class="w-5 h-5" />
+                                </button>
+                            </div>
+                        </div>
+                        @error('pessoa_id')
+                            <p class="mt-2 text-[10px] font-bold text-red-600 uppercase tracking-widest">{{ $message }}</p>
+                        @enderror
+                    </div>
+                </div>
+
                 <!-- Informações do Líder -->
                 <div class="premium-card overflow-hidden">
                     <div class="px-8 py-6 border-b border-gray-100 dark:border-slate-800 bg-gray-50/50 dark:bg-slate-900/50 flex items-center justify-between">
@@ -80,51 +139,10 @@
                             <label for="endereco" class="block mb-2 text-[10px] font-black text-gray-400 uppercase tracking-widest px-1">
                                 Endereço de Atuação <span class="text-red-500">*</span>
                             </label>
-                            <input type="text" id="endereco" name="endereco" value="{{ old('endereco') }}" required readonly
-                                class="w-full px-5 py-4 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl text-sm font-bold text-slate-500 dark:text-slate-400 cursor-not-allowed uppercase tracking-tighter"
-                                placeholder="Sincronizado automaticamente com a localidade">
-                            <p class="mt-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-loose px-1">Preenchido com base na localidade selecionada.</p>
-                        </div>
-
-                        <!-- Busca de Pessoa do CadÚnico -->
-                        <div class="pt-8 border-t border-gray-100 dark:border-slate-800">
-                            <div class="mb-6">
-                                <h3 class="text-xs font-black text-blue-600 uppercase tracking-widest mb-1">Integração CadÚnico</h3>
-                                <p class="text-[11px] text-slate-400 font-bold uppercase tracking-tight">Vincule opcionalmente a uma pessoa da base de dados local.</p>
-                            </div>
-                            <div>
-                                <label for="pessoa_search" class="block mb-2 text-[10px] font-black text-gray-400 uppercase tracking-widest px-1">
-                                    Pesquisar Pessoa (Nome, NIS ou CPF)
-                                </label>
-                                <div class="relative group">
-                                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                        <x-icon name="magnifying-glass" class="w-4 h-4 text-slate-400 group-focus-within:text-blue-500 transition-colors" />
-                                    </div>
-                                    <input type="text" id="pessoa_search" name="pessoa_search"
-                                        placeholder="Digite pelo menos 3 caracteres..."
-                                        class="w-full pl-12 pr-5 py-3.5 bg-gray-50/50 dark:bg-slate-900/50 border border-gray-200 dark:border-slate-700 rounded-2xl text-sm font-bold focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all dark:text-white">
-                                    <div id="pessoa_results" class="hidden absolute z-50 w-full mt-2 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-2xl shadow-2xl max-h-64 overflow-y-auto"></div>
-                                </div>
-                                <input type="hidden" id="pessoa_id" name="pessoa_id" value="{{ old('pessoa_id') }}">
-
-                                <div id="pessoa_selecionada" class="hidden mt-4 p-5 bg-emerald-50 dark:bg-emerald-900/10 border border-emerald-100 dark:border-emerald-800/30 rounded-2xl relative animate-scale-in">
-                                    <div class="flex items-start gap-4">
-                                        <div class="w-12 h-12 bg-white dark:bg-slate-900 rounded-xl flex items-center justify-center text-emerald-600 shadow-sm">
-                                            <x-icon name="user-check" style="duotone" class="w-6 h-6" />
-                                        </div>
-                                        <div class="flex-1">
-                                            <p class="text-[11px] font-black text-emerald-900 dark:text-emerald-300 uppercase tracking-widest" id="pessoa_nome_selecionada"></p>
-                                            <p class="text-[10px] text-emerald-600 dark:text-emerald-500 mt-1 font-bold uppercase tracking-tight leading-relaxed" id="pessoa_info_selecionada"></p>
-                                        </div>
-                                        <button type="button" onclick="removerPessoa()" class="p-2 text-emerald-400 hover:text-red-500 transition-colors">
-                                            <x-icon name="xmark" class="w-5 h-5" />
-                                        </button>
-                                    </div>
-                                </div>
-                                @error('pessoa_id')
-                                    <p class="mt-2 text-[10px] font-bold text-red-600 uppercase tracking-widest">{{ $message }}</p>
-                                @enderror
-                            </div>
+                            <input type="text" id="endereco" name="endereco" value="{{ old('endereco') }}" required
+                                class="w-full px-5 py-4 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl text-sm font-bold text-slate-700 dark:text-slate-300 uppercase tracking-tight focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all"
+                                placeholder="Sincronizado automaticamente, mas pode ser editado se necessário">
+                            <p class="mt-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-loose px-1">Sugerido com base na localidade selecionada.</p>
                         </div>
                     </div>
                 </div>
@@ -328,10 +346,23 @@ function toggleVinculacao(tipo) {
     }
 }
 
+function limparBusca() {
+    document.getElementById('pessoa_search').value = '';
+    document.getElementById('pessoa_results').classList.add('hidden');
+    document.getElementById('clear_search').classList.add('hidden');
+}
+
 function buscarPessoas() {
     const search = document.getElementById('pessoa_search').value;
     const localidadeId = document.getElementById('localidade_id').value;
     const resultsDiv = document.getElementById('pessoa_results');
+    const clearBtn = document.getElementById('clear_search');
+
+    if (search.length > 0) {
+        clearBtn.classList.remove('hidden');
+    } else {
+        clearBtn.classList.add('hidden');
+    }
 
     if (search.length < 3) {
         resultsDiv.classList.add('hidden');
@@ -339,42 +370,88 @@ function buscarPessoas() {
     }
 
     clearTimeout(pessoaSearchTimeout);
+
+    // Show loading state could go here but simple text is fine
+
     pessoaSearchTimeout = setTimeout(() => {
+        resultsDiv.innerHTML = '<div class="p-4 text-[10px] font-black uppercase text-slate-400 text-center">Buscando...</div>';
+        resultsDiv.classList.remove('hidden');
+
         fetch(`{{ route('admin.lideres-comunidade.pessoas.buscar') }}?search=${encodeURIComponent(search)}&localidade_id=${localidadeId}`)
             .then(response => response.json())
             .then(pessoas => {
                 if (pessoas.length === 0) {
-                    resultsDiv.innerHTML = '<div class="p-4 text-[10px] font-black uppercase text-slate-400">Nenhum resultado</div>';
+                    resultsDiv.innerHTML = '<div class="p-4 text-[10px] font-black uppercase text-slate-400 text-center">Nenhum resultado encontrado</div>';
                 } else {
                     resultsDiv.innerHTML = pessoas.map(p => `
-                        <div class="p-4 hover:bg-slate-50 dark:hover:bg-slate-700/50 cursor-pointer border-b border-slate-100 dark:border-slate-700 last:border-0 group"
-                             onclick="selecionarPessoa(${p.id})">
-                            <p class="text-xs font-black text-slate-900 dark:text-white uppercase tracking-tight group-hover:text-blue-600 transition-colors">${p.nome}</p>
-                            <p class="text-[9px] text-slate-400 font-bold uppercase tracking-widest mt-1">NIS: ${p.nis || '---'} • CPF: ${p.cpf || '---'}</p>
+                        <div class="p-4 hover:bg-blue-50 dark:hover:bg-slate-700/50 cursor-pointer border-b border-gray-100 dark:border-slate-700 last:border-0 group transition-colors"
+                             onclick='selecionarPessoa(${JSON.stringify(p)})'>
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-xs font-black text-slate-900 dark:text-white uppercase tracking-tight group-hover:text-blue-600 transition-colors">${p.nome}</p>
+                                    <p class="text-[9px] text-slate-400 font-bold uppercase tracking-widest mt-0.5">
+                                        NIS: <span class="text-slate-600 dark:text-slate-300">${p.nis || '---'}</span> •
+                                        CPF: <span class="text-slate-600 dark:text-slate-300">${p.cpf || '---'}</span>
+                                    </p>
+                                </div>
+                                <div class="opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <x-icon name="arrow-right" class="w-4 h-4 text-blue-500" />
+                                </div>
+                            </div>
                         </div>
                     `).join('');
                 }
                 resultsDiv.classList.remove('hidden');
+            })
+            .catch(error => {
+                console.error('Erro na busca:', error);
+                resultsDiv.innerHTML = '<div class="p-4 text-[10px] font-black uppercase text-red-400 text-center">Erro ao buscar dados</div>';
             });
-    }, 300);
+    }, 400); // Increased delay slightly for better UX
 }
 
-function selecionarPessoa(id) {
-    fetch(`{{ url("/admin/lideres-comunidade/pessoa") }}/${id}`)
-        .then(r => r.json())
-        .then(p => {
-            document.getElementById('pessoa_id').value = p.id;
-            document.getElementById('nome').value = p.nome;
-            if (p.cpf) document.getElementById('cpf').value = p.cpf_formatado || p.cpf;
-            if (p.localidade_id) {
-                document.getElementById('localidade_id').value = p.localidade_id;
-                document.getElementById('localidade_id').dispatchEvent(new Event('change'));
-            }
-            document.getElementById('pessoa_nome_selecionada').textContent = p.nome;
-            document.getElementById('pessoa_info_selecionada').textContent = `NIS: ${p.nis_formatado || '---'} • LOCALIDADE: ${p.localidade_nome || '---'}`;
-            document.getElementById('pessoa_selecionada').classList.remove('hidden');
-            document.getElementById('pessoa_results').classList.add('hidden');
-        });
+function selecionarPessoa(pessoa) {
+    // Fill hidden ID
+    document.getElementById('pessoa_id').value = pessoa.id;
+
+    // Fill Form Fields
+    const nomeInput = document.getElementById('nome');
+    const cpfInput = document.getElementById('cpf');
+
+    nomeInput.value = pessoa.nome;
+    if (pessoa.cpf) {
+        // Use formatted CPF if available, otherwise raw
+        cpfInput.value = pessoa.cpf; // You might want to format this if it's raw
+    }
+
+    // Auto-select Localidade if match found
+    if (pessoa.localidade_id) { // Assuming result has localidade_id
+        const localSelect = document.getElementById('localidade_id');
+        // Check if option exists before selecting
+        if (localSelect.querySelector(`option[value="${pessoa.localidade_id}"]`)) {
+            localSelect.value = pessoa.localidade_id;
+            // Trigger change event to fetch address
+            localSelect.dispatchEvent(new Event('change'));
+        }
+    }
+
+    // Update User Name/Email suggestions if in "New User" mode
+    document.getElementById('user_name').value = pessoa.nome;
+
+    // Display Selected Card
+    document.getElementById('pessoa_nome_selecionada').textContent = pessoa.nome;
+    document.getElementById('pessoa_info_selecionada').textContent = `NIS: ${pessoa.nis || '---'} • LOCALIDADE: ${pessoa.localidade || '---'}`;
+
+    document.getElementById('pessoa_selecionada').classList.remove('hidden');
+    document.getElementById('pessoa_results').classList.add('hidden');
+    document.getElementById('pessoa_search').value = ''; // Clear search field
+    document.getElementById('clear_search').classList.add('hidden');
+
+    // Highlight inputs slightly to show they were autofilled
+    nomeInput.classList.add('ring-2', 'ring-emerald-500/20', 'border-emerald-500');
+    setTimeout(() => {
+        nomeInput.classList.remove('ring-2', 'ring-emerald-500/20', 'border-emerald-500');
+    }, 2000);
 }
 
 function removerPessoa() {
@@ -385,21 +462,36 @@ function removerPessoa() {
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('pessoa_search').addEventListener('input', buscarPessoas);
 
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('#pessoa_search') && !e.target.closest('#pessoa_results')) {
+            document.getElementById('pessoa_results').classList.add('hidden');
+        }
+    });
+
     document.getElementById('localidade_id').addEventListener('change', function() {
         if (this.value) {
+            // Add visual loading indicator for address
+            const enderecoInput = document.getElementById('endereco');
+            const originalPlaceholder = enderecoInput.placeholder;
+            enderecoInput.placeholder = "Buscando endereço...";
+
             fetch(`/localidades/${this.value}/dados`)
                 .then(r => r.json())
                 .then(d => {
                     let end = d.endereco || '';
                     if (d.numero) end += `, ${d.numero}`;
                     if (d.bairro) end += ` - ${d.bairro}`;
-                    document.getElementById('endereco').value = end || d.nome || '';
+
+                    if (!end && d.nome) end = d.nome; // Fallback to name if address empty
+
+                    enderecoInput.value = end || '';
+                    enderecoInput.placeholder = originalPlaceholder;
+                })
+                .catch(() => {
+                    enderecoInput.placeholder = originalPlaceholder;
                 });
         }
-    });
-
-    document.addEventListener('click', (e) => {
-        if (!e.target.closest('#pessoa_search')) document.getElementById('pessoa_results').classList.add('hidden');
     });
 });
 </script>

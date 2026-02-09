@@ -112,7 +112,9 @@ class LiderComunidadeController extends Controller
                 'nis' => $pessoa->num_nis_pessoa_atual,
                 'cpf' => $pessoa->num_cpf_pessoa,
                 'localidade' => $pessoa->localidade ? $pessoa->localidade->nome : null,
+                'localidade_id' => $pessoa->localidade_id,
             ];
+
         }));
     }
 
@@ -210,7 +212,7 @@ class LiderComunidadeController extends Controller
                 if ($validated['criar_usuario'] === 'pessoa') {
                     // Criar usuário automaticamente para permitir acesso ao painel
                     $emailUsuario = $validated['email'] ?? ($pessoa->num_cpf_pessoa ? $pessoa->num_cpf_pessoa . '@lider.comunidade' : 'lider' . $pessoa->id . '@comunidade');
-                    
+
                     // Verificar se já existe usuário com esse email
                     $userExistente = User::where('email', $emailUsuario)->first();
                     if ($userExistente) {
@@ -218,7 +220,7 @@ class LiderComunidadeController extends Controller
                     } else {
                         // Gerar senha temporária (CPF sem formatação ou data de nascimento)
                         $senhaTemporaria = $pessoa->num_cpf_pessoa ? substr($pessoa->num_cpf_pessoa, 0, 6) : '12345678';
-                        
+
                         $user = User::create([
                             'name' => $pessoa->nom_pessoa,
                             'email' => $emailUsuario,
@@ -266,7 +268,7 @@ class LiderComunidadeController extends Controller
             if ($pessoa && !$user && $validated['criar_usuario'] === 'pessoa') {
                 // Criar usuário automaticamente para permitir acesso ao painel
                 $emailUsuario = $validated['email'] ?? ($pessoa->num_cpf_pessoa ? $pessoa->num_cpf_pessoa . '@lider.comunidade' : 'lider' . $pessoa->id . '@comunidade');
-                
+
                 // Verificar se já existe usuário com esse email
                 $userExistente = User::where('email', $emailUsuario)->first();
                 if ($userExistente) {
@@ -274,7 +276,7 @@ class LiderComunidadeController extends Controller
                 } else {
                     // Gerar senha temporária (CPF sem formatação ou padrão)
                     $senhaTemporaria = $pessoa->num_cpf_pessoa ? substr($pessoa->num_cpf_pessoa, 0, 6) : '12345678';
-                    
+
                     $user = User::create([
                         'name' => $pessoa->nom_pessoa,
                         'email' => $emailUsuario,
@@ -318,7 +320,7 @@ class LiderComunidadeController extends Controller
                     $enderecoFinal = $enderecoCompleto ?: $localidade->nome;
                 }
             }
-            
+
             // Fallback: se ainda não tem endereço, usar o nome da localidade
             if (empty($enderecoFinal) && !empty($validated['localidade_id'])) {
                 $localidade = \Modules\Localidades\App\Models\Localidade::find($validated['localidade_id']);
@@ -346,7 +348,7 @@ class LiderComunidadeController extends Controller
 
             // Mensagem de sucesso com informações de acesso
             $mensagem = "Líder de comunidade {$lider->nome} cadastrado com sucesso!";
-            
+
             // Se foi criado usuário automaticamente, informar sobre as credenciais
             if ($pessoa && $user && $validated['criar_usuario'] === 'pessoa') {
                 $senhaTemporaria = $pessoa->num_cpf_pessoa ? substr($pessoa->num_cpf_pessoa, 0, 6) : '12345678';
@@ -370,7 +372,7 @@ class LiderComunidadeController extends Controller
         // Calcular estatísticas através das mensalidades do líder
         // Isso é mais confiável pois os pagamentos estão sempre vinculados às mensalidades
         $mensalidadesIds = $lider->mensalidades()->pluck('id');
-        
+
         $totalArrecadado = PagamentoPoco::whereIn('mensalidade_id', $mensalidadesIds)
             ->where('status', 'confirmado')
             ->sum('valor_pago') ?? 0;
@@ -457,7 +459,7 @@ class LiderComunidadeController extends Controller
                     }
                 }
             }
-            
+
             // Se ainda não tem endereço, usar o nome da localidade como fallback
             if (empty($enderecoFinal) && !empty($validated['localidade_id'])) {
                 $localidade = \Modules\Localidades\App\Models\Localidade::find($validated['localidade_id']);
@@ -465,9 +467,9 @@ class LiderComunidadeController extends Controller
                     $enderecoFinal = $localidade->nome;
                 }
             }
-            
+
             $validated['endereco'] = $enderecoFinal;
-            
+
             $lider->update($validated);
 
             // Atualizar role do usuário se mudou (apenas se não foi selecionada pessoa)
@@ -530,4 +532,3 @@ class LiderComunidadeController extends Controller
         }
     }
 }
-
