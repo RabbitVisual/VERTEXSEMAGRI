@@ -1,5 +1,6 @@
 import { db } from './db';
 import { downloadData, uploadData, queueAction } from './sync';
+import Compressor from 'compressorjs';
 
 export default () => ({
     online: navigator.onLine,
@@ -20,6 +21,10 @@ export default () => ({
     currentHeading: 0,
 
     async init() {
+        if (!window.isSecureContext && window.location.hostname !== 'localhost') {
+            console.warn('Insecure context: Camera and Geolocation may fail.');
+        }
+
         window.addEventListener('online', () => {
             this.online = true;
             this.processQueue();
@@ -29,21 +34,41 @@ export default () => ({
         await this.refreshData();
         this.updateSyncColor();
 
-        // Periodic updates
         setInterval(() => {
             this.updateQueueCount();
             this.updateSyncColor();
         }, 5000);
 
-        // Compass heading
+        this.initCompass();
+    },
+
+    initCompass() {
         if (window.DeviceOrientationEvent) {
             window.addEventListener('deviceorientation', (e) => {
                 if (e.webkitCompassHeading) {
+                    // iOS
                     this.currentHeading = e.webkitCompassHeading;
-                } else if (e.alpha) {
+                } else if (e.alpha !== null) {
+                    // Android/Others (alpha is 0 at initial device orientation, need absolute if available)
+                    // Assuming absolute for now or simple relative rotation
                     this.currentHeading = 360 - e.alpha;
                 }
-            });
+            }, true);
+        }
+    },
+
+    async requestCompassPermission() {
+        if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+            try {
+                const response = await DeviceOrientationEvent.requestPermission();
+                if (response === 'granted') {
+                    this.initCompass();
+                } else {
+                    alert('Permissão de bússola negada.');
+                }
+            } catch (e) {
+                console.error(e);
+            }
         }
     },
 
@@ -67,12 +92,6 @@ export default () => ({
             return;
         }
 
-        // Parse "dd/mm/yyyy, hh:mm:ss" - PT-BR locale string format from sync.js
-        // Ideally we should store ISO string in localStorage for reliable parsing
-        // But let's try to parse the string or change storage to ISO
-        // Let's assume we update sync.js to store ISO separately or parse string carefully.
-
-        // Actually, let's fix the storage in sync() below.
         const lastSyncTime = localStorage.getItem('lastSyncISO');
         if (!lastSyncTime) {
              this.syncColor = 'gray';
@@ -149,7 +168,6 @@ export default () => ({
 
         await queueAction('concluir_ordem', payload);
 
-        // Optimistic update
         const demand = await db.demands.get(this.selectedDemand.id);
         if (demand) {
             demand.status = 'concluida';
@@ -164,24 +182,41 @@ export default () => ({
         const demand = this.localDemands.find(d => d.id == demandId);
         if (demand) {
             this.selectedDemand = demand;
-            // Stop radar if running
             this.stopRadar();
         } else {
             alert('Demanda não encontrada offline. Sincronize antes.');
         }
     },
 
-    // Photo Logic
+    compressImage(file) {
+        return new Promise((resolve, reject) => {
+            new Compressor(file, {
+                quality: 0.6,
+                maxWidth: 1600,
+                maxHeight: 1600,
+                success(result) {
+                    resolve(result);
+                },
+                error(err) {
+                    reject(err);
+                },
+            });
+        });
+    },
+
     async capturePhoto(event) {
         const file = event.target.files[0];
         if (!file || !this.selectedDemand) return;
 
         try {
+            // Compress
+            const compressedBlob = await this.compressImage(file);
+
             // Store blob
             const mediaId = await db.offline_media.add({
                 demandId: this.selectedDemand.id,
                 type: 'photo',
-                blob: file,
+                blob: compressedBlob,
                 timestamp: Date.now()
             });
 
@@ -195,15 +230,15 @@ export default () => ({
             alert('Foto salva na fila de envio!');
         } catch (e) {
             console.error(e);
-            alert('Erro ao salvar foto.');
+            alert('Erro ao salvar foto: ' + e.message);
         }
     },
 
-    // Radar Logic
     toggleRadar() {
         if (this.radarActive) {
             this.stopRadar();
         } else {
+            this.requestCompassPermission(); // Request permission on toggle
             this.startRadar();
         }
     },
@@ -217,7 +252,7 @@ export default () => ({
         const targetLat = this.selectedDemand.localidade.latitude;
         const targetLon = this.selectedDemand.localidade.longitude;
 
-        if (!targetLat || !targetLon) {
+        if (targetLat === null || targetLon === null) {
              alert('Coordenadas inválidas para esta demanda.');
              return;
         }
@@ -231,6 +266,8 @@ export default () => ({
 
                 this.targetDistance = this.calculateDistance(userLat, userLon, targetLat, targetLon);
                 this.targetBearing = this.calculateBearing(userLat, userLon, targetLat, targetLon);
+
+                // Update heading from speed if moving? No, prefer Compass.
 
             }, (err) => {
                 console.error(err);
@@ -253,8 +290,8 @@ export default () => ({
     },
 
     calculateDistance(lat1, lon1, lat2, lon2) {
-        const R = 6371e3; // metres
-        const φ1 = lat1 * Math.PI/180; // φ, λ in radians
+        const R = 6371e3;
+        const φ1 = lat1 * Math.PI/180;
         const φ2 = lat2 * Math.PI/180;
         const Δφ = (lat2-lat1) * Math.PI/180;
         const Δλ = (lon2-lon1) * Math.PI/180;
@@ -264,7 +301,7 @@ export default () => ({
                   Math.sin(Δλ/2) * Math.sin(Δλ/2);
         const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 
-        return Math.round(R * c); // in metres
+        return Math.round(R * c);
     },
 
     calculateBearing(startLat, startLng, destLat, destLng) {
@@ -277,13 +314,12 @@ export default () => ({
         const x = Math.cos(startLat) * Math.sin(destLat) -
                   Math.sin(startLat) * Math.cos(destLat) * Math.cos(destLng - startLng);
         const brng = Math.atan2(y, x);
-        const deg = (brng * 180 / Math.PI + 360) % 360; // in degrees
+        const deg = (brng * 180 / Math.PI + 360) % 360;
         return deg;
     },
 
     getRelativeBearing() {
         if (!this.targetBearing) return 0;
-        // Arrow rotation: target - userHeading
         return (this.targetBearing - this.currentHeading + 360) % 360;
     }
 });
