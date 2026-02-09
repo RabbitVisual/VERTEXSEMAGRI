@@ -98,6 +98,7 @@ jobs:
       github.event.pull_request.draft == false &&
       github.actor != 'github-actions[bot]' &&
       github.event.pull_request.user.login != 'github-actions[bot]' &&
+      github.event.pull_request.user.login != 'github-actions' &&
       (
         github.actor == 'jules-bot' ||
         github.actor == 'dependabot[bot]' ||
@@ -114,6 +115,7 @@ jobs:
     steps:
       - name: Auto approve
         uses: hmarr/auto-approve-action@v4
+        continue-on-error: true
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -146,6 +148,9 @@ jobs:
       pull-requests: write
 
     steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
       - name: Enable auto-merge (squash)
         run: |
           gh pr merge ${{ github.event.pull_request.number }} \

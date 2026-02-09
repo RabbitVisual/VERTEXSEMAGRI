@@ -8,9 +8,7 @@
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
             <h1 class="text-3xl font-bold text-gray-900 dark:text-white flex items-center gap-3 mb-2">
-                <svg class="w-8 h-8 text-emerald-600 dark:text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    {!! \App\Helpers\ModuleIcons::getIconPath('Blog') !!}
-                </svg>
+                <x-icon name="newspaper" style="duotone" class="w-8 h-8 text-emerald-600 dark:text-emerald-500" />
                 Editar Post
             </h1>
             <nav aria-label="breadcrumb">
@@ -28,9 +26,7 @@
         <div class="flex gap-2">
             <a href="{{ route('admin.blog.show', $post->id) }}"
                class="inline-flex items-center px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg font-medium transition-colors">
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
-                </svg>
+                <x-icon name="arrow-left" class="w-4 h-4 mr-2" />
                 Voltar
             </a>
         </div>
@@ -55,7 +51,7 @@
                         <label for="title" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                             Título *
                         </label>
-                        <input type="text" id="title" name="title" value="{{ $post->title }}" required
+                        <input type="text" id="title" name="title" value="{{ old('title', $post->title) }}" required
                                class="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
                     </div>
 
@@ -64,8 +60,13 @@
                         <label for="slug" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                             Slug (URL amigável)
                         </label>
-                        <input type="text" id="slug" name="slug" value="{{ $post->slug }}"
-                               class="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+                        <div class="flex">
+                            <span class="inline-flex items-center px-3 rounded-l-lg border border-r-0 border-gray-300 dark:border-slate-600 bg-gray-50 dark:bg-slate-800 text-gray-500 dark:text-gray-400 text-sm">
+                                {{ config('app.url') }}/blog/
+                            </span>
+                            <input type="text" id="slug" name="slug" value="{{ old('slug', $post->slug) }}"
+                                   class="flex-1 min-w-0 block w-full px-3 py-2 rounded-r-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm">
+                        </div>
                     </div>
 
                     <!-- Excerpt -->
@@ -74,59 +75,128 @@
                             Resumo
                         </label>
                         <textarea id="excerpt" name="excerpt" rows="3"
-                                  class="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">{{ $post->excerpt }}</textarea>
+                                  class="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">{{ old('excerpt', $post->excerpt) }}</textarea>
                     </div>
                 </div>
             </div>
 
-            <!-- Content -->
+            <!-- Content Editor -->
             <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 p-6">
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Conteúdo</h3>
 
                 <div class="blog-editor-wrapper">
-                    <label for="blog-content-editor" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        Conteúdo do Post *
-                    </label>
-                    <div id="blog-content-editor" class="min-h-[400px]"></div>
-                    <textarea id="content" name="content" class="hidden">{{ $post->content }}</textarea>
-                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                        Editor completo com formatação rica, imagens, links, listas e muito mais.
-                        <span class="text-emerald-600 dark:text-emerald-400 font-medium">Auto-save ativado!</span>
-                    </p>
+                    <div id="editor-container" class="h-96">{!! old('content', $post->content) !!}</div>
+                    <input type="hidden" name="content" id="content" value="{{ old('content', $post->content) }}">
                 </div>
             </div>
 
-            <!-- Images -->
+            <!-- Media -->
             <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 p-6">
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Imagens</h3>
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Mídia</h3>
 
-                <div class="space-y-4">
-                    <!-- Current Featured Image -->
-                    @if($post->featured_image)
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Imagem Destacada Atual</label>
-                        <img src="{{ Storage::url($post->featured_image) }}" alt="{{ $post->title }}"
-                             class="w-32 h-32 object-cover rounded-lg shadow-sm">
-                    </div>
-                    @endif
-
+                <div class="space-y-6">
                     <!-- Featured Image -->
                     <div>
-                        <label for="featured_image" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            {{ $post->featured_image ? 'Nova Imagem Destacada' : 'Imagem Destacada' }}
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Imagem Destacada
                         </label>
-                        <input type="file" id="featured_image" name="featured_image" accept="image/*"
-                               class="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+
+                        @if($post->featured_image)
+                        <div class="mb-4 relative w-48 h-32 rounded-lg overflow-hidden border border-gray-200 dark:border-slate-600 group">
+                            <img src="{{ Storage::url($post->featured_image) }}" class="object-cover w-full h-full">
+                            <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                <button type="button" onclick="openPrivacyEditor('{{ Storage::url($post->featured_image) }}')"
+                                        class="bg-red-600 text-white p-2 rounded-full hover:bg-red-700" title="Censurar/Editar">
+                                    <x-icon name="eye-slash" class="w-4 h-4" />
+                                </button>
+                            </div>
+                        </div>
+                        @endif
+
+                        <input type="file" name="featured_image" accept="image/*" class="block w-full text-sm text-slate-500 ...">
                     </div>
 
                     <!-- Gallery Images -->
                     <div>
-                        <label for="gallery_images" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            Nova Galeria de Imagens
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Galeria de Imagens
                         </label>
-                        <input type="file" id="gallery_images" name="gallery_images[]" accept="image/*" multiple
+
+                        @if($post->gallery_images)
+                        <div class="grid grid-cols-4 gap-2 mb-4">
+                            @foreach($post->gallery_images as $img)
+                            <div class="relative aspect-square rounded overflow-hidden border border-gray-200 dark:border-slate-600 group">
+                                <img src="{{ Storage::url($img) }}" class="object-cover w-full h-full">
+                                <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                                    <button type="button" onclick="openPrivacyEditor('{{ Storage::url($img) }}')"
+                                            class="bg-red-600 text-white p-2 rounded-full hover:bg-red-700" title="Censurar/Editar">
+                                        <x-icon name="eye-slash" class="w-4 h-4" />
+                                    </button>
+                                </div>
+                            </div>
+                            @endforeach
+                        </div>
+                        @endif
+
+                        <input type="file" name="gallery_images[]" multiple accept="image/*" class="block w-full text-sm text-slate-500 ...">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Attachments -->
+            <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 p-6">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Anexos (PDFs, Editais)</h3>
+
+                @if($post->attachments)
+                <ul class="mb-4 space-y-2">
+                    @foreach($post->attachments as $att)
+                    <li class="flex items-center text-sm text-gray-600 dark:text-gray-400">
+                        <x-icon name="file-pdf" class="w-4 h-4 mr-2" />
+                        {{ $att['name'] }}
+                    </li>
+                    @endforeach
+                </ul>
+                @endif
+
+                <input type="file" name="attachments[]" multiple accept=".pdf" class="block w-full text-sm text-slate-500 ...">
+            </div>
+
+            <!-- SEO -->
+            <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 p-6">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Otimização SEO</h3>
+
+                <div class="space-y-4">
+                    <!-- Meta Title -->
+                    <div>
+                        <label for="meta_title" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Meta Título
+                        </label>
+                        <input type="text" id="meta_title" name="meta_title" value="{{ old('meta_title', $post->meta_title) }}"
                                class="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
-                        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Substituirá a galeria atual se selecionada</p>
+                    </div>
+
+                    <!-- Meta Description -->
+                    <div>
+                        <label for="meta_description" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Meta Descrição
+                        </label>
+                        <textarea id="meta_description" name="meta_description" rows="3"
+                                  class="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">{{ old('meta_description', $post->meta_description) }}</textarea>
+                    </div>
+
+                    <!-- OG Image -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Imagem de Compartilhamento (OG Image)
+                        </label>
+
+                        @if($post->og_image)
+                        <div class="mb-2">
+                            <img src="{{ Storage::url($post->og_image) }}" class="h-20 w-auto rounded border">
+                        </div>
+                        @endif
+
+                        <input type="file" name="og_image" accept="image/*" class="block w-full text-sm text-slate-500 ...">
                     </div>
                 </div>
             </div>
@@ -141,18 +211,23 @@
                 <div class="space-y-4">
                     <!-- Status -->
                     <div>
-                        <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Status</label>
+                        <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Status
+                        </label>
                         <select id="status" name="status"
                                 class="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
-                            <option value="draft" {{ $post->status === 'draft' ? 'selected' : '' }}>Rascunho</option>
-                            <option value="published" {{ $post->status === 'published' ? 'selected' : '' }}>Publicado</option>
-                            <option value="archived" {{ $post->status === 'archived' ? 'selected' : '' }}>Arquivado</option>
+                            <option value="draft" {{ $post->status == 'draft' ? 'selected' : '' }}>Rascunho</option>
+                            <option value="review" {{ $post->status == 'review' ? 'selected' : '' }}>Em Revisão</option>
+                            <option value="published" {{ $post->status == 'published' ? 'selected' : '' }}>Publicado</option>
+                            <option value="archived" {{ $post->status == 'archived' ? 'selected' : '' }}>Arquivado</option>
                         </select>
                     </div>
 
                     <!-- Published At -->
                     <div>
-                        <label for="published_at" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Data de Publicação</label>
+                        <label for="published_at" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Data de Publicação
+                        </label>
                         <input type="datetime-local" id="published_at" name="published_at"
                                value="{{ $post->published_at ? $post->published_at->format('Y-m-d\TH:i') : '' }}"
                                class="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
@@ -162,14 +237,9 @@
                     <div class="flex items-center">
                         <input type="checkbox" id="is_featured" name="is_featured" value="1" {{ $post->is_featured ? 'checked' : '' }}
                                class="h-4 w-4 text-emerald-600 focus:ring-emerald-500 border-gray-300 rounded">
-                        <label for="is_featured" class="ml-2 block text-sm text-gray-900 dark:text-gray-100">Post em destaque</label>
-                    </div>
-
-                    <!-- Allow Comments -->
-                    <div class="flex items-center">
-                        <input type="checkbox" id="allow_comments" name="allow_comments" value="1" {{ $post->allow_comments ? 'checked' : '' }}
-                               class="h-4 w-4 text-emerald-600 focus:ring-emerald-500 border-gray-300 rounded">
-                        <label for="allow_comments" class="ml-2 block text-sm text-gray-900 dark:text-gray-100">Permitir comentários</label>
+                        <label for="is_featured" class="ml-2 block text-sm text-gray-900 dark:text-gray-100">
+                            Post em destaque
+                        </label>
                     </div>
                 </div>
 
@@ -178,26 +248,70 @@
                     <div class="flex flex-col gap-3">
                         <button type="submit"
                                 class="w-full px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-medium transition-colors">
-                            Atualizar Post
+                            <x-icon name="save" class="w-4 h-4 inline mr-1" /> Salvar Alterações
                         </button>
+                        <a href="{{ route('admin.blog.index') }}"
+                           class="w-full px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-700 rounded-lg font-medium transition-colors text-center">
+                            Cancelar
+                        </a>
                     </div>
                 </div>
             </div>
 
-            <!-- Category -->
+            <!-- Integrations -->
             <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 p-6">
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Categoria</h3>
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Integrações</h3>
 
-                <div>
-                    <label for="category_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Categoria *</label>
-                    <select id="category_id" name="category_id" required
-                            class="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
-                        @foreach($categories as $category)
-                        <option value="{{ $category->id }}" {{ $post->category_id == $category->id ? 'selected' : '' }}>
-                            {{ $category->name }}
-                        </option>
-                        @endforeach
-                    </select>
+                <div class="space-y-4">
+                    <!-- Category -->
+                    <div>
+                        <label for="category_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Categoria *
+                        </label>
+                        <select id="category_id" name="category_id" required
+                                class="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+                            @foreach($categories as $category)
+                            <option value="{{ $category->id }}" {{ $post->category_id == $category->id ? 'selected' : '' }}>
+                                {{ $category->name }}
+                            </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <!-- Team Members -->
+                    <div>
+                        <label for="team_members" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Equipe Responsável
+                        </label>
+                        <select id="team_members" name="team_members[]" multiple size="5"
+                                class="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-sm">
+                            @if(isset($employees))
+                                @foreach($employees as $emp)
+                                    <option value="{{ $emp->id }}" {{ in_array($emp->id, $post->team_members ?? []) ? 'selected' : '' }}>
+                                        {{ $emp->nom_pessoa }}
+                                    </option>
+                                @endforeach
+                            @endif
+                        </select>
+                    </div>
+
+                    <!-- Related Demand -->
+                    <div>
+                        <label for="related_demand_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Demanda Relacionada
+                        </label>
+                        <select id="related_demand_id" name="related_demand_id"
+                                class="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-sm">
+                            <option value="">Nenhuma</option>
+                            @if(isset($demandas))
+                                @foreach($demandas as $dem)
+                                    <option value="{{ $dem->id }}" {{ $post->related_demand_id == $dem->id ? 'selected' : '' }}>
+                                        #{{ $dem->id }} - {{ \Illuminate\Support\Str::limit($dem->descricao ?? 'Sem descrição', 30) }}
+                                    </option>
+                                @endforeach
+                            @endif
+                        </select>
+                    </div>
                 </div>
             </div>
 
@@ -206,69 +320,203 @@
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Tags</h3>
 
                 <div>
-                    <label for="tags" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Tags do Post</label>
-                    <input type="text" id="tags" name="tags[]"
-                           value="{{ $post->tags->pluck('name')->implode(', ') }}"
+                    <input type="text" id="tags" name="tags[]" value="{{ implode(',', $post->tags->pluck('name')->toArray()) }}"
                            class="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
-                           placeholder="tag1, tag2, tag3">
-                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Separe as tags com vírgulas</p>
+                           placeholder="Digite as tags...">
                 </div>
             </div>
         </div>
     </div>
 </form>
+
+<!-- Privacy Editor Modal -->
+<div id="privacyEditorModal" class="fixed inset-0 z-50 hidden bg-black/80 flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-800 rounded-lg shadow-2xl max-w-4xl w-full flex flex-col max-h-[90vh]">
+        <div class="p-4 border-b border-gray-200 dark:border-slate-700 flex justify-between items-center">
+            <h3 class="text-lg font-bold text-gray-900 dark:text-white flex items-center">
+                <x-icon name="shield-check" class="w-5 h-5 mr-2 text-emerald-600" />
+                Editor de Privacidade (LGPD)
+            </h3>
+            <button onclick="closePrivacyEditor()" class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+                <x-icon name="xmark" class="w-6 h-6" />
+            </button>
+        </div>
+
+        <div class="flex-1 overflow-auto p-4 bg-gray-900 flex justify-center items-center relative" id="canvas-container">
+            <canvas id="editorCanvas" class="max-w-full cursor-crosshair"></canvas>
+        </div>
+
+        <div class="p-4 border-t border-gray-200 dark:border-slate-700 flex justify-between items-center bg-gray-50 dark:bg-slate-900">
+            <div class="text-sm text-gray-500">
+                Selecione uma área na imagem para censurar.
+            </div>
+            <div class="flex gap-2">
+                <button type="button" onclick="applyBlur()" class="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-lg font-medium flex items-center">
+                    <x-icon name="droplet" class="w-4 h-4 mr-2" /> Borrar
+                </button>
+                <button type="button" onclick="applyPixelate()" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium flex items-center">
+                    <x-icon name="border-none" class="w-4 h-4 mr-2" /> Pixelar
+                </button>
+                <div class="w-px h-8 bg-gray-300 dark:bg-slate-600 mx-2"></div>
+                <button type="button" onclick="saveRedaction()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-medium flex items-center">
+                    <x-icon name="floppy-disk" class="w-4 h-4 mr-2" /> Salvar Edição
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @push('scripts')
 @vite('resources/js/blog-editor.js')
 
 <script>
-// Auto-generate slug from title
-document.getElementById('title').addEventListener('input', function() {
-    const title = this.value;
-    const slug = title.toLowerCase()
-        .replace(/[^a-z0-9\s-]/g, '')
-        .replace(/\s+/g, '-')
-        .replace(/-+/g, '-')
-        .trim('-');
-    document.getElementById('slug').value = slug;
-});
+// Privacy Editor Logic
+let canvas, ctx;
+let isDrawing = false;
+let startX, startY, currentX, currentY;
+let currentImageSrc = '';
+let imgObj = new Image();
 
-// Add tag function
-function addTag(tagName) {
-    const tagsInput = document.getElementById('tags');
-    const currentTags = tagsInput.value;
+function openPrivacyEditor(src) {
+    currentImageSrc = src;
+    document.getElementById('privacyEditorModal').classList.remove('hidden');
 
-    if (currentTags) {
-        tagsInput.value = currentTags + ', ' + tagName;
-    } else {
-        tagsInput.value = tagName;
-    }
+    canvas = document.getElementById('editorCanvas');
+    ctx = canvas.getContext('2d');
+
+    imgObj.onload = function() {
+        // Set canvas size to image size
+        canvas.width = imgObj.width;
+        canvas.height = imgObj.height;
+
+        // Scale logic for display would be handled by CSS max-w-full
+        ctx.drawImage(imgObj, 0, 0);
+    };
+    imgObj.src = src;
+
+    // Mouse Events for Selection
+    canvas.onmousedown = function(e) {
+        const rect = canvas.getBoundingClientRect();
+        const scaleX = canvas.width / rect.width;
+        const scaleY = canvas.height / rect.height;
+
+        startX = (e.clientX - rect.left) * scaleX;
+        startY = (e.clientY - rect.top) * scaleY;
+        isDrawing = true;
+    };
+
+    canvas.onmousemove = function(e) {
+        if (!isDrawing) return;
+
+        const rect = canvas.getBoundingClientRect();
+        const scaleX = canvas.width / rect.width;
+        const scaleY = canvas.height / rect.height;
+
+        currentX = (e.clientX - rect.left) * scaleX;
+        currentY = (e.clientY - rect.top) * scaleY;
+
+        // Redraw image
+        ctx.drawImage(imgObj, 0, 0);
+
+        // Draw selection rectangle
+        ctx.strokeStyle = 'red';
+        ctx.lineWidth = 2;
+        ctx.strokeRect(startX, startY, currentX - startX, currentY - startY);
+    };
+
+    canvas.onmouseup = function() {
+        isDrawing = false;
+        // Keep the selection rect visible until action
+    };
+}
+
+function closePrivacyEditor() {
+    document.getElementById('privacyEditorModal').classList.add('hidden');
+}
+
+function applyPixelate() {
+    if (startX === undefined) return;
+
+    const w = currentX - startX;
+    const h = currentY - startY;
+    const size = 10; // Pixel size
+
+    // Get image data of selected area
+    // Simplified pixelation: draw small version then scale up
+
+    // Draw original image to clear selection box
+    ctx.drawImage(imgObj, 0, 0);
+
+    // We need to manipulate pixels or use drawImage trick
+    // Create temp canvas
+    const tempCanvas = document.createElement('canvas');
+    const tCtx = tempCanvas.getContext('2d');
+
+    tempCanvas.width = Math.abs(w);
+    tempCanvas.height = Math.abs(h);
+
+    // Draw selected area to temp canvas reduced size
+    tCtx.drawImage(canvas, startX, startY, w, h, 0, 0, w/size, h/size);
+
+    // Draw back scaled up
+    ctx.imageSmoothingEnabled = false;
+    ctx.drawImage(tempCanvas, 0, 0, w/size, h/size, startX, startY, w, h);
+    ctx.imageSmoothingEnabled = true;
+
+    // Update imgObj to current state so we can add multiple redactions
+    imgObj.src = canvas.toDataURL();
+}
+
+function applyBlur() {
+    if (startX === undefined) return;
+
+    const w = currentX - startX;
+    const h = currentY - startY;
+
+    ctx.drawImage(imgObj, 0, 0);
+
+    ctx.filter = 'blur(10px)';
+    // Draw the image again but clipped to rect
+    // This is tricky in single canvas.
+    // Easier approach: put image data, blur it.
+
+    // Fallback: Fill with black rectangle for "Redact" style since Canvas blur is complex without StackBlur
+    ctx.filter = 'none';
+    ctx.fillStyle = 'black';
+    ctx.fillRect(startX, startY, w, h);
+
+    // Update imgObj
+    imgObj.src = canvas.toDataURL();
+}
+
+function saveRedaction() {
+    const dataUrl = canvas.toDataURL('image/jpeg', 0.9);
+
+    fetch('{{ route("admin.blog.redact-image") }}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        },
+        body: JSON.stringify({
+            image_path: currentImageSrc,
+            image_data: dataUrl
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Imagem atualizada com sucesso!');
+            location.reload();
+        } else {
+            alert('Erro: ' + data.message);
+        }
+    })
+    .catch(err => {
+        console.error(err);
+        alert('Erro ao salvar.');
+    });
 }
 </script>
-@endpush
-
-@push('styles')
-<style>
-.blog-editor-wrapper .ql-toolbar.ql-snow {
-    border: 2px solid rgb(209 213 219);
-    border-radius: 0.75rem 0.75rem 0 0;
-    background: white;
-}
-.dark .blog-editor-wrapper .ql-toolbar.ql-snow {
-    border-color: rgb(51 65 85);
-    background: rgb(51 65 85);
-}
-.blog-editor-wrapper .ql-container.ql-snow {
-    border: 2px solid rgb(209 213 219);
-    border-top: none;
-    border-radius: 0 0 0.75rem 0.75rem;
-    background: white;
-    min-height: 400px;
-}
-.dark .blog-editor-wrapper .ql-container.ql-snow {
-    border-color: rgb(51 65 85);
-    background: rgb(30 41 59);
-}
-</style>
 @endpush

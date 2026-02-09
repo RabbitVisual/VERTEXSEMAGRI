@@ -60,8 +60,10 @@ class BlogAdminController extends Controller
     {
         $categories = BlogCategory::active()->ordered()->get();
         $tags = BlogTag::orderBy('name')->get();
+        $employees = \Modules\Pessoas\App\Models\PessoaCad::ativas()->orderBy("nom_pessoa")->limit(100)->get();
+        $demandas = \Modules\Demandas\App\Models\Demanda::orderBy("created_at", "desc")->limit(50)->get();
 
-        return view('blog::admin.create', compact('categories', 'tags'));
+        return view('blog::admin.create', compact('categories', 'tags', 'employees', 'demandas'));
     }
 
     /**
@@ -77,7 +79,7 @@ class BlogAdminController extends Controller
             'category_id' => 'required|exists:blog_categories,id',
             'featured_image' => 'nullable|image|max:2048',
             'gallery_images.*' => 'nullable|image|max:2048',
-            'status' => 'required|in:draft,published,archived',
+            'status' => 'required|in:draft,review,published,archived',
             'published_at' => 'nullable|date',
             'is_featured' => 'boolean',
             'allow_comments' => 'boolean',
@@ -85,7 +87,14 @@ class BlogAdminController extends Controller
             'meta_description' => 'nullable|string|max:500',
             'meta_keywords' => 'nullable|string',
             'tags' => 'nullable|array',
-            'tags.*' => 'string'
+            'tags.*' => 'string',
+            'team_members' => 'nullable|array',
+            'team_members.*' => 'integer',
+            'related_demand_id' => 'nullable|integer',
+            'attachments.*' => 'nullable|file|mimes:pdf|max:10240',
+            'og_image' => 'nullable|image|max:2048',
+            'og_description' => 'nullable|string|max:500',
+            'gallery_before_after' => 'nullable|array',
         ]);
 
         // Gerar slug se não fornecido
@@ -98,6 +107,11 @@ class BlogAdminController extends Controller
             $validated['featured_image'] = $this->uploadImage($request->file('featured_image'));
         }
 
+        // Processar OG Image
+        if ($request->hasFile('og_image')) {
+            $validated['og_image'] = $this->uploadImage($request->file('og_image'));
+        }
+
         // Processar galeria de imagens
         if ($request->hasFile('gallery_images')) {
             $galleryImages = [];
@@ -105,6 +119,18 @@ class BlogAdminController extends Controller
                 $galleryImages[] = $this->uploadImage($image);
             }
             $validated['gallery_images'] = $galleryImages;
+        }
+
+        // Attachments
+        if ($request->hasFile('attachments')) {
+            $attachments = [];
+            foreach ($request->file('attachments') as $file) {
+                $attachments[] = [
+                    'name' => $file->getClientOriginalName(),
+                    'path' => $this->uploadAttachment($file)
+                ];
+            }
+            $validated['attachments'] = $attachments;
         }
 
         // Processar meta keywords
@@ -167,11 +193,13 @@ class BlogAdminController extends Controller
      */
     public function edit($id)
     {
-        $post = BlogPost::with(['tags'])->findOrFail($id);
+        $post = BlogPost::with(['tags', 'demanda'])->findOrFail($id);
         $categories = BlogCategory::active()->ordered()->get();
         $tags = BlogTag::orderBy('name')->get();
+        $employees = \Modules\Pessoas\App\Models\PessoaCad::ativas()->orderBy("nom_pessoa")->limit(100)->get();
+        $demandas = \Modules\Demandas\App\Models\Demanda::orderBy("created_at", "desc")->limit(50)->get();
 
-        return view('blog::admin.edit', compact('post', 'categories', 'tags'));
+        return view('blog::admin.edit', compact('post', 'categories', 'tags', 'employees', 'demandas'));
     }
 
     /**
@@ -189,7 +217,7 @@ class BlogAdminController extends Controller
             'category_id' => 'required|exists:blog_categories,id',
             'featured_image' => 'nullable|image|max:2048',
             'gallery_images.*' => 'nullable|image|max:2048',
-            'status' => 'required|in:draft,published,archived',
+            'status' => 'required|in:draft,review,published,archived',
             'published_at' => 'nullable|date',
             'is_featured' => 'boolean',
             'allow_comments' => 'boolean',
@@ -197,7 +225,14 @@ class BlogAdminController extends Controller
             'meta_description' => 'nullable|string|max:500',
             'meta_keywords' => 'nullable|string',
             'tags' => 'nullable|array',
-            'tags.*' => 'string'
+            'tags.*' => 'string',
+            'team_members' => 'nullable|array',
+            'team_members.*' => 'integer',
+            'related_demand_id' => 'nullable|integer',
+            'attachments.*' => 'nullable|file|mimes:pdf|max:10240',
+            'og_image' => 'nullable|image|max:2048',
+            'og_description' => 'nullable|string|max:500',
+            'gallery_before_after' => 'nullable|array',
         ]);
 
         // Gerar slug se não fornecido
@@ -214,6 +249,15 @@ class BlogAdminController extends Controller
             $validated['featured_image'] = $this->uploadImage($request->file('featured_image'));
         }
 
+        // Processar OG Image
+        if ($request->hasFile('og_image')) {
+            // Remover imagem antiga
+            if ($post->og_image) {
+                Storage::disk('public')->delete($post->og_image);
+            }
+            $validated['og_image'] = $this->uploadImage($request->file('og_image'));
+        }
+
         // Processar galeria de imagens
         if ($request->hasFile('gallery_images')) {
             // Remover imagens antigas
@@ -228,6 +272,24 @@ class BlogAdminController extends Controller
                 $galleryImages[] = $this->uploadImage($image);
             }
             $validated['gallery_images'] = $galleryImages;
+        }
+
+        // Attachments
+        if ($request->hasFile('attachments')) {
+            if ($post->attachments) {
+                 foreach ($post->attachments as $att) {
+                     Storage::disk('public')->delete($att['path']);
+                 }
+            }
+
+            $attachments = [];
+            foreach ($request->file('attachments') as $file) {
+                $attachments[] = [
+                    'name' => $file->getClientOriginalName(),
+                    'path' => $this->uploadAttachment($file)
+                ];
+            }
+            $validated['attachments'] = $attachments;
         }
 
         // Processar meta keywords
@@ -258,29 +320,30 @@ class BlogAdminController extends Controller
      */
     public function destroy($id)
     {
-        \Log::info('BlogAdminController::destroy called with ID: ' . $id);
 
         try {
             $post = BlogPost::findOrFail($id);
-            \Log::info('Post found: ' . $post->title);
 
             // Remover imagens
             if ($post->featured_image) {
-                \Log::info('Deleting featured image: ' . $post->featured_image);
                 Storage::disk('public')->delete($post->featured_image);
             }
 
             if ($post->gallery_images) {
-                \Log::info('Deleting ' . count($post->gallery_images) . ' gallery images');
                 foreach ($post->gallery_images as $image) {
                     Storage::disk('public')->delete($image);
                 }
             }
 
-            $post->delete();
-            \Log::info('Post deleted successfully');
+            // Remover attachments
+             if ($post->attachments) {
+                 foreach ($post->attachments as $att) {
+                     Storage::disk('public')->delete($att['path']);
+                 }
+            }
 
-            \Log::info('Redirecting to admin.blog.index');
+            $post->delete();
+
             return redirect()->route('admin.blog.index')
                 ->with('success', 'Post excluído com sucesso!');
 
@@ -315,6 +378,14 @@ class BlogAdminController extends Controller
         Storage::disk('public')->put($fullPath, $image->encode());
 
         return $fullPath;
+    }
+
+    private function uploadAttachment($file)
+    {
+        $filename = Str::random(40) . '.' . $file->getClientOriginalExtension();
+        $path = 'blog/attachments/' . date('Y/m');
+        Storage::disk('public')->putFileAs($path, $file, $filename);
+        return $path . '/' . $filename;
     }
 
     /**
@@ -405,6 +476,97 @@ class BlogAdminController extends Controller
                 'success' => false,
                 'message' => 'Erro ao fazer upload da imagem: ' . $e->getMessage()
             ], 500);
+        }
+    }
+
+    /**
+     * Generate Monthly Bulletin
+     */
+    public function generateBulletin(Request $request)
+    {
+        $month = $request->input('month', now()->month);
+        $year = $request->input('year', now()->year);
+
+        $posts = BlogPost::whereMonth('published_at', $month)
+                         ->whereYear('published_at', $year)
+                         ->where('status', 'published')
+                         ->orderBy('published_at', 'desc')
+                         ->get();
+
+        return view('blog::admin.bulletin', compact('posts', 'month', 'year'));
+    }
+
+    /**
+     * Import data from Demanda (Privacy Shield)
+     */
+    public function importDemanda(Request $request)
+    {
+        $id = $request->input('id');
+        $demanda = \Modules\Demandas\App\Models\Demanda::with('pessoa')->findOrFail($id);
+
+        // Privacy Shield: Consent Check
+        if (!$demanda->image_consent) {
+            return response()->json([
+                'success' => false,
+                'message' => 'AVISO DE PRIVACIDADE: O solicitante NÃO autorizou o uso de imagens para esta demanda. O uso de fotos é PROIBIDO.',
+                'restricted' => true
+            ]);
+        }
+
+        // Sanitization Logic: Mask Address
+        $address = $demanda->endereco ?? '';
+        // Regex to remove house numbers (e.g., ", 123" or " nº 123")
+        $sanitizedAddress = preg_replace('/,\s*n?º?\s*\d+/i', '', $address);
+        $sanitizedAddress = preg_replace('/\s+\d+$/', '', $sanitizedAddress); // Remove number at end if no comma
+
+        $title = "Serviço Realizado: " . ($demanda->tipoServico->nome ?? 'Manutenção');
+        $content = "
+            <h2>Relatório de Execução</h2>
+            <p><strong>Local:</strong> {$sanitizedAddress}</p>
+            <p><strong>Descrição:</strong> {$demanda->descricao}</p>
+            <p><strong>Status:</strong> Concluído</p>
+            <p>A Secretaria Municipal de Agricultura informa que a solicitação foi atendida com sucesso, garantindo melhorias para a comunidade local.</p>
+        ";
+
+        return response()->json([
+            'success' => true,
+            'title' => $title,
+            'content' => $content,
+            // Assuming Demanda has photos/attachments logic, but we'll return empty for now as it varies
+            'images' => []
+        ]);
+    }
+
+    /**
+     * Redact/Edit image (Privacy Shield)
+     */
+    public function redactImage(Request $request)
+    {
+        $request->validate([
+            'image_path' => 'required|string',
+            'image_data' => 'required|string'
+        ]);
+
+        $path = $request->input('image_path');
+        // Remove storage URL prefix if present to get relative path
+        $relativePath = str_replace('/storage/', '', $path);
+
+        // Security check: ensure path is within blog/images
+        if (!Str::contains($relativePath, "blog/images")) {
+            return response()->json(["success" => false, "message" => "Invalid image path: " . $relativePath], 403);
+        }
+
+        try {
+            $imageData = $request->input('image_data');
+            // Remove header (data:image/png;base64,)
+            $image = str_replace('data:image/png;base64,', '', $imageData);
+            $image = str_replace(' ', '+', $image);
+
+            Storage::disk('public')->put($relativePath, base64_decode($image));
+
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Erro ao salvar imagem: ' . $e->getMessage()], 500);
         }
     }
 }
