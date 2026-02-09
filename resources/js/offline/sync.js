@@ -34,35 +34,30 @@ export async function uploadData() {
 
     for (const item of queue) {
         try {
-            // Using the existing CampoApiController endpoint
-            await axios.post('/api/v1/campo/sync', {
-                action_type: item.action,
-                payload: item.payload,
-                client_uuid: item.uuid || self.crypto.randomUUID(),
-                client_timestamp: new Date().toISOString()
-            });
+            if (item.action === 'upload_photo') {
+                await processPhotoUpload(item);
+            } else {
+                // Standard JSON sync
+                await axios.post('/api/v1/campo/sync', {
+                    action_type: item.action,
+                    payload: item.payload,
+                    client_uuid: item.uuid || self.crypto.randomUUID(),
+                    client_timestamp: new Date().toISOString()
+                });
+
+                // Garbage Collection for completed orders
+                if (item.action === 'concluir_ordem' && item.payload.ordem_id) {
+                     const completedDemand = await db.demands.where('ordem_servico_id').equals(item.payload.ordem_id).first();
+                     if (completedDemand) {
+                         await db.demands.delete(completedDemand.id);
+                     }
+                }
+            }
 
             // On success, remove from queue
             await db.syncQueue.delete(item.id);
-
-            // Garbage Collection: remove from local demands if completed
-            if (item.action === 'concluir_ordem' && item.payload.ordem_id) {
-                 // Find demand by order ID
-                 // The payload has 'ordem_id'. Demands table has 'ordem_servico_id'.
-                 // We need to find the demand associated with this order.
-                 const completedDemand = await db.demands.where('ordem_servico_id').equals(item.payload.ordem_id).first();
-                 // Simple filter as we don't have secondary index on 'ordem_servico.id' unless we flatten it
-                 // But wait, 'ordem_servico_id' is not a property of demand unless we flattened it?
-                 // The API returns 'ordemServico' object.
-                 // So we need to filter: demand.ordemServico && demand.ordemServico.id == payload.ordem_id
-
-                 // Found directly via index
-                 if (completedDemand) {
-                     await db.demands.delete(completedDemand.id);
-                 }
-            }
-
             successCount++;
+
         } catch (error) {
             console.error('Sync failed for item', item, error);
             errors.push({ id: item.id, error: error.message });
@@ -73,11 +68,35 @@ export async function uploadData() {
     return { success: true, count: successCount, errors };
 }
 
+async function processPhotoUpload(item) {
+    const media = await db.offline_media.get(item.mediaId);
+    if (!media) {
+        console.warn('Media not found for item', item);
+        return; // Skip if media missing (already synced?)
+    }
+
+    const formData = new FormData();
+    formData.append('photo', media.blob, `photo_${item.payload.demandId}_${Date.now()}.jpg`);
+    formData.append('demand_id', item.payload.demandId);
+    formData.append('description', item.payload.description || 'Foto de Campo');
+
+    // Add Consent (Default to 0 if undefined)
+    formData.append('consent', media.consent ? '1' : '0');
+
+    await axios.post('/api/v1/campo/upload-media', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+    });
+
+    // Cleanup media blob after successful upload
+    await db.offline_media.delete(media.id);
+}
+
 // Helper to queue actions
-export async function queueAction(action, payload) {
+export async function queueAction(action, payload, mediaId = null) {
     return await db.syncQueue.add({
         action,
         payload,
+        mediaId, // Link to offline_media if applicable
         uuid: self.crypto.randomUUID(),
         timestamp: Date.now()
     });
