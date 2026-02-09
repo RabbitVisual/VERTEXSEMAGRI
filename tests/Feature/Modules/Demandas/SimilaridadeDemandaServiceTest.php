@@ -41,6 +41,7 @@ class SimilaridadeDemandaServiceTest extends TestCase
             $table->decimal('latitude', 10, 8)->nullable();
             $table->decimal('longitude', 10, 8)->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
 
         Schema::create('demandas', function (Blueprint $table) {
@@ -162,14 +163,6 @@ class SimilaridadeDemandaServiceTest extends TestCase
             'motivo' => 'cano estourado',
         ]);
 
-        // Debug output
-        dump([
-            'mesma' => $scoreMesma,
-            'muito_perto' => $scoreMuitoPerto,
-            'perto' => $scorePerto,
-            'media' => $scoreMedia,
-            'longe' => $scoreLonge,
-        ]);
         
         $this->assertTrue($scoreMesma >= $scoreMuitoPerto, "Mesma localidade deve ter score maior ou igual a muito perto");
         $this->assertTrue($scoreMuitoPerto > $scorePerto, "Muito perto deve ser maior que perto");
