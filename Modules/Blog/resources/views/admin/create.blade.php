@@ -8,9 +8,7 @@
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
             <h1 class="text-3xl font-bold text-gray-900 dark:text-white flex items-center gap-3 mb-2">
-                <svg class="w-8 h-8 text-emerald-600 dark:text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    {!! \App\Helpers\ModuleIcons::getIconPath('Blog') !!}
-                </svg>
+                <x-icon name="newspaper" style="duotone" class="w-8 h-8 text-emerald-600 dark:text-emerald-500" />
                 Novo Post
             </h1>
             <nav aria-label="breadcrumb">
@@ -26,9 +24,7 @@
         <div class="flex gap-2">
             <a href="{{ route('admin.blog.index') }}" 
                class="inline-flex items-center px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg font-medium transition-colors">
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
-                </svg>
+                <x-icon name="arrow-left" class="w-4 h-4 mr-2" />
                 Voltar
             </a>
         </div>
@@ -54,7 +50,7 @@
                         </label>
                         <input type="text" id="title" name="title" required
                                class="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
-                               placeholder="Digite o título do post...">
+                               placeholder="Digite o título do post">
                     </div>
 
                     <!-- Slug -->
@@ -62,10 +58,13 @@
                         <label for="slug" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                             Slug (URL amigável)
                         </label>
-                        <input type="text" id="slug" name="slug"
-                               class="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
-                               placeholder="deixe-vazio-para-gerar-automaticamente">
-                        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Deixe vazio para gerar automaticamente</p>
+                        <div class="flex">
+                            <span class="inline-flex items-center px-3 rounded-l-lg border border-r-0 border-gray-300 dark:border-slate-600 bg-gray-50 dark:bg-slate-800 text-gray-500 dark:text-gray-400 text-sm">
+                                {{ config('app.url') }}/blog/
+                            </span>
+                            <input type="text" id="slug" name="slug"
+                                   class="flex-1 min-w-0 block w-full px-3 py-2 rounded-r-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm">
+                        </div>
                     </div>
 
                     <!-- Excerpt -->
@@ -75,57 +74,71 @@
                         </label>
                         <textarea id="excerpt" name="excerpt" rows="3"
                                   class="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
-                                  placeholder="Breve resumo do post..."></textarea>
+                                  placeholder="Breve descrição do post..."></textarea>
                     </div>
                 </div>
             </div>
 
-            <!-- Content -->
+            <!-- Content Editor -->
             <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 p-6">
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Conteúdo</h3>
                 
                 <div class="blog-editor-wrapper">
-                    <label for="blog-content-editor" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        Conteúdo do Post *
-                    </label>
-                    <div id="blog-content-editor" class="min-h-[400px]"></div>
-                    <textarea id="content" name="content" class="hidden"></textarea>
-                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                        Editor completo com formatação rica, imagens, links, listas e muito mais.
-                        <span class="text-emerald-600 dark:text-emerald-400 font-medium">Auto-save ativado!</span>
-                    </p>
+                    <div id="editor-container" class="h-96"></div>
+                    <input type="hidden" name="content" id="content">
                 </div>
             </div>
 
-            <!-- Images -->
+            <!-- Media -->
             <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 p-6">
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Imagens</h3>
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Mídia</h3>
                 
-                <div class="space-y-4">
+                <div class="space-y-6">
                     <!-- Featured Image -->
                     <div>
-                        <label for="featured_image" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                             Imagem Destacada
                         </label>
-                        <input type="file" id="featured_image" name="featured_image" accept="image/*"
-                               class="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+                        <input type="file" name="featured_image" accept="image/*"
+                               class="block w-full text-sm text-slate-500
+                                      file:mr-4 file:py-2 file:px-4
+                                      file:rounded-full file:border-0
+                                      file:text-sm file:font-semibold
+                                      file:bg-emerald-50 file:text-emerald-700
+                                      hover:file:bg-emerald-100">
                     </div>
 
                     <!-- Gallery Images -->
                     <div>
-                        <label for="gallery_images" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                             Galeria de Imagens
                         </label>
-                        <input type="file" id="gallery_images" name="gallery_images[]" accept="image/*" multiple
-                               class="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
-                        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Selecione múltiplas imagens para criar uma galeria</p>
+                        <input type="file" name="gallery_images[]" multiple accept="image/*"
+                               class="block w-full text-sm text-slate-500
+                                      file:mr-4 file:py-2 file:px-4
+                                      file:rounded-full file:border-0
+                                      file:text-sm file:font-semibold
+                                      file:bg-emerald-50 file:text-emerald-700
+                                      hover:file:bg-emerald-100">
                     </div>
                 </div>
             </div>
 
+            <!-- Attachments -->
+            <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 p-6">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Anexos (PDFs, Editais)</h3>
+                <input type="file" name="attachments[]" multiple accept=".pdf"
+                       class="block w-full text-sm text-slate-500
+                              file:mr-4 file:py-2 file:px-4
+                              file:rounded-full file:border-0
+                              file:text-sm file:font-semibold
+                              file:bg-blue-50 file:text-blue-700
+                              hover:file:bg-blue-100">
+            </div>
+
             <!-- SEO -->
             <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 p-6">
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">SEO</h3>
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Otimização SEO</h3>
                 
                 <div class="space-y-4">
                     <!-- Meta Title -->
@@ -135,7 +148,7 @@
                         </label>
                         <input type="text" id="meta_title" name="meta_title"
                                class="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
-                               placeholder="Título para SEO (deixe vazio para usar o título do post)">
+                               placeholder="Título personalizado para buscadores (opcional)">
                     </div>
 
                     <!-- Meta Description -->
@@ -148,15 +161,18 @@
                                   placeholder="Descrição para SEO..."></textarea>
                     </div>
 
-                    <!-- Meta Keywords -->
+                    <!-- OG Image -->
                     <div>
-                        <label for="meta_keywords" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            Palavras-chave
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Imagem de Compartilhamento (OG Image)
                         </label>
-                        <input type="text" id="meta_keywords" name="meta_keywords"
-                               class="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
-                               placeholder="palavra1, palavra2, palavra3">
-                        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Separe as palavras-chave com vírgulas</p>
+                        <input type="file" name="og_image" accept="image/*"
+                               class="block w-full text-sm text-slate-500
+                                      file:mr-4 file:py-2 file:px-4
+                                      file:rounded-full file:border-0
+                                      file:text-sm file:font-semibold
+                                      file:bg-purple-50 file:text-purple-700
+                                      hover:file:bg-purple-100">
                     </div>
                 </div>
             </div>
@@ -177,6 +193,7 @@
                         <select id="status" name="status" 
                                 class="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
                             <option value="draft">Rascunho</option>
+                            <option value="review">Em Revisão</option>
                             <option value="published">Publicado</option>
                             <option value="archived">Arquivado</option>
                         </select>
@@ -199,15 +216,6 @@
                             Post em destaque
                         </label>
                     </div>
-
-                    <!-- Allow Comments -->
-                    <div class="flex items-center">
-                        <input type="checkbox" id="allow_comments" name="allow_comments" value="1" checked
-                               class="h-4 w-4 text-emerald-600 focus:ring-emerald-500 border-gray-300 rounded">
-                        <label for="allow_comments" class="ml-2 block text-sm text-gray-900 dark:text-gray-100">
-                            Permitir comentários
-                        </label>
-                    </div>
                 </div>
 
                 <!-- Action Buttons -->
@@ -215,7 +223,7 @@
                     <div class="flex flex-col gap-3">
                         <button type="submit" 
                                 class="w-full px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-medium transition-colors">
-                            Criar Post
+                            <x-icon name="check" class="w-4 h-4 inline mr-1" /> Criar Post
                         </button>
                         <a href="{{ route('admin.blog.index') }}" 
                            class="w-full px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-700 rounded-lg font-medium transition-colors text-center">
@@ -225,28 +233,63 @@
                 </div>
             </div>
 
-            <!-- Category -->
+            <!-- Integrations -->
             <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 p-6">
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Categoria</h3>
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Integrações</h3>
                 
-                <div>
-                    <label for="category_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        Categoria *
-                    </label>
-                    <select id="category_id" name="category_id" required
-                            class="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
-                        <option value="">Selecione uma categoria</option>
-                        @foreach($categories as $category)
-                        <option value="{{ $category->id }}">{{ $category->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                
-                <div class="mt-4">
-                    <a href="{{ route('admin.blog.categories.create') }}" 
-                       class="text-sm text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300">
-                        + Nova categoria
-                    </a>
+                <div class="space-y-4">
+                    <!-- Category -->
+                    <div>
+                        <label for="category_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Categoria *
+                        </label>
+                        <select id="category_id" name="category_id" required
+                                class="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+                            <option value="">Selecione...</option>
+                            @foreach($categories as $category)
+                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <!-- Team Members -->
+                    <div>
+                        <label for="team_members" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Equipe Responsável
+                        </label>
+                        <select id="team_members" name="team_members[]" multiple size="5"
+                                class="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-sm">
+                            @if(isset($employees))
+                                @foreach($employees as $emp)
+                                    <option value="{{ $emp->id }}">{{ $emp->nom_pessoa }}</option>
+                                @endforeach
+                            @endif
+                        </select>
+                    </div>
+
+                    <!-- Related Demand & IMPORT BUTTON -->
+                    <div>
+                        <label for="related_demand_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Demanda Relacionada
+                        </label>
+                        <div class="flex gap-2">
+                            <select id="related_demand_id" name="related_demand_id"
+                                    class="flex-1 px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-sm">
+                                <option value="">Nenhuma</option>
+                                @if(isset($demandas))
+                                    @foreach($demandas as $dem)
+                                        <option value="{{ $dem->id }}">#{{ $dem->id }} - {{ \Illuminate\Support\Str::limit($dem->descricao ?? 'Sem descrição', 30) }}</option>
+                                    @endforeach
+                                @endif
+                            </select>
+                            <button type="button" onclick="importDemanda()"
+                                    class="px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors whitespace-nowrap"
+                                    title="Importar dados da demanda">
+                                <x-icon name="cloud-arrow-down" class="w-4 h-4" />
+                            </button>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">Selecione uma demanda e clique para importar dados.</p>
+                    </div>
                 </div>
             </div>
 
@@ -255,40 +298,40 @@
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Tags</h3>
                 
                 <div>
-                    <label for="tags" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        Tags do Post
-                    </label>
                     <input type="text" id="tags" name="tags[]" 
                            class="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
-                           placeholder="Digite as tags separadas por vírgula">
-                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Separe as tags com vírgulas</p>
+                           placeholder="Digite as tags...">
                 </div>
-
-                <!-- Popular Tags -->
-                @if($tags->count() > 0)
-                <div class="mt-4">
-                    <p class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Tags populares:</p>
-                    <div class="flex flex-wrap gap-2">
-                        @foreach($tags->take(10) as $tag)
-                        <button type="button" onclick="addTag('{{ $tag->name }}')" 
-                                class="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-gray-100 hover:bg-gray-200 dark:bg-slate-700 dark:hover:bg-slate-600 text-gray-700 dark:text-gray-300 transition-colors">
-                            {{ $tag->name }}
-                        </button>
-                        @endforeach
-                    </div>
-                </div>
-                @endif
             </div>
         </div>
     </div>
 </form>
+
+<!-- Privacy Warning Modal -->
+<div id="privacyModal" class="fixed inset-0 z-50 hidden bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-800 rounded-lg shadow-xl max-w-md w-full p-6 border-l-4 border-red-500">
+        <div class="flex items-start mb-4">
+            <div class="flex-shrink-0 text-red-500 mr-3">
+                <x-icon name="triangle-exclamation" class="w-8 h-8" />
+            </div>
+            <div>
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white">Aviso de Privacidade (LGPD)</h3>
+                <p id="privacyMessage" class="text-sm text-gray-600 dark:text-gray-300 mt-2"></p>
+            </div>
+        </div>
+        <div class="flex justify-end gap-2 mt-6">
+            <button type="button" onclick="closePrivacyModal()" class="px-4 py-2 bg-gray-200 dark:bg-slate-700 text-gray-800 dark:text-gray-200 rounded-lg font-medium hover:bg-gray-300 transition-colors">
+                Entendi
+            </button>
+        </div>
+    </div>
+</div>
 @endsection
 
 @push('scripts')
 @vite('resources/js/blog-editor.js')
 
 <script>
-// Auto-generate slug from title
 document.getElementById('title').addEventListener('input', function() {
     const title = this.value;
     const slug = title.toLowerCase()
@@ -299,41 +342,47 @@ document.getElementById('title').addEventListener('input', function() {
     document.getElementById('slug').value = slug;
 });
 
-// Add tag function
-function addTag(tagName) {
-    const tagsInput = document.getElementById('tags');
-    const currentTags = tagsInput.value;
-
-    if (currentTags) {
-        tagsInput.value = currentTags + ', ' + tagName;
-    } else {
-        tagsInput.value = tagName;
+function importDemanda() {
+    const id = document.getElementById('related_demand_id').value;
+    if (!id) {
+        alert('Selecione uma demanda primeiro.');
+        return;
     }
+
+    fetch('{{ route("admin.blog.import-demanda") }}?id=' + id)
+        .then(response => response.json())
+        .then(data => {
+            if (!data.success) {
+                // Show Privacy Warning
+                document.getElementById('privacyMessage').innerText = data.message;
+                document.getElementById('privacyModal').classList.remove('hidden');
+                return;
+            }
+
+            // Populate fields
+            document.getElementById('title').value = data.title;
+            // Update slug
+            const event = new Event('input');
+            document.getElementById('title').dispatchEvent(event);
+
+            // Update Editor Content (assuming Quill or similar attached to #editor-container)
+            // If checking global quill instance (common pattern)
+            if (window.quill) {
+                window.quill.root.innerHTML = data.content;
+            } else {
+                 document.getElementById('content').value = data.content;
+            }
+
+            // Assuming we might have logic for images later
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Erro ao importar dados da demanda.');
+        });
+}
+
+function closePrivacyModal() {
+    document.getElementById('privacyModal').classList.add('hidden');
 }
 </script>
-@endpush
-
-@push('styles')
-<style>
-.blog-editor-wrapper .ql-toolbar.ql-snow {
-    border: 2px solid rgb(209 213 219);
-    border-radius: 0.75rem 0.75rem 0 0;
-    background: white;
-}
-.dark .blog-editor-wrapper .ql-toolbar.ql-snow {
-    border-color: rgb(51 65 85);
-    background: rgb(51 65 85);
-}
-.blog-editor-wrapper .ql-container.ql-snow {
-    border: 2px solid rgb(209 213 219);
-    border-top: none;
-    border-radius: 0 0 0.75rem 0.75rem;
-    background: white;
-    min-height: 400px;
-}
-.dark .blog-editor-wrapper .ql-container.ql-snow {
-    border-color: rgb(51 65 85);
-    background: rgb(30 41 59);
-}
-</style>
 @endpush
