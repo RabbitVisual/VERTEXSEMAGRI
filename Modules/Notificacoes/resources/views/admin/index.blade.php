@@ -9,17 +9,17 @@
         <div>
             <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white flex items-center gap-3 mb-2">
                 <div class="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl flex items-center justify-center shadow-lg">
-                    <x-module-icon module="Notificacoes" class="w-6 h-6 md:w-7 md:h-7 text-white" />
+                    <x-module-icon module="Notificacoes" class="w-6 h-6 md:w-7 md:h-7 text-white" style="duotone" />
                 </div>
                 <span>Gerenciar Notificações</span>
             </h1>
             <nav aria-label="breadcrumb" class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
                 <a href="{{ route('admin.dashboard') }}" class="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Admin</a>
-                <x-icon name="magnifying-glass" class="w-5 h-5" />
+                <x-icon name="magnifying-glass" class="w-5 h-5" style="duotone" />
                                 Filtrar
                             </button>
                             <a href="{{ route('admin.notificacoes.index') }}" class="inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:ring-4 focus:ring-gray-200 dark:bg-slate-700 dark:text-gray-300 dark:border-slate-600 dark:hover:bg-slate-600 dark:focus:ring-slate-700 transition-colors">
-                                <x-icon name="rotate-right" class="w-5 h-5" />
+                                <x-icon name="rotate-right" class="w-5 h-5" style="duotone" />
                                 Limpar
                             </a>
                         </div>
@@ -107,7 +107,7 @@
                         <td class="px-6 py-4 whitespace-nowrap">
                             @if($notification->is_read)
                                 <span class="px-2.5 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-300 flex items-center gap-1 w-fit">
-                                    <x-icon name="eye" class="w-5 h-5" />
+                                    <x-icon name="eye" class="w-5 h-5" style="duotone" />
                                 </a>
                                 <form action="{{ route('admin.notificacoes.destroy', $notification->id) }}" method="POST" class="inline" onsubmit="return confirm('Tem certeza que deseja deletar esta notificação?');">
                                     @csrf
@@ -142,3 +142,8 @@
     </div>
 </div>
 @endsection
+
+
+
+
+

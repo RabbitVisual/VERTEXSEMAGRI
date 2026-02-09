@@ -9,19 +9,19 @@
         <div>
             <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white flex items-center gap-3 mb-2">
                 <div class="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl flex items-center justify-center shadow-lg">
-                    <x-module-icon module="Homepage" class="w-6 h-6 md:w-7 md:h-7 text-white" />
+                    <x-module-icon module="Homepage" class="w-6 h-6 md:w-7 md:h-7 text-white" style="duotone" />
                 </div>
                 <span>Gerenciar Homepage</span>
             </h1>
             <nav aria-label="breadcrumb" class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
                 <a href="{{ route('admin.dashboard') }}" class="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Admin</a>
-                <x-icon name="chevron-right" class="w-4 h-4" />
+                <x-icon name="chevron-right" class="w-4 h-4" style="duotone" />
                 <span class="text-gray-900 dark:text-white font-medium">Homepage</span>
             </nav>
         </div>
         <div class="flex items-center gap-2">
             <a href="{{ route('homepage') }}" target="_blank" class="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 transition-colors">
-                <x-icon name="file-pdf" class="w-5 h-5" />
+                <x-icon name="file-pdf" class="w-5 h-5" style="duotone" />
                 Footer
             </span>
         </button>
@@ -608,4 +608,9 @@ document.addEventListener('DOMContentLoaded', function() {
 @endpush
 </div>
 @endsection
+
+
+
+
+
 

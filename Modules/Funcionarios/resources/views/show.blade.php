@@ -1,416 +1,203 @@
 @extends('Co-Admin.layouts.app')
 
-@section('title', 'Detalhes do Funcionário')
+@section('title', 'Dossiê: ' . $funcionario->nome)
 
 @section('content')
-<div class="space-y-8">
-    <!-- Page Header -->
-    <div class="bg-gradient-to-r from-indigo-600 via-indigo-700 to-indigo-800 dark:from-indigo-800 dark:via-indigo-900 dark:to-indigo-950 rounded-2xl shadow-2xl p-6 md:p-8 text-white relative overflow-hidden">
-        <div class="absolute inset-0 bg-grid-white/10 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.6))]"></div>
-        <div class="relative z-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <div class="flex items-center gap-4">
-                <div class="p-4 bg-white/20 rounded-2xl backdrop-blur-sm shadow-lg">
-                    <x-module-icon module="Funcionarios" class="w-10 h-10 text-white" />
+<div class="space-y-6 md:space-y-8 animate-fade-in pb-12">
+    <!-- Header de Identificação -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 pb-6 border-b border-gray-200 dark:border-slate-800">
+        <div class="flex items-center gap-6">
+            <div class="relative">
+                <div class="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-[2rem] flex items-center justify-center text-white shadow-2xl text-2xl font-black transform hover:rotate-6 transition-transform">
+                    {{ substr($funcionario->nome, 0, 1) }}
                 </div>
-                <div>
-                    <h1 class="text-3xl md:text-4xl font-bold flex items-center gap-2">
-                        {{ $funcionario->nome }}
-                        @if($funcionario->codigo)
-                            <span class="text-indigo-100 dark:text-indigo-200 text-2xl font-normal">({{ $funcionario->codigo }})</span>
-                        @endif
-                    </h1>
-                    <p class="text-indigo-100 dark:text-indigo-200 mt-2 text-sm md:text-base">
-                        Detalhes completos do funcionário
-                    </p>
+                <div class="absolute -bottom-1 -right-1 w-6 h-6 rounded-lg bg-white dark:bg-slate-800 flex items-center justify-center shadow-lg border border-gray-100 dark:border-slate-700 text-emerald-600">
+                    <x-icon name="fingerprint" class="w-3.5 h-3.5" />
                 </div>
             </div>
-            <div class="flex flex-wrap gap-2">
-                <x-funcionarios::button href="{{ route('funcionarios.edit', $funcionario) }}" variant="outline-primary" class="!bg-white !text-indigo-600 hover:!bg-indigo-50 !border-indigo-600 shadow-xl hover:shadow-2xl transition-all transform hover:scale-105">
-                    <x-funcionarios::icon name="pencil" class="w-5 h-5 mr-2" />
-                    Editar
-                </x-funcionarios::button>
-                <x-funcionarios::button href="{{ route('funcionarios.index') }}" variant="outline" class="bg-white/10 text-white border-white/30 hover:bg-white/20">
-                    <x-funcionarios::icon name="arrow-left" class="w-5 h-5 mr-2" />
-                    Voltar
-                </x-funcionarios::button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Alertas -->
-    @if(session('success'))
-        <x-funcionarios::alert type="success" dismissible>
-            <div class="flex items-center gap-2">
-                <x-funcionarios::icon name="check-circle" class="w-5 h-5" />
-                <span class="font-medium">{{ session('success') }}</span>
-            </div>
-        </x-funcionarios::alert>
-    @endif
-
-    @if(session('error'))
-        <x-funcionarios::alert type="danger" dismissible>
-            <div class="flex items-center gap-2">
-                <x-funcionarios::icon name="exclamation-triangle" class="w-5 h-5" />
-                <span class="font-medium">{{ session('error') }}</span>
-            </div>
-        </x-funcionarios::alert>
-    @endif
-
-    @if(session('warning'))
-        <x-funcionarios::alert type="warning" dismissible>
-            <div class="flex items-center gap-2">
-                <x-funcionarios::icon name="exclamation-triangle" class="w-5 h-5" />
-                <span class="font-medium">{!! session('warning') !!}</span>
-            </div>
-        </x-funcionarios::alert>
-    @endif
-
-    <!-- Tabs Navigation -->
-    <div class="border-b border-gray-200 dark:border-gray-700">
-        <nav class="-mb-px flex space-x-8" aria-label="Tabs">
-            <button data-tab-target="detalhes" class="border-b-2 border-indigo-500 text-indigo-600 dark:text-indigo-400 whitespace-nowrap py-4 px-1 text-sm font-medium">
-                <x-funcionarios::icon name="information-circle" class="w-4 h-4 inline mr-2" />
-                Detalhes
-            </button>
-            <button data-tab-target="relacionamentos" class="border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300 whitespace-nowrap py-4 px-1 text-sm font-medium">
-                <x-funcionarios::icon name="link" class="w-4 h-4 inline mr-2" />
-                Relacionamentos
-            </button>
-        </nav>
-    </div>
-
-    <!-- Tabs Content -->
-    <div>
-        <!-- Tab Detalhes -->
-        <div data-tab-panel="detalhes">
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <!-- Informações Principais -->
-                <div class="lg:col-span-2 space-y-6">
-                    <!-- Informações Básicas -->
-                    <x-funcionarios::card class="rounded-xl shadow-lg">
-                        <x-slot name="header">
-                            <div class="flex items-center gap-3">
-                                <div class="p-2 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg">
-                                    <x-funcionarios::icon name="information-circle" class="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
-                                </div>
-                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                                    Informações do Funcionário
-                                </h3>
-                            </div>
-                        </x-slot>
-
-                        <div class="space-y-4">
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div>
-                                    <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Código</label>
-                                    <div class="text-lg font-semibold text-indigo-600 dark:text-indigo-400">{{ $funcionario->codigo ?? 'N/A' }}</div>
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Status</label>
-                                    <div>
-                                        @if($funcionario->ativo)
-                                            <x-funcionarios::badge variant="success">
-                                                <x-funcionarios::icon name="check-circle" class="w-3 h-3 mr-1" />
-                                                Ativo
-                                            </x-funcionarios::badge>
-                                        @else
-                                            <x-funcionarios::badge variant="danger">
-                                                <x-funcionarios::icon name="x-circle" class="w-3 h-3 mr-1" />
-                                                Inativo
-                                            </x-funcionarios::badge>
-                                        @endif
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-                                <div>
-                                    <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Nome</label>
-                                    <div class="text-base font-semibold text-gray-900 dark:text-white">{{ $funcionario->nome }}</div>
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Função</label>
-                                    <div>
-                                        <x-funcionarios::badge variant="info">
-                                            <x-funcionarios::icon name="briefcase" class="w-3 h-3 mr-1" />
-                                            {{ ucfirst($funcionario->funcao) }}
-                                        </x-funcionarios::badge>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-                                <div>
-                                    <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">CPF</label>
-                                    <div class="text-sm text-gray-900 dark:text-white">{{ $funcionario->cpf ?? 'N/A' }}</div>
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Telefone</label>
-                                    <div class="text-sm text-gray-900 dark:text-white flex items-center gap-1">
-                                        @if($funcionario->telefone)
-                                            <x-funcionarios::icon name="phone" class="w-4 h-4" />
-                                            {{ $funcionario->telefone }}
-                                        @else
-                                            <span class="text-gray-400">N/A</span>
-                                        @endif
-                                    </div>
-                                </div>
-                            </div>
-
-                            @if($funcionario->email)
-                            <div class="pt-4 border-t border-gray-200 dark:border-gray-700">
-                                <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Email</label>
-                                <div class="text-sm text-gray-900 dark:text-white flex items-center gap-1">
-                                    <x-funcionarios::icon name="envelope" class="w-4 h-4" />
-                                    {{ $funcionario->email }}
-                                </div>
-                            </div>
-                            @endif
-                        </div>
-                    </x-funcionarios::card>
-
-                    <!-- Datas e Observações -->
-                    @if($funcionario->data_admissao || $funcionario->data_demissao || $funcionario->observacoes)
-                    <x-funcionarios::card class="rounded-xl shadow-lg">
-                        <x-slot name="header">
-                            <div class="flex items-center gap-3">
-                                <div class="p-2 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
-                                    <x-funcionarios::icon name="calendar" class="w-5 h-5 text-purple-600 dark:text-purple-400" />
-                                </div>
-                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                                    Datas e Observações
-                                </h3>
-                            </div>
-                        </x-slot>
-
-                        <div class="space-y-4">
-                            @if($funcionario->data_admissao || $funcionario->data_demissao)
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                @if($funcionario->data_admissao)
-                                <div>
-                                    <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Data de Admissão</label>
-                                    <div class="text-sm text-gray-900 dark:text-white flex items-center gap-1">
-                                        <x-funcionarios::icon name="calendar" class="w-4 h-4" />
-                                        {{ $funcionario->data_admissao->format('d/m/Y') }}
-                                    </div>
-                                </div>
-                                @endif
-                                @if($funcionario->data_demissao)
-                                <div>
-                                    <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Data de Demissão</label>
-                                    <div class="text-sm text-gray-900 dark:text-white flex items-center gap-1">
-                                        <x-funcionarios::icon name="calendar-x-mark" class="w-4 h-4" />
-                                        {{ $funcionario->data_demissao->format('d/m/Y') }}
-                                    </div>
-                                </div>
-                                @endif
-                            </div>
-                            @endif
-
-                            @if($funcionario->observacoes)
-                            <div class="pt-4 border-t border-gray-200 dark:border-gray-700">
-                                <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-2">Observações</label>
-                                <div class="p-4 bg-gray-50 dark:bg-gray-900/50 rounded-lg border border-gray-200 dark:border-gray-700">
-                                    <p class="text-sm text-gray-900 dark:text-white whitespace-pre-line">{{ $funcionario->observacoes }}</p>
-                                </div>
-                            </div>
-                            @endif
-                        </div>
-                    </x-funcionarios::card>
-                    @endif
-                </div>
-
-                <!-- Sidebar -->
-                <div class="lg:col-span-1 space-y-6">
-                    <!-- Ações Rápidas -->
-                    <x-funcionarios::card class="rounded-xl shadow-lg">
-                        <x-slot name="header">
-                            <div class="flex items-center gap-3">
-                                <div class="p-2 bg-amber-100 dark:bg-amber-900/30 rounded-lg">
-                                    <x-funcionarios::icon name="bolt" class="w-5 h-5 text-amber-600 dark:text-amber-400" />
-                                </div>
-                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                                    Ações Rápidas
-                                </h3>
-                            </div>
-                        </x-slot>
-
-                        <div class="space-y-3">
-                            <x-funcionarios::button href="{{ route('funcionarios.edit', $funcionario) }}" variant="primary" class="w-full">
-                                <x-funcionarios::icon name="pencil" class="w-4 h-4 mr-2" />
-                                Editar Funcionário
-                            </x-funcionarios::button>
-                            @if($funcionario->email && filter_var($funcionario->email, FILTER_VALIDATE_EMAIL))
-                            <form action="{{ route('funcionarios.reenviar-email', $funcionario) }}" method="POST" class="w-full" onsubmit="return confirm('Deseja realmente reenviar o email de credenciais para {$funcionario->email}?')">
-                                @csrf
-                                <x-funcionarios::button type="submit" variant="info" class="w-full">
-                                    <x-funcionarios::icon name="envelope" class="w-4 h-4 mr-2" />
-                                    Reenviar Email de Credenciais
-                                    <span class="text-xs opacity-75 block">Para: {{ $funcionario->email }}</span>
-                                </x-funcionarios::button>
-                            </form>
-                            @endif
-                            @if(Route::has('equipes.index'))
-                            <x-funcionarios::button href="{{ route('equipes.index') }}" variant="success" class="w-full">
-                                <x-funcionarios::icon name="users" class="w-4 h-4 mr-2" />
-                                Gerenciar Equipes
-                            </x-funcionarios::button>
-                            @endif
-                            <form action="{{ route('funcionarios.destroy', $funcionario) }}" method="POST" onsubmit="return confirm('Deseja realmente deletar este funcionário?')">
-                                @csrf
-                                @method('DELETE')
-                                <x-funcionarios::button type="submit" variant="danger" class="w-full">
-                                    <x-funcionarios::icon name="trash" class="w-4 h-4 mr-2" />
-                                    Deletar
-                                </x-funcionarios::button>
-                            </form>
-                        </div>
-                    </x-funcionarios::card>
-
-                    <!-- Informações -->
-                    <x-funcionarios::card class="rounded-xl shadow-lg">
-                        <x-slot name="header">
-                            <div class="flex items-center gap-3">
-                                <div class="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
-                                    <x-funcionarios::icon name="information-circle" class="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                                </div>
-                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                                    Informações
-                                </h3>
-                            </div>
-                        </x-slot>
-
-                        <div class="space-y-4">
-                            <div>
-                                <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">ID</label>
-                                <div class="text-base font-semibold text-gray-900 dark:text-white">#{{ $funcionario->id }}</div>
-                            </div>
-                            <div>
-                                <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Criado em</label>
-                                <div class="text-sm text-gray-900 dark:text-white">{{ $funcionario->created_at->format('d/m/Y H:i') }}</div>
-                            </div>
-                            @if($funcionario->updated_at)
-                            <div>
-                                <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Atualizado em</label>
-                                <div class="text-sm text-gray-900 dark:text-white">{{ $funcionario->updated_at->format('d/m/Y H:i') }}</div>
-                            </div>
-                            @endif
-                            <div class="pt-4 border-t border-gray-200 dark:border-gray-700">
-                                <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Equipes vinculadas</label>
-                                <div class="text-2xl font-bold text-indigo-600 dark:text-indigo-400">{{ $funcionario->equipes->count() }}</div>
-                            </div>
-                        </div>
-                    </x-funcionarios::card>
+            <div>
+                <h1 class="text-2xl md:text-4xl font-black text-gray-900 dark:text-white tracking-tight uppercase leading-none">{{ $funcionario->nome }}</h1>
+                <div class="flex flex-wrap items-center gap-4 mt-3">
+                    <div class="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-400">
+                        <x-icon name="id-badge" class="w-4 h-4 text-emerald-500" />
+                        Matrícula: <span class="text-emerald-600 tracking-tighter">{{ $funcionario->codigo ?? 'S/M' }}</span>
+                    </div>
+                    <div class="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-400">
+                        <x-icon name="shield-halved" class="w-4 h-4 text-emerald-500" />
+                        Status: <span class="{{ $funcionario->ativo ? 'text-emerald-600' : 'text-rose-600' }}">{{ $funcionario->ativo ? 'ATIVO' : 'INATIVO' }}</span>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Tab Relacionamentos -->
-        <div data-tab-panel="relacionamentos" class="hidden">
-            <x-funcionarios::card class="rounded-xl shadow-lg">
-                <x-slot name="header">
-                    <div class="flex items-center justify-between">
+        <div class="flex flex-wrap items-center gap-3">
+            <a href="{{ route('funcionarios.edit', $funcionario->id) }}" class="inline-flex items-center gap-2 px-6 py-3 text-[10px] font-black uppercase tracking-widest text-indigo-600 bg-indigo-50 hover:bg-indigo-600 hover:text-white rounded-xl transition-all dark:bg-indigo-900/10 dark:text-indigo-400 border border-indigo-100 dark:border-indigo-900/30 shadow-sm active:scale-95">
+                <x-icon name="pen-to-square" style="duotone" class="w-4 h-4" />
+                Editar Registro
+            </a>
+            <a href="{{ route('funcionarios.index') }}" class="inline-flex items-center gap-2 px-6 py-3 text-[10px] font-black uppercase tracking-widest text-slate-500 bg-gray-50 border border-gray-100 hover:bg-gray-100 rounded-xl transition-all dark:bg-slate-800 dark:text-slate-400 dark:border-slate-700">
+                <x-icon name="arrow-left" class="w-4 h-4" />
+                Voltar
+            </a>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Coluna Perfil Operacional -->
+        <div class="lg:col-span-1 space-y-8">
+            <!-- Card de Função -->
+            <div class="premium-card p-8 bg-gradient-to-br from-white to-gray-50 dark:from-slate-800 dark:to-slate-900">
+                <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-6 flex items-center gap-3 italic">
+                    <x-icon name="id-card-clip" style="duotone" class="w-5 h-5 text-emerald-500" />
+                    Perfil Qualificado
+                </h3>
+
+                <div class="space-y-6">
+                    <div class="p-6 bg-white dark:bg-slate-950 rounded-3xl border border-gray-100 dark:border-slate-800 shadow-sm group hover:border-emerald-500/50 transition-all duration-300">
+                        <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1.5 italic">Especialidade Técnica</p>
                         <div class="flex items-center gap-3">
-                            <div class="p-2 bg-green-100 dark:bg-green-900/30 rounded-lg">
-                                <x-funcionarios::icon name="user-group" class="w-5 h-5 text-green-600 dark:text-green-400" />
-                            </div>
-                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                                Equipes
-                            </h3>
+                            <x-icon name="briefcase" style="duotone" class="w-6 h-6 text-emerald-500" />
+                            <p class="text-lg font-black text-gray-900 dark:text-white uppercase tracking-tighter">{{ $funcionario->funcao ?? 'Agente Comum' }}</p>
                         </div>
-                        <x-funcionarios::badge variant="primary">{{ $funcionario->equipes->count() }} equipe(s)</x-funcionarios::badge>
                     </div>
-                </x-slot>
 
-                @if($funcionario->equipes && $funcionario->equipes->count() > 0)
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                            <thead class="bg-gray-50 dark:bg-gray-800">
-                                <tr>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Código</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Nome</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Tipo</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Status</th>
-                                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Ações</th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-700">
-                                @foreach($funcionario->equipes as $equipe)
-                                    <tr class="hover:bg-gray-50 dark:hover:bg-gray-800/50">
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="text-indigo-600 dark:text-indigo-400 font-medium">{{ $equipe->codigo ?? 'N/A' }}</span>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <div class="text-sm font-medium text-gray-900 dark:text-white">{{ $equipe->nome }}</div>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <x-funcionarios::badge variant="info">{{ ucfirst($equipe->tipo) }}</x-funcionarios::badge>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            @if($equipe->ativo)
-                                                <x-funcionarios::badge variant="success">Ativo</x-funcionarios::badge>
-                                            @else
-                                                <x-funcionarios::badge variant="danger">Inativo</x-funcionarios::badge>
-                                            @endif
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                            @if(Route::has('equipes.show'))
-                                                <a href="{{ route('equipes.show', $equipe) }}"
-                                                   class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-900 dark:hover:text-indigo-300">
-                                                    <x-funcionarios::icon name="eye" class="w-5 h-5" />
-                                                </a>
-                                            @endif
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                    <div class="p-6 bg-white dark:bg-slate-950 rounded-3xl border border-gray-100 dark:border-slate-800 shadow-sm group hover:border-blue-500/50 transition-all duration-300">
+                        <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1.5 italic">Situação de Escala</p>
+                        <div class="flex items-center gap-3">
+                            <x-icon name="user-group" style="duotone" class="w-6 h-6 text-blue-500" />
+                            <p class="text-lg font-black text-gray-900 dark:text-white uppercase tracking-tighter">
+                                {{ $funcionario->equipes && $funcionario->equipes->count() > 0 ? 'ALOCADO EM EQUIPE' : 'AGENTE AVULSO' }}
+                            </p>
+                        </div>
                     </div>
-                @else
-                    <div class="text-center py-12">
-                        <x-funcionarios::icon name="inbox" class="w-12 h-12 mx-auto text-gray-400 mb-3" />
-                        <p class="text-gray-500 dark:text-gray-400 mb-2">Este funcionário não está vinculado a nenhuma equipe</p>
-                        <p class="text-sm text-gray-400 dark:text-gray-500 mb-4">Para adicionar este funcionário a uma equipe, acesse o módulo de Equipes</p>
-                        @if(Route::has('equipes.index'))
-                            <x-funcionarios::button href="{{ route('equipes.index') }}" variant="primary">
-                                <x-funcionarios::icon name="users" class="w-4 h-4 mr-2" />
-                                Ver Equipes
-                            </x-funcionarios::button>
-                        @endif
+                </div>
+            </div>
+
+            <!-- Dados Operacionais Históricos -->
+            <div class="premium-card p-8 space-y-6">
+                <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2 flex items-center gap-3 italic">
+                    <x-icon name="calendar-days" style="duotone" class="w-5 h-5 text-emerald-500" />
+                    Cronologia de Serviço
+                </h3>
+
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between py-3 border-b border-gray-50 dark:border-slate-800">
+                        <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Admissão</span>
+                        <span class="text-xs font-black text-gray-900 dark:text-white">{{ $funcionario->data_admissao ? $funcionario->data_admissao->format('d/m/Y') : 'NÃO REGISTRADO' }}</span>
                     </div>
-                @endif
-            </x-funcionarios::card>
+                    <div class="flex items-center justify-between py-3 border-b border-gray-50 dark:border-slate-800">
+                        <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Tempo de Casa</span>
+                        <span class="text-xs font-black text-emerald-600 uppercase tracking-tighter">
+                            {{ $funcionario->data_admissao ? $funcionario->data_admissao->diffForHumans(null, true) : '-' }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Coluna Dados Detalhados -->
+        <div class="lg:col-span-2 space-y-8">
+            <div class="premium-card overflow-hidden">
+                <div class="px-8 py-6 bg-gray-50/50 dark:bg-slate-900/50 border-b border-gray-100 dark:border-slate-800 flex items-center justify-between">
+                    <h2 class="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] flex items-center gap-3 italic">
+                        <x-icon name="address-card" style="duotone" class="w-5 text-emerald-500" />
+                        Informações Estruturais
+                    </h2>
+                </div>
+
+                <div class="p-8">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                        <div class="space-y-8">
+                            <div class="group">
+                                <label class="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-2 italic">Identificação Pessoal (CPF)</label>
+                                <p class="text-sm font-black text-gray-900 dark:text-white font-mono tracking-[0.2em] group-hover:text-emerald-600 transition-colors">{{ $funcionario->cpf ?? 'NÃO INFORMADO' }}</p>
+                            </div>
+                            <div class="group">
+                                <label class="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-2 italic">Canal de Comunicação (E-mail)</label>
+                                <p class="text-sm font-black text-indigo-600 dark:text-indigo-400 tracking-tight lowercase group-hover:underline">{{ $funcionario->email ?? 'ENDEREÇO NÃO CADASTRADO' }}</p>
+                            </div>
+                        </div>
+                        <div class="space-y-8">
+                            <div class="group">
+                                <label class="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-2 italic">Contato Direto</label>
+                                <p class="text-sm font-black text-emerald-600 dark:text-emerald-400 tracking-widest group-hover:scale-105 origin-left transition-transform">{{ $funcionario->telefone ?? 'SEM TELEFONE' }}</p>
+                            </div>
+                            <div class="group italic">
+                                <label class="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-2 italic">Observações Disponíveis</label>
+                                <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed font-medium">
+                                    {{ $funcionario->observacoes ?? 'Nenhuma observação técnica anexada a este dossiê.' }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Listagem de Equipes (Relacionamento) -->
+            <div class="premium-card overflow-hidden">
+                <div class="px-8 py-6 bg-gray-50/50 dark:bg-slate-900/50 border-b border-gray-100 dark:border-slate-800 flex items-center justify-between">
+                    <h2 class="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] flex items-center gap-3 italic">
+                        <x-icon name="network-wired" style="duotone" class="w-5 text-blue-500" />
+                        Vínculos em Equipes
+                    </h2>
+                    <span class="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-full text-[9px] font-black uppercase tracking-widest border border-blue-200 dark:border-blue-800">
+                        {{ $funcionario->equipes ? $funcionario->equipes->count() : 0 }} TOTAL
+                    </span>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-separate border-spacing-0">
+                        <thead>
+                            <tr class="bg-gray-50/30 dark:bg-slate-900/30">
+                                <th class="px-8 py-4 text-[9px] font-black uppercase text-slate-400 tracking-widest italic">Nomenclatura da Equipe</th>
+                                <th class="px-8 py-4 text-[9px] font-black uppercase text-slate-400 tracking-widest italic">Tipo de Operação</th>
+                                <th class="px-8 py-4 text-right text-[9px] font-black uppercase text-slate-400 tracking-widest italic">Acessar</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100 dark:divide-slate-800">
+                            @forelse($funcionario->equipes as $equipe)
+                            <tr class="hover:bg-blue-50/20 dark:hover:bg-slate-800/30 transition-all duration-200 group">
+                                <td class="px-8 py-5">
+                                    <span class="text-sm font-black text-gray-900 dark:text-white uppercase tracking-tight group-hover:text-blue-600 transition-colors">{{ $equipe->nome }}</span>
+                                </td>
+                                <td class="px-8 py-5">
+                                    <span class="px-2 py-0.5 bg-gray-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400 rounded text-[8px] font-black uppercase tracking-widest italic">{{ $equipe->tipo ?? 'GERAL' }}</span>
+                                </td>
+                                <td class="px-8 py-5 text-right">
+                                    <a href="{{ route('admin.equipes.show', $equipe->id) }}" class="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-xl transition-all inline-block">
+                                        <x-icon name="arrow-up-right-from-square" class="w-4 h-4" />
+                                    </a>
+                                </td>
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="3" class="px-8 py-10 text-center">
+                                    <p class="text-[10px] font-black uppercase text-slate-400 tracking-widest italic leading-relaxed">Este agente não possui alocação tática em equipes no momento.</p>
+                                </td>
+                            </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Footer Informativo -->
+            <div class="flex items-center justify-between px-8 py-6 bg-amber-50/50 dark:bg-amber-900/10 border border-amber-100 dark:border-amber-900/20 rounded-3xl">
+                <div class="flex items-center gap-4">
+                    <div class="w-10 h-10 rounded-xl bg-amber-500 flex items-center justify-center text-white shadow-lg">
+                        <x-icon name="circle-info" class="w-6 h-6" />
+                    </div>
+                    <div>
+                        <p class="text-[10px] font-black text-amber-800 dark:text-amber-400 uppercase tracking-widest">Protocolo de Registro</p>
+                        <p class="text-xs font-medium text-amber-700 dark:text-amber-500 opacity-80">Documento gerado automaticamente pelo sistema de gestão Vertex.</p>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest uppercase italic">Última Auditoria</p>
+                    <p class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-tighter">{{ $funcionario->updated_at ? $funcionario->updated_at->format('d/m/Y H:i') : 'SEM REGISTRO' }}</p>
+                </div>
+            </div>
         </div>
     </div>
 </div>
-
-@push('scripts')
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Tab functionality
-    const tabButtons = document.querySelectorAll('[data-tab-target]');
-    const tabPanels = document.querySelectorAll('[data-tab-panel]');
-
-    tabButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            const targetTab = button.getAttribute('data-tab-target');
-
-            // Remove active state from all buttons and panels
-            tabButtons.forEach(btn => {
-                btn.classList.remove('border-indigo-500', 'text-indigo-600', 'dark:text-indigo-400');
-                btn.classList.add('border-transparent', 'text-gray-500', 'dark:text-gray-400');
-            });
-            tabPanels.forEach(panel => {
-                panel.classList.add('hidden');
-            });
-
-            // Add active state to clicked button and corresponding panel
-            button.classList.remove('border-transparent', 'text-gray-500', 'dark:text-gray-400');
-            button.classList.add('border-indigo-500', 'text-indigo-600', 'dark:text-indigo-400');
-            document.querySelector(`[data-tab-panel="${targetTab}"]`).classList.remove('hidden');
-        });
-    });
-});
-</script>
-@endpush
 @endsection

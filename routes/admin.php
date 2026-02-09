@@ -18,6 +18,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard.index');
 
+
     // Módulos
     Route::get('/modules', [ModuleController::class, 'index'])->name('modules.index');
     Route::get('/modules/{moduleName}', [ModuleController::class, 'show'])->name('modules.show');
@@ -228,9 +229,24 @@ if (\Nwidart\Modules\Facades\Module::isEnabled('Chat')) {
     Route::get('/funcionarios/{id}/login-as', [\App\Http\Controllers\Admin\FuncionarioSenhaController::class, 'loginAs'])->name('funcionarios.login-as');
     // Rota stop-impersonation movida para fora do grupo role:admin abaixo
 
-    // Iluminação
-    Route::get('/iluminacao', [\Modules\Iluminacao\App\Http\Controllers\Admin\IluminacaoAdminController::class, 'index'])->name('iluminacao.index');
-    Route::get('/iluminacao/{id}', [\Modules\Iluminacao\App\Http\Controllers\Admin\IluminacaoAdminController::class, 'show'])->name('iluminacao.show');
+    // Iluminação (apenas se o módulo estiver ativo)
+    if (\Nwidart\Modules\Facades\Module::isEnabled('Iluminacao')) {
+        Route::prefix('iluminacao')->name('iluminacao.')->group(function () {
+            Route::get('/', [\Modules\Iluminacao\App\Http\Controllers\Admin\IluminacaoAdminController::class, 'index'])->name('index');
+            Route::get('/export', [\Modules\Iluminacao\App\Http\Controllers\Admin\IluminacaoAdminController::class, 'export'])->name('export');
+
+            // Postes management
+            Route::prefix('postes')->name('postes.')->group(function () {
+                Route::get('/', [\Modules\Iluminacao\App\Http\Controllers\Admin\PostesAdminController::class, 'index'])->name('index');
+                Route::get('/export', [\Modules\Iluminacao\App\Http\Controllers\Admin\PostesAdminController::class, 'export'])->name('export');
+                Route::get('/create', [\Modules\Iluminacao\App\Http\Controllers\Admin\PostesAdminController::class, 'create'])->name('create');
+                Route::post('/', [\Modules\Iluminacao\App\Http\Controllers\Admin\PostesAdminController::class, 'store'])->name('store');
+                Route::get('/{id}', [\Modules\Iluminacao\App\Http\Controllers\Admin\PostesAdminController::class, 'show'])->name('show');
+            });
+
+            Route::get('/{id}', [\Modules\Iluminacao\App\Http\Controllers\Admin\IluminacaoAdminController::class, 'show'])->name('show');
+        });
+    }
 
     // Materiais
     Route::get('/materiais', [\Modules\Materiais\App\Http\Controllers\Admin\MateriaisAdminController::class, 'index'])->name('materiais.index');

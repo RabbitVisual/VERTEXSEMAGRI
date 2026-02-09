@@ -6,14 +6,14 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Painel Consulta') - VERTEXSEMAGRI</title>
     <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
-    
+
     <!-- Inicialização do tema ANTES do CSS para evitar FOUC -->
     <script>
         (function() {
             try {
                 const savedTheme = localStorage.getItem('theme') || 'light';
                 const html = document.documentElement;
-                
+
                 // Aplicar tema antes de qualquer CSS ser carregado
                 if (savedTheme === 'dark') {
                     html.classList.add('dark');
@@ -26,7 +26,7 @@
             }
         })();
     </script>
-    
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('styles')
 </head>
@@ -41,10 +41,10 @@
                         @include('consulta.layouts.sidebar-consulta')
                     </div>
                 </aside>
-                
+
                 <!-- Mobile Sidebar Overlay -->
                 <div id="sidebarOverlay" class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm z-40 lg:hidden hidden transition-opacity duration-300" onclick="toggleConsultaSidebar()"></div>
-                
+
                 <!-- Mobile Sidebar -->
                 <aside id="mobileConsultaSidebar" class="fixed inset-y-0 left-0 z-50 w-72 bg-slate-800 dark:bg-slate-900 transform -translate-x-full transition-transform duration-300 ease-in-out lg:hidden shadow-2xl">
                     <div class="flex flex-col h-full">
@@ -75,7 +75,7 @@
                                 </div>
                             </div>
                         @endif
-                        
+
                         @if(session('error'))
                             <div class="mb-4 md:mb-6 rounded-xl bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 p-4 shadow-sm animate-in slide-in-from-top">
                                 <div class="flex items-start gap-3">
@@ -95,7 +95,7 @@
                                 </div>
                             </div>
                         @endif
-                        
+
                         @if(session('warning'))
                             <div class="mb-4 md:mb-6 rounded-xl bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 p-4 shadow-sm animate-in slide-in-from-top">
                                 <div class="flex items-start gap-3">
@@ -115,7 +115,7 @@
                                 </div>
                             </div>
                         @endif
-                        
+
                         @if($errors->any())
                             <div class="mb-4 md:mb-6 rounded-xl bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 p-4 shadow-sm">
                                 <div class="flex items-start gap-3">
@@ -143,7 +143,7 @@
                                 </div>
                             </div>
                         @endif
-                        
+
                         @yield('content')
                     </div>
                 </main>
@@ -152,13 +152,13 @@
             @yield('content')
         @endauth
     </div>
-    
+
     <script>
         // Consulta Sidebar toggle function
         function toggleConsultaSidebar() {
             const sidebar = document.getElementById('mobileConsultaSidebar');
             const overlay = document.getElementById('sidebarOverlay');
-            
+
             if (sidebar && overlay) {
                 const isHidden = sidebar.classList.contains('-translate-x-full');
                 if (isHidden) {
@@ -172,7 +172,7 @@
                 }
             }
         }
-        
+
         // Sidebar toggle button
         document.addEventListener('DOMContentLoaded', function() {
             const toggleBtn = document.getElementById('sidebarToggle');
@@ -180,7 +180,7 @@
                 toggleBtn.addEventListener('click', toggleConsultaSidebar);
             }
         });
-        
+
         // User menu dropdown toggle
         document.addEventListener('DOMContentLoaded', function() {
             function initDropdowns() {
@@ -189,25 +189,25 @@
                     // Remover listeners anteriores se existirem
                     const newTrigger = trigger.cloneNode(true);
                     trigger.parentNode.replaceChild(newTrigger, trigger);
-                    
+
                     newTrigger.addEventListener('click', function(e) {
                         e.preventDefault();
                         e.stopPropagation();
                         const dropdown = this.closest('[data-dropdown]');
                         if (!dropdown) return;
-                        
+
                         const menu = dropdown.querySelector('[data-dropdown-menu]');
                         if (!menu) return;
-                        
+
                         const isHidden = menu.classList.contains('hidden');
-                        
+
                         // Fechar todos os outros dropdowns
                         document.querySelectorAll('[data-dropdown-menu]').forEach(m => {
                             if (m !== menu) {
                                 m.classList.add('hidden');
                             }
                         });
-                        
+
                         // Toggle do menu atual
                         if (isHidden) {
                             menu.classList.remove('hidden');
@@ -217,10 +217,10 @@
                     });
                 });
             }
-            
+
             // Inicializar dropdowns
             initDropdowns();
-            
+
             // Fechar dropdown ao clicar fora
             document.addEventListener('click', function(e) {
                 if (!e.target.closest('[data-dropdown]')) {
@@ -235,7 +235,7 @@
         function toggleTheme() {
             const html = document.documentElement;
             const isDark = html.classList.contains('dark');
-            
+
             if (isDark) {
                 html.classList.remove('dark');
                 localStorage.setItem('theme', 'light');
@@ -244,7 +244,7 @@
                 localStorage.setItem('theme', 'dark');
             }
         }
-        
+
         // Theme toggle button
         document.addEventListener('DOMContentLoaded', function() {
             const themeToggle = document.getElementById('themeToggle');
@@ -252,13 +252,13 @@
                 themeToggle.addEventListener('click', toggleTheme);
             }
         });
-        
+
         // Função para fazer logout com fallback para GET se CSRF expirar
         window.handleLogout = function() {
             const logoutUrl = '{{ route("logout") }}';
             const logoutUrlGet = '{{ route("logout.get") }}';
             const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
-            
+
             // Tentar fazer logout via POST primeiro
             if (csrfToken) {
                 fetch(logoutUrl, {
@@ -292,11 +292,10 @@
             }
         };
     </script>
-    
+
     @stack('scripts')
-    
+
     <!-- Global Loading Overlay -->
-    @include('components.loading-overlay')
+    <x-loading-overlay />
 </body>
 </html>
-

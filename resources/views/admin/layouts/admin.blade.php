@@ -37,7 +37,7 @@
             <div class="max-w-7xl mx-auto flex items-center justify-between">
                 <div class="flex items-center gap-3">
                     <div class="p-1 bg-white/20 rounded-lg">
-                        <x-icon name="eye" class="w-5 h-5" />
+                        <x-icon name="eye" class="w-5 h-5" style="duotone" />
                     </div>
                     <div class="text-sm font-bold tracking-tight">
                         MODO VISUALIZAÇÃO: <span class="font-black uppercase">{{ Auth::user()->name }}</span>
@@ -237,6 +237,11 @@
     @stack('scripts')
 
     <!-- Global Loading Overlay -->
-    @include('components.loading-overlay')
+    <x-loading-overlay />
 </body>
 </html>
+
+
+
+
+

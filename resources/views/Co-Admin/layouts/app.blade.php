@@ -338,6 +338,6 @@
     @stack('scripts')
 
     <!-- Global Loading Overlay -->
-    @include('components.loading-overlay')
+    <x-loading-overlay />
 </body>
 </html>

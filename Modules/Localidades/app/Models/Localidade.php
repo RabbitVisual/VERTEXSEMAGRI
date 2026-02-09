@@ -20,4 +20,15 @@ class Localidade extends Model
         'estado',
         'ativo',
     ];
+
+    // Relacionamentos
+    public function pessoas()
+    {
+        return $this->hasMany(\Modules\Pessoas\App\Models\PessoaCad::class, 'localidade_id', 'id');
+    }
+
+    public function demandas()
+    {
+        return $this->hasMany(\Modules\Demandas\App\Models\Demanda::class);
+    }
 }

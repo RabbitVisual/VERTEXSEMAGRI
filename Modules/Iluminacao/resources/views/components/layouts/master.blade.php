@@ -19,10 +19,6 @@
         {{-- {{ module_vite('build-iluminacao', 'resources/assets/sass/app.scss') }} --}}
     </head>
 
-    <body>
-        {{ $slot }}
-
-        {{-- Vite JS --}}
-        {{-- {{ module_vite('build-iluminacao', 'resources/assets/js/app.js') }} --}}
+        <x-loading-overlay />
     </body>
 </html>

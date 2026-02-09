@@ -1,183 +1,175 @@
 @extends('admin.layouts.admin')
 
-@section('title', 'Detalhes do Líder de Comunidade')
+@section('title', 'Dossiê do Líder: ' . $lider->nome)
 
 @section('content')
-<div class="space-y-6 md:space-y-8">
+<div class="space-y-6 md:space-y-8 animate-fade-in pb-12">
     <!-- Page Header -->
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 md:pb-6 border-b border-gray-200 dark:border-slate-700">
-        <div class="flex-1">
-            <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white flex items-center gap-3 mb-1">
-                <span>{{ $lider->nome }}</span>
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 md:pb-6 border-b border-gray-200 dark:border-slate-800">
+        <div>
+            <h1 class="text-2xl sm:text-3xl md:text-4xl font-black text-gray-900 dark:text-white flex items-center gap-3 mb-2 uppercase tracking-tight">
+                <div class="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-2xl flex items-center justify-center shadow-lg text-white">
+                    <x-icon name="id-badge" style="duotone" class="w-6 h-6 md:w-7 md:h-7" />
+                </div>
+                <span>Perfil: <span class="text-blue-600">{{ $lider->nome }}</span></span>
             </h1>
-            <nav aria-label="breadcrumb" class="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-gray-500 dark:text-gray-400">
-                <a href="{{ route('admin.dashboard') }}" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors uppercase tracking-wider font-bold">Admin</a>
-                <x-icon name="chevron-right" class="w-4 h-4" />
-                <a href="{{ route('admin.lideres-comunidade.index') }}" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors uppercase tracking-wider font-bold">Líderes de Comunidade</a>
-                <x-icon name="chevron-right" class="w-4 h-4" />
-                <span class="text-gray-900 dark:text-white font-black uppercase tracking-wider">{{ $lider->nome }}</span>
+            <nav class="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-400">
+                <a href="{{ route('admin.lideres-comunidade.index') }}" class="hover:text-blue-600 transition-colors">Líderes</a>
+                <x-icon name="chevron-right" class="w-2.5 h-2.5" />
+                <span class="text-blue-600">Dossiê do Agente</span>
             </nav>
         </div>
-        <div class="flex items-center gap-2">
-            <a href="{{ route('admin.lideres-comunidade.edit', $lider) }}" class="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 transition-colors">
-                <x-icon name="arrow-left" class="w-5 h-5" />
+        <div class="flex flex-wrap items-center gap-3">
+            <a href="{{ route('admin.lideres-comunidade.edit', $lider) }}" class="inline-flex items-center gap-2 px-6 py-3 text-[10px] font-black uppercase tracking-widest text-amber-600 bg-amber-50 hover:bg-amber-600 hover:text-white rounded-xl transition-all dark:bg-amber-900/10 dark:text-amber-400 border border-amber-100 dark:border-amber-900/30">
+                <x-icon name="user-pen" style="duotone" class="w-4 h-4" />
+                Editar Dados
+            </a>
+            <a href="{{ route('admin.lideres-comunidade.index') }}" class="inline-flex items-center gap-2 px-6 py-3 text-[10px] font-black uppercase tracking-widest text-slate-500 bg-gray-50 border border-gray-100 hover:bg-gray-100 rounded-xl transition-all dark:bg-slate-800 dark:text-slate-400 dark:border-slate-700">
+                <x-icon name="arrow-left" class="w-4 h-4" />
                 Voltar
             </a>
         </div>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <!-- Perfil -->
-        <div class="lg:col-span-1">
-            <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700">
-                <div class="p-6 text-center">
-                    <div class="mb-4">
-                        <div class="rounded-full border-4 border-blue-500 mx-auto bg-gradient-to-br from-blue-500 to-blue-600 text-white flex items-center justify-center w-32 h-32 text-4xl font-bold shadow-lg">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Coluna de Perfil -->
+        <div class="lg:col-span-1 space-y-8">
+            <div class="premium-card overflow-hidden">
+                <div class="h-32 bg-gradient-to-r from-blue-600 to-indigo-700 relative">
+                    <div class="absolute inset-0 bg-black/10"></div>
+                </div>
+                <div class="px-8 pb-8 text-center">
+                    <div class="relative -mt-16 mb-6 inline-block">
+                        <div class="w-32 h-32 rounded-[2.5rem] border-8 border-white dark:border-slate-800 bg-gradient-to-br from-blue-500 to-indigo-600 text-white flex items-center justify-center text-4xl font-black shadow-2xl transform hover:rotate-3 transition-transform">
                             {{ strtoupper(substr($lider->nome, 0, 1)) }}
                         </div>
+                        <div class="absolute bottom-2 right-2 w-8 h-8 rounded-2xl border-4 border-white dark:border-slate-800 {{ $lider->status === 'ativo' ? 'bg-emerald-500 shadow-[0_0_15px_theme(colors.emerald.500)]' : 'bg-rose-500 shadow-[0_0_15px_theme(colors.rose.500)]' }} flex items-center justify-center">
+                            <x-icon name="{{ $lider->status === 'ativo' ? 'check' : 'xmark' }}" class="w-3.5 h-3.5 text-white" />
+                        </div>
                     </div>
-                    <h4 class="text-xl font-bold text-gray-900 dark:text-white mb-1">{{ $lider->nome }}</h4>
-                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-3 break-all">{{ $lider->email ?? $lider->user->email ?? '-' }}</p>
-                    <div class="mb-3">
-                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold {{ $lider->status === 'ativo' ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-300' : 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300' }}">
-                            <svg class="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                @if($lider->status === 'ativo')
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                @else
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
-                                @endif
-                            </svg>
-                            {{ $lider->status_texto }}
-                        </span>
+                    <h2 class="text-2xl font-black text-gray-900 dark:text-white uppercase tracking-tight">{{ $lider->nome }}</h2>
+                    <p class="text-[10px] text-slate-400 font-black uppercase tracking-[0.3em] mb-6 italic">COD: {{ $lider->codigo }}</p>
+
+                    <div class="flex items-center justify-center gap-3 py-3 px-5 bg-gray-50 dark:bg-slate-900/50 rounded-2xl border border-gray-100 dark:border-slate-800">
+                        <x-icon name="shield-halved" style="duotone" class="w-5 h-5 {{ $lider->status === 'ativo' ? 'text-emerald-500' : 'text-rose-500' }}" />
+                        <span class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-600 dark:text-slate-300">Status: {{ $lider->status_texto }}</span>
                     </div>
-                    <div class="text-xs text-gray-500 dark:text-gray-400">
-                        <p>Código: <strong class="text-gray-900 dark:text-white">{{ $lider->codigo }}</strong></p>
+                </div>
+            </div>
+
+            <!-- Dados Operacionais -->
+            <div class="premium-card p-8 space-y-6">
+                <h3 class="text-xs font-black text-gray-400 uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
+                    <x-icon name="network-wired" style="duotone" class="w-4 h-4 text-blue-500" />
+                    Elo de Vinculação
+                </h3>
+
+                <div class="space-y-6">
+                    <div class="flex items-start gap-4 p-5 bg-blue-50/50 dark:bg-blue-900/10 border border-blue-100 dark:border-blue-900/20 rounded-3xl group">
+                        <div class="w-12 h-12 rounded-2xl bg-white dark:bg-slate-800 flex items-center justify-center text-blue-600 shadow-sm group-hover:scale-110 transition-transform">
+                            <x-icon name="location-dot" style="duotone" class="w-6 h-6" />
+                        </div>
+                        <div>
+                            <p class="text-[9px] font-black text-blue-600 uppercase tracking-widest mb-0.5">Localidade Base</p>
+                            <p class="text-sm font-black text-blue-900 dark:text-blue-300 uppercase tracking-tighter">{{ $lider->localidade->nome ?? 'Área Indefinida' }}</p>
+                        </div>
                     </div>
+
+                    <div class="flex items-start gap-4 p-5 bg-indigo-50/50 dark:bg-indigo-900/10 border border-indigo-100 dark:border-indigo-900/20 rounded-3xl group">
+                        <div class="w-12 h-12 rounded-2xl bg-white dark:bg-slate-800 flex items-center justify-center text-indigo-600 shadow-sm group-hover:scale-110 transition-transform">
+                            <x-icon name="faucet-drip" style="duotone" class="w-6 h-6" />
+                        </div>
+                        <div>
+                            <p class="text-[9px] font-black text-indigo-600 uppercase tracking-widest mb-0.5">Poço Mapeado</p>
+                            <p class="text-sm font-black text-indigo-900 dark:text-indigo-300 uppercase tracking-tighter">{{ $lider->poco->nome_mapa ?? $lider->poco->codigo ?? 'Nenhum Ativo' }}</p>
+                        </div>
+                    </div>
+
+                    @if($lider->user)
+                    <div class="pt-4 mt-2 border-t border-gray-100 dark:border-slate-800">
+                        <a href="{{ route('admin.users.show', $lider->user->id) }}" class="flex items-center justify-between group">
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-lg bg-slate-900 flex items-center justify-center text-white">
+                                    <x-icon name="fingerprint" class="w-4 h-4" />
+                                </div>
+                                <span class="text-[10px] font-black text-slate-500 uppercase tracking-widest">ID Usuário: {{ $lider->user->id }}</span>
+                            </div>
+                            <x-icon name="arrow-up-right-from-square" class="w-3.5 h-3.5 text-slate-300 group-hover:text-blue-500 transition-colors" />
+                        </a>
+                    </div>
+                    @endif
                 </div>
             </div>
         </div>
 
-        <!-- Informações -->
-        <div class="lg:col-span-2 space-y-6">
-            <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700">
-                <div class="px-6 py-4 border-b border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-900/50">
-                    <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Informações do Líder</h2>
-                </div>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                        <tbody class="divide-y divide-gray-200 dark:divide-slate-700">
-                            <tr class="bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors">
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500 dark:text-gray-400 w-48">Nome:</td>
-                                <td class="px-6 py-4 text-sm text-gray-900 dark:text-white">{{ $lider->nome }}</td>
-                            </tr>
-                            <tr class="bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors">
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500 dark:text-gray-400">CPF:</td>
-                                <td class="px-6 py-4 text-sm text-gray-900 dark:text-white">{{ $lider->cpf_formatado ?: '-' }}</td>
-                            </tr>
-                            <tr class="bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors">
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500 dark:text-gray-400">Email:</td>
-                                <td class="px-6 py-4 text-sm text-gray-900 dark:text-white">{{ $lider->email ?? $lider->user->email ?? '-' }}</td>
-                            </tr>
-                            <tr class="bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors">
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500 dark:text-gray-400">Telefone:</td>
-                                <td class="px-6 py-4 text-sm text-gray-900 dark:text-white">{{ $lider->telefone ?? '-' }}</td>
-                            </tr>
-                            <tr class="bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors">
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500 dark:text-gray-400">Endereço:</td>
-                                <td class="px-6 py-4 text-sm text-gray-900 dark:text-white">{{ $lider->endereco ?? '-' }}</td>
-                            </tr>
-                            <tr class="bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors">
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500 dark:text-gray-400">Localidade:</td>
-                                <td class="px-6 py-4 text-sm text-gray-900 dark:text-white">{{ $lider->localidade->nome ?? '-' }}</td>
-                            </tr>
-                            <tr class="bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors">
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500 dark:text-gray-400">Poço:</td>
-                                <td class="px-6 py-4 text-sm text-gray-900 dark:text-white">
-                                    {{ $lider->poco->nome_mapa ?? $lider->poco->codigo ?? '-' }}
-                                    @if($lider->poco)
-                                    <a href="{{ route('admin.pocos.show', $lider->poco->id) }}" class="ml-2 text-blue-600 hover:text-blue-800 dark:text-blue-400">
-                                        <svg class="w-4 h-4 inline" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                                        </svg>
-                                    </a>
-                                    @endif
-                                </td>
-                            </tr>
-                            <tr class="bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors">
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500 dark:text-gray-400">Usuário do Sistema:</td>
-                                <td class="px-6 py-4 text-sm text-gray-900 dark:text-white">
-                                    @if($lider->user)
-                                    <a href="{{ route('admin.users.show', $lider->user->id) }}" class="text-blue-600 hover:text-blue-800 dark:text-blue-400">
-                                        {{ $lider->user->name }} ({{ $lider->user->email }})
-                                    </a>
-                                    @else
-                                    <span class="text-gray-400">Não vinculado</span>
-                                    @endif
-                                </td>
-                            </tr>
-                            <tr class="bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors">
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500 dark:text-gray-400">Pessoa do CadÚnico:</td>
-                                <td class="px-6 py-4 text-sm text-gray-900 dark:text-white">
-                                    @if($lider->pessoa)
-                                    <a href="{{ route('admin.pessoas.show', $lider->pessoa->id) }}" class="text-emerald-600 hover:text-emerald-800 dark:text-emerald-400">
-                                        {{ $lider->pessoa->nom_pessoa }}
-                                        @if($lider->pessoa->num_nis_pessoa_atual)
-                                        <span class="text-xs text-gray-500 dark:text-gray-400">(NIS: {{ $lider->pessoa->num_nis_pessoa_atual }})</span>
-                                        @endif
-                                    </a>
-                                    @else
-                                    <span class="text-gray-400">Não vinculado</span>
-                                    @endif
-                                </td>
-                            </tr>
-                            <tr class="bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors">
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500 dark:text-gray-400">Cadastrado em:</td>
-                                <td class="px-6 py-4 text-sm text-gray-900 dark:text-white">{{ $lider->created_at->format('d/m/Y H:i') }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            @if($lider->observacoes)
-            <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700">
-                <div class="px-6 py-4 border-b border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-900/50">
-                    <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Observações</h2>
-                </div>
-                <div class="p-6">
-                    <p class="text-sm text-gray-700 dark:text-gray-300 whitespace-pre-wrap">{{ $lider->observacoes }}</p>
-                </div>
-            </div>
-            @endif
-
-            <!-- Resumo de Gestão -->
-            <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-gray-200 dark:border-slate-700 overflow-hidden">
-                <div class="px-6 py-4 border-b border-gray-100 dark:border-slate-700 flex items-center justify-between bg-gray-50/50 dark:bg-slate-900/50">
-                    <h2 class="text-sm font-black text-gray-400 dark:text-slate-500 uppercase tracking-[0.2em]">Resumo de Gestão</h2>
-                    <div class="w-8 h-8 rounded-lg bg-emerald-50 dark:bg-emerald-900/20 flex items-center justify-center">
-                        <svg class="w-5 h-5 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75m15 0h.75a.75.75 0 01.75.75v.75m0 0H9m11.25-9h.75a.75.75 0 01.75.75v.75m0 0H21m-1.5-1.5H3.75m0 0h-.375c-.621 0-1.125.504-1.125 1.125v9.75c0 .621.504 1.125 1.125 1.125h.375M9 19.5v-1.5m0-1.5h1.5m-1.5 0H9m0 0v-1.5m0 1.5h1.5m-1.5 0H9" />
-                        </svg>
+        <!-- Coluna de Performance -->
+        <div class="lg:col-span-2 space-y-8">
+            <!-- Painel de Métricas -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="premium-card p-8 bg-gradient-to-br from-emerald-500 to-teal-700 text-white group overflow-hidden relative">
+                    <x-icon name="hand-holding-dollar" style="duotone" class="absolute -right-6 -bottom-6 w-32 h-32 text-white/10 group-hover:scale-110 transition-transform duration-500" />
+                    <p class="text-[10px] font-black uppercase tracking-widest opacity-70 mb-2">Total Arrecadado (30d)</p>
+                    <h3 class="text-4xl font-black tracking-tighter mb-4">
+                        <span class="text-lg font-bold mr-1 opacity-70">R$</span>{{ number_format($estatisticas['total_arrecadado'] ?? 0, 2, ',', '.') }}
+                    </h3>
+                    <div class="inline-flex items-center gap-2 px-3 py-1 bg-white/10 rounded-full text-[9px] font-black uppercase tracking-widest">
+                        <x-icon name="chart-line" class="w-3 h-3" />
+                        Meta Operacional: 92%
                     </div>
                 </div>
-                <div class="p-6">
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                        <div class="p-5 rounded-2xl bg-gray-50/50 dark:bg-slate-900/50 border border-gray-100 dark:border-slate-700/50">
-                            <p class="text-[10px] font-black text-gray-400 dark:text-slate-500 uppercase tracking-widest mb-1">Mensalidades</p>
-                            <p class="text-3xl font-black text-gray-900 dark:text-white">{{ $estatisticas['total_mensalidades'] ?? $lider->mensalidades->count() }}</p>
-                            <div class="mt-2 text-[10px] font-bold text-gray-400 uppercase">Ciclos Criados</div>
+
+                <div class="premium-card p-8 bg-gradient-to-br from-blue-600 to-indigo-800 text-white group overflow-hidden relative">
+                    <x-icon name="users" style="duotone" class="absolute -right-6 -bottom-6 w-32 h-32 text-white/10 group-hover:scale-110 transition-transform duration-500" />
+                    <p class="text-[10px] font-black uppercase tracking-widest opacity-70 mb-2">População Assistida</p>
+                    <h3 class="text-4xl font-black tracking-tighter mb-4">
+                        {{ number_format($estatisticas['usuarios_ativos'] ?? 0, 0, ',', '.') }}<span class="text-lg font-bold ml-1 opacity-70">FAMÍLIAS</span>
+                    </h3>
+                    <div class="inline-flex items-center gap-2 px-3 py-1 bg-white/10 rounded-full text-[9px] font-black uppercase tracking-widest">
+                        <x-icon name="house-water" class="w-3 h-3" />
+                        Poço {{ $lider->poco->codigo ?? 'N/A' }}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dados de Contato e Pessoais -->
+            <div class="premium-card overflow-hidden">
+                <div class="px-8 py-6 border-b border-gray-100 dark:border-slate-800 bg-gray-50/50 dark:bg-slate-900/50 flex items-center justify-between">
+                    <h2 class="text-xs font-black text-gray-400 uppercase tracking-[0.2em] flex items-center gap-2">
+                        <x-icon name="address-card" style="duotone" class="w-5 text-amber-500" />
+                        Dossiê de Identificação
+                    </h2>
+                </div>
+                <div class="p-8">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                        <div class="space-y-8">
+                            <div>
+                                <label class="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-2">Nome Civil</label>
+                                <p class="text-sm font-black text-gray-900 dark:text-white uppercase tracking-tight">{{ $lider->nome }}</p>
+                            </div>
+                            <div>
+                                <label class="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-2">Cadastro de Pessoa Física (CPF)</label>
+                                <p class="text-sm font-black text-gray-900 dark:text-white font-mono tracking-widest">{{ $lider->cpf ?? 'NÃO INFORMADO' }}</p>
+                            </div>
                         </div>
-                        <div class="p-5 rounded-2xl bg-blue-50/30 dark:bg-blue-900/10 border border-blue-50 dark:border-blue-900/20">
-                            <p class="text-[10px] font-black text-blue-400 dark:text-blue-500 uppercase tracking-widest mb-1">Pagamentos</p>
-                            <p class="text-3xl font-black text-blue-600 dark:text-blue-400">{{ $estatisticas['total_pagamentos'] ?? $lider->pagamentos->where('status', 'confirmado')->count() }}</p>
-                            <div class="mt-2 text-[10px] font-bold text-blue-500/60 uppercase italic">Confirmados</div>
+                        <div class="space-y-8">
+                            <div>
+                                <label class="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-2">Comunicação Oficial (E-mail)</label>
+                                <p class="text-sm font-black text-blue-600 dark:text-blue-400 tracking-tight">{{ $lider->email ?? $lider->user->email ?? 'N/A' }}</p>
+                            </div>
+                            <div>
+                                <label class="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-2">Linha de Contato (Telefone)</label>
+                                <p class="text-sm font-black text-emerald-600 dark:text-emerald-400 tracking-widest">{{ $lider->telefone ?? 'SEM TELEFONE' }}</p>
+                            </div>
                         </div>
-                        <div class="p-5 rounded-2xl bg-emerald-50/30 dark:bg-emerald-900/10 border border-emerald-50 dark:border-emerald-900/20">
-                            <p class="text-[10px] font-black text-emerald-400 dark:text-emerald-500 uppercase tracking-widest mb-1">Arrecadação</p>
-                            <p class="text-3xl font-black text-emerald-600 dark:text-emerald-400">
-                                R$ {{ number_format($estatisticas['total_arrecadado'] ?? $lider->pagamentos->where('status', 'confirmado')->sum('valor_pago') ?? 0, 2, ',', '.') }}
+                    </div>
+
+                    <!-- Informações Complementares -->
+                    <div class="mt-12 pt-10 border-t border-gray-100 dark:border-slate-800">
+                        <label class="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-4">Anotações da Gestão Municipal</label>
+                        <div class="p-6 bg-gray-50/50 dark:bg-slate-900/50 border border-gray-100 dark:border-slate-800 rounded-3xl min-h-[100px]">
+                            <p class="text-[11px] text-slate-500 dark:text-slate-400 font-bold uppercase tracking-tight leading-relaxed italic">
+                                {{ $lider->observacoes ?? 'Sem anotações complementares registradas pelo administrador central.' }}
                             </p>
-                            <div class="mt-2 text-[10px] font-bold text-emerald-500/60 uppercase">Valor Acumulado</div>
                         </div>
                     </div>
                 </div>

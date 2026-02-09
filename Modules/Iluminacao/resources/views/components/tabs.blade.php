@@ -1,64 +1,32 @@
-@props(['defaultTab' => 0])
+@props(['defaultTab' => 0, 'tabs' => []])
 
-<div class="space-y-6">
+<div x-data="{ activeTab: {{ $defaultTab }} }" class="space-y-6">
     <!-- Tabs Navigation -->
-    <div class="border-b border-gray-200 dark:border-gray-700">
+    <div class="border-b border-slate-200 dark:border-slate-700/50">
         <nav class="-mb-px flex space-x-8" aria-label="Tabs">
-            {{ $tabs }}
+            @foreach($tabs as $index => $tab)
+                <button
+                    type="button"
+                    @click="activeTab = {{ $index }}"
+                    :class="{
+                        'border-indigo-500 text-indigo-600 dark:text-indigo-400': activeTab === {{ $index }},
+                        'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300 dark:text-slate-400 dark:hover:text-slate-300': activeTab !== {{ $index }}
+                    }"
+                    class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-all duration-200"
+                >
+                    <div class="flex items-center gap-2">
+                        @if(isset($tab['icon']))
+                            <x-icon :name="$tab['icon']" class="w-4 h-4" />
+                        @endif
+                        <span>{{ $tab['label'] }}</span>
+                    </div>
+                </button>
+            @endforeach
         </nav>
     </div>
 
     <!-- Tabs Content -->
-    <div>
-        {{ $content }}
+    <div class="relative min-h-[200px]">
+        {{ $slot }}
     </div>
 </div>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const tabButtons = document.querySelectorAll('[data-tab-target]');
-    const tabPanels = document.querySelectorAll('[data-tab-panel]');
-
-    function showTab(targetId) {
-        // Hide all panels
-        tabPanels.forEach(panel => {
-            panel.classList.add('hidden');
-        });
-
-        // Remove active state from all buttons
-        tabButtons.forEach(button => {
-            button.classList.remove('border-indigo-500', 'text-indigo-600', 'dark:text-indigo-400');
-            button.classList.add('border-transparent', 'text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300', 'dark:text-gray-400', 'dark:hover:text-gray-300');
-        });
-
-        // Show target panel
-        const targetPanel = document.querySelector(`[data-tab-panel="${targetId}"]`);
-        if (targetPanel) {
-            targetPanel.classList.remove('hidden');
-        }
-
-        // Activate target button
-        const targetButton = document.querySelector(`[data-tab-target="${targetId}"]`);
-        if (targetButton) {
-            targetButton.classList.remove('border-transparent', 'text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300', 'dark:text-gray-400', 'dark:hover:text-gray-300');
-            targetButton.classList.add('border-indigo-500', 'text-indigo-600', 'dark:text-indigo-400');
-        }
-    }
-
-    // Add click handlers
-    tabButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const targetId = this.getAttribute('data-tab-target');
-            showTab(targetId);
-        });
-    });
-
-    // Show default tab
-    const defaultTab = {{ $defaultTab }};
-    if (tabButtons[defaultTab]) {
-        const targetId = tabButtons[defaultTab].getAttribute('data-tab-target');
-        showTab(targetId);
-    }
-});
-</script>
-

@@ -1,69 +1,62 @@
-@props(['headers', 'exportRoute' => null, 'showActions' => true])
+@props(['headers', 'exportRoute' => null, 'showActions' => true, 'title' => 'Listagem Operacional'])
 
-<div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
-    <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50 flex items-center justify-between">
-        <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Listagem</h3>
+<div class="premium-card overflow-hidden">
+    <div class="px-10 py-8 border-b border-gray-100 dark:border-slate-800 flex items-center justify-between bg-gray-50/30 dark:bg-slate-900/30">
+        <div>
+            <h3 class="text-base font-black text-gray-900 dark:text-white uppercase tracking-tight">{{ $title }}</h3>
+            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-1 italic">Arquivo de registros do sistema de efetivos</p>
+        </div>
+
         @if($exportRoute)
-            <div class="relative inline-block" id="export-dropdown-{{ uniqid() }}">
-                <button type="button" onclick="toggleDropdown(this)" class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:ring-2 focus:ring-indigo-500 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-700">
-                    <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
-                    </svg>
-                    Exportar
+            <div class="relative group" x-data="{ open: false }">
+                <button @click="open = !open" type="button" class="h-12 px-6 bg-white dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded-xl text-[10px] font-black uppercase tracking-widest text-slate-500 hover:text-emerald-600 hover:border-emerald-300 transition-all flex items-center gap-3">
+                    <x-icon name="file-export" style="duotone" class="w-4 h-4" />
+                    Extrair Dados
                 </button>
-                <div id="dropdown-menu-{{ uniqid() }}" class="hidden absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-lg bg-white dark:bg-gray-800 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                    <div class="py-1">
-                        <a href="{{ $exportRoute }}?format=csv" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700">CSV</a>
-                        <a href="{{ $exportRoute }}?format=excel" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700">Excel</a>
-                        <a href="{{ $exportRoute }}?format=pdf" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700">PDF</a>
-                    </div>
+
+                <div x-show="open" @click.away="open = false" class="absolute right-0 mt-3 w-48 bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-gray-100 dark:border-slate-800 z-50 overflow-hidden py-2 animate-scale-in">
+                    <a href="{{ $exportRoute }}?format=csv" class="flex items-center gap-3 px-6 py-3 text-[9px] font-black uppercase tracking-widest text-slate-500 hover:bg-emerald-50 dark:hover:bg-emerald-900/10 hover:text-emerald-600 transition-colors">
+                        <x-icon name="file-csv" style="duotone" class="w-4 h-4" />
+                        Formato CSV
+                    </a>
+                    <a href="{{ $exportRoute }}?format=excel" class="flex items-center gap-3 px-6 py-3 text-[9px] font-black uppercase tracking-widest text-slate-500 hover:bg-emerald-50 dark:hover:bg-emerald-900/10 hover:text-emerald-600 transition-colors">
+                        <x-icon name="file-excel" style="duotone" class="w-4 h-4" />
+                        Formato EXCEL
+                    </a>
+                    <a href="{{ $exportRoute }}?format=pdf" class="flex items-center gap-3 px-6 py-3 text-[9px] font-black uppercase tracking-widest text-slate-500 hover:bg-emerald-50 dark:hover:bg-emerald-900/10 hover:text-emerald-600 transition-colors">
+                        <x-icon name="file-pdf" style="duotone" class="w-4 h-4" />
+                        Formato PDF (HQ)
+                    </a>
                 </div>
             </div>
         @endif
     </div>
+
     <div class="overflow-x-auto">
-        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-            <thead class="bg-gray-50 dark:bg-gray-900/50">
-                <tr>
+        <table class="w-full text-left border-separate border-spacing-0">
+            <thead>
+                <tr class="bg-gray-50/50 dark:bg-slate-900/50">
                     @foreach($headers as $header)
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                        <th class="px-10 py-5 text-[10px] font-black uppercase text-slate-400 tracking-[0.2em] border-b border-gray-100 dark:border-slate-800 italic">
                             {{ $header }}
                         </th>
                     @endforeach
                     @if($showActions)
-                        <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                        <th class="px-10 py-5 text-right text-[10px] font-black uppercase text-slate-400 tracking-[0.2em] border-b border-gray-100 dark:border-slate-800 italic">
                             Ações
                         </th>
                     @endif
                 </tr>
             </thead>
-            <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+            <tbody class="divide-y divide-gray-50 dark:divide-slate-800">
                 {{ $slot }}
             </tbody>
         </table>
     </div>
+
     @if(isset($data) && $data instanceof \Illuminate\Pagination\LengthAwarePaginator && $data->hasPages())
-        <div class="px-6 py-4 border-t border-gray-200 dark:border-gray-700">
+        <div class="px-10 py-6 bg-gray-50/30 dark:bg-slate-900/30 border-t border-gray-100 dark:border-slate-800">
             {{ $data->links() }}
         </div>
     @endif
 </div>
-
-<script>
-function toggleDropdown(button) {
-    const dropdown = button.closest('.relative');
-    const menu = dropdown.querySelector('[id^="dropdown-menu-"]');
-    if (menu) {
-        menu.classList.toggle('hidden');
-    }
-}
-
-document.addEventListener('click', function(event) {
-    if (!event.target.closest('.relative[id^="export-dropdown-"]')) {
-        document.querySelectorAll('[id^="dropdown-menu-"]').forEach(menu => {
-            menu.classList.add('hidden');
-        });
-    }
-});
-</script>
-

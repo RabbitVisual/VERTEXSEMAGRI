@@ -3,327 +3,300 @@
 @section('title', 'Cadastrar Líder de Comunidade')
 
 @section('content')
-<div class="space-y-6 md:space-y-8">
+<div class="space-y-6 md:space-y-8 animate-fade-in pb-12">
     <!-- Page Header -->
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 md:pb-6 border-b border-gray-200 dark:border-slate-700">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 md:pb-6 border-b border-gray-200 dark:border-slate-800">
         <div>
-            <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white flex items-center gap-3 mb-2">
-                <div class="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg">
-                    <x-icon name="chevron-right" class="w-4 h-4" />
-                <a href="{{ route('admin.lideres-comunidade.index') }}" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Líderes de Comunidade</a>
-                <x-icon name="chevron-right" class="w-4 h-4" />
-                <span class="text-gray-900 dark:text-white font-medium">Cadastrar</span>
+            <h1 class="text-2xl sm:text-3xl md:text-4xl font-black text-gray-900 dark:text-white flex items-center gap-3 mb-2 uppercase tracking-tight">
+                <div class="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-2xl flex items-center justify-center shadow-lg text-white">
+                    <x-icon name="user-plus" style="duotone" class="w-6 h-6 md:w-7 md:h-7" />
+                </div>
+                <span>Novo Líder</span>
+            </h1>
+            <nav class="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-slate-400">
+                <a href="{{ route('admin.lideres-comunidade.index') }}" class="hover:text-blue-600 transition-colors">Líderes</a>
+                <x-icon name="chevron-right" class="w-3 h-3" />
+                <span class="text-blue-600">Cadastro de Gestão</span>
             </nav>
         </div>
-        <a href="{{ route('admin.lideres-comunidade.index') }}" class="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 dark:text-gray-300 dark:bg-slate-700 dark:border-slate-600 dark:hover:bg-slate-600 dark:focus:ring-slate-700 transition-colors">
-            <x-icon name="arrow-left" class="w-5 h-5" />
-            Voltar
+        <a href="{{ route('admin.lideres-comunidade.index') }}" class="inline-flex items-center gap-2 px-5 py-2.5 text-[10px] font-black uppercase tracking-widest text-slate-500 bg-white border border-slate-200 rounded-xl hover:bg-slate-50 hover:text-slate-900 transition-all shadow-sm dark:bg-slate-800 dark:border-slate-700 dark:text-slate-400 dark:hover:text-white">
+            <x-icon name="arrow-left" class="w-4 h-4" />
+            Voltar à Lista
         </a>
     </div>
 
-    <form action="{{ route('admin.lideres-comunidade.store') }}" method="POST" class="space-y-6">
+    <form action="{{ route('admin.lideres-comunidade.store') }}" method="POST" class="space-y-8">
         @csrf
 
-        <!-- Informações do Líder -->
-        <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700">
-            <div class="px-6 py-4 border-b border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-900/50">
-                <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Informações do Líder</h2>
-            </div>
-            <div class="p-6 space-y-6">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <label for="nome" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                            Nome Completo <span class="text-red-500">*</span>
-                        </label>
-                        <input type="text" id="nome" name="nome" value="{{ old('nome') }}" required
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full px-4 py-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 @error('nome') border-red-500 dark:border-red-600 @enderror"
-                            placeholder="Digite o nome completo">
-                        @error('nome')
-                            <p class="mt-2 text-sm font-medium text-red-600 dark:text-red-400">{{ $message }}</p>
-                        @enderror
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-2 space-y-8">
+                <!-- Informações do Líder -->
+                <div class="premium-card overflow-hidden">
+                    <div class="px-8 py-6 border-b border-gray-100 dark:border-slate-800 bg-gray-50/50 dark:bg-slate-900/50 flex items-center justify-between">
+                        <h2 class="text-xs font-black text-gray-400 uppercase tracking-[0.2em] flex items-center gap-2">
+                            <x-icon name="user-tie" style="duotone" class="w-5 text-blue-500" />
+                            Informações de Identidade
+                        </h2>
                     </div>
+                    <div class="p-8 space-y-8">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div>
+                                <label for="nome" class="block mb-2 text-[10px] font-black text-gray-400 uppercase tracking-widest px-1">
+                                    Nome Completo <span class="text-red-500">*</span>
+                                </label>
+                                <input type="text" id="nome" name="nome" value="{{ old('nome') }}" required
+                                    class="w-full px-5 py-3.5 bg-gray-50/50 dark:bg-slate-900/50 border border-gray-200 dark:border-slate-700 rounded-2xl text-sm font-bold focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all dark:text-white @error('nome') border-red-500 @enderror"
+                                    placeholder="Digite o nome completo">
+                                @error('nome')
+                                    <p class="mt-2 text-[10px] font-bold text-red-600 uppercase tracking-widest">{{ $message }}</p>
+                                @enderror
+                            </div>
 
-                    <div>
-                        <label for="cpf" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">CPF</label>
-                        <input type="text" id="cpf" name="cpf" value="{{ old('cpf') }}"
-                            class="cpf-mask bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full px-4 py-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 @error('cpf') border-red-500 dark:border-red-600 @enderror"
-                            placeholder="000.000.000-00">
-                        @error('cpf')
-                            <p class="mt-2 text-sm font-medium text-red-600 dark:text-red-400">{{ $message }}</p>
-                        @enderror
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <label for="telefone" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Telefone</label>
-                        <input type="text" id="telefone" name="telefone" value="{{ old('telefone') }}"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full px-4 py-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 @error('telefone') border-red-500 dark:border-red-600 @enderror"
-                            placeholder="(00) 00000-0000">
-                        @error('telefone')
-                            <p class="mt-2 text-sm font-medium text-red-600 dark:text-red-400">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <div>
-                        <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
-                        <input type="email" id="email" name="email" value="{{ old('email') }}"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full px-4 py-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 @error('email') border-red-500 dark:border-red-600 @enderror"
-                            placeholder="email@exemplo.com">
-                        @error('email')
-                            <p class="mt-2 text-sm font-medium text-red-600 dark:text-red-400">{{ $message }}</p>
-                        @enderror
-                    </div>
-                </div>
-
-                <div>
-                    <label for="endereco" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                        Endereço Completo <span class="text-red-500">*</span>
-                    </label>
-                    <input type="text" id="endereco" name="endereco" value="{{ old('endereco') }}" required readonly
-                        class="bg-gray-100 border border-gray-300 text-gray-700 text-sm rounded-lg block w-full px-4 py-2.5 dark:bg-slate-600 dark:border-slate-600 dark:text-gray-300 dark:placeholder-gray-400 cursor-not-allowed @error('endereco') border-red-500 dark:border-red-600 @enderror"
-                        placeholder="Será preenchido automaticamente ao selecionar a localidade"
-                        data-required="true">
-                    <p class="mt-2 text-xs text-gray-500 dark:text-gray-400">O endereço será preenchido automaticamente com base na localidade selecionada</p>
-                    @error('endereco')
-                        <p class="mt-2 text-sm font-medium text-red-600 dark:text-red-400">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <!-- Busca de Pessoa do CadÚnico -->
-                <div class="pt-4 border-t border-gray-200 dark:border-slate-700">
-                    <div class="mb-4">
-                        <h3 class="text-md font-semibold text-gray-900 dark:text-white mb-2">Vincular a Pessoa do CadÚnico</h3>
-                        <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">Busque e selecione uma pessoa do CadÚnico para vincular como líder (opcional)</p>
-                    </div>
-                    <div>
-                        <label for="pessoa_search" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                            Buscar Pessoa do CadÚnico
-                        </label>
-                        <div class="relative">
-                            <input type="text" id="pessoa_search" name="pessoa_search"
-                                placeholder="Digite nome, NIS ou CPF para buscar..."
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full px-4 py-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                            <div id="pessoa_results" class="hidden absolute z-10 w-full mt-1 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg shadow-lg max-h-60 overflow-y-auto"></div>
-                        </div>
-                        <input type="hidden" id="pessoa_id" name="pessoa_id" value="{{ old('pessoa_id') }}">
-                        <div id="pessoa_selecionada" class="hidden mt-3 p-4 bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded-lg">
-                            <div class="flex items-start justify-between">
-                                <div>
-                                    <p class="text-sm font-semibold text-emerald-900 dark:text-emerald-300" id="pessoa_nome_selecionada"></p>
-                                    <p class="text-xs text-emerald-700 dark:text-emerald-400 mt-1" id="pessoa_info_selecionada"></p>
-                                </div>
-                                <button type="button" onclick="removerPessoa()" class="text-emerald-600 hover:text-emerald-800 dark:text-emerald-400 dark:hover:text-emerald-300">
-                                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                                    </svg>
-                                </button>
+                            <div>
+                                <label for="cpf" class="block mb-2 text-[10px] font-black text-gray-400 uppercase tracking-widest px-1">CPF</label>
+                                <input type="text" id="cpf" name="cpf" value="{{ old('cpf') }}"
+                                    class="cpf-mask w-full px-5 py-3.5 bg-gray-50/50 dark:bg-slate-900/50 border border-gray-200 dark:border-slate-700 rounded-2xl text-sm font-bold focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all dark:text-white"
+                                    placeholder="000.000.000-00">
                             </div>
                         </div>
-                        @error('pessoa_id')
-                            <p class="mt-2 text-sm font-medium text-red-600 dark:text-red-400">{{ $message }}</p>
-                        @enderror
-                        <p class="mt-2 text-xs text-gray-500 dark:text-gray-400">Ao selecionar uma pessoa, os dados serão preenchidos automaticamente</p>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div>
+                                <label for="telefone" class="block mb-2 text-[10px] font-black text-gray-400 uppercase tracking-widest px-1">Telefone</label>
+                                <input type="text" id="telefone" name="telefone" value="{{ old('telefone') }}"
+                                    class="w-full px-5 py-3.5 bg-gray-50/50 dark:bg-slate-900/50 border border-gray-200 dark:border-slate-700 rounded-2xl text-sm font-bold focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all dark:text-white"
+                                    placeholder="(00) 00000-0000">
+                            </div>
+
+                            <div>
+                                <label for="email" class="block mb-2 text-[10px] font-black text-gray-400 uppercase tracking-widest px-1">Email</label>
+                                <input type="email" id="email" name="email" value="{{ old('email') }}"
+                                    class="w-full px-5 py-3.5 bg-gray-50/50 dark:bg-slate-900/50 border border-gray-200 dark:border-slate-700 rounded-2xl text-sm font-bold focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all dark:text-white"
+                                    placeholder="email@exemplo.com">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="endereco" class="block mb-2 text-[10px] font-black text-gray-400 uppercase tracking-widest px-1">
+                                Endereço de Atuação <span class="text-red-500">*</span>
+                            </label>
+                            <input type="text" id="endereco" name="endereco" value="{{ old('endereco') }}" required readonly
+                                class="w-full px-5 py-4 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl text-sm font-bold text-slate-500 dark:text-slate-400 cursor-not-allowed uppercase tracking-tighter"
+                                placeholder="Sincronizado automaticamente com a localidade">
+                            <p class="mt-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-loose px-1">Preenchido com base na localidade selecionada.</p>
+                        </div>
+
+                        <!-- Busca de Pessoa do CadÚnico -->
+                        <div class="pt-8 border-t border-gray-100 dark:border-slate-800">
+                            <div class="mb-6">
+                                <h3 class="text-xs font-black text-blue-600 uppercase tracking-widest mb-1">Integração CadÚnico</h3>
+                                <p class="text-[11px] text-slate-400 font-bold uppercase tracking-tight">Vincule opcionalmente a uma pessoa da base de dados local.</p>
+                            </div>
+                            <div>
+                                <label for="pessoa_search" class="block mb-2 text-[10px] font-black text-gray-400 uppercase tracking-widest px-1">
+                                    Pesquisar Pessoa (Nome, NIS ou CPF)
+                                </label>
+                                <div class="relative group">
+                                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                        <x-icon name="magnifying-glass" class="w-4 h-4 text-slate-400 group-focus-within:text-blue-500 transition-colors" />
+                                    </div>
+                                    <input type="text" id="pessoa_search" name="pessoa_search"
+                                        placeholder="Digite pelo menos 3 caracteres..."
+                                        class="w-full pl-12 pr-5 py-3.5 bg-gray-50/50 dark:bg-slate-900/50 border border-gray-200 dark:border-slate-700 rounded-2xl text-sm font-bold focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all dark:text-white">
+                                    <div id="pessoa_results" class="hidden absolute z-50 w-full mt-2 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-2xl shadow-2xl max-h-64 overflow-y-auto"></div>
+                                </div>
+                                <input type="hidden" id="pessoa_id" name="pessoa_id" value="{{ old('pessoa_id') }}">
+
+                                <div id="pessoa_selecionada" class="hidden mt-4 p-5 bg-emerald-50 dark:bg-emerald-900/10 border border-emerald-100 dark:border-emerald-800/30 rounded-2xl relative animate-scale-in">
+                                    <div class="flex items-start gap-4">
+                                        <div class="w-12 h-12 bg-white dark:bg-slate-900 rounded-xl flex items-center justify-center text-emerald-600 shadow-sm">
+                                            <x-icon name="user-check" style="duotone" class="w-6 h-6" />
+                                        </div>
+                                        <div class="flex-1">
+                                            <p class="text-[11px] font-black text-emerald-900 dark:text-emerald-300 uppercase tracking-widest" id="pessoa_nome_selecionada"></p>
+                                            <p class="text-[10px] text-emerald-600 dark:text-emerald-500 mt-1 font-bold uppercase tracking-tight leading-relaxed" id="pessoa_info_selecionada"></p>
+                                        </div>
+                                        <button type="button" onclick="removerPessoa()" class="p-2 text-emerald-400 hover:text-red-500 transition-colors">
+                                            <x-icon name="xmark" class="w-5 h-5" />
+                                        </button>
+                                    </div>
+                                </div>
+                                @error('pessoa_id')
+                                    <p class="mt-2 text-[10px] font-bold text-red-600 uppercase tracking-widest">{{ $message }}</p>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Vinculação Estrutural -->
+                <div class="premium-card overflow-hidden">
+                    <div class="px-8 py-6 border-b border-gray-100 dark:border-slate-800 bg-gray-50/50 dark:bg-slate-900/50">
+                        <h2 class="text-xs font-black text-gray-400 uppercase tracking-[0.2em] flex items-center gap-2">
+                            <x-icon name="link" style="duotone" class="w-5 text-indigo-500" />
+                            Ambiente de Atuação
+                        </h2>
+                    </div>
+                    <div class="p-8 space-y-8">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div>
+                                <label for="localidade_id" class="block mb-2 text-[10px] font-black text-gray-400 uppercase tracking-widest px-1">
+                                    Localidade Atendida <span class="text-red-500">*</span>
+                                </label>
+                                <select id="localidade_id" name="localidade_id" required
+                                    class="w-full px-5 py-3.5 bg-gray-50/50 dark:bg-slate-900/50 border border-gray-200 dark:border-slate-700 rounded-2xl text-sm font-bold focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all dark:text-white">
+                                    <option value="">Selecione...</option>
+                                    @foreach($localidades as $localidade)
+                                        <option value="{{ $localidade->id }}" {{ old('localidade_id') == $localidade->id ? 'selected' : '' }}>
+                                            {{ $localidade->nome }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div>
+                                <label for="poco_id" class="block mb-2 text-[10px] font-black text-gray-400 uppercase tracking-widest px-1">
+                                    Poço Gerenciado <span class="text-red-500">*</span>
+                                </label>
+                                <select id="poco_id" name="poco_id" required
+                                    class="w-full px-5 py-3.5 bg-gray-50/50 dark:bg-slate-900/50 border border-gray-200 dark:border-slate-700 rounded-2xl text-sm font-bold focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all dark:text-white">
+                                    <option value="">Selecione...</option>
+                                    @foreach($pocos as $poco)
+                                        <option value="{{ $poco->id }}" {{ old('poco_id') == $poco->id ? 'selected' : '' }}>
+                                            {{ $poco->nome_mapa ?? $poco->codigo }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gestão de Credenciais -->
+                <div class="premium-card overflow-hidden">
+                    <div class="px-8 py-6 border-b border-gray-100 dark:border-slate-800 bg-gray-50/50 dark:bg-slate-900/50">
+                        <h2 class="text-xs font-black text-gray-400 uppercase tracking-[0.2em] flex items-center gap-2">
+                            <x-icon name="key" style="duotone" class="w-5 text-amber-500" />
+                            Acesso ao Sistema
+                        </h2>
+                    </div>
+                    <div class="p-8 space-y-8">
+                        <div class="flex flex-wrap gap-6">
+                            <label class="flex items-center gap-3 cursor-pointer group">
+                                <input type="radio" name="criar_usuario" value="1" {{ old('criar_usuario', '1') == '1' && !old('pessoa_id') ? 'checked' : '' }}
+                                    onchange="toggleVinculacao('usuario-novo')"
+                                    class="w-5 h-5 text-blue-600 bg-slate-100 border-slate-300 focus:ring-blue-500 focus:ring-offset-0 dark:bg-slate-900 dark:border-slate-700">
+                                <span class="text-[10px] font-black uppercase tracking-widest text-slate-500 group-hover:text-slate-900 transition-colors">Criar Novo Acesso</span>
+                            </label>
+                            <label class="flex items-center gap-3 cursor-pointer group">
+                                <input type="radio" name="criar_usuario" value="0" {{ old('criar_usuario') == '0' && !old('pessoa_id') ? 'checked' : '' }}
+                                    onchange="toggleVinculacao('usuario-existente')"
+                                    class="w-5 h-5 text-blue-600 bg-slate-100 border-slate-300 focus:ring-blue-500 focus:ring-offset-0 dark:bg-slate-900 dark:border-slate-700">
+                                <span class="text-[10px] font-black uppercase tracking-widest text-slate-500 group-hover:text-slate-900 transition-colors">Vincular Existente</span>
+                            </label>
+                            <label class="flex items-center gap-3 cursor-pointer group">
+                                <input type="radio" name="criar_usuario" value="pessoa" {{ old('pessoa_id') ? 'checked' : '' }}
+                                    onchange="toggleVinculacao('pessoa')"
+                                    class="w-5 h-5 text-blue-600 bg-slate-100 border-slate-300 focus:ring-blue-500 focus:ring-offset-0 dark:bg-slate-900 dark:border-slate-700">
+                                <span class="text-[10px] font-black uppercase tracking-widest text-slate-500 group-hover:text-slate-900 transition-colors">Sem Usuário</span>
+                            </label>
+                        </div>
+
+                        <!-- Formulário para criar novo usuário -->
+                        <div id="new-user-form" class="space-y-8 animate-fade-in">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                <div>
+                                    <label for="user_name" class="block mb-2 text-[10px] font-black text-gray-400 uppercase tracking-widest px-1">Nome de Exibição <span class="text-red-500">*</span></label>
+                                    <input type="text" id="user_name" name="user_name" value="{{ old('user_name') }}"
+                                        class="w-full px-5 py-3.5 bg-gray-50/50 dark:bg-slate-900/50 border border-gray-200 dark:border-slate-700 rounded-2xl text-sm font-bold focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all dark:text-white">
+                                </div>
+
+                                <div>
+                                    <label for="user_email" class="block mb-2 text-[10px] font-black text-gray-400 uppercase tracking-widest px-1">E-mail de Login <span class="text-red-500">*</span></label>
+                                    <input type="email" id="user_email" name="user_email" value="{{ old('user_email') }}"
+                                        class="w-full px-5 py-3.5 bg-gray-50/50 dark:bg-slate-900/50 border border-gray-200 dark:border-slate-700 rounded-2xl text-sm font-bold focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all dark:text-white">
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                <div>
+                                    <label for="user_password" class="block mb-2 text-[10px] font-black text-gray-400 uppercase tracking-widest px-1">Senha de Acesso <span class="text-red-500">*</span></label>
+                                    <input type="password" id="user_password" name="user_password"
+                                        class="w-full px-5 py-3.5 bg-gray-50/50 dark:bg-slate-900/50 border border-gray-200 dark:border-slate-700 rounded-2xl text-sm font-bold focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all dark:text-white">
+                                </div>
+
+                                <div>
+                                    <label for="user_password_confirmation" class="block mb-2 text-[10px] font-black text-gray-400 uppercase tracking-widest px-1">Repetir Senha <span class="text-red-500">*</span></label>
+                                    <input type="password" id="user_password_confirmation" name="user_password_confirmation"
+                                        class="w-full px-5 py-3.5 bg-gray-50/50 dark:bg-slate-900/50 border border-gray-200 dark:border-slate-700 rounded-2xl text-sm font-bold focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all dark:text-white">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Seleção de usuário existente -->
+                        <div id="existing-user-form" class="hidden animate-fade-in">
+                            <label for="user_id" class="block mb-2 text-[10px] font-black text-gray-400 uppercase tracking-widest px-1">Escolher Usuário do Banco <span class="text-red-500">*</span></label>
+                            <select id="user_id" name="user_id"
+                                class="w-full px-5 py-3.5 bg-gray-50/50 dark:bg-slate-900/50 border border-gray-200 dark:border-slate-700 rounded-2xl text-sm font-bold focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all dark:text-white">
+                                <option value="">Selecione um acesso...</option>
+                                @foreach($users as $user)
+                                    <option value="{{ $user->id }}" {{ old('user_id') == $user->id ? 'selected' : '' }}>
+                                        {{ $user->name }} ({{ $user->email }})
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Vinculação -->
-        <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700">
-            <div class="px-6 py-4 border-b border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-900/50">
-                <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Vinculação</h2>
-            </div>
-            <div class="p-6 space-y-6">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="space-y-8">
+                <!-- Status e Controle -->
+                <div class="premium-card p-8 space-y-8">
                     <div>
-                        <label for="localidade_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                            Localidade <span class="text-red-500">*</span>
-                        </label>
-                        <select id="localidade_id" name="localidade_id" required
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full px-4 py-2.5 dark:bg-slate-700 dark:border-slate-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 @error('localidade_id') border-red-500 dark:border-red-600 @enderror">
-                            <option value="">Selecione uma localidade...</option>
-                            @foreach($localidades as $localidade)
-                                <option value="{{ $localidade->id }}" {{ old('localidade_id') == $localidade->id ? 'selected' : '' }}>
-                                    {{ $localidade->nome }}
-                                </option>
-                            @endforeach
+                         <h2 class="text-xs font-black text-gray-400 uppercase tracking-[0.2em] mb-6 flex items-center gap-2">
+                            <x-icon name="shield-halved" style="duotone" class="w-5 text-emerald-500" />
+                            Controle Administrativo
+                        </h2>
+                        <label for="status" class="block mb-2 text-[10px] font-black text-gray-400 uppercase tracking-widest px-1">Situação Inicial <span class="text-red-500">*</span></label>
+                        <select id="status" name="status" required
+                            class="w-full px-5 py-3.5 bg-gray-50/50 dark:bg-slate-900/50 border border-gray-200 dark:border-slate-700 rounded-2xl text-sm font-bold focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all dark:text-white">
+                            <option value="ativo" {{ old('status', 'ativo') === 'ativo' ? 'selected' : '' }}>Ativo / Operacional</option>
+                            <option value="inativo" {{ old('status') === 'inativo' ? 'selected' : '' }}>Inativo / Bloqueado</option>
                         </select>
-                        @error('localidade_id')
-                            <p class="mt-2 text-sm font-medium text-red-600 dark:text-red-400">{{ $message }}</p>
-                        @enderror
                     </div>
 
                     <div>
-                        <label for="poco_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                            Poço Artesiano <span class="text-red-500">*</span>
-                        </label>
-                        <select id="poco_id" name="poco_id" required
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full px-4 py-2.5 dark:bg-slate-700 dark:border-slate-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 @error('poco_id') border-red-500 dark:border-red-600 @enderror">
-                            <option value="">Selecione um poço...</option>
-                            @foreach($pocos as $poco)
-                                <option value="{{ $poco->id }}" {{ old('poco_id') == $poco->id ? 'selected' : '' }}>
-                                    {{ $poco->nome_mapa ?? $poco->codigo }} - {{ $poco->localidade->nome ?? '' }}
-                                </option>
-                            @endforeach
-                        </select>
-                        @error('poco_id')
-                            <p class="mt-2 text-sm font-medium text-red-600 dark:text-red-400">{{ $message }}</p>
-                        @enderror
-                        <p class="mt-2 text-xs text-gray-500 dark:text-gray-400">O líder será responsável por gerenciar este poço</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Vinculação: Usuário do Sistema -->
-        <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700">
-            <div class="px-6 py-4 border-b border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-900/50">
-                <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Usuário do Sistema</h2>
-                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Crie um novo usuário ou vincule a um existente (opcional se já vinculou uma pessoa do CadÚnico)</p>
-            </div>
-            <div class="p-6 space-y-6">
-                <div>
-                    <label class="block mb-4">
-                        <input type="radio" name="criar_usuario" value="1" {{ old('criar_usuario', '1') == '1' && !old('pessoa_id') ? 'checked' : '' }}
-                            onchange="toggleVinculacao('usuario-novo')"
-                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-slate-700 dark:border-slate-600">
-                        <span class="ml-2 text-sm font-medium text-gray-900 dark:text-white">Criar novo usuário do sistema</span>
-                    </label>
-                    <label class="block mb-4">
-                        <input type="radio" name="criar_usuario" value="0" {{ old('criar_usuario') == '0' && !old('pessoa_id') ? 'checked' : '' }}
-                            onchange="toggleVinculacao('usuario-existente')"
-                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-slate-700 dark:border-slate-600">
-                        <span class="ml-2 text-sm font-medium text-gray-900 dark:text-white">Vincular a usuário existente</span>
-                    </label>
-                    <label class="block">
-                        <input type="radio" name="criar_usuario" value="pessoa" {{ old('pessoa_id') ? 'checked' : '' }}
-                            onchange="toggleVinculacao('pessoa')"
-                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-slate-700 dark:border-slate-600">
-                        <span class="ml-2 text-sm font-medium text-gray-900 dark:text-white">Não criar usuário do sistema</span>
-                    </label>
-                    <p class="ml-6 mt-1 text-xs text-gray-500 dark:text-gray-400">Use esta opção se você já vinculou uma pessoa do CadÚnico acima e não precisa criar um usuário do sistema para login</p>
-                </div>
-
-                <!-- Formulário para criar novo usuário -->
-                <div id="new-user-form" class="space-y-4">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label for="user_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                Nome do Usuário <span class="text-red-500">*</span>
-                            </label>
-                            <input type="text" id="user_name" name="user_name" value="{{ old('user_name') }}"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full px-4 py-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 @error('user_name') border-red-500 dark:border-red-600 @enderror"
-                                placeholder="Nome para login">
-                            @error('user_name')
-                                <p class="mt-2 text-sm font-medium text-red-600 dark:text-red-400">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <div>
-                            <label for="user_email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                Email do Usuário <span class="text-red-500">*</span>
-                            </label>
-                            <input type="email" id="user_email" name="user_email" value="{{ old('user_email') }}"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full px-4 py-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 @error('user_email') border-red-500 dark:border-red-600 @enderror"
-                                placeholder="usuario@exemplo.com">
-                            @error('user_email')
-                                <p class="mt-2 text-sm font-medium text-red-600 dark:text-red-400">{{ $message }}</p>
-                            @enderror
-                        </div>
+                        <label for="observacoes" class="block mb-2 text-[10px] font-black text-gray-400 uppercase tracking-widest px-1">Notas e Observações</label>
+                        <textarea id="observacoes" name="observacoes" rows="5"
+                            class="w-full px-5 py-4 bg-gray-50/50 dark:bg-slate-900/50 border border-gray-200 dark:border-slate-700 rounded-3xl text-sm font-bold focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all dark:text-white leading-relaxed"
+                            placeholder="Informações relevantes sobre este perfil...">{{ old('observacoes') }}</textarea>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label for="user_password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                Senha <span class="text-red-500">*</span>
-                            </label>
-                            <input type="password" id="user_password" name="user_password"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full px-4 py-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 @error('user_password') border-red-500 dark:border-red-600 @enderror"
-                                placeholder="Mínimo 8 caracteres">
-                            @error('user_password')
-                                <p class="mt-2 text-sm font-medium text-red-600 dark:text-red-400">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <div>
-                            <label for="user_password_confirmation" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                Confirmar Senha <span class="text-red-500">*</span>
-                            </label>
-                            <input type="password" id="user_password_confirmation" name="user_password_confirmation"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full px-4 py-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                placeholder="Digite a senha novamente">
-                        </div>
+                    <div class="pt-4 space-y-3">
+                         <button type="submit" class="w-full inline-flex items-center justify-center gap-3 px-8 py-4 text-xs font-black uppercase tracking-widest text-white bg-blue-600 rounded-2xl hover:bg-blue-700 transition-all shadow-xl shadow-blue-500/20 active:scale-95 group">
+                            <x-icon name="user-check" style="duotone" class="w-5 h-5 group-hover:scale-110 transition-transform" />
+                            Confirmar Cadastro
+                        </button>
+                        <a href="{{ route('admin.lideres-comunidade.index') }}" class="w-full inline-flex items-center justify-center gap-2 px-8 py-4 text-xs font-black uppercase tracking-widest text-slate-500 hover:text-slate-900 transition-colors">
+                            Cancelar Operação
+                        </a>
                     </div>
                 </div>
 
-                <!-- Seleção de usuário existente -->
-                <div id="existing-user-form" class="hidden">
-                    <div>
-                        <label for="user_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                            Selecionar Usuário <span class="text-red-500">*</span>
-                        </label>
-                        <select id="user_id" name="user_id"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full px-4 py-2.5 dark:bg-slate-700 dark:border-slate-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 @error('user_id') border-red-500 dark:border-red-600 @enderror">
-                            <option value="">Selecione um usuário...</option>
-                            @foreach($users as $user)
-                                <option value="{{ $user->id }}" {{ old('user_id') == $user->id ? 'selected' : '' }}>
-                                    {{ $user->name }} ({{ $user->email }})
-                                </option>
-                            @endforeach
-                        </select>
-                        @error('user_id')
-                            <p class="mt-2 text-sm font-medium text-red-600 dark:text-red-400">{{ $message }}</p>
-                        @enderror
-                        <p class="mt-2 text-xs text-gray-500 dark:text-gray-400">Apenas usuários que ainda não são líderes de comunidade</p>
+                <!-- Info Help -->
+                <div class="bg-blue-50 dark:bg-blue-900/10 border border-blue-100 dark:border-blue-900/20 rounded-3xl p-6">
+                    <div class="flex items-start gap-4">
+                        <div class="p-3 bg-white dark:bg-slate-800 rounded-xl shadow-sm text-blue-500">
+                            <x-icon name="circle-question" style="duotone" class="w-6 h-6" />
+                        </div>
+                        <div>
+                            <h4 class="text-xs font-black text-blue-900 dark:text-blue-300 uppercase tracking-widest mb-1">Ajuda Rápida</h4>
+                            <p class="text-[11px] text-blue-700 dark:text-blue-400/80 leading-relaxed font-bold uppercase tracking-tight">O líder de comunidade é responsável por validar pagamentos e gerenciar o poço vinculado.</p>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-
-        <!-- Status e Observações -->
-        <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700">
-            <div class="px-6 py-4 border-b border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-900/50">
-                <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Status e Observações</h2>
-            </div>
-            <div class="p-6 space-y-6">
-                <div>
-                    <label for="status" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                        Status <span class="text-red-500">*</span>
-                    </label>
-                    <select id="status" name="status" required
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full px-4 py-2.5 dark:bg-slate-700 dark:border-slate-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 @error('status') border-red-500 dark:border-red-600 @enderror">
-                        <option value="ativo" {{ old('status', 'ativo') === 'ativo' ? 'selected' : '' }}>Ativo</option>
-                        <option value="inativo" {{ old('status') === 'inativo' ? 'selected' : '' }}>Inativo</option>
-                    </select>
-                    @error('status')
-                        <p class="mt-2 text-sm font-medium text-red-600 dark:text-red-400">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <div>
-                    <label for="observacoes" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Observações</label>
-                    <textarea id="observacoes" name="observacoes" rows="3"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full px-4 py-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 @error('observacoes') border-red-500 dark:border-red-600 @enderror"
-                        placeholder="Observações adicionais sobre o líder...">{{ old('observacoes') }}</textarea>
-                    @error('observacoes')
-                        <p class="mt-2 text-sm font-medium text-red-600 dark:text-red-400">{{ $message }}</p>
-                    @enderror
-                </div>
-            </div>
-        </div>
-
-        <!-- Ações -->
-        <div class="flex flex-col sm:flex-row items-center justify-end gap-4 pt-6 border-t border-gray-200 dark:border-slate-700">
-            <a href="{{ route('admin.lideres-comunidade.index') }}" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 dark:bg-slate-700 dark:text-gray-300 dark:border-slate-600 dark:hover:bg-slate-600 dark:focus:ring-slate-700 transition-colors">
-                Cancelar
-            </a>
-            <button type="submit" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-2.5 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 transition-colors">
-                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                </svg>
-                Cadastrar Líder
-            </button>
         </div>
     </form>
 </div>
@@ -335,58 +308,23 @@ let pessoaSearchTimeout;
 function toggleVinculacao(tipo) {
     const newUserForm = document.getElementById('new-user-form');
     const existingUserForm = document.getElementById('existing-user-form');
-    const pessoaIdInput = document.getElementById('pessoa_id');
 
-    // Verificar se os elementos existem antes de usar
-    if (!newUserForm || !existingUserForm || !pessoaIdInput) {
-        console.error('Elementos do formulário não encontrados');
-        return;
-    }
+    if (!newUserForm || !existingUserForm) return;
+
+    newUserForm.classList.add('hidden');
+    existingUserForm.classList.add('hidden');
 
     const newUserInputs = newUserForm.querySelectorAll('input, select');
     const existingUserInputs = existingUserForm.querySelectorAll('input, select');
 
-    // Esconder todos os formulários
-    newUserForm.classList.add('hidden');
-    existingUserForm.classList.add('hidden');
-
-    // Limpar required de todos os campos de usuário
-    [...newUserInputs, ...existingUserInputs].forEach(input => {
-        if (input.name !== 'criar_usuario') {
-            input.required = false;
-            if (input.type === 'password') {
-                input.value = '';
-            }
-        }
-    });
+    [...newUserInputs, ...existingUserInputs].forEach(i => i.required = false);
 
     if (tipo === 'usuario-novo') {
         newUserForm.classList.remove('hidden');
-        newUserInputs.forEach(input => {
-            if (input.name !== 'criar_usuario' && input.name !== 'user_password_confirmation') {
-                input.required = true;
-            }
-        });
-        // Não limpar pessoa_id aqui, pois a pessoa pode ser selecionada independentemente
+        newUserInputs.forEach(i => { if (i.name !== 'user_password_confirmation') i.required = true; });
     } else if (tipo === 'usuario-existente') {
         existingUserForm.classList.remove('hidden');
-        existingUserInputs.forEach(input => {
-            if (input.name === 'user_id') {
-                input.required = true;
-            }
-        });
-        // Não limpar pessoa_id aqui, pois a pessoa pode ser selecionada independentemente
-    } else if (tipo === 'pessoa') {
-        // Quando seleciona "apenas pessoa", esconder formulários de usuário
-        // Limpar campos de usuário
-        newUserInputs.forEach(input => {
-            if (input.type === 'password') input.value = '';
-            if (input.name === 'user_name' || input.name === 'user_email') input.value = '';
-        });
-        existingUserInputs.forEach(input => {
-            if (input.name === 'user_id') input.value = '';
-        });
-        // pessoaIdInput não precisa ser required aqui, pois a busca é opcional
+        existingUserInputs.forEach(i => i.required = true);
     }
 }
 
@@ -406,184 +344,64 @@ function buscarPessoas() {
             .then(response => response.json())
             .then(pessoas => {
                 if (pessoas.length === 0) {
-                    resultsDiv.innerHTML = '<div class="p-4 text-sm text-gray-500 dark:text-gray-400">Nenhuma pessoa encontrada</div>';
-                    resultsDiv.classList.remove('hidden');
-                    return;
+                    resultsDiv.innerHTML = '<div class="p-4 text-[10px] font-black uppercase text-slate-400">Nenhum resultado</div>';
+                } else {
+                    resultsDiv.innerHTML = pessoas.map(p => `
+                        <div class="p-4 hover:bg-slate-50 dark:hover:bg-slate-700/50 cursor-pointer border-b border-slate-100 dark:border-slate-700 last:border-0 group"
+                             onclick="selecionarPessoa(${p.id})">
+                            <p class="text-xs font-black text-slate-900 dark:text-white uppercase tracking-tight group-hover:text-blue-600 transition-colors">${p.nome}</p>
+                            <p class="text-[9px] text-slate-400 font-bold uppercase tracking-widest mt-1">NIS: ${p.nis || '---'} • CPF: ${p.cpf || '---'}</p>
+                        </div>
+                    `).join('');
                 }
-
-                resultsDiv.innerHTML = pessoas.map(pessoa => `
-                    <div class="p-3 hover:bg-gray-100 dark:hover:bg-slate-700 cursor-pointer border-b border-gray-200 dark:border-slate-700 last:border-0"
-                         onclick="selecionarPessoa(${pessoa.id})">
-                        <p class="text-sm font-medium text-gray-900 dark:text-white">${pessoa.nome}${pessoa.apelido ? ' (' + pessoa.apelido + ')' : ''}</p>
-                        <p class="text-xs text-gray-500 dark:text-gray-400">
-                            ${pessoa.nis ? 'NIS: ' + pessoa.nis + ' • ' : ''}
-                            ${pessoa.cpf ? 'CPF: ' + pessoa.cpf + ' • ' : ''}
-                            ${pessoa.localidade || ''}
-                        </p>
-                    </div>
-                `).join('');
                 resultsDiv.classList.remove('hidden');
-            })
-            .catch(error => {
-                console.error('Erro ao buscar pessoas:', error);
             });
     }, 300);
 }
 
-function selecionarPessoa(pessoaId) {
-    const urlBase = '{{ url("/admin/lideres-comunidade/pessoa") }}';
-    fetch(`${urlBase}/${pessoaId}`)
-        .then(response => response.json())
-        .then(pessoa => {
-            document.getElementById('pessoa_id').value = pessoa.id;
-            document.getElementById('pessoa_search').value = pessoa.nome;
-            document.getElementById('pessoa_results').classList.add('hidden');
-
-            // Preencher campos do formulário
-            if (!document.getElementById('nome').value) {
-                document.getElementById('nome').value = pessoa.nome;
-            }
-            if (!document.getElementById('cpf').value && pessoa.cpf) {
-                document.getElementById('cpf').value = pessoa.cpf_formatado || pessoa.cpf;
-            }
-            if (!document.getElementById('localidade_id').value && pessoa.localidade_id) {
-                document.getElementById('localidade_id').value = pessoa.localidade_id;
-                // Disparar evento change para preencher endereço automaticamente
+function selecionarPessoa(id) {
+    fetch(`{{ url("/admin/lideres-comunidade/pessoa") }}/${id}`)
+        .then(r => r.json())
+        .then(p => {
+            document.getElementById('pessoa_id').value = p.id;
+            document.getElementById('nome').value = p.nome;
+            if (p.cpf) document.getElementById('cpf').value = p.cpf_formatado || p.cpf;
+            if (p.localidade_id) {
+                document.getElementById('localidade_id').value = p.localidade_id;
                 document.getElementById('localidade_id').dispatchEvent(new Event('change'));
             }
-
-            // Mostrar informações da pessoa selecionada
-            document.getElementById('pessoa_nome_selecionada').textContent = pessoa.nome;
-            let info = [];
-            if (pessoa.nis_formatado) info.push(`NIS: ${pessoa.nis_formatado}`);
-            if (pessoa.cpf_formatado) info.push(`CPF: ${pessoa.cpf_formatado}`);
-            if (pessoa.localidade_nome) info.push(`Localidade: ${pessoa.localidade_nome}`);
-            if (pessoa.idade) info.push(`Idade: ${pessoa.idade} anos`);
-            if (pessoa.recebe_pbf) info.push(`Beneficiária PBF`);
-            document.getElementById('pessoa_info_selecionada').innerHTML = info.join(' • ');
+            document.getElementById('pessoa_nome_selecionada').textContent = p.nome;
+            document.getElementById('pessoa_info_selecionada').textContent = `NIS: ${p.nis_formatado || '---'} • LOCALIDADE: ${p.localidade_nome || '---'}`;
             document.getElementById('pessoa_selecionada').classList.remove('hidden');
-        })
-        .catch(error => {
-            console.error('Erro ao buscar pessoa:', error);
-            alert('Erro ao carregar dados da pessoa');
+            document.getElementById('pessoa_results').classList.add('hidden');
         });
 }
 
 function removerPessoa() {
     document.getElementById('pessoa_id').value = '';
-    document.getElementById('pessoa_search').value = '';
     document.getElementById('pessoa_selecionada').classList.add('hidden');
-    document.getElementById('pessoa_results').classList.add('hidden');
 }
 
-// Inicializar estado
 document.addEventListener('DOMContentLoaded', function() {
-    const pessoaIdInput = document.getElementById('pessoa_id');
-    const pessoaId = pessoaIdInput ? pessoaIdInput.value : '';
+    document.getElementById('pessoa_search').addEventListener('input', buscarPessoas);
 
-    // Se já tem pessoa selecionada, marcar o radio correspondente
-    if (pessoaId) {
-        const radioPessoa = document.querySelector('input[name="criar_usuario"][value="pessoa"]');
-        if (radioPessoa) {
-            radioPessoa.checked = true;
-            toggleVinculacao('pessoa');
-            selecionarPessoa(pessoaId);
-        }
-    } else {
-        // Inicializar com o padrão (criar novo usuário)
-        const criarUsuario = document.querySelector('input[name="criar_usuario"][value="1"]');
-        if (criarUsuario) {
-            criarUsuario.checked = true;
-            toggleVinculacao('usuario-novo');
-        }
-    }
-
-    // Event listeners para busca de pessoa
-    const pessoaSearchInput = document.getElementById('pessoa_search');
-    if (pessoaSearchInput) {
-        pessoaSearchInput.addEventListener('input', buscarPessoas);
-    }
-
-    const localidadeSelect = document.getElementById('localidade_id');
-    const enderecoInput = document.getElementById('endereco');
-
-    if (localidadeSelect) {
-        localidadeSelect.addEventListener('change', function() {
-            const localidadeId = this.value;
-
-            // Buscar dados da localidade e preencher endereço
-            if (localidadeId) {
-                fetch(`/localidades/${localidadeId}/dados`, {
-                    headers: {
-                        'Accept': 'application/json',
-                        'X-Requested-With': 'XMLHttpRequest',
-                    }
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    // Montar endereço completo
-                    let enderecoCompleto = data.endereco || '';
-                    if (data.numero) {
-                        enderecoCompleto += (enderecoCompleto ? ', ' : '') + data.numero;
-                    }
-                    if (data.complemento) {
-                        enderecoCompleto += (enderecoCompleto ? ' - ' : '') + data.complemento;
-                    }
-                    if (data.bairro) {
-                        enderecoCompleto += (enderecoCompleto ? ', ' : '') + data.bairro;
-                    }
-                    if (data.cidade) {
-                        enderecoCompleto += (enderecoCompleto ? ' - ' : '') + data.cidade;
-                        if (data.estado) {
-                            enderecoCompleto += '/' + data.estado;
-                        }
-                    }
-                    if (data.cep) {
-                        enderecoCompleto += (enderecoCompleto ? ' - CEP: ' : '') + data.cep;
-                    }
-
-                    if (enderecoInput) {
-                        if (enderecoCompleto) {
-                            enderecoInput.value = enderecoCompleto;
-                        } else if (data.nome) {
-                            // Se não tem endereço, usar pelo menos o nome da localidade
-                            enderecoInput.value = data.nome;
-                        }
-                    }
-                })
-                .catch(error => {
-                    console.error('Erro ao buscar dados da localidade:', error);
+    document.getElementById('localidade_id').addEventListener('change', function() {
+        if (this.value) {
+            fetch(`/localidades/${this.value}/dados`)
+                .then(r => r.json())
+                .then(d => {
+                    let end = d.endereco || '';
+                    if (d.numero) end += `, ${d.numero}`;
+                    if (d.bairro) end += ` - ${d.bairro}`;
+                    document.getElementById('endereco').value = end || d.nome || '';
                 });
-            } else {
-                // Limpar endereço se nenhuma localidade foi selecionada
-                if (enderecoInput) {
-                    enderecoInput.value = '';
-                }
-            }
-
-            // Buscar pessoas se já tinha busca ativa
-            if (pessoaSearchInput && pessoaSearchInput.value.length >= 3) {
-                buscarPessoas();
-            }
-        });
-    }
-
-    // Fechar resultados ao clicar fora
-    document.addEventListener('click', function(e) {
-        if (!e.target.closest('#pessoa_search') && !e.target.closest('#pessoa_results')) {
-            const resultsDiv = document.getElementById('pessoa_results');
-            if (resultsDiv) {
-                resultsDiv.classList.add('hidden');
-            }
         }
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('#pessoa_search')) document.getElementById('pessoa_results').classList.add('hidden');
     });
 });
 </script>
 @endpush
 @endsection
-

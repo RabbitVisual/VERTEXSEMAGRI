@@ -1,254 +1,177 @@
 @extends('admin.layouts.admin')
 
-@section('title', 'Monitoramento de Funcionários em Tempo Real')
+@section('title', 'Monitoramento Tático de Efetivos')
 
 @push('styles')
 <style>
-    .pulse-animation {
-        animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-    }
+    .glow-emerald { box-shadow: 0 0 20px rgba(16, 185, 129, 0.2); }
+    .glow-amber { box-shadow: 0 0 20px rgba(245, 158, 11, 0.2); }
 
-    @keyframes pulse {
-        0%, 100% {
-            opacity: 1;
-        }
-        50% {
-            opacity: .5;
-        }
+    @keyframes tactical-pulse {
+        0% { transform: scale(1); opacity: 1; }
+        50% { transform: scale(1.4); opacity: 0.5; }
+        100% { transform: scale(1); opacity: 1; }
     }
-
-    .status-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-
-    .status-indicator {
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-    }
-
-    .status-indicator.pulse {
-        animation: pulse-dot 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-    }
-
-    @keyframes pulse-dot {
-        0%, 100% {
-            transform: scale(1);
-            opacity: 1;
-        }
-        50% {
-            transform: scale(1.2);
-            opacity: 0.8;
-        }
-    }
+    .pulse-tactical { animation: tactical-pulse 2s infinite; }
 </style>
 @endpush
 
 @section('content')
-<div class="space-y-6">
-    <!-- Page Header -->
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6 border-b border-gray-200 dark:border-gray-700">
-        <div>
-            <h1 class="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-3">
-                <x-icon name="rotate-right" class="w-5 h-5" />
-                Atualizar
+<div class="space-y-8 md:space-y-12 animate-fade-in pb-12">
+    <!-- Header de Vigilância -->
+    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8 pb-8 border-b border-gray-200 dark:border-slate-800">
+        <div class="flex items-center gap-6">
+            <div class="w-16 h-16 bg-slate-900 rounded-[2rem] flex items-center justify-center text-emerald-500 shadow-2xl border border-emerald-500/20 relative group overflow-hidden">
+                <div class="absolute inset-0 bg-emerald-500/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <x-icon name="tower-broadcast" style="duotone" class="w-8 h-8 relative z-10" />
+            </div>
+            <div>
+                <h1 class="text-3xl font-black text-gray-900 dark:text-white tracking-tight uppercase leading-none">Radar de Efetivos</h1>
+                <div class="flex items-center gap-3 mt-3">
+                    <span class="flex items-center gap-2 px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 rounded-full text-[8px] font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-widest italic">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                        Transmissão em Tempo Real
+                    </span>
+                    <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest italic">Central de Comando RH</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-4">
+            <div class="px-6 py-3 bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800 rounded-2xl flex flex-col items-end">
+                <p class="text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1 italic">Próximo Varredura</p>
+                <div class="flex items-center gap-2">
+                    <span id="proximo-update" class="text-sm font-black text-emerald-600 tabular-nums tracking-tighter">15s</span>
+                    <div class="w-4 h-4 rounded-full border-2 border-slate-200 dark:border-slate-700 border-t-emerald-500 animate-spin"></div>
+                </div>
+            </div>
+
+            <button onclick="atualizarAgora()" class="h-14 px-8 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:opacity-90 active:scale-95 transition-all shadow-xl flex items-center gap-3 group">
+                <x-icon id="refresh-icon" name="arrows-rotate" class="w-4 h-4 group-hover:rotate-180 transition-transform duration-500" />
+                Sincronizar
             </button>
         </div>
     </div>
 
-    <!-- Alertas -->
-    @if(session('success'))
-        <div class="p-4 bg-emerald-50 border border-emerald-200 rounded-lg dark:bg-emerald-900/20 dark:border-emerald-800">
-            <div class="flex items-center gap-3">
-                <svg class="w-5 h-5 text-emerald-600 dark:text-emerald-500" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" />
-                </svg>
-                <p class="text-sm text-emerald-800 dark:text-emerald-200">{{ session('success') }}</p>
-            </div>
-        </div>
-    @endif
+    <!-- Dash de Operação -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+        @php
+            $stat_configs = [
+                'total' => ['label' => 'Força Total', 'icon' => 'user-group', 'color' => 'slate', 'id' => 'stat-total'],
+                'disponiveis' => ['label' => 'Em Reserva', 'icon' => 'user-check', 'color' => 'emerald', 'id' => 'stat-disponiveis'],
+                'em_atendimento' => ['label' => 'Engajados', 'icon' => 'user-gear', 'color' => 'amber', 'id' => 'stat-atendimento'],
+                'pausados' => ['label' => 'Em Pausa', 'icon' => 'user-clock', 'color' => 'blue', 'id' => 'stat-pausados'],
+                'offline' => ['label' => 'Desconectados', 'icon' => 'user-slash', 'color' => 'rose', 'id' => 'stat-offline'],
+            ];
+        @endphp
 
-    <!-- Cards de Estatísticas -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-        <!-- Total -->
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-            <div class="flex items-center justify-between">
-                <div>
-                    <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Total</p>
-                    <p class="text-3xl font-bold text-gray-900 dark:text-white mt-1" id="stat-total">{{ $estatisticas['total'] }}</p>
+        @foreach($stat_configs as $key => $conf)
+        <div class="premium-card p-6 group hover:border-{{ $conf['color'] }}-500 transition-all duration-300">
+            <div class="flex items-center justify-between mb-4">
+                <div class="w-12 h-12 rounded-xl bg-{{ $conf['color'] }}-50 dark:bg-{{ $conf['color'] }}-900/20 flex items-center justify-center text-{{ $conf['color'] }}-600 dark:text-{{ $conf['color'] }}-400 group-hover:bg-{{ $conf['color'] }}-500 group-hover:text-white transition-all">
+                    <x-icon name="{{ $conf['icon'] }}" style="duotone" class="w-6 h-6" />
                 </div>
-                <div class="p-3 bg-gray-100 dark:bg-gray-700 rounded-lg">
-                    <svg class="w-6 h-6 text-gray-600 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
-                    </svg>
-                </div>
+                @if($key === 'em_atendimento')
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 pulse-tactical"></span>
+                @endif
             </div>
+            <p class="text-[9px] font-black uppercase text-slate-400 tracking-widest mb-1 italic">{{ $conf['label'] }}</p>
+            <p class="text-3xl font-black text-gray-900 dark:text-white tracking-tighter" id="{{ $conf['id'] }}">{{ $estatisticas[$key] ?? 0 }}</p>
         </div>
-
-        <!-- Disponíveis -->
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-            <div class="flex items-center justify-between">
-                <div>
-                    <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Disponíveis</p>
-                    <p class="text-3xl font-bold text-emerald-600 dark:text-emerald-500 mt-1" id="stat-disponiveis">{{ $estatisticas['disponiveis'] }}</p>
-                </div>
-                <div class="p-3 bg-emerald-100 dark:bg-emerald-900/20 rounded-lg">
-                    <svg class="w-6 h-6 text-emerald-600 dark:text-emerald-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <!-- Em Atendimento -->
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-            <div class="flex items-center justify-between">
-                <div>
-                    <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Em Atendimento</p>
-                    <p class="text-3xl font-bold text-amber-600 dark:text-amber-500 mt-1" id="stat-atendimento">{{ $estatisticas['em_atendimento'] }}</p>
-                </div>
-                <div class="p-3 bg-amber-100 dark:bg-amber-900/20 rounded-lg">
-                    <svg class="w-6 h-6 text-amber-600 dark:text-amber-500 pulse-animation" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 11-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 004.486-6.336l-3.276 3.277a3.004 3.004 0 01-2.25-2.25l3.276-3.276a4.5 4.5 0 00-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-1.745 1.437L5.909 7.5H4.5L2.25 3.75l1.5-1.5L7.5 4.5v1.409l4.26 4.26m-1.745 1.437l1.745-1.437m6.615 8.206L15.75 15.75M4.867 19.125h.008v.008h-.008v-.008z" />
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <!-- Pausados -->
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-            <div class="flex items-center justify-between">
-                <div>
-                    <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Pausados</p>
-                    <p class="text-3xl font-bold text-blue-600 dark:text-blue-500 mt-1" id="stat-pausados">{{ $estatisticas['pausados'] }}</p>
-                </div>
-                <div class="p-3 bg-blue-100 dark:bg-blue-900/20 rounded-lg">
-                    <svg class="w-6 h-6 text-blue-600 dark:text-blue-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25v13.5m-7.5-13.5v13.5" />
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <!-- Offline -->
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-            <div class="flex items-center justify-between">
-                <div>
-                    <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Offline</p>
-                    <p class="text-3xl font-bold text-gray-600 dark:text-gray-500 mt-1" id="stat-offline">{{ $estatisticas['offline'] }}</p>
-                </div>
-                <div class="p-3 bg-gray-100 dark:bg-gray-700 rounded-lg">
-                    <svg class="w-6 h-6 text-gray-600 dark:text-gray-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 3l8.735 8.735m0 0a.374.374 0 11.53.53m-.53-.53l.53.53m0 0L21 21M14.652 9.348a3.75 3.75 0 010 5.304m2.121-7.425a6.75 6.75 0 010 9.546m2.121-11.667c3.808 3.807 3.808 9.98 0 13.788m-9.546-4.242a3.733 3.733 0 01-1.06-2.122m-1.061 4.243a6.75 6.75 0 01-1.625-6.929m-.496 9.05c-3.068-3.067-3.664-7.67-1.79-11.334M12 12h.008v.008H12V12z" />
-                    </svg>
-                </div>
-            </div>
-        </div>
+        @endforeach
     </div>
 
-    <!-- Última Atualização -->
-    <div class="flex items-center justify-between text-sm text-gray-600 dark:text-gray-400">
-        <span>Última atualização: <strong id="ultima-atualizacao">{{ now()->format('H:i:s') }}</strong></span>
-        <span>Próxima atualização em: <strong id="proximo-update">15s</strong></span>
-    </div>
-
-    <!-- Lista de Funcionários -->
-    <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden">
-        <div class="p-6 border-b border-gray-200 dark:border-gray-700">
-            <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Funcionários Ativos</h2>
-            <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Monitoramento em tempo real do status de todos os funcionários</p>
+    <!-- Tabela de Monitoramento -->
+    <div class="premium-card overflow-hidden border-indigo-500/10">
+        <div class="px-10 py-8 border-b border-gray-100 dark:border-slate-800 flex items-center justify-between bg-gray-50/30 dark:bg-slate-900/30">
+            <div>
+                <h3 class="text-base font-black text-gray-900 dark:text-white uppercase tracking-tight">Status da Frota Humana</h3>
+                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-1 italic">Acompanhamento de geolocalização e atividade operacional</p>
+            </div>
+            <div class="text-right">
+                <p class="text-[8px] font-black text-slate-400 uppercase tracking-widest italic">Última Varredura</p>
+                <p class="text-xs font-black text-indigo-600 dark:text-indigo-400 tabular-nums tracking-tighter" id="ultima-atualizacao">{{ now()->format('H:i:s') }}</p>
+            </div>
         </div>
 
         <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                <thead class="bg-gray-50 dark:bg-gray-900">
-                    <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                            Funcionário
-                        </th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                            Função
-                        </th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                            Status
-                        </th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                            Ordem Atual
-                        </th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                            Tempo em Atendimento
-                        </th>
-                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                            Ações
-                        </th>
+            <table class="w-full text-left border-separate border-spacing-0">
+                <thead>
+                    <tr class="bg-gray-50/50 dark:bg-slate-900/50">
+                        <th class="px-10 py-5 text-[10px] font-black uppercase text-slate-400 tracking-[0.2em] border-b border-gray-100 dark:border-slate-800 italic">Identidade Operacional</th>
+                        <th class="px-10 py-5 text-[10px] font-black uppercase text-slate-400 tracking-[0.2em] border-b border-gray-100 dark:border-slate-800 italic">Posição / Função</th>
+                        <th class="px-10 py-5 text-[10px] font-black uppercase text-slate-400 tracking-[0.2em] border-b border-gray-100 dark:border-slate-800 italic">Frequência / Status</th>
+                        <th class="px-10 py-5 text-[10px] font-black uppercase text-slate-400 tracking-[0.2em] border-b border-gray-100 dark:border-slate-800 italic">Protocolo Atual</th>
+                        <th class="px-10 py-5 text-[10px] font-black uppercase text-slate-400 tracking-[0.2em] border-b border-gray-100 dark:border-slate-800 italic">Tempo Engajado</th>
+                        <th class="px-10 py-5 text-right text-[10px] font-black uppercase text-slate-400 tracking-[0.2em] border-b border-gray-100 dark:border-slate-800 italic">Ações</th>
                     </tr>
                 </thead>
-                <tbody id="funcionarios-tbody" class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                <tbody id="funcionarios-tbody" class="divide-y divide-gray-50 dark:divide-slate-800">
                     @forelse($funcionarios as $funcionario)
-                    <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors" data-funcionario-id="{{ $funcionario->id }}">
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="flex items-center">
-                                <div class="flex-shrink-0 h-10 w-10">
-                                    <div class="h-10 w-10 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center text-white font-semibold">
-                                        {{ substr($funcionario->nome, 0, 2) }}
-                                    </div>
+                    <tr class="group hover:bg-indigo-50/30 dark:hover:bg-slate-800/50 transition-colors" data-funcionario-id="{{ $funcionario->id }}">
+                        <td class="px-10 py-6">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-gray-100 to-gray-200 dark:from-slate-800 dark:to-slate-700 flex items-center justify-center text-slate-600 dark:text-slate-300 font-black border border-white dark:border-slate-600 shadow-lg group-hover:scale-110 transition-transform">
+                                    {{ strtoupper(substr($funcionario->nome, 0, 1)) }}
                                 </div>
-                                <div class="ml-4">
-                                    <div class="text-sm font-medium text-gray-900 dark:text-white">{{ $funcionario->nome }}</div>
-                                    <div class="text-sm text-gray-500 dark:text-gray-400">{{ $funcionario->codigo }}</div>
+                                <div>
+                                    <p class="text-sm font-black text-gray-900 dark:text-white uppercase tracking-tight">{{ $funcionario->nome }}</p>
+                                    <p class="text-[9px] font-black font-mono text-emerald-600 uppercase tracking-widest mt-1 italic">{{ $funcionario->codigo }}</p>
                                 </div>
                             </div>
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="text-sm text-gray-900 dark:text-white">{{ $funcionario->funcao_formatada }}</span>
+                        <td class="px-10 py-6">
+                            <span class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest">{{ $funcionario->funcao_formatada }}</span>
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="status-badge">
-                                <span class="status-indicator {{ $funcionario->status_campo === 'em_atendimento' ? 'pulse' : '' }} bg-{{ $funcionario->status_campo_cor }}-500"></span>
-                                <span class="text-sm font-medium text-{{ $funcionario->status_campo_cor }}-700 dark:text-{{ $funcionario->status_campo_cor }}-400">
+                        <td class="px-10 py-6">
+                            <div class="flex items-center gap-3">
+                                <div class="w-2 h-2 rounded-full bg-{{ $funcionario->status_campo_cor }}-500 {{ $funcionario->status_campo === 'em_atendimento' ? 'pulse-tactical' : '' }}"></div>
+                                <span class="text-[10px] font-black text-{{ $funcionario->status_campo_cor }}-600 dark:text-{{ $funcionario->status_campo_cor }}-400 uppercase tracking-widest italic">
                                     {{ $funcionario->status_campo_texto }}
                                 </span>
-                            </span>
+                            </div>
                         </td>
-                        <td class="px-6 py-4">
+                        <td class="px-10 py-6">
                             @if($funcionario->ordemServicoAtual)
-                                <a href="{{ route('admin.ordens.show', $funcionario->ordemServicoAtual->id) }}" class="text-sm text-emerald-600 dark:text-emerald-500 hover:underline">
-                                    OS #{{ $funcionario->ordemServicoAtual->numero }}
+                                <a href="{{ route('admin.ordens.show', $funcionario->ordemServicoAtual->id) }}" class="inline-flex items-center gap-2 group/link">
+                                    <span class="text-[10px] font-black text-indigo-600 dark:text-indigo-400 uppercase tracking-widest decoration-2 underline-offset-4 group-hover/link:underline">#{{ $funcionario->ordemServicoAtual->numero }}</span>
+                                    <x-icon name="arrow-up-right-from-square" class="w-3 h-3 text-slate-300 group-hover/link:text-indigo-500 transition-colors" />
                                 </a>
-                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mt-1 italic truncate max-w-[150px]">
                                     {{ $funcionario->ordemServicoAtual->demanda->localidade->nome ?? 'N/A' }}
                                 </p>
                             @else
-                                <span class="text-sm text-gray-500 dark:text-gray-400">-</span>
+                                <span class="text-[10px] font-black text-slate-300 uppercase italic">Aguardando Missão</span>
                             @endif
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
+                        <td class="px-10 py-6">
                             @if($funcionario->tempo_atendimento)
-                                <span class="text-sm text-gray-900 dark:text-white font-medium">{{ $funcionario->tempo_atendimento }}</span>
+                                <span class="text-sm font-black text-gray-900 dark:text-white tabular-nums tracking-tighter">{{ $funcionario->tempo_atendimento }}</span>
                             @else
-                                <span class="text-sm text-gray-500 dark:text-gray-400">-</span>
+                                <span class="text-sm font-black text-slate-300">-</span>
                             @endif
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                            @if($funcionario->estaEmAtendimento())
-                                <button onclick="forcarLiberacao({{ $funcionario->id }}, '{{ $funcionario->nome }}')" class="text-red-600 hover:text-red-900 dark:text-red-500 dark:hover:text-red-400 mr-3">
-                                    Forçar Liberação
+                        <td class="px-10 py-6 text-right">
+                            <div class="flex justify-end items-center gap-3">
+                                @if($funcionario->estaEmAtendimento())
+                                    <button onclick="forcarLiberacao({{ $funcionario->id }}, '{{ $funcionario->nome }}')" class="w-10 h-10 flex items-center justify-center bg-rose-50 dark:bg-rose-900/20 text-rose-600 dark:text-rose-400 rounded-xl hover:bg-rose-600 hover:text-white transition-all border border-rose-100 dark:border-rose-900/30 shadow-sm" title="Abordagem Emergencial">
+                                        <x-icon name="hand-stop" class="w-4 h-4" />
+                                    </button>
+                                @endif
+                                <button onclick="verDetalhes({{ $funcionario->id }})" class="w-10 h-10 flex items-center justify-center bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 rounded-xl hover:bg-emerald-600 hover:text-white transition-all border border-emerald-100 dark:border-emerald-900/30 shadow-sm">
+                                    <x-icon name="eye" class="w-5 h-5" />
                                 </button>
-                            @endif
-                            <button onclick="verDetalhes({{ $funcionario->id }})" class="text-emerald-600 hover:text-emerald-900 dark:text-emerald-500 dark:hover:text-emerald-400">
-                                Detalhes
-                            </button>
+                            </div>
                         </td>
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="6" class="px-6 py-12 text-center text-gray-500 dark:text-gray-400">
-                            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
-                            </svg>
-                            <p class="mt-2">Nenhum funcionário ativo encontrado</p>
+                        <td colspan="6" class="px-10 py-24 text-center">
+                            <div class="w-20 h-20 bg-slate-50 dark:bg-slate-900 rounded-[2.5rem] flex items-center justify-center mx-auto mb-6 text-slate-200">
+                                <x-icon name="sensor-slash" style="duotone" class="w-10 h-10" />
+                            </div>
+                            <h3 class="text-xs font-black text-slate-400 uppercase tracking-[0.2em] italic">Nenhum Analógico Detectado</h3>
+                            <p class="text-[10px] text-slate-500 font-medium mt-2">Os sinais funcionais aparecerão aqui durante o turno de operação.</p>
                         </td>
                     </tr>
                     @endforelse
@@ -258,24 +181,29 @@
     </div>
 </div>
 
-<!-- Modal para Forçar Liberação -->
-<div id="modal-forcar-liberacao" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full p-6">
-        <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Forçar Liberação</h3>
-        <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
-            Você está prestes a forçar a liberação do funcionário <strong id="modal-funcionario-nome"></strong>.
-            Por favor, informe o motivo:
-        </p>
-        <form id="form-forcar-liberacao" method="POST">
+<!-- Modal Emergencial (Forçar Liberação) -->
+<div id="modal-forcar-liberacao" class="hidden fixed inset-0 z-[100] bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-6 animate-fade-in">
+    <div class="w-full max-w-lg bg-white dark:bg-slate-900 rounded-[3rem] shadow-2xl border border-white/10 overflow-hidden animate-scale-in">
+        <div class="p-10 border-b border-gray-100 dark:border-slate-800 bg-rose-500/5 flex items-center gap-6">
+            <div class="w-14 h-14 bg-rose-600 rounded-2xl flex items-center justify-center text-white shadow-xl shadow-rose-600/20">
+                <x-icon name="triangle-exclamation" style="duotone" class="w-7 h-7" />
+            </div>
+            <div>
+                <h2 class="text-xl font-black text-gray-900 dark:text-white uppercase tracking-tight">Abortar Efetivo</h2>
+                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest italic mt-1">Intervenção de liberação manual: <span id="modal-funcionario-nome" class="text-rose-500"></span></p>
+            </div>
+        </div>
+
+        <form id="form-forcar-liberacao" method="POST" class="p-10 space-y-8">
             @csrf
-            <textarea name="motivo" rows="3" required class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:bg-gray-700 dark:text-white" placeholder="Motivo da liberação forçada..."></textarea>
-            <div class="flex justify-end gap-2 mt-4">
-                <button type="button" onclick="fecharModal()" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600">
-                    Cancelar
-                </button>
-                <button type="submit" class="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700">
-                    Confirmar Liberação
-                </button>
+            <div class="space-y-2">
+                <label class="block text-[9px] font-black uppercase text-slate-400 tracking-widest mb-1 italic ml-2">Justificativa do Protocolo</label>
+                <textarea name="motivo" required rows="3" placeholder="DESCREVA O MOTIVO PARA A INTERRUPÇÃO DA ATIVIDADE..." class="w-full p-6 bg-gray-50 dark:bg-slate-950 border-gray-100 dark:border-slate-800 rounded-2xl text-xs font-medium text-slate-600 dark:text-slate-300 focus:ring-4 focus:ring-rose-500/10 focus:border-rose-500 transition-all"></textarea>
+            </div>
+
+            <div class="pt-4 flex gap-4">
+                <button type="button" onclick="fecharModal()" class="flex-1 h-14 text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-rose-600 transition-colors">Abortar Operação</button>
+                <button type="submit" class="flex-[2] h-14 bg-rose-600 text-white rounded-2xl text-[11px] font-black uppercase tracking-widest hover:bg-rose-700 transition-all shadow-xl shadow-rose-600/20 active:scale-95">Confirmar Liberação</button>
             </div>
         </form>
     </div>
@@ -284,180 +212,101 @@
 
 @push('scripts')
 <script>
-let updateInterval;
-let countdownInterval;
-let countdown = 15;
+    let updateInterval;
+    let countdownInterval;
+    let countdown = 15;
 
-// Atualização automática
-function iniciarAtualizacaoAutomatica() {
-    // Atualizar a cada 15 segundos
-    updateInterval = setInterval(() => {
-        atualizarDados();
-        countdown = 15;
-    }, 15000);
-
-    // Countdown
-    countdownInterval = setInterval(() => {
-        countdown--;
-        document.getElementById('proximo-update').textContent = countdown + 's';
-        if (countdown <= 0) {
-            countdown = 15;
-        }
-    }, 1000);
-}
-
-// Atualizar dados via AJAX
-async function atualizarDados() {
-    try {
-        const response = await fetch('{{ route("admin.funcionarios.status.atualizar") }}', {
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-                'Accept': 'application/json'
-            }
-        });
-
-        if (!response.ok) throw new Error('Erro na requisição');
-
-        const data = await response.json();
-
-        if (data.success) {
-            // Atualizar estatísticas
-            document.getElementById('stat-total').textContent = data.estatisticas.total;
-            document.getElementById('stat-disponiveis').textContent = data.estatisticas.disponiveis;
-            document.getElementById('stat-atendimento').textContent = data.estatisticas.em_atendimento;
-            document.getElementById('stat-pausados').textContent = data.estatisticas.pausados;
-            document.getElementById('stat-offline').textContent = data.estatisticas.offline;
-
-            // Atualizar timestamp
-            document.getElementById('ultima-atualizacao').textContent = data.timestamp;
-
-            // Atualizar tabela de funcionários
-            atualizarTabelaFuncionarios(data.funcionarios);
-        }
-    } catch (error) {
-        console.error('Erro ao atualizar dados:', error);
+    function iniciarAtualizacaoAutomatica() {
+        updateInterval = setInterval(() => { atualizarDados(); countdown = 15; }, 15000);
+        countdownInterval = setInterval(() => {
+            countdown--;
+            document.getElementById('proximo-update').textContent = countdown + 's';
+            if (countdown <= 0) countdown = 15;
+        }, 1000);
     }
-}
 
-// Atualizar tabela
-function atualizarTabelaFuncionarios(funcionarios) {
-    const tbody = document.getElementById('funcionarios-tbody');
+    async function atualizarDados() {
+        try {
+            const res = await fetch('{{ route("admin.funcionarios.status.atualizar") }}', { headers: { 'X-Requested-With': 'XMLHttpRequest' } });
+            const data = await res.json();
+            if (data.success) {
+                ['total', 'disponiveis', 'em_atendimento', 'pausados', 'offline'].forEach(k => {
+                    const el = document.getElementById(`stat-${k === 'em_atendimento' ? 'atendimento' : k}`);
+                    if(el) el.textContent = data.estatisticas[k];
+                });
+                document.getElementById('ultima-atualizacao').textContent = data.timestamp;
+                atualizarTabelaFuncionarios(data.funcionarios);
+            }
+        } catch (e) { console.error(e); }
+    }
 
-    funcionarios.forEach(func => {
-        const row = tbody.querySelector(`tr[data-funcionario-id="${func.id}"]`);
-        if (!row) return;
+    function atualizarTabelaFuncionarios(funcionarios) {
+        const tbody = document.getElementById('funcionarios-tbody');
+        funcionarios.forEach(f => {
+            const row = tbody.querySelector(`tr[data-funcionario-id="${f.id}"]`);
+            if (!row) return;
 
-        // Atualizar status
-        const statusCell = row.querySelector('td:nth-child(3)');
-        const statusIndicatorClass = func.status_campo === 'em_atendimento' ? 'pulse' : '';
-        statusCell.innerHTML = `
-            <span class="status-badge">
-                <span class="status-indicator ${statusIndicatorClass} bg-${func.status_campo_cor}-500"></span>
-                <span class="text-sm font-medium text-${func.status_campo_cor}-700 dark:text-${func.status_campo_cor}-400">
-                    ${func.status_campo_texto}
-                </span>
-            </span>
-        `;
-
-        // Atualizar ordem atual
-        const ordemCell = row.querySelector('td:nth-child(4)');
-        if (func.ordem_atual) {
-            ordemCell.innerHTML = `
-                <a href="/admin/ordens/${func.ordem_atual.id}" class="text-sm text-emerald-600 dark:text-emerald-500 hover:underline">
-                    OS #${func.ordem_atual.numero}
-                </a>
-                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                    ${func.ordem_atual.localidade}
-                </p>
+            // Status Cell (Index 2 in visual order, 3 from the left)
+            const statusCell = row.querySelector('td:nth-child(3)');
+            statusCell.innerHTML = `
+                <div class="flex items-center gap-3">
+                    <div class="w-2 h-2 rounded-full bg-${f.status_campo_cor}-500 ${f.status_campo === 'em_atendimento' ? 'pulse-tactical' : ''}"></div>
+                    <span class="text-[10px] font-black text-${f.status_campo_cor}-600 dark:text-${f.status_campo_cor}-400 uppercase tracking-widest italic">
+                        ${f.status_campo_texto}
+                    </span>
+                </div>
             `;
-        } else {
-            ordemCell.innerHTML = '<span class="text-sm text-gray-500 dark:text-gray-400">-</span>';
-        }
 
-        // Atualizar tempo
-        const tempoCell = row.querySelector('td:nth-child(5)');
-        if (func.tempo_atendimento) {
-            tempoCell.innerHTML = `<span class="text-sm text-gray-900 dark:text-white font-medium">${func.tempo_atendimento}</span>`;
-        } else {
-            tempoCell.innerHTML = '<span class="text-sm text-gray-500 dark:text-gray-400">-</span>';
-        }
-    });
-}
-
-// Atualizar agora
-function atualizarAgora() {
-    const icon = document.getElementById('refresh-icon');
-    icon.classList.add('animate-spin');
-
-    atualizarDados().finally(() => {
-        setTimeout(() => {
-            icon.classList.remove('animate-spin');
-        }, 500);
-    });
-
-    countdown = 15;
-}
-
-// Forçar liberação
-function forcarLiberacao(id, nome) {
-    document.getElementById('modal-funcionario-nome').textContent = nome;
-    document.getElementById('form-forcar-liberacao').action = `/admin/funcionarios/status/${id}/forcar-liberacao`;
-    document.getElementById('modal-forcar-liberacao').classList.remove('hidden');
-}
-
-// Fechar modal
-function fecharModal() {
-    document.getElementById('modal-forcar-liberacao').classList.add('hidden');
-}
-
-// Ver detalhes
-async function verDetalhes(id) {
-    try {
-        const response = await fetch(`/admin/funcionarios/status/${id}/detalhes`, {
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-                'Accept': 'application/json'
+            // Order Cell
+            const ordemCell = row.querySelector('td:nth-child(4)');
+            if (f.ordem_atual) {
+                ordemCell.innerHTML = `
+                    <a href="/admin/ordens/${f.ordem_atual.id}" class="inline-flex items-center gap-2 group/link">
+                        <span class="text-[10px] font-black text-indigo-600 dark:text-indigo-400 uppercase tracking-widest decoration-2 underline-offset-4 group-hover/link:underline">#${f.ordem_atual.numero}</span>
+                        <x-icon name="arrow-up-right-from-square" class="w-3 h-3 text-slate-300 group-hover/link:text-indigo-500 transition-colors" />
+                    </a>
+                    <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mt-1 italic truncate max-w-[150px]">
+                        ${f.ordem_atual.localidade}
+                    </p>
+                `;
+            } else {
+                ordemCell.innerHTML = '<span class="text-[10px] font-black text-slate-300 uppercase italic">Aguardando Missão</span>';
             }
+
+            // Time Cell
+            const tempoCell = row.querySelector('td:nth-child(5)');
+            tempoCell.innerHTML = f.tempo_atendimento ?
+                `<span class="text-sm font-black text-gray-900 dark:text-white tabular-nums tracking-tighter">${f.tempo_atendimento}</span>` :
+                '<span class="text-sm font-black text-slate-300">-</span>';
         });
-
-        if (!response.ok) throw new Error('Erro na requisição');
-
-        const data = await response.json();
-
-        if (data.success) {
-            // Mostrar detalhes em um modal ou alert (você pode criar um modal mais bonito)
-            const func = data.funcionario;
-            let info = `Funcionário: ${func.nome}\n`;
-            info += `Código: ${func.codigo}\n`;
-            info += `Função: ${func.funcao}\n`;
-            info += `Status: ${func.status}\n`;
-
-            if (func.ordem_atual) {
-                info += `\nOrdem Atual:\n`;
-                info += `- OS #${func.ordem_atual.numero}\n`;
-                info += `- Tipo: ${func.ordem_atual.tipo_servico}\n`;
-                info += `- Localidade: ${func.ordem_atual.localidade}\n`;
-                info += `- Tempo: ${func.tempo_atendimento || 'N/A'}\n`;
-            }
-
-            alert(info);
-        }
-    } catch (error) {
-        console.error('Erro ao buscar detalhes:', error);
-        alert('Erro ao buscar detalhes do funcionário');
     }
-}
 
-// Iniciar ao carregar a página
-document.addEventListener('DOMContentLoaded', () => {
-    iniciarAtualizacaoAutomatica();
-});
+    function atualizarAgora() {
+        const icon = document.getElementById('refresh-icon');
+        icon.classList.add('animate-spin');
+        atualizarDados().finally(() => { setTimeout(() => icon.classList.remove('animate-spin'), 500); });
+        countdown = 15;
+    }
 
-// Limpar intervalos ao sair
-window.addEventListener('beforeunload', () => {
-    if (updateInterval) clearInterval(updateInterval);
-    if (countdownInterval) clearInterval(countdownInterval);
-});
+    function forcarLiberacao(id, nome) {
+        document.getElementById('modal-funcionario-nome').textContent = nome;
+        document.getElementById('form-forcar-liberacao').action = `/admin/funcionarios/status/${id}/forcar-liberacao`;
+        document.getElementById('modal-forcar-liberacao').classList.remove('hidden');
+    }
+
+    function fecharModal() { document.getElementById('modal-forcar-liberacao').classList.add('hidden'); }
+
+    async function verDetalhes(id) {
+        try {
+            const res = await fetch(`/admin/funcionarios/status/${id}/detalhes`, { headers: { 'X-Requested-With': 'XMLHttpRequest' } });
+            const data = await res.json();
+            if (data.success) {
+                const f = data.funcionario;
+                alert(`DETALHES DO EFETIVO:\n\nNome: ${f.nome}\nMatrícula: ${f.codigo}\nFunção: ${f.funcao}\nStatus Ativo: ${f.status}\n\nATIVIDADES EM CURSO:\n${f.ordem_atual ? `OS #${f.ordem_atual.numero} - ${f.ordem_atual.localidade}` : 'Nenhuma OS ativa.'}`);
+            }
+        } catch (e) { console.error(e); }
+    }
+
+    document.addEventListener('DOMContentLoaded', iniciarAtualizacaoAutomatica);
 </script>
 @endpush
-

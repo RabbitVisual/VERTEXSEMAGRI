@@ -25,21 +25,59 @@
     @if(session('success'))
     <div class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
         <div class="flex items-center">
-            <x-icon name="eye" class="w-5 h-5" />
-                            </a>
-                        </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-        <div class="px-6 py-4 border-t border-gray-200 dark:border-slate-700">
-            <a href="{{ route('admin.demandas.index', ['localidade_id' => $localidade->id]) }}" class="text-sm text-emerald-600 hover:text-emerald-700 dark:text-emerald-400">
-                Ver todas as demandas desta localidade →
-            </a>
+            <x-icon name="circle-check" class="w-4 h-4 me-3" />
+            <span>{{ session('success') }}</span>
         </div>
     </div>
     @endif
+
+    <!-- Estatísticas Principais -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8">
+        <div class="p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-slate-800 dark:border-slate-700">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Total de Pessoas</p>
+                    <p class="text-2xl font-bold text-gray-900 dark:text-white mt-1">{{ $estatisticas['total_pessoas'] }}</p>
+                </div>
+                <div class="p-4 bg-emerald-50 dark:bg-emerald-900/20 rounded-2xl flex items-center justify-center border border-emerald-100 dark:border-emerald-800/50">
+                    <x-icon name="users" class="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
+                </div>
+            </div>
+        </div>
+        <div class="p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-slate-800 dark:border-slate-700">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Total de Demandas</p>
+                    <p class="text-2xl font-bold text-gray-900 dark:text-white mt-1">{{ $estatisticas['total_demandas'] }}</p>
+                </div>
+                <div class="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-2xl flex items-center justify-center border border-blue-100 dark:border-blue-800/50">
+                    <x-icon name="clipboard-list" class="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                </div>
+            </div>
+        </div>
+        <div class="p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-slate-800 dark:border-slate-700">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Demandas Abertas</p>
+                    <p class="text-2xl font-bold text-gray-900 dark:text-white mt-1">{{ $estatisticas['demandas_abertas'] }}</p>
+                </div>
+                <div class="p-4 bg-amber-50 dark:bg-amber-900/20 rounded-2xl flex items-center justify-center border border-amber-100 dark:border-amber-800/50">
+                    <x-icon name="clock" class="w-6 h-6 text-amber-600 dark:text-amber-400" />
+                </div>
+            </div>
+        </div>
+        <div class="p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-slate-800 dark:border-slate-700">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Pontos de Luz</p>
+                    <p class="text-2xl font-bold text-gray-900 dark:text-white mt-1">{{ $infraestrutura['pontos_luz'] }}</p>
+                </div>
+                <div class="p-4 bg-indigo-50 dark:bg-indigo-900/20 rounded-2xl flex items-center justify-center border border-indigo-100 dark:border-indigo-800/50">
+                    <x-icon name="lightbulb" class="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Dica de Uso - Flowbite Card -->
     <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700">

@@ -3,497 +3,297 @@
 @section('title', 'Detalhes do Ponto de Luz')
 
 @section('content')
-<div class="space-y-6">
+<div class="space-y-8 animate-fade-in">
     <!-- Page Header -->
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 border-b border-gray-200 dark:border-gray-700">
-        <div>
-            <h1 class="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
-                <x-module-icon module="Iluminacao" class="w-6 h-6" />
-                Ponto de Luz: <span class="text-indigo-600 dark:text-indigo-400">{{ $ponto->codigo ?? '#' . $ponto->id }}</span>
-            </h1>
-            <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Detalhes completos do ponto de iluminação</p>
-        </div>
-        <div class="flex flex-wrap gap-2">
-            <x-iluminacao::button href="{{ route('iluminacao.edit', $ponto) }}" variant="primary">
-                <x-iluminacao::icon name="pencil" class="w-4 h-4 mr-2" />
-                Editar
-            </x-iluminacao::button>
-            <x-iluminacao::button href="{{ route('iluminacao.index') }}" variant="outline">
-                <x-iluminacao::icon name="arrow-left" class="w-4 h-4 mr-2" />
-                Voltar
-            </x-iluminacao::button>
+    <div class="relative overflow-hidden bg-white dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-slate-700/50 p-8 shadow-sm">
+        <div class="absolute top-0 right-0 -mt-8 -mr-8 w-64 h-64 bg-indigo-500/5 rounded-full blur-3xl"></div>
+
+        <div class="relative flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+            <div class="flex items-center gap-5">
+                <div class="w-16 h-16 rounded-2xl bg-slate-100 dark:bg-slate-700 flex items-center justify-center text-slate-600 dark:text-slate-400 shadow-inner">
+                    <x-icon name="lightbulb" class="w-8 h-8" />
+                </div>
+                <div>
+                    <div class="flex items-center gap-3">
+                        <h1 class="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+                            Ponto <span class="text-indigo-600 dark:text-indigo-400">{{ $ponto->codigo ?? '#' . $ponto->id }}</span>
+                        </h1>
+                        @php
+                            $statusVariant = [
+                                'funcionando' => 'success',
+                                'com_defeito' => 'warning',
+                                'desligado' => 'danger'
+                            ][$ponto->status] ?? 'default';
+                        @endphp
+                        <x-iluminacao::badge :variant="$statusVariant" size="lg">
+                            {{ ucfirst($ponto->status) }}
+                        </x-iluminacao::badge>
+                    </div>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 font-medium mt-1">Gestão detalhada do ativo de iluminação</p>
+                </div>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-3">
+                <x-iluminacao::button href="{{ route('iluminacao.edit', $ponto) }}" variant="secondary" icon="pen-to-square">
+                    Editar Dados
+                </x-iluminacao::button>
+                <x-iluminacao::button href="{{ route('iluminacao.index') }}" variant="outline" icon="arrow-left">
+                    Voltar para Lista
+                </x-iluminacao::button>
+            </div>
         </div>
     </div>
 
-    <!-- Alertas -->
-    @if(session('success'))
-        <x-iluminacao::alert type="success" dismissible>
-            {{ session('success') }}
-        </x-iluminacao::alert>
-    @endif
+    <!-- Main Content Area -->
+    <x-iluminacao::tabs default-tab="0" :tabs="['Informações Gerais', 'Localização & Mapa', 'Demandas & Ordens', 'Histórico de Eventos']">
+        <!-- Tab 0: Informações Gerais -->
+        <div class="space-y-6">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Dados do Ativo -->
+                <x-iluminacao::card header="Dados do Ativo">
+                    <div class="grid grid-cols-2 gap-y-6">
+                        <div>
+                            <span class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Código do Ponto</span>
+                            <span class="text-lg font-bold text-slate-900 dark:text-white">{{ $ponto->codigo ?? 'N/A' }}</span>
+                        </div>
+                        <div>
+                            <span class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Status Atual</span>
+                            <x-iluminacao::badge :variant="$statusVariant" size="md">{{ ucfirst($ponto->status) }}</x-iluminacao::badge>
+                        </div>
+                        <div>
+                            <span class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Instalado em</span>
+                            <span class="text-slate-700 dark:text-slate-300 font-medium">{{ $ponto->data_instalacao ? $ponto->data_instalacao->format('d/m/Y') : 'Não informado' }}</span>
+                        </div>
+                        <div>
+                            <span class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Criação do Registro</span>
+                            <span class="text-slate-700 dark:text-slate-300 font-medium">{{ $ponto->created_at->format('d/m/Y') }}</span>
+                        </div>
+                    </div>
+                </x-iluminacao::card>
 
-    <!-- Tabs Navigation -->
-    <div class="border-b border-gray-200 dark:border-gray-700">
-        <nav class="-mb-px flex space-x-8" aria-label="Tabs">
-            <button data-tab-target="detalhes" class="border-b-2 border-indigo-500 text-indigo-600 dark:text-indigo-400 whitespace-nowrap py-4 px-1 text-sm font-medium">
-                <x-iluminacao::icon name="information-circle" class="w-4 h-4 inline mr-2" />
-                Detalhes
-            </button>
-            <button data-tab-target="relacionamentos" class="border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300 whitespace-nowrap py-4 px-1 text-sm font-medium">
-                <x-iluminacao::icon name="link" class="w-4 h-4 inline mr-2" />
-                Relacionamentos
-            </button>
-            <button data-tab-target="historico" class="border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300 whitespace-nowrap py-4 px-1 text-sm font-medium">
-                <x-iluminacao::icon name="clock" class="w-4 h-4 inline mr-2" />
-                Histórico
-            </button>
+                <!-- Especificações Técnicas -->
+                <x-iluminacao::card header="Especificações Técnicas">
+                    <div class="grid grid-cols-2 gap-y-6">
+                        <div>
+                            <span class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Tipo de Lâmpada</span>
+                            <span class="px-3 py-1 rounded-lg bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 text-sm font-bold border border-slate-200 dark:border-slate-700">
+                                {{ $ponto->tipo_lampada ?? 'N/A' }}
+                            </span>
+                        </div>
+                        <div>
+                            <span class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Potência Nominal</span>
+                            <span class="text-lg font-bold text-indigo-600 dark:text-indigo-400">{{ $ponto->potencia ? $ponto->potencia . ' Watts' : 'N/A' }}</span>
+                        </div>
+                        <div>
+                            <span class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Estrutura (Poste)</span>
+                            <span class="text-slate-700 dark:text-slate-300 font-medium">{{ $ponto->tipo_poste ?? 'N/A' }} ({{ $ponto->altura_poste ? number_format($ponto->altura_poste, 1) . 'm' : 'Alt. N/A' }})</span>
+                        </div>
+                        <div>
+                            <span class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Tipo de Fiação</span>
+                            <span class="text-slate-700 dark:text-slate-300 font-medium">{{ $ponto->tipo_fiacao ?? 'N/A' }}</span>
+                        </div>
+                    </div>
+                </x-iluminacao::card>
+            </div>
 
-        </nav>
-    </div>
+            <!-- Observações Card -->
+            @if($ponto->observacoes)
+                <x-iluminacao::card header="Informações Adicionais / Observações">
+                    <div class="bg-slate-50 dark:bg-slate-900/40 p-5 rounded-2xl border border-dashed border-slate-200 dark:border-slate-700">
+                        <p class="text-slate-600 dark:text-slate-400 leading-relaxed italic text-sm">
+                            {{ $ponto->observacoes }}
+                        </p>
+                    </div>
+                </x-iluminacao::card>
+            @endif
+        </div>
 
-    <!-- Tabs Content -->
-    <div>
-        <!-- Tab Detalhes -->
-        <div data-tab-panel="detalhes">
+        <!-- Tab 1: Localização & Mapa -->
+        <div class="space-y-6">
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <!-- Informações Principais -->
-                <div class="lg:col-span-2 space-y-6">
-                    <!-- Informações Básicas -->
-                    <x-iluminacao::card>
-                        <x-slot name="header">
-                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
-                                <x-iluminacao::icon name="information-circle" class="w-5 h-5" />
-                                Informações do Ponto
-                            </h3>
-                        </x-slot>
-
-                        <div class="space-y-4">
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div>
-                                    <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Código</label>
-                                    <div class="text-lg font-semibold text-indigo-600 dark:text-indigo-400">{{ $ponto->codigo ?? 'N/A' }}</div>
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Status</label>
+                <!-- Dados de Endereço -->
+                <div class="lg:col-span-1 space-y-6">
+                    <x-iluminacao::card header="Endereçamento">
+                        <div class="space-y-6">
+                            <div>
+                                <span class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Localidade / Distrito</span>
+                                <div class="flex items-center gap-3 p-3 rounded-xl bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-100 dark:border-indigo-800/50">
+                                    <div class="w-10 h-10 rounded-lg bg-indigo-600 flex items-center justify-center text-white">
+                                        <x-icon name="map-location-dot" class="w-5 h-5" />
+                                    </div>
                                     <div>
-                                        @php
-                                            $statusColors = [
-                                                'funcionando' => 'success',
-                                                'com_defeito' => 'warning',
-                                                'desligado' => 'danger'
-                                            ];
-                                            $statusIcons = [
-                                                'funcionando' => 'check-circle',
-                                                'com_defeito' => 'exclamation-triangle',
-                                                'desligado' => 'x-circle'
-                                            ];
-                                        @endphp
-                                        <x-iluminacao::badge :variant="$statusColors[$ponto->status] ?? 'secondary'">
-                                            <x-iluminacao::icon :name="$statusIcons[$ponto->status] ?? 'question-mark-circle'" class="w-3 h-3 mr-1" />
-                                            {{ ucfirst(str_replace('_', ' ', $ponto->status)) }}
-                                        </x-iluminacao::badge>
+                                        <span class="block font-bold text-slate-900 dark:text-white">{{ $ponto->localidade->nome ?? 'Área não definida' }}</span>
+                                        <span class="text-[10px] font-bold text-indigo-600 dark:text-indigo-400 uppercase">Cód: {{ $ponto->localidade->codigo ?? '---' }}</span>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-                                <div>
-                                    <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Localidade</label>
-                                    <div>
-                                        @if($ponto->localidade)
-                                            <a href="{{ route('localidades.show', $ponto->localidade->id) }}" class="text-indigo-600 dark:text-indigo-400 hover:underline inline-flex items-center gap-1">
-                                                <x-iluminacao::icon name="map-pin" class="w-4 h-4" />
-                                                <strong>{{ $ponto->localidade->nome }}</strong>
-                                                @if($ponto->localidade->codigo)
-                                                    <span class="text-gray-500">({{ $ponto->localidade->codigo }})</span>
-                                                @endif
-                                            </a>
-                                        @else
-                                            <span class="text-gray-400">N/A</span>
-                                        @endif
-                                    </div>
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Endereço</label>
-                                    <div class="text-sm text-gray-900 dark:text-white flex items-start gap-1">
-                                        <x-iluminacao::icon name="map-pin" class="w-4 h-4 mt-0.5 flex-shrink-0" />
-                                        <span>{{ $ponto->endereco }}</span>
-                                    </div>
+                            <div>
+                                <span class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Endereço Completo</span>
+                                <div class="text-sm text-slate-700 dark:text-slate-300 font-medium leading-relaxed">
+                                    {{ $ponto->endereco }}
                                 </div>
                             </div>
 
-                            @if($ponto->latitude && $ponto->longitude)
-                            <div class="pt-4 border-t border-gray-200 dark:border-gray-700">
-                                <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-2">Coordenadas</label>
-                                <div class="text-sm text-gray-900 dark:text-white flex items-center gap-1 mb-4">
-                                    <x-iluminacao::icon name="globe-alt" class="w-4 h-4" />
-                                    <span>{{ $ponto->latitude }}, {{ $ponto->longitude }}</span>
-                                </div>
-
-                                <!-- Mapa Interativo (somente leitura) -->
-                                <x-map
-                                    latitude-field="latitude"
-                                    longitude-field="longitude"
-                                    :latitude="$ponto->latitude"
-                                    :longitude="$ponto->longitude"
-                                    :nome-mapa="$ponto->nome_mapa"
-                                    icon-type="ponto_luz"
-                                    readonly
-                                    height="400px"
-                                    center-lat="-12.2336"
-                                    center-lng="-38.7454"
-                                    zoom="13"
-                                />
-                            </div>
-                            @endif
-                        
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-                                <div>
-                                    <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Barramento</label>
-                                    <div class="text-sm text-gray-900 dark:text-white">{{ $ponto->barramento ?? 'N/A' }}</div>
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Trafo</label>
-                                    <div class="text-sm text-gray-900 dark:text-white">{{ $ponto->trafo ?? 'N/A' }}</div>
-                                </div>
-                            </div>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-                                <div>
-                                    <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Quantidade</label>
-                                    <div class="text-sm text-gray-900 dark:text-white">{{ $ponto->quantidade ?? 1 }}</div>
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Horas Diárias</label>
-                                    <div class="text-sm text-gray-900 dark:text-white">{{ $ponto->horas_diarias ?? 'N/A' }}</div>
-                                </div>
-                            </div>
-</div>
-                    </x-iluminacao::card>
-
-                    <!-- Especificações Técnicas -->
-                    <x-iluminacao::card>
-                        <x-slot name="header">
-                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
-                                <x-iluminacao::icon name="cog-6-tooth" class="w-5 h-5" />
-                                Especificações Técnicas
-                            </h3>
-                        </x-slot>
-
-                        <div class="space-y-4">
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <div>
-                                    <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Tipo de Lâmpada</label>
-                                    <div>
-                                        <x-iluminacao::badge variant="info">
-                                            {{ ucfirst(str_replace('_', ' ', $ponto->tipo_lampada ?? 'N/A')) }}
-                                        </x-iluminacao::badge>
+                            <div class="pt-4 border-t border-slate-200 dark:border-slate-700/50">
+                                <div class="grid grid-cols-2 gap-4 text-center">
+                                    <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-900/50">
+                                        <span class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Latitude</span>
+                                        <span class="text-xs font-mono font-bold text-slate-700 dark:text-slate-300">{{ $ponto->latitude ?? '---' }}</span>
+                                    </div>
+                                    <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-900/50">
+                                        <span class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Longitude</span>
+                                        <span class="text-xs font-mono font-bold text-slate-700 dark:text-slate-300">{{ $ponto->longitude ?? '---' }}</span>
                                     </div>
                                 </div>
-                                <div>
-                                    <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Potência</label>
-                                    <div class="text-base font-semibold text-gray-900 dark:text-white">
-                                        @if($ponto->potencia)
-                                            {{ $ponto->potencia }}W
-                                        @else
-                                            <span class="text-gray-400">N/A</span>
-                                        @endif
-                                    </div>
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Tipo de Poste</label>
-                                    <div class="text-sm text-gray-900 dark:text-white">{{ $ponto->tipo_poste ?? 'N/A' }}</div>
-                                </div>
                             </div>
-
-                            @if($ponto->altura_poste || $ponto->tipo_fiacao)
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-                                @if($ponto->altura_poste)
-                                <div>
-                                    <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Altura do Poste</label>
-                                    <div class="text-sm text-gray-900 dark:text-white flex items-center gap-1">
-                                        <x-iluminacao::icon name="ruler" class="w-4 h-4" />
-                                        <span>{{ number_format($ponto->altura_poste, 2, ',', '.') }} m</span>
-                                    </div>
-                                </div>
-                                @endif
-                                @if($ponto->tipo_fiacao)
-                                <div>
-                                    <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Tipo de Fiação</label>
-                                    <div class="text-sm text-gray-900 dark:text-white">{{ $ponto->tipo_fiacao }}</div>
-                                </div>
-                                @endif
-                            </div>
-                            @endif
                         </div>
                     </x-iluminacao::card>
 
-                    <!-- Datas e Observações -->
-                    @if($ponto->data_instalacao || $ponto->ultima_manutencao || $ponto->observacoes)
-                    <x-iluminacao::card>
-                        <x-slot name="header">
-                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
-                                <x-iluminacao::icon name="calendar" class="w-5 h-5" />
-                                Datas e Observações
-                            </h3>
-                        </x-slot>
-
-                        <div class="space-y-4">
-                            @if($ponto->data_instalacao || $ponto->ultima_manutencao)
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                @if($ponto->data_instalacao)
-                                <div>
-                                    <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Data de Instalação</label>
-                                    <div class="text-sm text-gray-900 dark:text-white flex items-center gap-1">
-                                        <x-iluminacao::icon name="calendar" class="w-4 h-4" />
-                                        <span>{{ $ponto->data_instalacao->format('d/m/Y') }}</span>
-                                    </div>
-                                </div>
-                                @endif
-                                @if($ponto->ultima_manutencao)
-                                <div>
-                                    <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Última Manutenção</label>
-                                    <div class="text-sm text-gray-900 dark:text-white flex items-center gap-1">
-                                        <x-iluminacao::icon name="wrench-screwdriver" class="w-4 h-4" />
-                                        <span>{{ $ponto->ultima_manutencao->format('d/m/Y') }}</span>
-                                    </div>
-                                </div>
-                                @endif
-                            </div>
-                            @endif
-
-                            @if($ponto->observacoes)
-                            <div class="pt-4 border-t border-gray-200 dark:border-gray-700">
-                                <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-2">Observações</label>
-                                <div class="p-4 bg-gray-50 dark:bg-gray-900/50 rounded-lg border border-gray-200 dark:border-gray-700">
-                                    <p class="text-sm text-gray-900 dark:text-white whitespace-pre-line">{{ $ponto->observacoes }}</p>
-                                </div>
-                            </div>
-                            @endif
+                    @if($ponto->nome_mapa)
+                    <x-iluminacao::card header="Referência no Mapa">
+                        <div class="text-sm font-bold text-slate-700 dark:text-slate-200 flex items-center gap-2">
+                            <x-icon name="bookmark" class="w-4 h-4 text-amber-500" />
+                            {{ $ponto->nome_mapa }}
                         </div>
                     </x-iluminacao::card>
                     @endif
                 </div>
 
-                <!-- Sidebar -->
-                <div class="lg:col-span-1 space-y-6">
-                    <!-- Ações Rápidas -->
-                    <x-iluminacao::card>
-                        <x-slot name="header">
-                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
-                                <x-iluminacao::icon name="bolt" class="w-5 h-5" />
-                                Ações Rápidas
-                            </h3>
-                        </x-slot>
-
-                        <div class="space-y-3">
-                            <x-iluminacao::button href="{{ route('iluminacao.edit', $ponto) }}" variant="primary" class="w-full">
-                                <x-iluminacao::icon name="pencil" class="w-4 h-4 mr-2" />
-                                Editar Ponto
-                            </x-iluminacao::button>
-                            @if(Route::has('demandas.create'))
-                            <x-iluminacao::button href="{{ route('demandas.create', ['tipo' => 'luz', 'localidade_id' => $ponto->localidade_id]) }}" variant="success" class="w-full">
-                                <x-iluminacao::icon name="plus-circle" class="w-4 h-4 mr-2" />
-                                Criar Demanda
-                            </x-iluminacao::button>
-                            @endif
-                            <form action="{{ route('iluminacao.destroy', $ponto) }}" method="POST" onsubmit="return confirm('Deseja realmente deletar este ponto?')">
-                                @csrf
-                                @method('DELETE')
-                                <x-iluminacao::button type="submit" variant="danger" class="w-full">
-                                    <x-iluminacao::icon name="trash" class="w-4 h-4 mr-2" />
-                                    Deletar
-                                </x-iluminacao::button>
-                            </form>
-                        </div>
-                    </x-iluminacao::card>
-
-                    <!-- Informações -->
-                    <x-iluminacao::card>
-                        <x-slot name="header">
-                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
-                                <x-iluminacao::icon name="information-circle" class="w-5 h-5" />
-                                Informações
-                            </h3>
-                        </x-slot>
-
-                        <div class="space-y-4">
-                            <div>
-                                <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">ID</label>
-                                <div class="text-base font-semibold text-gray-900 dark:text-white">#{{ $ponto->id }}</div>
+                <!-- Mapa -->
+                <div class="lg:col-span-2">
+                    <x-iluminacao::card class="h-full min-h-[400px]">
+                        @if($ponto->latitude && $ponto->longitude)
+                             <x-map
+                                latitude-field="latitude"
+                                longitude-field="longitude"
+                                :latitude="$ponto->latitude"
+                                :longitude="$ponto->longitude"
+                                :nome-mapa="$ponto->nome_mapa"
+                                icon-type="ponto_luz"
+                                readonly
+                                height="450px"
+                                center-lat="{{ $ponto->latitude }}"
+                                center-lng="{{ $ponto->longitude }}"
+                                zoom="16"
+                            />
+                        @else
+                            <div class="flex flex-col items-center justify-center h-full text-slate-400 gap-3">
+                                <x-icon name="map-slash" class="w-16 h-16 opacity-20" />
+                                <p class="text-sm font-medium">Coordenadas geográficas não disponíveis para este ponto.</p>
                             </div>
-                            <div>
-                                <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Criado em</label>
-                                <div class="text-sm text-gray-900 dark:text-white">{{ $ponto->created_at->format('d/m/Y H:i') }}</div>
-                            </div>
-                            @if($ponto->updated_at)
-                            <div>
-                                <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Atualizado em</label>
-                                <div class="text-sm text-gray-900 dark:text-white">{{ $ponto->updated_at->format('d/m/Y H:i') }}</div>
-                            </div>
-                            @endif
-                        </div>
+                        @endif
                     </x-iluminacao::card>
                 </div>
             </div>
         </div>
 
-        <!-- Tab Relacionamentos -->
-        <div data-tab-panel="relacionamentos" class="hidden">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Localidade -->
-                <x-iluminacao::card>
-                    <x-slot name="header">
-                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
-                            <x-iluminacao::icon name="map-pin" class="w-5 h-5" />
-                            Localidade
-                        </h3>
-                    </x-slot>
-
-                    <div class="space-y-4">
-                        @if($ponto->localidade)
-                            <div>
-                                <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Nome</label>
-                                <div class="text-base font-semibold text-gray-900 dark:text-white">{{ $ponto->localidade->nome }}</div>
-                                @if($ponto->localidade->codigo)
-                                    <x-iluminacao::badge variant="secondary" class="mt-1">{{ $ponto->localidade->codigo }}</x-iluminacao::badge>
-                                @endif
-                            </div>
-                            <div>
-                                <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Tipo</label>
-                                <div>
-                                    <x-iluminacao::badge variant="info">
-                                        {{ ucfirst(str_replace('_', ' ', $ponto->localidade->tipo ?? 'N/A')) }}
-                                    </x-iluminacao::badge>
-                                </div>
-                            </div>
-                            @if($ponto->localidade->cidade)
-                            <div>
-                                <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Cidade</label>
-                                <div class="text-sm text-gray-900 dark:text-white">{{ $ponto->localidade->cidade }}, {{ $ponto->localidade->estado ?? '' }}</div>
-                            </div>
-                            @endif
-                            <x-iluminacao::button href="{{ route('localidades.show', $ponto->localidade->id) }}" variant="outline" class="w-full">
-                                Ver Localidade
-                                <x-iluminacao::icon name="arrow-right" class="w-4 h-4 ml-2" />
-                            </x-iluminacao::button>
-                        @else
-                            <p class="text-gray-500 dark:text-gray-400">Nenhuma localidade vinculada</p>
-                        @endif
-                    </div>
-                </x-iluminacao::card>
-
-                <!-- Histórico de Manutenções -->
-                @if(isset($ponto->historicoManutencoes) && $ponto->historicoManutencoes->count() > 0)
-                <x-iluminacao::card>
-                    <x-slot name="header">
-                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
-                            <x-iluminacao::icon name="wrench-screwdriver" class="w-5 h-5" />
-                            Histórico de Manutenções
-                        </h3>
-                    </x-slot>
-
-                    <div class="space-y-3">
-                        @foreach($ponto->historicoManutencoes->take(5) as $manutencao)
-                            <div class="p-3 bg-gray-50 dark:bg-gray-900/50 rounded-lg border border-gray-200 dark:border-gray-700">
-                                <div class="flex items-start justify-between">
-                                    <div>
-                                        <div class="font-semibold text-gray-900 dark:text-white">{{ $manutencao->tipo ?? 'Manutenção' }}</div>
-                                        @if($manutencao->data)
-                                            <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">{{ $manutencao->data->format('d/m/Y') }}</div>
-                                        @endif
+        <!-- Tab 2: Demandas & Ordens -->
+        <div class="space-y-6">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Demandas Relacionadas -->
+                <x-iluminacao::card header="Demandas de Reparo (Luz)">
+                    @php $demandas = $ponto->demandas ?? collect([]); @endphp
+                    @if($demandas->count() > 0)
+                        <div class="space-y-4">
+                            @foreach($demandas as $demanda)
+                                <div class="flex items-center justify-between p-4 rounded-2xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700">
+                                    <div class="flex items-center gap-4">
+                                        <div class="w-10 h-10 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center text-indigo-600 dark:text-indigo-400">
+                                            <x-icon name="clipboard-list" class="w-5 h-5" />
+                                        </div>
+                                        <div>
+                                            <span class="block font-bold text-slate-900 dark:text-white">Demanda #{{ $demanda->codigo ?? $demanda->id }}</span>
+                                            <span class="text-xs text-slate-500">{{ $demanda->created_at->format('d/m/Y') }} •
+                                                <span class="font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-tighter">{{ $demanda->status }}</span>
+                                            </span>
+                                        </div>
                                     </div>
+                                    <a href="{{ route('demandas.show', $demanda->id) }}" class="p-2 rounded-lg hover:bg-white dark:hover:bg-slate-800 transition-colors text-slate-400 hover:text-indigo-500">
+                                        <x-icon name="circle-chevron-right" class="w-6 h-6" />
+                                    </a>
                                 </div>
-                            </div>
-                        @endforeach
-                    </div>
+                            @endforeach
+                        </div>
+                    @else
+                        <div class="text-center py-10">
+                            <x-icon name="folder-open" class="w-12 h-12 mx-auto text-slate-200 dark:text-slate-700 mb-3" />
+                            <p class="text-slate-400 text-sm italic">Nenhuma demanda ativa para este ponto.</p>
+                        </div>
+                    @endif
                 </x-iluminacao::card>
-                @endif
+
+                <!-- Ordens de Serviço -->
+                <x-iluminacao::card header="Ordens de Serviço">
+                    @php $ordens = $ponto->ordensServico ?? collect([]); @endphp
+                    @if($ordens->count() > 0)
+                        <div class="space-y-4">
+                            @foreach($ordens as $os)
+                                <div class="flex items-center justify-between p-4 rounded-2xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700">
+                                    <div class="flex items-center gap-4">
+                                        <div class="w-10 h-10 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
+                                            <x-icon name="wrench-screwdriver" class="w-5 h-5" />
+                                        </div>
+                                        <div>
+                                            <span class="block font-bold text-slate-900 dark:text-white">OS #{{ $os->numero ?? $os->id }}</span>
+                                            <span class="text-xs text-slate-500">{{ $os->data_abertura ? $os->data_abertura->format('d/m/Y') : $os->created_at->format('d/m/Y') }} •
+                                                <span class="font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-tighter">{{ $os->status }}</span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <a href="{{ route('ordens.show', $os->id) }}" class="p-2 rounded-lg hover:bg-white dark:hover:bg-slate-800 transition-colors text-slate-400 hover:text-emerald-500">
+                                        <x-icon name="circle-chevron-right" class="w-6 h-6" />
+                                    </a>
+                                </div>
+                            @endforeach
+                        </div>
+                    @else
+                        <div class="text-center py-10">
+                            <x-icon name="folder-open" class="w-12 h-12 mx-auto text-slate-200 dark:text-slate-700 mb-3" />
+                            <p class="text-slate-400 text-sm italic">Nenhuma OS em andamento ou vinculada.</p>
+                        </div>
+                    @endif
+                </x-iluminacao::card>
             </div>
         </div>
-    </div>
-</div>
 
-
-        <!-- Tab Histórico -->
-        <div data-tab-panel="historico" class="hidden">
-            <x-iluminacao::card>
-                <x-slot name="header">
-                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
-                        <x-iluminacao::icon name="clock" class="w-5 h-5" />
-                        Linha do Tempo
-                    </h3>
-                </x-slot>
-
-                <div class="space-y-8 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-slate-300 before:to-transparent">
-                    @forelse($ponto->historico as $evento)
-                    <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
-                        <!-- Icon -->
-                        <div class="flex items-center justify-center w-10 h-10 rounded-full border border-white bg-slate-300 group-[.is-active]:bg-emerald-500 text-slate-500 group-[.is-active]:text-emerald-50 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2">
-                            <x-iluminacao::icon name="check-circle" class="w-5 h-5" />
-                        </div>
-                        <!-- Card -->
-                        <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-4 rounded border border-slate-200 shadow">
-                            <div class="flex items-center justify-between space-x-2 mb-1">
-                                <div class="font-bold text-slate-900">{{ $evento->tipo_evento }}</div>
-                                <time class="font-caveat font-medium text-indigo-500">{{ $evento->data_evento ? $evento->data_evento->format('d/m/Y H:i') : '' }}</time>
+        <!-- Tab 3: Histórico de Eventos -->
+        <div class="space-y-6">
+            <x-iluminacao::card header="Linha do Tempo (Log de Eventos)">
+                <div class="relative space-y-8 before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-slate-200 dark:before:via-slate-700 before:to-transparent">
+                    @php $historico = $ponto->historico ?? collect([]); @endphp
+                    @forelse($historico as $evento)
+                        <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+                            <!-- Dot -->
+                            <div class="flex items-center justify-center w-10 h-10 rounded-full border-4 border-white dark:border-slate-800 bg-indigo-500 text-white shadow shadow-indigo-500/20 shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 overflow-hidden">
+                                <x-icon name="check-double" class="w-5 h-5" />
                             </div>
-                            <div class="text-slate-500">{{ $evento->descricao }}</div>
-                            @if($evento->material)
-                                <div class="mt-2 text-sm text-slate-600 bg-slate-50 p-2 rounded">
-                                    <span class="font-semibold">Material:</span> {{ $evento->material->nome ?? 'N/A' }} 
-                                    @if($evento->quantidade_material)
-                                        (Qty: {{ $evento->quantidade_material }})
-                                    @endif
+                            <!-- Box -->
+                            <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-6 rounded-3xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/50 shadow-sm">
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="px-2.5 py-1 rounded-md bg-slate-100 dark:bg-slate-900 text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase tracking-widest border border-slate-200 dark:border-slate-700">
+                                        {{ $evento->tipo_evento }}
+                                    </span>
+                                    <time class="text-xs font-bold text-indigo-500">{{ $evento->data_evento ? $evento->data_evento->format('d/m/Y H:i') : $evento->created_at->format('d/m/Y H:i') }}</time>
                                 </div>
-                            @endif
-                            @if($evento->demanda)
-                                 <div class="mt-1 text-sm text-indigo-600">
-                                    <a href="{{ route('demandas.show', $evento->demanda->id) }}" class="hover:underline">
-                                        Via Demanda #{{ $evento->demanda->codigo ?? $evento->demanda->id }}
-                                    </a>
-                                 </div>
-                            @endif
-                             @if($evento->user_id)
-                                 <div class="mt-1 text-xs text-gray-400">
-                                    Por: {{ $evento->usuario->name ?? 'Sistema' }}
-                                 </div>
-                            @endif
+                                <div class="text-sm font-medium text-slate-700 dark:text-slate-300 leading-relaxed mb-3">
+                                    {{ $evento->descricao }}
+                                </div>
+                                <div class="flex items-center gap-2 text-[11px] text-slate-400">
+                                    <x-icon name="user" class="w-3 h-3" />
+                                    <span>Operador: <span class="text-slate-600 dark:text-slate-400 font-bold uppercase">{{ $evento->usuario->name ?? 'Sistema / Automático' }}</span></span>
+                                </div>
+                            </div>
                         </div>
-                    </div>
                     @empty
-                    <div class="text-center py-8 text-gray-500">Nenhum histórico registrado.</div>
+                        <div class="flex flex-col items-center justify-center py-16 text-slate-400">
+                            <x-icon name="timeline" class="w-16 h-16 opacity-10 mb-4" />
+                            <p class="text-sm font-medium">Nenhum evento registrado no histórico deste ponto.</p>
+                        </div>
                     @endforelse
                 </div>
             </x-iluminacao::card>
         </div>
-
-@push('scripts')
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Tab functionality
-    const tabButtons = document.querySelectorAll('[data-tab-target]');
-    const tabPanels = document.querySelectorAll('[data-tab-panel]');
-
-    tabButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            const targetTab = button.getAttribute('data-tab-target');
-
-            // Remove active state from all buttons and panels
-            tabButtons.forEach(btn => {
-                btn.classList.remove('border-indigo-500', 'text-indigo-600', 'dark:text-indigo-400');
-                btn.classList.add('border-transparent', 'text-gray-500', 'dark:text-gray-400');
-            });
-            tabPanels.forEach(panel => {
-                panel.classList.add('hidden');
-            });
-
-            // Add active state to clicked button and corresponding panel
-            button.classList.remove('border-transparent', 'text-gray-500', 'dark:text-gray-400');
-            button.classList.add('border-indigo-500', 'text-indigo-600', 'dark:text-indigo-400');
-            document.querySelector(`[data-tab-panel="${targetTab}"]`).classList.remove('hidden');
-        });
-    });
-});
-</script>
-@endpush
+    </x-iluminacao::tabs>
+</div>
 @endsection

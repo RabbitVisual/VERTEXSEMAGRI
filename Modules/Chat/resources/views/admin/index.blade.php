@@ -9,13 +9,13 @@
         <div>
             <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white flex items-center gap-3 mb-2">
                 <div class="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg">
-                    <x-module-icon module="Chat" class="w-6 h-6 md:w-7 md:h-7 text-white" />
+                    <x-module-icon module="Chat" class="w-6 h-6 md:w-7 md:h-7 text-white" style="duotone" />
                 </div>
                 <span>Gerenciar Chat</span>
             </h1>
             <nav aria-label="breadcrumb" class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
                 <a href="{{ route('admin.dashboard') }}" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Admin</a>
-                <x-icon name="magnifying-glass" class="w-5 h-5" />
+                <x-icon name="magnifying-glass" class="w-5 h-5" style="duotone" />
                             Filtrar
                         </button>
                     </div>
@@ -86,7 +86,7 @@
                         </td>
                         <td class="px-6 py-4">
                             <a href="{{ route('admin.chat.show', $session->id) }}" class="inline-flex items-center gap-1 px-3 py-1.5 text-sm font-medium text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 dark:bg-blue-900/30 dark:text-blue-400 dark:hover:bg-blue-900/50 transition-colors">
-                                <x-icon name="eye" class="w-5 h-5" />
+                                <x-icon name="eye" class="w-5 h-5" style="duotone" />
                                 Ver
                             </a>
                         </td>
@@ -107,4 +107,9 @@
     </div>
 </div>
 @endsection
+
+
+
+
+
 

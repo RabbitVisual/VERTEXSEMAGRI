@@ -1,291 +1,259 @@
 @extends('Co-Admin.layouts.app')
 
-@section('title', 'Poços Artesianos')
-
-@push('styles')
-<style>
-    /* Garantir altura consistente dos cards de estatísticas */
-    .stats-grid > div {
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-    }
-
-    .stats-grid > div > div {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-    }
-
-    .stats-card-content {
-        flex: 1;
-        display: flex;
-        align-items: flex-start;
-        justify-content: space-between;
-    }
-</style>
-@endpush
+@section('title', 'Gestão de Poços Artesianos')
 
 @section('content')
-<div class="space-y-6">
+<div class="space-y-6 md:space-y-8 animate-fade-in pb-12">
     <!-- Page Header -->
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 border-b border-gray-200 dark:border-gray-700">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 md:pb-6 border-b border-gray-200 dark:border-slate-800">
         <div>
-            <h1 class="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
-                <x-module-icon module="Pocos" class="w-6 h-6" />
-                Poços Artesianos
+            <h1 class="text-2xl sm:text-3xl md:text-4xl font-black text-gray-900 dark:text-white flex items-center gap-3 mb-2 uppercase tracking-tight">
+                <div class="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-2xl flex items-center justify-center shadow-lg text-white">
+                    <x-icon name="faucet-drip" style="duotone" class="w-6 h-6 md:w-7 md:h-7" />
+                </div>
+                <span>Poços Artesianos</span>
             </h1>
-            <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Gerenciamento de poços artesianos e sistemas de abastecimento</p>
+            <nav class="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-400">
+                <a href="{{ route('admin.dashboard') }}" class="hover:text-blue-600 transition-colors">Dashboard</a>
+                <x-icon name="chevron-right" class="w-2.5 h-2.5" />
+                <span class="text-blue-600">Patrimônio Hídrico</span>
+            </nav>
         </div>
-        <div class="flex flex-wrap gap-2">
-            <x-pocos::button href="{{ route('pocos.create') }}" variant="primary">
-                <x-pocos::icon name="plus-circle" class="w-4 h-4 mr-2" />
-                Novo Poço
-            </x-pocos::button>
+        <div class="flex flex-wrap gap-3">
+             <a href="{{ route('pocos.create') }}" class="group inline-flex items-center justify-center gap-2 px-8 py-3.5 text-xs font-black text-white bg-blue-600 rounded-2xl hover:bg-blue-700 shadow-xl shadow-blue-500/20 active:scale-95 transition-all uppercase tracking-widest">
+                <x-icon name="plus" class="w-4 h-4 group-hover:rotate-90 transition-transform" />
+                Cadastrar Poço
+            </a>
         </div>
     </div>
 
-    <!-- Estatísticas -->
+    <!-- Painel de Performance Operacional -->
     @if(isset($estatisticas))
-    <div class="stats-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <!-- Total de Poços -->
-        <div class="relative flex flex-col h-full bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 dark:bg-gray-800 dark:border-gray-700 overflow-hidden">
-            <div class="flex-1 bg-blue-600 dark:bg-blue-500 text-blue-50 p-5 rounded-t-xl relative overflow-hidden">
-                <div class="absolute top-0 right-0 w-24 h-24 opacity-10">
-                    <div class="w-full h-full rounded-full blur-3xl" style="background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);"></div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Card 1: Total -->
+        <div class="premium-card p-6 flex flex-col justify-between group">
+            <div class="flex items-center justify-between mb-4">
+                <div class="p-4 bg-blue-50 dark:bg-blue-900/10 rounded-2xl text-blue-600 dark:text-blue-400 group-hover:rotate-6 transition-all border border-blue-50 dark:border-blue-900/20">
+                    <x-icon name="faucet" style="duotone" class="w-6 h-6" />
                 </div>
-                <div class="stats-card-content flex items-start justify-between relative z-10">
-                    <div class="flex-1 min-w-0">
-                        <p class="text-xs font-medium opacity-90 mb-1.5">Total de Poços</p>
-                        <p class="text-2xl font-bold leading-tight whitespace-nowrap">{{ number_format((int)($estatisticas['total'] ?? 0), 0, ',', '.') }}</p>
-                    </div>
-                    <div class="ml-3 flex-shrink-0 opacity-75">
-                        <svg class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.362 5.214A8.252 8.252 0 0112 21 8.25 8.25 0 016.038 7.048 8.287 8.287 0 009 9.601a8.983 8.983 0 013.361-6.867 8.21 8.21 0 003 2.48z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 18a3.75 3.75 0 00.495-7.467 5.99 5.99 0 00-1.925 3.546 5.974 5.974 0 01-2.133-1A3.75 3.75 0 0012 18z" />
-                        </svg>
-                    </div>
+                <div class="text-right">
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Ativos Mapeados</p>
+                    <p class="text-3xl font-black text-gray-900 dark:text-white tracking-tighter">{{ number_format($estatisticas['total'] ?? 0, 0, ',', '.') }}</p>
                 </div>
+            </div>
+            <div class="flex items-center gap-2 text-[9px] font-bold text-emerald-500 uppercase tracking-widest">
+                <x-icon name="arrow-up-right" class="w-3 h-3" />
+                <span>Base Patrimonial</span>
             </div>
         </div>
 
-        <!-- Poços Ativos -->
-        <div class="relative flex flex-col h-full bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 dark:bg-gray-800 dark:border-gray-700 overflow-hidden">
-            <div class="flex-1 bg-emerald-600 dark:bg-emerald-500 text-emerald-50 p-5 rounded-t-xl relative overflow-hidden">
-                <div class="absolute top-0 right-0 w-24 h-24 opacity-10">
-                    <div class="w-full h-full rounded-full blur-3xl" style="background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);"></div>
+        <!-- Card 2: Ativos -->
+        <div class="premium-card p-6 flex flex-col justify-between group">
+            <div class="flex items-center justify-between mb-4">
+                <div class="p-4 bg-emerald-50 dark:bg-emerald-900/10 rounded-2xl text-emerald-600 dark:text-emerald-400 group-hover:rotate-6 transition-all border border-emerald-50 dark:border-emerald-900/20">
+                    <x-icon name="circle-check" style="duotone" class="w-6 h-6" />
                 </div>
-                <div class="stats-card-content flex items-start justify-between relative z-10">
-                    <div class="flex-1 min-w-0">
-                        <p class="text-xs font-medium opacity-90 mb-1.5">Poços Ativos</p>
-                        <p class="text-2xl font-bold leading-tight whitespace-nowrap">{{ number_format((int)($estatisticas['ativos'] ?? 0), 0, ',', '.') }}</p>
-                    </div>
-                    <div class="ml-3 flex-shrink-0 opacity-75">
-                        <svg class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                    </div>
+                <div class="text-right">
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Operação 100%</p>
+                    <p class="text-3xl font-black text-emerald-600 dark:text-emerald-400 tracking-tighter">{{ number_format($estatisticas['ativos'] ?? 0, 0, ',', '.') }}</p>
                 </div>
+            </div>
+            <div class="flex items-center gap-2 text-[9px] font-bold text-emerald-500 uppercase tracking-widest">
+                <x-icon name="check" class="w-3 h-3" />
+                <span>Sem Ocorrências</span>
             </div>
         </div>
 
-        <!-- Em Manutenção -->
-        <div class="relative flex flex-col h-full bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 dark:bg-gray-800 dark:border-gray-700 overflow-hidden">
-            <div class="flex-1 bg-amber-500 dark:bg-amber-500 text-amber-50 p-5 rounded-t-xl relative overflow-hidden">
-                <div class="absolute top-0 right-0 w-24 h-24 opacity-10">
-                    <div class="w-full h-full rounded-full blur-3xl" style="background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);"></div>
+        <!-- Card 3: Manutenção -->
+        <div class="premium-card p-6 flex flex-col justify-between group">
+            <div class="flex items-center justify-between mb-4">
+                <div class="p-4 bg-amber-50 dark:bg-amber-900/10 rounded-2xl text-amber-600 dark:text-amber-400 group-hover:rotate-6 transition-all border border-amber-50 dark:border-amber-900/20">
+                    <x-icon name="wrench-screwdriver" style="duotone" class="w-6 h-6" />
                 </div>
-                <div class="stats-card-content flex items-start justify-between relative z-10">
-                    <div class="flex-1 min-w-0">
-                        <p class="text-xs font-medium opacity-90 mb-1.5">Em Manutenção</p>
-                        <p class="text-2xl font-bold leading-tight whitespace-nowrap">{{ number_format((int)($estatisticas['em_manutencao'] ?? 0), 0, ',', '.') }}</p>
-                    </div>
-                    <div class="ml-3 flex-shrink-0 opacity-75">
-                        <svg class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655-5.653a2.548 2.548 0 00-4.655 5.653l4.655 5.653c.274.333.65.583 1.068.747M17.25 21l-2.25-2.25m0 0l-4.5-4.5m4.5 4.5l-2.25-2.25m0 0l-4.5-4.5m4.5 4.5l2.25-2.25" />
-                        </svg>
-                    </div>
+                <div class="text-right">
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Intervenção</p>
+                    <p class="text-3xl font-black text-amber-600 dark:text-amber-400 tracking-tighter">{{ number_format($estatisticas['em_manutencao'] ?? 0, 0, ',', '.') }}</p>
                 </div>
+            </div>
+            <div class="flex items-center gap-2 text-[9px] font-bold text-amber-500 uppercase tracking-widest">
+                <x-icon name="clock" class="w-3 h-3" />
+                <span>Em Manutenção</span>
             </div>
         </div>
 
-        <!-- Com Problemas -->
-        <div class="relative flex flex-col h-full bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 dark:bg-gray-800 dark:border-gray-700 overflow-hidden">
-            <div class="flex-1 bg-red-600 dark:bg-red-500 text-red-50 p-5 rounded-t-xl relative overflow-hidden">
-                <div class="absolute top-0 right-0 w-24 h-24 opacity-10">
-                    <div class="w-full h-full rounded-full blur-3xl" style="background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);"></div>
+        <!-- Card 4: Críticos -->
+        <div class="premium-card p-6 flex flex-col justify-between group">
+            <div class="flex items-center justify-between mb-4">
+                <div class="p-4 bg-rose-50 dark:bg-rose-900/10 rounded-2xl text-rose-600 dark:text-rose-400 group-hover:rotate-6 transition-all border border-rose-50 dark:border-rose-900/20">
+                    <x-icon name="circle-exclamation" style="duotone" class="w-6 h-6" />
                 </div>
-                <div class="stats-card-content flex items-start justify-between relative z-10">
-                    <div class="flex-1 min-w-0">
-                        <p class="text-xs font-medium opacity-90 mb-1.5">Com Problemas</p>
-                        <p class="text-2xl font-bold leading-tight whitespace-nowrap">{{ number_format((int)($estatisticas['com_problemas'] ?? 0), 0, ',', '.') }}</p>
-                        @if(isset($estatisticas['precisam_manutencao']) && $estatisticas['precisam_manutencao'] > 0)
-                        <p class="text-xs opacity-80 mt-1">Precisam Manutenção: {{ number_format((int)$estatisticas['precisam_manutencao'], 0, ',', '.') }}</p>
-                        @endif
-                    </div>
-                    <div class="ml-3 flex-shrink-0 opacity-75">
-                        <svg class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
-                        </svg>
-                    </div>
+                <div class="text-right">
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Bomba/Pane</p>
+                    <p class="text-3xl font-black text-rose-600 dark:text-rose-400 tracking-tighter">{{ number_format($estatisticas['com_problemas'] ?? 0, 0, ',', '.') }}</p>
                 </div>
+            </div>
+            <div class="flex items-center gap-2 text-[9px] font-bold text-rose-500 uppercase tracking-widest animate-pulse">
+                <x-icon name="triangle-exclamation" class="w-3 h-3" />
+                <span>Atenção Crítica</span>
             </div>
         </div>
     </div>
     @endif
 
-    <!-- Alertas -->
-    @if(session('warning'))
-        <x-pocos::alert type="warning" dismissible>
-            {!! session('warning') !!}
-        </x-pocos::alert>
-    @endif
-
-    @if(session('success'))
-        <x-pocos::alert type="success" dismissible>
-            {{ session('success') }}
-        </x-pocos::alert>
-    @endif
-
-    <!-- Filtros -->
-    <x-pocos::filter-bar
-        action="{{ route('pocos.index') }}"
-        :filters="[
-            [
-                'name' => 'status',
-                'label' => 'Status',
-                'type' => 'select',
-                'options' => [
-                    '' => 'Todos',
-                    'ativo' => 'Ativo',
-                    'inativo' => 'Inativo',
-                    'manutencao' => 'Manutenção',
-                    'bomba_queimada' => 'Bomba Queimada'
-                ],
-                'col' => 3
-            ],
-            [
-                'name' => 'localidade_id',
-                'label' => 'Localidade',
-                'type' => 'select',
-                'options' => $localidades->pluck('nome', 'id')->toArray() + ['' => 'Todas'],
-                'col' => 3
-            ],
-            [
-                'name' => 'equipe_responsavel_id',
-                'label' => 'Equipe',
-                'type' => 'select',
-                'options' => $equipes->pluck('nome', 'id')->toArray() + ['' => 'Todas'],
-                'col' => 3
-            ]
-        ]"
-        search-placeholder="Buscar por código, endereço ou tipo de bomba..."
-    />
-
-    <!-- Tabela de Poços -->
-    <x-pocos::data-table
-        :headers="['Código', 'Localidade', 'Endereço', 'Profundidade', 'Vazão', 'Equipe', 'Status']"
-        :data="$pocos"
-        export-route="{{ route('pocos.index') }}"
-    >
-        @forelse($pocos as $poco)
-            <tr class="hover:bg-gray-50 dark:hover:bg-gray-800/50">
-                <td class="px-6 py-4 whitespace-nowrap">
-                    <strong class="text-indigo-600 dark:text-indigo-400">{{ $poco->codigo ?? 'N/A' }}</strong>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                    @if($poco->localidade)
-                        <a href="{{ route('localidades.show', $poco->localidade->id) }}" class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-900 dark:hover:text-indigo-300 flex items-center gap-1">
-                            <x-pocos::icon name="map-pin" class="w-4 h-4" />
-                            {{ $poco->localidade->nome }}
-                        </a>
-                    @else
-                        <span class="text-gray-400">N/A</span>
-                    @endif
-                </td>
-                <td class="px-6 py-4">
-                    <div class="flex items-center gap-1">
-                        <x-pocos::icon name="map" class="w-4 h-4 text-gray-400" />
-                        <span>{{ $poco->endereco }}</span>
+    <!-- Filtros de Inteligência -->
+    <div class="premium-card p-8">
+        <form action="{{ route('pocos.index') }}" method="GET" class="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-6 items-end">
+            <div class="md:col-span-2 lg:col-span-2">
+                <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 px-1">Filtro Global</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-5 flex items-center pointer-events-none text-slate-400">
+                        <x-icon name="magnifying-glass" class="w-4 h-4" />
                     </div>
-                    @if($poco->precisaManutencao())
-                        <div class="mt-1">
-                            <x-pocos::badge variant="warning" size="sm">
-                                <x-pocos::icon name="exclamation-triangle" class="w-3 h-3 mr-1" />
-                                Precisa manutenção
-                            </x-pocos::badge>
-                        </div>
-                    @endif
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                    @if($poco->profundidade_metros)
-                        <strong>{{ number_format($poco->profundidade_metros, 2, ',', '.') }} m</strong>
-                    @else
-                        <span class="text-gray-400">-</span>
-                    @endif
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                    @if($poco->vazao_litros_hora)
-                        <strong>{{ number_format($poco->vazao_litros_hora, 2, ',', '.') }} L/h</strong>
-                    @else
-                        <span class="text-gray-400">-</span>
-                    @endif
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                    @if($poco->equipeResponsavel)
-                        <a href="{{ route('equipes.show', $poco->equipeResponsavel->id) }}" class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-900 dark:hover:text-indigo-300 flex items-center gap-1">
-                            <x-pocos::icon name="user-group" class="w-4 h-4" />
-                            {{ $poco->equipeResponsavel->nome }}
-                        </a>
-                    @else
-                        <span class="text-gray-400">-</span>
-                    @endif
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                    <x-pocos::badge :variant="$poco->status_cor">
-                        <x-pocos::icon :name="$poco->status == 'ativo' ? 'check-circle' : ($poco->status == 'manutencao' ? 'wrench-screwdriver' : ($poco->status == 'bomba_queimada' ? 'exclamation-triangle' : 'x-circle'))" class="w-3 h-3 mr-1" />
-                        {{ $poco->status_texto }}
-                    </x-pocos::badge>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    <div class="flex items-center justify-end gap-2">
-                        <a href="{{ route('pocos.show', $poco) }}"
-                           class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-900 dark:hover:text-indigo-300"
-                           title="Ver detalhes">
-                            <x-pocos::icon name="eye" class="w-5 h-5" />
-                        </a>
-                        <a href="{{ route('pocos.edit', $poco) }}"
-                           class="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-300"
-                           title="Editar">
-                            <x-pocos::icon name="pencil" class="w-5 h-5" />
-                        </a>
-                        <form action="{{ route('pocos.destroy', $poco) }}"
-                              method="POST"
-                              class="inline"
-                              onsubmit="return confirm('Deseja realmente deletar este poço?')">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit"
-                                    class="text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300"
-                                    title="Deletar">
-                                <x-pocos::icon name="trash" class="w-5 h-5" />
-                            </button>
-                        </form>
-                    </div>
-                </td>
-            </tr>
-        @empty
-            <tr>
-                <td colspan="8" class="px-6 py-12 text-center">
-                    <x-pocos::icon name="inbox" class="w-12 h-12 mx-auto text-gray-400 mb-3" />
-                    <p class="text-gray-500 dark:text-gray-400 mb-4">Nenhum poço encontrado</p>
-                    <x-pocos::button href="{{ route('pocos.create') }}" variant="primary">
-                        <x-pocos::icon name="plus-circle" class="w-4 h-4 mr-2" />
-                        Criar Primeiro Poço
-                    </x-pocos::button>
-                </td>
-            </tr>
-        @endforelse
-    </x-pocos::data-table>
+                    <input type="text" name="search" value="{{ request('search') }}"
+                        class="w-full pl-12 pr-5 py-3.5 bg-gray-50/50 dark:bg-slate-900/50 border border-gray-100 dark:border-slate-800 rounded-2xl text-sm font-bold focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all dark:text-white"
+                        placeholder="Código, localidade ou modelo de bomba...">
+                </div>
+            </div>
+            <div>
+                <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 px-1">Localidade</label>
+                <select name="localidade" class="w-full px-5 py-3.5 bg-gray-50/50 dark:bg-slate-900/50 border border-gray-100 dark:border-slate-800 rounded-2xl text-sm font-bold focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all dark:text-white">
+                    <option value="">Todas</option>
+                    @foreach($localidades as $loc)
+                        <option value="{{ $loc->id }}" {{ request('localidade') == $loc->id ? 'selected' : '' }}>{{ $loc->nome }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div>
+                <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 px-1">Operatividade</label>
+                <select name="status" class="w-full px-5 py-3.5 bg-gray-50/50 dark:bg-slate-900/50 border border-gray-100 dark:border-slate-800 rounded-2xl text-sm font-bold focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all dark:text-white">
+                    <option value="">Status (Todos)</option>
+                    <option value="ativo" {{ request('status') === 'ativo' ? 'selected' : '' }}>Ativos</option>
+                    <option value="inativo" {{ request('status') === 'inativo' ? 'selected' : '' }}>Inativos</option>
+                    <option value="manutencao" {{ request('status') === 'manutencao' ? 'selected' : '' }}>Manutenção</option>
+                </select>
+            </div>
+            <div>
+                <button type="submit" class="w-full px-8 py-4 text-[10px] font-black text-white bg-slate-900 dark:bg-blue-600 rounded-2xl hover:bg-slate-800 dark:hover:bg-blue-700 transition-all shadow-xl active:scale-95 uppercase tracking-widest flex items-center justify-center gap-2">
+                    <x-icon name="sliders" class="w-4 h-4" />
+                    Aplicar
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Grade de Ativos -->
+    <div class="premium-card overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm text-left">
+                <thead class="text-[9px] text-slate-400 uppercase tracking-[0.2em] bg-gray-50/50 dark:bg-slate-800/50 border-b border-gray-100 dark:border-slate-800">
+                    <tr>
+                        <th scope="col" class="px-8 py-5 font-black">Identificação do Poço</th>
+                        <th scope="col" class="px-8 py-5 font-black">Geolocalização</th>
+                        <th scope="col" class="px-8 py-5 font-black">Especificações</th>
+                        <th scope="col" class="px-8 py-5 font-black text-center">Status Operacional</th>
+                        <th scope="col" class="px-8 py-5 font-black text-right">Ações</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100 dark:divide-slate-800 font-bold">
+                    @forelse($pocos as $poco)
+                    <tr class="hover:bg-gray-50/30 dark:hover:bg-slate-800/30 transition-colors group">
+                        <td class="px-8 py-6">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-2xl bg-blue-50 dark:bg-blue-900/10 flex items-center justify-center text-blue-600 border border-blue-100 dark:border-blue-800/20 group-hover:scale-110 transition-transform">
+                                    <x-icon name="faucet-drip" style="duotone" class="w-6 h-6" />
+                                </div>
+                                <div>
+                                    <div class="text-gray-900 dark:text-white font-black uppercase tracking-tight text-base mb-0.5">{{ $poco->codigo ?? 'SEM CÓDIGO' }}</div>
+                                    <div class="flex items-center gap-2 text-[10px] text-slate-400 uppercase tracking-widest">
+                                        <x-icon name="location-dot" class="w-3 h-3 text-blue-500" />
+                                        {{ $poco->localidade->nome ?? 'S/L' }}
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-8 py-6">
+                            <div class="space-y-1">
+                                <div class="text-[11px] font-black text-gray-700 dark:text-slate-300 uppercase tracking-tighter line-clamp-1">{{ $poco->endereco }}</div>
+                                <div class="flex items-center gap-3">
+                                    <span class="text-[9px] bg-gray-100 dark:bg-slate-800 px-2 py-0.5 rounded-md text-slate-500 font-mono">{{ $poco->latitude }}</span>
+                                    <span class="text-[9px] bg-gray-100 dark:bg-slate-800 px-2 py-0.5 rounded-md text-slate-500 font-mono">{{ $poco->longitude }}</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-8 py-6">
+                            <div class="grid grid-cols-2 gap-x-4 gap-y-1">
+                                <div class="flex items-center gap-1.5 min-w-max">
+                                    <x-icon name="ruler-vertical" class="w-3.5 h-3.5 text-slate-300" />
+                                    <span class="text-[11px] uppercase tracking-tighter">{{ $poco->profundidade_metros }}m prof.</span>
+                                </div>
+                                <div class="flex items-center gap-1.5 min-w-max">
+                                    <x-icon name="droplet" class="w-3.5 h-3.5 text-blue-400" />
+                                    <span class="text-[11px] uppercase tracking-tighter">{{ $poco->vazao_litros_hora }}L/h</span>
+                                </div>
+                                <div class="flex items-center gap-1.5 min-w-max col-span-2">
+                                    <x-icon name="bolt" class="w-3.5 h-3.5 text-amber-500" />
+                                    <span class="text-[10px] uppercase tracking-tighter opacity-70">{{ $poco->tipo_bomba ?? 'BOMBA N/D' }}</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-8 py-6 text-center">
+                            @php
+                                $statusStyles = [
+                                    'ativo' => 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400',
+                                    'inativo' => 'bg-slate-100 text-slate-700 dark:bg-slate-900/30 dark:text-slate-400',
+                                    'manutencao' => 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400',
+                                    'bomba_queimada' => 'bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-400 animate-pulse',
+                                ];
+                                $style = $statusStyles[$poco->status] ?? 'bg-gray-100 text-gray-700';
+                                $statusLabels = [
+                                    'ativo' => 'Operante',
+                                    'inativo' => 'Inativo',
+                                    'manutencao' => 'Manutenção',
+                                    'bomba_queimada' => 'Pane Elétrica',
+                                ];
+                                $label = $statusLabels[$poco->status] ?? $poco->status;
+                            @endphp
+                            <span class="inline-flex items-center px-4 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-[0.15em] {{ $style }}">
+                                {{ $label }}
+                            </span>
+                        </td>
+                        <td class="px-8 py-6 text-right">
+                            <div class="flex justify-end gap-2 shrink-0">
+                                <a href="{{ route('pocos.show', $poco) }}" class="p-2.5 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-xl transition-all" title="Visualizar Detalhes">
+                                    <x-icon name="eye" style="duotone" class="w-5 h-5" />
+                                </a>
+                                <a href="{{ route('pocos.edit', $poco) }}" class="p-2.5 text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 rounded-xl transition-all" title="Editar Ativo">
+                                    <x-icon name="pen-to-square" style="duotone" class="w-5 h-5" />
+                                </a>
+                                <button type="button" class="p-2.5 text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-900/20 rounded-xl transition-all" title="Arquivar">
+                                    <x-icon name="trash-can" style="duotone" class="w-5 h-5" />
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="5" class="px-8 py-24 text-center">
+                            <div class="max-w-md mx-auto flex flex-col items-center gap-6">
+                                <div class="w-24 h-24 bg-gray-50 dark:bg-slate-900/50 rounded-full flex items-center justify-center text-gray-200 dark:text-slate-800 scale-125">
+                                    <x-icon name="magnifying-glass" style="duotone" class="w-10 h-10" />
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-black text-gray-900 dark:text-white uppercase tracking-tight">Nenhum poço encontrado</h3>
+                                    <p class="text-[11px] text-slate-400 font-bold uppercase tracking-widest mt-1">Tente ajustar seus filtros ou cadastre um novo ativo hídrico.</p>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+        @if(is_object($pocos) && method_exists($pocos, 'links'))
+        <div class="p-8 bg-gray-50/30 dark:bg-slate-900/50 border-t border-gray-100 dark:border-slate-800">
+            {{ $pocos->appends(request()->query())->links() }}
+        </div>
+        @endif
+    </div>
 </div>
 @endsection

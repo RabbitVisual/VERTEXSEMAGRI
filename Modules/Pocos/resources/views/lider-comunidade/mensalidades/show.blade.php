@@ -3,182 +3,262 @@
 @section('title', 'Detalhes da Mensalidade')
 
 @section('content')
-<div class="space-y-6">
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 md:pb-6 border-b border-gray-200 dark:border-slate-700">
+<div class="space-y-6 md:space-y-8 animate-fade-in pb-12">
+    <!-- Page Header -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 md:pb-6 border-b border-gray-200 dark:border-slate-800">
         <div class="flex items-center gap-4">
-            <a href="{{ route('lider-comunidade.mensalidades.index') }}" class="w-10 h-10 rounded-xl bg-gray-50 dark:bg-slate-900/50 border border-gray-100 dark:border-slate-800 flex items-center justify-center text-gray-400 hover:text-blue-600 transition-all active:scale-95 shadow-sm">
+            <a href="{{ route('lider-comunidade.mensalidades.index') }}" class="w-10 h-10 rounded-xl bg-gray-50/50 dark:bg-slate-900/50 border border-gray-100 dark:border-slate-800 flex items-center justify-center text-gray-400 hover:text-blue-600 transition-all active:scale-95 shadow-sm">
                 <x-icon name="arrow-left" class="w-5 h-5" />
             </a>
             <div>
-                <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white uppercase tracking-tight">Mensalidade {{ $mensalidade->mes_ano }}</h1>
-                <p class="text-sm text-gray-600 dark:text-gray-400">Controle de arrecadação e baixas</p>
+                <h1 class="text-2xl sm:text-3xl font-black text-gray-900 dark:text-white uppercase tracking-tight">Mensalidade {{ $mensalidade->mes_ano }}</h1>
+                <nav class="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-400">
+                    <span>Cobranças</span>
+                    <x-icon name="chevron-right" class="w-2.5 h-2.5" />
+                    <span class="text-blue-600">Arrecadação Ativa</span>
+                </nav>
             </div>
         </div>
     </div>
 
-    <!-- Configuração de Recebimento -->
-    <!-- Configurações Inteligentes -->
-    <div class="premium-card p-6">
-        <h2 class="text-sm font-black text-gray-400 dark:text-slate-500 uppercase tracking-widest mb-6 border-b border-gray-50 dark:border-slate-800 pb-3 flex items-center gap-2">
-            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6a7.5 7.5 0 1 0 7.5 7.5h-7.5V6Z" /><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 10.5H21A7.5 7.5 0 0 0 13.5 3v7.5Z" /></svg>
-            Configurações de Recebimento
-        </h2>
-        <form method="POST" action="{{ route('lider-comunidade.mensalidades.update-recebimento', $mensalidade->id) }}" class="flex flex-wrap items-end gap-6">
-            @csrf
-            @method('PUT')
-            <div class="flex-1 min-w-[250px]">
-                <label class="block text-[10px] font-black text-gray-400 dark:text-slate-500 uppercase tracking-widest mb-2 px-1">Forma Preferencial</label>
-                <select name="forma_recebimento" id="forma_recebimento" required class="w-full px-4 py-2.5 bg-gray-50 dark:bg-slate-900/50 border border-gray-100 dark:border-slate-800 rounded-xl text-gray-900 dark:text-white font-bold focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all">
-                    <option value="maos" {{ $mensalidade->forma_recebimento == 'maos' ? 'selected' : '' }}>Em Mãos (Dinheiro)</option>
-                    <option value="pix" {{ $mensalidade->forma_recebimento == 'pix' ? 'selected' : '' }}>Digital (PIX)</option>
-                </select>
-            </div>
-            <div id="chave_pix_container" class="flex-1 min-w-[300px]" style="display: {{ $mensalidade->forma_recebimento == 'pix' ? 'block' : 'none' }};">
-                <label class="block text-[10px] font-black text-gray-400 dark:text-slate-500 uppercase tracking-widest mb-2 px-1">Chave PIX Específica</label>
-                <input type="text" name="chave_pix" id="chave_pix" value="{{ $mensalidade->chave_pix }}" class="w-full px-4 py-2.5 bg-gray-50 dark:bg-slate-900/50 border border-gray-100 dark:border-slate-800 rounded-xl text-gray-900 dark:text-white font-bold focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all" placeholder="E-mail, CPF, Chave Aleatória...">
-            </div>
-            <button type="submit" class="px-8 py-2.5 text-sm font-bold text-white bg-slate-900 dark:bg-blue-600 rounded-xl hover:bg-slate-800 dark:hover:bg-blue-700 transition-all shadow-lg active:scale-95">
-                Salvar Alterações
-            </button>
-        </form>
-    </div>
+    <!-- Interface de Controle Financeiro -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Resumo Expandido -->
+        <div class="lg:col-span-2 space-y-8">
+            <div class="premium-card overflow-hidden">
+                <div class="px-8 py-6 border-b border-gray-100 dark:border-slate-800 bg-gray-50/50 dark:bg-slate-900/50">
+                    <h2 class="text-xs font-black text-gray-400 uppercase tracking-[0.2em] flex items-center gap-2">
+                        <x-icon name="coins" style="duotone" class="w-5 text-blue-500" />
+                        Fluxo Financeiro
+                    </h2>
+                </div>
 
-    <!-- Resumo de Caixa -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div class="premium-card p-6 border-l-4 border-l-blue-500">
-            <p class="text-[10px] font-black text-gray-400 dark:text-slate-500 uppercase tracking-widest mb-1">Valor Unitário</p>
-            <p class="text-2xl font-black text-gray-900 dark:text-white tracking-tight">R$ {{ number_format($mensalidade->valor_mensalidade, 2, ',', '.') }}</p>
-        </div>
-        <div class="premium-card p-6 border-l-4 border-l-emerald-500">
-            <p class="text-[10px] font-black text-gray-400 dark:text-slate-500 uppercase tracking-widest mb-1">Total Arrecadado</p>
-            <p class="text-2xl font-black text-emerald-600 dark:text-emerald-400 tracking-tight">R$ {{ number_format($mensalidade->total_arrecadado, 2, ',', '.') }}</p>
-        </div>
-        <div class="premium-card p-6 border-l-4 border-l-amber-500">
-            <p class="text-[10px] font-black text-gray-400 dark:text-slate-500 uppercase tracking-widest mb-1">Total Pendente</p>
-            <p class="text-2xl font-black text-amber-600 dark:text-amber-400 tracking-tight">R$ {{ number_format($mensalidade->total_pendente, 2, ',', '.') }}</p>
-        </div>
-        <div class="premium-card p-6 border-l-4 border-l-gray-500">
-            <p class="text-[10px] font-black text-gray-400 dark:text-slate-500 uppercase tracking-widest mb-1">Status Global</p>
-            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider mt-1 {{ $mensalidade->status === 'aberta' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400' : 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/20 dark:text-emerald-400' }}">
-                {{ $mensalidade->status_texto }}
-            </span>
-        </div>
-    </div>
+                <div class="p-8">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div class="space-y-1">
+                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Valor Unitário</p>
+                            <p class="text-3xl font-black text-gray-900 dark:text-white tracking-tighter">
+                                <span class="text-sm font-bold text-slate-400 mr-1">R$</span>{{ number_format($mensalidade->valor_mensalidade, 2, ',', '.') }}
+                            </p>
+                            <p class="text-[9px] font-bold text-slate-400 uppercase tracking-tight italic">Referência Mensal</p>
+                        </div>
+                        <div class="p-5 bg-emerald-50/50 dark:bg-emerald-900/10 border border-emerald-100 dark:border-emerald-900/20 rounded-3xl space-y-1">
+                            <p class="text-[10px] font-black text-emerald-600/70 dark:text-emerald-400/50 uppercase tracking-widest">Total Arrecadado</p>
+                            <p class="text-3xl font-black text-emerald-600 dark:text-emerald-400 tracking-tighter">
+                                <span class="text-sm font-bold text-emerald-500 mr-1">R$</span>{{ number_format($mensalidade->total_arrecadado, 2, ',', '.') }}
+                            </p>
+                        </div>
+                        <div class="p-5 bg-amber-50/50 dark:bg-amber-900/10 border border-amber-100 dark:border-amber-900/20 rounded-3xl space-y-1">
+                            <p class="text-[10px] font-black text-amber-600/70 dark:text-amber-400/50 uppercase tracking-widest">Saldo Pendente</p>
+                            <p class="text-3xl font-black text-amber-600 dark:text-amber-400 tracking-tighter">
+                                <span class="text-sm font-bold text-amber-500 mr-1">R$</span>{{ number_format($mensalidade->total_pendente, 2, ',', '.') }}
+                            </p>
+                        </div>
+                    </div>
 
-    <!-- Tabela Detalhada -->
-    <div class="premium-card overflow-hidden">
-        <div class="px-6 py-4 border-b border-gray-100 dark:border-slate-700 flex items-center justify-between bg-gray-50/30 dark:bg-slate-900/50">
-            <h2 class="text-sm font-black text-gray-400 dark:text-slate-500 uppercase tracking-widest">Controle de Moradores</h2>
-            <span class="text-[10px] font-black text-blue-600 dark:text-blue-400 uppercase tracking-widest bg-blue-50 dark:bg-blue-900/20 px-3 py-1 rounded-full border border-blue-100 dark:border-blue-900/30">{{ $mensalidade->usuarios_pagantes }} / {{ $mensalidade->total_usuarios }} Pagos</span>
+                    <div class="mt-10 pt-8 border-t border-gray-100 dark:border-slate-800">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Progresso da Arrecadação</h3>
+                            <span class="text-xs font-black text-blue-600 dark:text-blue-400">{{ round(($mensalidade->usuarios_pagantes / max(1, $mensalidade->total_usuarios)) * 100) }}%</span>
+                        </div>
+                        <div class="w-full h-4 bg-gray-100 dark:bg-slate-800 rounded-full overflow-hidden shadow-inner flex">
+                            @php
+                                $pagos = ($mensalidade->usuarios_pagantes / max(1, $mensalidade->total_usuarios)) * 100;
+                            @endphp
+                            <div class="h-full bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full transition-all duration-1000 shadow-lg" style="width: {{ $pagos }}%"></div>
+                        </div>
+                        <p class="mt-4 text-[10px] font-bold text-slate-400 uppercase tracking-tight text-center">
+                            {{ $mensalidade->usuarios_pagantes }} de {{ $mensalidade->total_usuarios }} moradores realizaram a contribuição
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabela de Moradores -->
+            <div class="premium-card overflow-hidden">
+                <div class="px-8 py-6 border-b border-gray-100 dark:border-slate-800 bg-gray-50/30 dark:bg-slate-900/50 flex items-center justify-between">
+                    <h2 class="text-xs font-black text-gray-400 uppercase tracking-[0.2em] flex items-center gap-2">
+                        <x-icon name="users-gear" style="duotone" class="w-5 text-indigo-500" />
+                        Lista de Contribuintes
+                    </h2>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-left">
+                        <thead class="text-[9px] text-slate-400 uppercase tracking-[0.2em] bg-gray-50/50 dark:bg-slate-800/50 border-b border-gray-100 dark:border-slate-800">
+                            <tr>
+                                <th scope="col" class="px-8 py-4 font-black">Morador</th>
+                                <th scope="col" class="px-8 py-4 font-black text-center">Situação</th>
+                                <th scope="col" class="px-8 py-4 font-black text-center">Data/Valor</th>
+                                <th scope="col" class="px-8 py-4 font-black text-right">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100 dark:divide-slate-800">
+                            @foreach($usuarios as $usuario)
+                            <tr class="hover:bg-gray-50/30 dark:hover:bg-slate-800/30 transition-colors group">
+                                <td class="px-8 py-5">
+                                    <div class="font-black text-gray-900 dark:text-white uppercase tracking-tight">{{ $usuario->nome }}</div>
+                                    <div class="text-[9px] text-slate-400 uppercase font-black tracking-widest italic">Beneficiário Cadastrado</div>
+                                </td>
+                                <td class="px-8 py-5 text-center">
+                                    @if($usuario->pagou)
+                                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 text-[9px] font-black uppercase tracking-widest">
+                                        <x-icon name="circle-check" class="w-3 h-3" />
+                                        Pago
+                                    </span>
+                                    @else
+                                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400 text-[9px] font-black uppercase tracking-widest animate-pulse">
+                                        <x-icon name="circle-exclamation" class="w-3 h-3" />
+                                        Pendente
+                                    </span>
+                                    @endif
+                                </td>
+                                <td class="px-8 py-5 text-center">
+                                    @if($usuario->pagou)
+                                    <div class="text-[11px] font-black text-gray-900 dark:text-white uppercase tracking-tight">{{ $usuario->pagamento->data_pagamento->format('d/m/Y') }}</div>
+                                    <div class="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 tracking-tighter">R$ {{ number_format($usuario->pagamento->valor_pago, 2, ',', '.') }}</div>
+                                    @else
+                                    <span class="text-slate-300 dark:text-slate-700">---</span>
+                                    @endif
+                                </td>
+                                <td class="px-8 py-5 text-right">
+                                    @if(!$usuario->pagou)
+                                    <div class="flex items-center justify-end gap-2">
+                                        @if($mensalidade->lider->pix_ativo && $mensalidade->lider->chave_pix)
+                                        <button onclick="window.exibirQrCodeModal && window.exibirQrCodeModal({{ $mensalidade->id }}, {{ $usuario->id }})"
+                                                class="p-2 text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 rounded-xl transition-all" title="Gerar QR Code">
+                                            <x-icon name="qrcode" style="duotone" class="w-5 h-5" />
+                                        </button>
+                                        @endif
+                                        <button onclick="openPaymentModal({{ $usuario->id }}, '{{ $usuario->nome }}')"
+                                            class="inline-flex items-center gap-2 px-4 py-2 text-[10px] font-black uppercase tracking-widest text-blue-600 bg-blue-50 hover:bg-blue-600 hover:text-white rounded-xl transition-all dark:bg-blue-900/10 dark:text-blue-400 dark:hover:bg-blue-600 dark:hover:text-white shadow-sm border border-blue-100 dark:border-blue-900/30">
+                                            Baixar
+                                        </button>
+                                    </div>
+                                    @else
+                                    <div class="flex justify-end pr-4">
+                                        <x-icon name="check-double" class="w-4 h-4 text-emerald-500" />
+                                    </div>
+                                    @endif
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-        <div class="overflow-x-auto">
-            <table class="w-full text-sm text-left">
-                <thead class="text-[10px] text-gray-400 uppercase tracking-widest bg-gray-50/50 dark:bg-slate-800/50 border-b border-gray-100 dark:border-slate-800">
-                    <tr>
-                        <th scope="col" class="px-6 py-4 font-bold">Morador</th>
-                        <th scope="col" class="px-6 py-4 font-bold text-center">Status</th>
-                        <th scope="col" class="px-6 py-4 font-bold text-center">Data Pagto</th>
-                        <th scope="col" class="px-6 py-4 font-bold text-center">Valor Pago</th>
-                        <th scope="col" class="px-6 py-4 font-bold text-right">Ações</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($usuarios as $usuario)
-                    <tr class="bg-white border-b dark:bg-slate-800 dark:border-slate-700">
-                        <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ $usuario->nome }}</td>
-                        <td class="px-6 py-4">
-                            @if($usuario->pagou)
-                            <span class="px-2 py-1 text-xs font-medium rounded bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400">Pago</span>
-                            @else
-                            <span class="px-2 py-1 text-xs font-medium rounded bg-amber-100 text-amber-800 dark:bg-amber-900/20 dark:text-amber-400">Pendente</span>
-                            @endif
-                        </td>
-                        <td class="px-6 py-4">
-                            @if($usuario->pagou)
-                            {{ $usuario->pagamento->data_pagamento->format('d/m/Y') }}
-                            @else
-                            -
-                            @endif
-                        </td>
-                        <td class="px-6 py-4">
-                            @if($usuario->pagou)
-                            <span class="font-semibold text-green-600 dark:text-green-400">R$ {{ number_format($usuario->pagamento->valor_pago, 2, ',', '.') }}</span>
-                            @else
-                            <span class="text-gray-400">-</span>
-                            @endif
-                        </td>
-                        <td class="px-6 py-4">
-                            @if(!$usuario->pagou)
-                            <div class="flex items-center gap-2">
-                                @if($mensalidade->lider->pix_ativo && $mensalidade->lider->chave_pix)
-                                <button onclick="window.exibirQrCodeModal && window.exibirQrCodeModal({{ $mensalidade->id }}, {{ $usuario->id }})"
-                                        class="inline-flex items-center px-3 py-1.5 text-xs font-medium text-white bg-emerald-600 rounded-lg hover:bg-emerald-700 transition-colors">
-                                    <svg class="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 4.5h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5" />
-                                    </svg>
-                                    QR Code PIX
-                                </button>
-                                @endif
-                                <button onclick="openPaymentModal({{ $usuario->id }}, '{{ $usuario->nome }}')" class="text-blue-600 hover:text-blue-800 dark:text-blue-400">Registrar Pagamento</button>
-                            </div>
-                            @else
-                            <span class="text-gray-400">-</span>
-                            @endif
-                        </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
+
+        <!-- Coluna Lateral -->
+        <div class="lg:col-span-1 space-y-8">
+            <!-- Pagamento Digital -->
+            <div class="premium-card p-8 bg-gradient-to-br from-white to-blue-50/30 dark:from-slate-800 dark:to-slate-900/50">
+                <h2 class="text-xs font-black text-gray-400 uppercase tracking-[0.2em] flex items-center gap-2 mb-6">
+                    <x-icon name="gears" style="duotone" class="w-5 text-blue-500" />
+                    Configurar Ciclo
+                </h2>
+
+                <form method="POST" action="{{ route('lider-comunidade.mensalidades.update-recebimento', $mensalidade->id) }}" class="space-y-6">
+                    @csrf
+                    @method('PUT')
+
+                    <div>
+                        <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 px-1">Método Preferencial</label>
+                        <select name="forma_recebimento" id="forma_recebimento" class="w-full px-5 py-3.5 bg-white dark:bg-slate-900/50 border border-gray-100 dark:border-slate-800 rounded-2xl text-sm font-bold focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all dark:text-white">
+                            <option value="maos" {{ $mensalidade->forma_recebimento == 'maos' ? 'selected' : '' }}>Dinheiro Espécie</option>
+                            <option value="pix" {{ $mensalidade->forma_recebimento == 'pix' ? 'selected' : '' }}>Transferência Digital (PIX)</option>
+                        </select>
+                    </div>
+
+                    <div id="chave_pix_container" style="display: {{ $mensalidade->forma_recebimento == 'pix' ? 'block' : 'none' }};">
+                        <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 px-1">Chave Destinatária</label>
+                        <input type="text" name="chave_pix" id="chave_pix" value="{{ $mensalidade->chave_pix }}"
+                            class="w-full px-5 py-3.5 bg-white dark:bg-slate-900/50 border border-gray-100 dark:border-slate-800 rounded-2xl text-sm font-bold focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all dark:text-white"
+                            placeholder="E-mail, CPF ou Aleatória">
+                    </div>
+
+                    <button type="submit" class="w-full px-8 py-4 text-[10px] font-black text-white bg-slate-900 dark:bg-blue-600 rounded-2xl hover:bg-slate-800 dark:hover:bg-blue-700 transition-all shadow-xl active:scale-95 uppercase tracking-widest">
+                        Atualizar Regras
+                    </button>
+                </form>
+            </div>
+
+            <!-- Ajuda Contextual -->
+            <div class="bg-indigo-50 dark:bg-indigo-900/10 border border-indigo-100 dark:border-indigo-900/20 rounded-3xl p-6">
+                <div class="flex items-start gap-4">
+                    <div class="p-3 bg-white dark:bg-slate-800 rounded-xl shadow-sm text-indigo-500">
+                        <x-icon name="lightbulb" style="duotone" class="w-6 h-6" />
+                    </div>
+                    <div class="space-y-2">
+                        <h4 class="text-xs font-black text-indigo-900 dark:text-indigo-300 uppercase tracking-widest">Controle de Baixa</h4>
+                        <p class="text-[11px] text-indigo-700 dark:text-indigo-400/80 leading-relaxed font-bold uppercase tracking-tight">Utilize o botão "Baixar" para registrar recebimentos manuais. Para PIX, o sistema gera o QR Code automaticamente se configurado.</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
-<!-- Modal de Registro de Pagamento -->
-<div id="paymentModal" class="hidden fixed inset-0 z-50 overflow-y-auto">
-    <div class="flex items-center justify-center min-h-screen px-4">
-        <div class="fixed inset-0 bg-black opacity-50" onclick="closePaymentModal()"></div>
-        <div class="relative bg-white dark:bg-slate-800 rounded-lg shadow-xl max-w-md w-full p-6">
-            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Registrar Pagamento</h3>
-            <form method="POST" action="{{ route('lider-comunidade.pagamentos.store') }}">
+<!-- Modal Classic Remastered -->
+<div id="paymentModal" class="hidden fixed inset-0 z-[100] animate-fade-in">
+    <div class="flex items-center justify-center min-h-screen px-4 py-12">
+        <div class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm transition-opacity" onclick="closePaymentModal()"></div>
+
+        <div class="relative bg-white dark:bg-slate-900 rounded-[2.5rem] shadow-2xl max-w-lg w-full overflow-hidden border border-white/20">
+            <div class="px-10 pt-10 pb-6 flex items-center justify-between border-b border-gray-100 dark:border-slate-800 bg-gray-50/50 dark:bg-slate-800/50">
+                <h3 class="text-xl font-black text-gray-900 dark:text-white uppercase tracking-tight">Baixa de Pagamento</h3>
+                <button onclick="closePaymentModal()" class="w-10 h-10 rounded-full hover:bg-gray-100 dark:hover:bg-slate-700 flex items-center justify-center text-gray-400 transition-colors">
+                    <x-icon name="xmark" class="w-5 h-5" />
+                </button>
+            </div>
+
+            <form method="POST" action="{{ route('lider-comunidade.pagamentos.store') }}" class="p-10 space-y-8">
                 @csrf
                 <input type="hidden" name="mensalidade_id" value="{{ $mensalidade->id }}">
                 <input type="hidden" name="usuario_poco_id" id="usuario_poco_id">
 
-                <div class="mb-4">
-                    <p class="text-sm text-gray-600 dark:text-gray-400">Usuário: <strong id="usuario_nome" class="text-gray-900 dark:text-white"></strong></p>
+                <div class="p-5 bg-blue-50 dark:bg-blue-900/10 border border-blue-100 dark:border-blue-900/20 rounded-3xl flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-2xl bg-white dark:bg-slate-800 flex items-center justify-center text-blue-600 shadow-sm border border-blue-50">
+                        <x-icon name="user-tag" style="duotone" class="w-6 h-6" />
+                    </div>
+                    <div>
+                        <p class="text-[9px] font-black text-blue-600 uppercase tracking-[0.2em] mb-0.5">Contribuinte</p>
+                        <p id="usuario_nome" class="text-lg font-black text-blue-900 dark:text-blue-300 uppercase tracking-tight"></p>
+                    </div>
                 </div>
 
-                <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Data do Pagamento *</label>
-                    <input type="date" name="data_pagamento" value="{{ date('Y-m-d') }}" required class="w-full px-3 py-2 border border-gray-300 rounded-lg dark:bg-slate-700 dark:border-slate-600 dark:text-white">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 px-1">Data Efetiva</label>
+                        <input type="date" name="data_pagamento" value="{{ date('Y-m-d') }}" required
+                            class="w-full px-5 py-3.5 bg-gray-50/50 dark:bg-slate-900/50 border border-gray-100 dark:border-slate-800 rounded-2xl text-sm font-bold focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all dark:text-white">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 px-1">Valor Recebido</label>
+                        <input type="number" name="valor_pago" value="{{ $mensalidade->valor_mensalidade }}" step="0.01" min="0.01" required
+                            class="w-full px-5 py-3.5 bg-gray-50/50 dark:bg-slate-900/50 border border-gray-100 dark:border-slate-800 rounded-2xl text-sm font-bold focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all dark:text-white font-mono">
+                    </div>
                 </div>
 
-                <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Valor Pago (R$) *</label>
-                    <input type="number" name="valor_pago" value="{{ $mensalidade->valor_mensalidade }}" step="0.01" min="0.01" required class="w-full px-3 py-2 border border-gray-300 rounded-lg dark:bg-slate-700 dark:border-slate-600 dark:text-white">
-                </div>
-
-                <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Forma de Pagamento *</label>
-                    <select name="forma_pagamento" required class="w-full px-3 py-2 border border-gray-300 rounded-lg dark:bg-slate-700 dark:border-slate-600 dark:text-white">
-                        <option value="dinheiro">Dinheiro</option>
-                        <option value="pix">PIX</option>
-                        <option value="transferencia">Transferência</option>
-                        <option value="outro">Outro</option>
+                <div>
+                    <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 px-1">Canal de Entrada</label>
+                    <select name="forma_pagamento" required
+                        class="w-full px-5 py-3.5 bg-gray-50/50 dark:bg-slate-900/50 border border-gray-100 dark:border-slate-800 rounded-2xl text-sm font-bold focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all dark:text-white">
+                        <option value="dinheiro">Dinheiro vivo</option>
+                        <option value="pix">Transferência PIX</option>
+                        <option value="transferencia">T.E.F / DOC / TED</option>
+                        <option value="outro">Outros meio</option>
                     </select>
                 </div>
 
-                <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Observações</label>
-                    <textarea name="observacoes" rows="2" class="w-full px-3 py-2 border border-gray-300 rounded-lg dark:bg-slate-700 dark:border-slate-600 dark:text-white"></textarea>
-                </div>
-
-                <div class="flex items-center justify-end gap-4">
-                    <button type="button" onclick="closePaymentModal()" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 dark:bg-slate-700 dark:text-gray-300 dark:border-slate-600">
+                <div class="pt-4 flex gap-4">
+                    <button type="button" onclick="closePaymentModal()"
+                        class="flex-1 px-8 py-4 text-[10px] font-black text-slate-500 bg-gray-100 dark:bg-slate-800 rounded-2xl hover:bg-gray-200 dark:hover:bg-slate-700 transition-all uppercase tracking-widest">
                         Cancelar
                     </button>
-                    <button type="submit" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700">
-                        Registrar
+                    <button type="submit"
+                        class="flex-1 px-8 py-4 text-[10px] font-black text-white bg-blue-600 rounded-2xl hover:bg-blue-700 transition-all shadow-xl shadow-blue-500/20 active:scale-95 uppercase tracking-widest">
+                        Confirmar Baixa
                     </button>
                 </div>
             </form>
@@ -193,13 +273,14 @@ function openPaymentModal(usuarioId, usuarioNome) {
     document.getElementById('usuario_poco_id').value = usuarioId;
     document.getElementById('usuario_nome').textContent = usuarioNome;
     document.getElementById('paymentModal').classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
 }
 
 function closePaymentModal() {
     document.getElementById('paymentModal').classList.add('hidden');
+    document.body.style.overflow = 'auto';
 }
 
-// Toggle chave PIX
 document.getElementById('forma_recebimento').addEventListener('change', function() {
     const pixContainer = document.getElementById('chave_pix_container');
     const pixInput = document.getElementById('chave_pix');

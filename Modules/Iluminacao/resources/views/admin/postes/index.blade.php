@@ -1,71 +1,104 @@
 @extends('admin.layouts.admin')
 
-@section('title', 'Gestão de Postes (Iluminação)')
+@section('title', 'Gestão de Postes - Admin')
 
 @section('content')
-<div class="space-y-6">
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+<div class="space-y-6 md:space-y-8 animate-fade-in pb-12">
+    <!-- Page Header -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 md:pb-6 border-b border-gray-200 dark:border-slate-700">
         <div>
-            <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Postes de Iluminação</h1>
-            <p class="text-sm text-gray-600 dark:text-gray-400">Gerenciamento de ativos de iluminação pública</p>
+            <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white flex items-center gap-3 mb-2">
+                <div class="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-indigo-500 to-indigo-700 rounded-xl flex items-center justify-center shadow-lg">
+                    <x-icon name="utility-pole" style="duotone" class="w-6 h-6 md:w-7 md:h-7 text-white" />
+                </div>
+                <span>Postes de Iluminação</span>
+            </h1>
+            <nav aria-label="breadcrumb" class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                <a href="{{ route('admin.dashboard') }}" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Admin</a>
+                <x-icon name="chevron-right" class="w-3 h-3 text-slate-400" />
+                <a href="{{ route('admin.iluminacao.index') }}" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Iluminação</a>
+                <x-icon name="chevron-right" class="w-3 h-3 text-slate-400" />
+                <span class="text-gray-900 dark:text-white font-medium">Gestão de Postes</span>
+            </nav>
         </div>
-        <div class="flex gap-2">
-            <a href="{{ route('admin.iluminacao.postes.export') }}" class="inline-flex items-center px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors">
-                <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
-                </svg>
+        <div class="flex flex-wrap gap-2">
+            <a href="{{ route('admin.iluminacao.postes.export') }}" class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 dark:bg-slate-700 dark:text-gray-300 dark:border-slate-600 transition-all shadow-sm">
+                <x-icon name="file-export" style="duotone" class="w-5 h-5 text-gray-500" />
                 Exportar (Neoenergia)
             </a>
-            <a href="{{ route('admin.iluminacao.postes.create') }}" class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors">
-                <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                </svg>
+            <a href="{{ route('admin.iluminacao.postes.create') }}" class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-300 transition-all shadow-md">
+                <x-icon name="plus" style="duotone" class="w-5 h-5" />
                 Novo Poste
             </a>
         </div>
     </div>
 
-    <div class="bg-white dark:bg-gray-800 rounded-lg shadow border border-gray-200 dark:border-gray-700">
-        <div class="p-4 border-b border-gray-200 dark:border-gray-700">
-            <form action="{{ route('admin.iluminacao.postes.index') }}" method="GET" class="flex gap-2">
-                <input type="text" name="search" value="{{ request('search') }}" placeholder="Buscar por código ou logradouro..." class="flex-1 px-4 py-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                <button type="submit" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-white">Buscar</button>
-            </form>
-        </div>
+    <!-- Filtros e Busca -->
+    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-gray-200 dark:border-slate-700 p-6">
+        <form action="{{ route('admin.iluminacao.postes.index') }}" method="GET" class="flex gap-4">
+            <div class="relative flex-1">
+                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-gray-400">
+                    <x-icon name="magnifying-glass" class="w-5 h-5" />
+                </div>
+                <input type="text" name="search" value="{{ request('search') }}" class="pl-10 w-full rounded-xl border-gray-300 dark:border-slate-600 dark:bg-slate-700 dark:text-white focus:ring-indigo-500 focus:border-indigo-500 transition-all" placeholder="Buscar por código, logradouro ou bairro...">
+            </div>
+            <button type="submit" class="px-6 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition-all shadow-md">
+                Buscar
+            </button>
+        </form>
+    </div>
+
+    <!-- Tabela de Resultados -->
+    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-gray-200 dark:border-slate-700 overflow-hidden">
         <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                <thead class="bg-gray-50 dark:bg-gray-700">
+            <table class="w-full text-sm text-left">
+                <thead class="bg-gray-50 dark:bg-slate-900/50 text-gray-500 dark:text-gray-400 uppercase text-xs font-semibold">
                     <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Código</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Logradouro</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Tipo Lâmpada</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Potência</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Ações</th>
+                        <th class="px-6 py-4">Código</th>
+                        <th class="px-6 py-4">Logradouro & Bairro</th>
+                        <th class="px-6 py-4">Tipo Lâmpada</th>
+                        <th class="px-6 py-4">Potência</th>
+                        <th class="px-6 py-4 text-right">Ações</th>
                     </tr>
                 </thead>
-                <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                <tbody class="divide-y divide-gray-200 dark:divide-slate-700">
                     @forelse($postes as $poste)
-                        <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">{{ $poste->codigo }}</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                                {{ $poste->logradouro }}
-                                @if($poste->bairro) <br><span class="text-xs">{{ $poste->bairro }}</span> @endif
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{{ ucfirst($poste->tipo_lampada ?? '-') }}</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{{ $poste->potencia ? $poste->potencia . 'W' : '-' }}</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <a href="{{ route('admin.iluminacao.postes.show', $poste->id) }}" class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300">Ver</a>
-                            </td>
-                        </tr>
+                    <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50 transition-all group">
+                        <td class="px-6 py-4 font-bold text-gray-900 dark:text-white">
+                            {{ $poste->codigo }}
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="flex flex-col">
+                                <span class="text-gray-900 dark:text-white font-medium">{{ $poste->logradouro }}</span>
+                                <span class="text-xs text-gray-500 dark:text-gray-400">{{ $poste->bairro ?? '-' }}</span>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="text-gray-600 dark:text-gray-400 italic text-xs">{{ ucfirst($poste->tipo_lampada ?? 'Não informado') }}</span>
+                        </td>
+                        <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">
+                            {{ $poste->potencia ? $poste->potencia . 'W' : '-' }}
+                        </td>
+                        <td class="px-6 py-4 text-right">
+                             <a href="{{ route('admin.iluminacao.postes.show', $poste->id) }}" class="inline-flex items-center p-2 text-indigo-600 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg hover:bg-indigo-600 hover:text-white transition-all shadow-sm">
+                                <x-icon name="eye" style="duotone" class="w-5 h-5" />
+                            </a>
+                        </td>
+                    </tr>
                     @empty
-                        <tr>
-                            <td colspan="5" class="px-6 py-4 text-center text-gray-500 dark:text-gray-400">Nenhum poste encontrado.</td>
-                        </tr>
+                    <tr>
+                        <td colspan="5" class="px-6 py-12 text-center">
+                            <div class="flex flex-col items-center">
+                                <x-icon name="utility-pole" style="duotone" class="w-12 h-12 text-gray-300 dark:text-gray-600 mb-3" />
+                                <p class="text-gray-500 dark:text-gray-400 font-medium">Nenhum poste cadastrado ou encontrado.</p>
+                            </div>
+                        </td>
+                    </tr>
                     @endforelse
                 </tbody>
             </table>
         </div>
-        <div class="px-4 py-3 border-t border-gray-200 dark:border-gray-700">
+        <div class="px-6 py-4 bg-gray-50 dark:bg-slate-900/20 border-t border-gray-200 dark:border-slate-700">
             {{ $postes->links() }}
         </div>
     </div>

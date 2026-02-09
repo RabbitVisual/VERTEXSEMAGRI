@@ -1,41 +1,87 @@
 @extends('campo.layouts.app')
 
-@section('title', 'Chat Interno')
+@section('title', 'Comunicação Tática')
+
+@section('breadcrumbs')
+    <x-icon name="chevron-right" class="w-2 h-2" />
+    <span class="text-emerald-600">Canal de Comunicação Central</span>
+@endsection
 
 @section('content')
-<div class="space-y-6">
-    <div class="flex items-center justify-between pb-4 border-b border-gray-200 dark:border-gray-700">
-        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Chat Interno</h1>
-        <button onclick="abrirNovaConversa()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-semibold transition-colors">
+<div class="h-[calc(100vh-14rem)] flex flex-col space-y-8 animate-fade-in">
+    <!-- Header de Canal -->
+    <div class="flex items-center justify-between pb-6 border-b border-gray-200 dark:border-slate-800">
+        <div class="flex items-center gap-5">
+            <div class="w-14 h-14 bg-gradient-to-br from-indigo-600 to-purple-700 rounded-2xl flex items-center justify-center text-white shadow-2xl transform rotate-3 hover:rotate-0 transition-all">
+                <x-icon name="comment-dots" style="duotone" class="w-7 h-7" />
+            </div>
+            <div>
+                <h1 class="text-2xl font-black text-gray-900 dark:text-white tracking-tight uppercase leading-none">Chat de Comando</h1>
+                <p class="text-[9px] font-black text-slate-400 uppercase tracking-[0.3em] mt-2 italic">Canal Direto com a Base e Operadores</p>
+            </div>
+        </div>
+
+        <button onclick="abrirNovaConversa()" class="h-12 px-8 bg-indigo-600 text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-600/20 active:scale-95 flex items-center gap-2">
+            <x-icon name="plus" class="w-4 h-4" />
             Nova Conversa
         </button>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <!-- Lista de Conversas -->
-        <div class="lg:col-span-1 bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
-            <div class="p-4 border-b border-gray-200 dark:border-gray-700">
-                <h2 class="font-bold text-gray-900 dark:text-white">Conversas</h2>
+    <div class="flex-1 flex gap-8 min-h-0 overflow-hidden">
+        <!-- Sidebar de Contatos (Lista de Conversas) -->
+        <div class="w-80 flex flex-col premium-card overflow-hidden">
+            <div class="p-6 border-b border-gray-100 dark:border-slate-800 bg-gray-50/50 dark:bg-slate-900/50 flex items-center justify-between">
+                <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest italic">Conversas Ativas</span>
+                <span id="online-status" class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
             </div>
-            <div id="lista-conversas" class="divide-y divide-gray-200 dark:divide-gray-700">
-                <div class="p-4 text-center text-sm text-gray-500 dark:text-gray-400">
-                    Carregando...
+
+            <div id="lista-conversas" class="flex-1 overflow-y-auto custom-scrollbar divide-y divide-gray-50 dark:divide-slate-800/50">
+                <div class="p-12 text-center">
+                    <x-icon name="spinner" class="w-6 h-6 text-indigo-500 animate-spin mx-auto mb-4" />
+                    <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest italic">Sincronizando...</p>
                 </div>
             </div>
         </div>
 
-        <!-- Área de Mensagens -->
-        <div class="lg:col-span-2 bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden flex flex-col">
-            <div id="chat-mensagens-container" class="flex-1 p-6 overflow-y-auto min-h-[500px]">
-                <div class="text-center text-gray-500 dark:text-gray-400 py-12">
-                    Selecione uma conversa para começar
+        <!-- Interface de Mensagens -->
+        <div class="flex-1 flex flex-col premium-card overflow-hidden bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]">
+            <!-- Topo da Conversa Selecionada -->
+            <div id="chat-header" class="p-6 border-b border-gray-100 dark:border-slate-800 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md flex items-center justify-between z-10 hidden">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 bg-indigo-50 dark:bg-indigo-900/20 rounded-xl flex items-center justify-center text-indigo-600 shadow-inner">
+                        <x-icon name="user" style="duotone" class="w-6 h-6" />
+                    </div>
+                    <div>
+                        <p id="chat-header-name" class="text-xs font-black text-gray-900 dark:text-white uppercase tracking-tight">--</p>
+                        <p id="chat-header-status" class="text-[9px] font-black text-emerald-500 uppercase tracking-widest mt-0.5">Disponível agora</p>
+                    </div>
+                </div>
+
+                <div id="chat-header-context" class="hidden flex items-center gap-3 px-4 py-2 bg-slate-50 dark:bg-slate-800 rounded-xl border border-gray-100 dark:border-slate-700">
+                    <x-icon name="link" class="w-3 h-3 text-indigo-500 font-black" />
+                    <span class="text-[9px] font-black text-slate-500 uppercase tracking-widest">Protocolo Relacionado</span>
                 </div>
             </div>
-            <div id="chat-input-container" class="hidden p-4 border-t border-gray-200 dark:border-gray-700">
-                <form id="chat-form" class="flex gap-3">
-                    <input type="text" id="chat-message-input" placeholder="Digite sua mensagem..." class="flex-1 rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white px-4 py-2">
-                    <button type="submit" class="px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-semibold transition-colors">
-                        Enviar
+
+            <!-- Área de Scroll de Balões -->
+            <div id="chat-mensagens-container" class="flex-1 p-8 overflow-y-auto custom-scrollbar flex flex-col space-y-6">
+                <div class="flex-1 flex flex-col items-center justify-center text-center py-20 animate-pulse">
+                    <div class="w-24 h-24 bg-slate-100 dark:bg-slate-800 rounded-[2.5rem] flex items-center justify-center text-slate-300 dark:text-slate-700 mb-6 shadow-inner">
+                        <x-icon name="comments" style="duotone" class="w-10 h-10" />
+                    </div>
+                    <h3 class="text-xs font-black text-slate-400 uppercase tracking-[0.2em] italic">Selecione uma Conversa</h3>
+                    <p class="text-[10px] text-slate-500 font-medium mt-2">Escolha um canal à esquerda para iniciar a transmissão.</p>
+                </div>
+            </div>
+
+            <!-- Input de Transmissão -->
+            <div id="chat-input-container" class="p-6 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-gray-100 dark:border-slate-800 z-10 hidden">
+                <form id="chat-form" class="flex items-center gap-4">
+                    <div class="flex-1 relative">
+                        <input type="text" id="chat-message-input" placeholder="DIGITE SUA MENSAGEM TÁTICA..." class="w-full pl-6 pr-6 py-5 bg-gray-50 dark:bg-slate-950 border-gray-100 dark:border-slate-800 rounded-2xl text-[11px] font-black uppercase tracking-widest focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 dark:text-white placeholder:text-slate-400 transition-all">
+                    </div>
+                    <button type="submit" class="w-16 h-16 bg-indigo-600 text-white rounded-2xl flex items-center justify-center shadow-lg shadow-indigo-600/20 hover:bg-indigo-700 transition-all active:scale-95 group">
+                        <x-icon name="paper-plane" class="w-6 h-6 group-hover:rotate-12 transition-transform" />
                     </button>
                 </form>
             </div>
@@ -43,56 +89,42 @@
     </div>
 </div>
 
-<!-- Modal Nova Conversa -->
-<div id="modal-nova-conversa" class="fixed inset-0 z-[9999] hidden" style="display: none;">
-    <!-- Background overlay -->
-    <div class="fixed inset-0 bg-gray-900 bg-opacity-50" onclick="fecharModalNovaConversa()" style="z-index: 10000;"></div>
+<!-- Modal Nova Conversa Premium -->
+<div id="modal-nova-conversa" class="hidden fixed inset-0 z-[100] bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-6 animate-fade-in">
+    <div class="w-full max-w-lg bg-white dark:bg-slate-900 rounded-[3rem] shadow-2xl border border-white/10 overflow-hidden animate-scale-in">
+        <div class="p-10 border-b border-gray-100 dark:border-slate-800 bg-indigo-500/5 flex items-center justify-between">
+            <div class="flex items-center gap-6">
+                <div class="w-14 h-14 bg-indigo-600 rounded-2xl flex items-center justify-center text-white shadow-xl shadow-indigo-600/20">
+                    <x-icon name="message-plus" style="duotone" class="w-7 h-7" />
+                </div>
+                <div>
+                    <h2 class="text-xl font-black text-gray-900 dark:text-white uppercase tracking-tight">Novo Canal</h2>
+                    <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest italic mt-1">Sincronizar contato na rede</p>
+                </div>
+            </div>
+            <button onclick="fecharModalNovaConversa()" class="w-12 h-12 rounded-2xl bg-gray-50 dark:bg-slate-800 text-slate-400 hover:text-rose-600 transition-colors flex items-center justify-center">
+                <x-icon name="xmark" class="w-5 h-5" />
+            </button>
+        </div>
 
-    <!-- Modal container -->
-    <div class="fixed inset-0 flex items-center justify-center p-4" style="z-index: 10001; pointer-events: none;">
-        <!-- Modal panel -->
-        <div class="relative bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-lg p-6 pointer-events-auto max-h-[90vh] overflow-y-auto">
-            <div class="flex items-center justify-between mb-4">
-                <h3 class="text-lg font-bold text-gray-900 dark:text-white">
-                    Nova Conversa
-                </h3>
-                <button onclick="fecharModalNovaConversa()" class="text-gray-400 hover:text-gray-500 dark:hover:text-gray-300 transition-colors">
-                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
+        <form id="form-nova-conversa" class="p-10 space-y-8">
+            <div class="space-y-2">
+                <label class="block text-[9px] font-black uppercase text-slate-400 tracking-widest mb-1 italic ml-2">Destinatário Alvo</label>
+                <select id="usuario-select" required class="w-full p-5 bg-gray-50 dark:bg-slate-950 border-gray-100 dark:border-slate-800 rounded-2xl text-[11px] font-black uppercase tracking-widest focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 dark:text-white transition-all appearance-none cursor-pointer">
+                    <option value="">AGUARDANDO CONEXÃO...</option>
+                </select>
             </div>
 
-            <form id="form-nova-conversa" class="space-y-4">
-                <!-- Seleção de Usuário -->
-                <div>
-                    <label for="usuario-select" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        Selecionar Usuário
-                    </label>
-                    <select id="usuario-select" required class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white px-4 py-2 focus:ring-indigo-500 focus:border-indigo-500">
-                        <option value="">Carregando usuários...</option>
-                    </select>
-                </div>
+            <div class="space-y-2">
+                <label class="block text-[9px] font-black uppercase text-slate-400 tracking-widest mb-1 italic ml-2">Transmissão Inicial</label>
+                <textarea id="mensagem-inicial" required rows="4" placeholder="DIGITE O CONTEÚDO DA PRIMEIRA MENSAGEM..." class="w-full p-6 bg-gray-50 dark:bg-slate-950 border-gray-100 dark:border-slate-800 rounded-2xl text-xs font-medium text-slate-600 dark:text-slate-300 focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all"></textarea>
+            </div>
 
-                <!-- Mensagem Inicial -->
-                <div>
-                    <label for="mensagem-inicial" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        Mensagem Inicial
-                    </label>
-                    <textarea id="mensagem-inicial" rows="4" required placeholder="Digite sua mensagem inicial..." class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white px-4 py-2 focus:ring-indigo-500 focus:border-indigo-500"></textarea>
-                </div>
-
-                <!-- Botões -->
-                <div class="flex gap-3 pt-4">
-                    <button type="button" onclick="fecharModalNovaConversa()" class="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
-                        Cancelar
-                    </button>
-                    <button type="submit" id="btn-criar-conversa" class="flex-1 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
-                        Criar Conversa
-                    </button>
-                </div>
-            </form>
-        </div>
+            <div class="pt-4 flex gap-4">
+                <button type="button" onclick="fecharModalNovaConversa()" class="flex-1 h-14 text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-rose-600 transition-colors">Abortar</button>
+                <button type="submit" id="btn-criar-conversa" class="flex-[2] h-14 bg-indigo-600 text-white rounded-2xl text-[11px] font-black uppercase tracking-widest hover:bg-indigo-700 transition-all shadow-xl shadow-indigo-600/20 active:scale-95">Inaugurar Canal</button>
+            </div>
+        </form>
     </div>
 </div>
 
@@ -100,461 +132,145 @@
 <script>
     let sessaoAtual = null;
 
-    /**
-     * Escapar HTML para evitar XSS
-     */
     function escapeHtml(text) {
-        if (!text) return '';
         const div = document.createElement('div');
         div.textContent = text;
         return div.innerHTML;
     }
 
     async function carregarConversas() {
-        // Se offline, tentar carregar do cache
-        if (!navigator.onLine) {
-            await carregarConversasOffline();
-            return;
-        }
-
         try {
-            const response = await fetch('{{ route("campo.chat.index") }}', {
-                method: 'GET',
-                headers: {
-                    'Accept': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'Content-Type': 'application/json',
-                },
-                credentials: 'same-origin'
-            });
-            
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            
-            const contentType = response.headers.get('content-type');
-            if (!contentType || !contentType.includes('application/json')) {
-                const text = await response.text();
-                console.error('Resposta não é JSON:', text.substring(0, 200));
-                throw new Error('Resposta não é JSON');
-            }
-            
-            const data = await response.json();
-
+            const res = await fetch('{{ route("campo.chat.index") }}', { headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' } });
+            const data = await res.json();
             if (data.success) {
                 const container = document.getElementById('lista-conversas');
                 const sessoes = data.sessoes.data || [];
-
                 if (sessoes.length === 0) {
-                    container.innerHTML = '<div class="p-4 text-center text-sm text-gray-500 dark:text-gray-400">Nenhuma conversa</div>';
+                    container.innerHTML = '<div class="p-12 text-center text-[10px] font-black text-slate-400 uppercase italic">Vazio</div>';
                     return;
                 }
 
-                container.innerHTML = sessoes.map(sessao => {
-                    const nomeDestinatario = sessao.assigned_to ? sessao.assigned_to.name : 'Sistema';
-                    const ultimaMensagem = sessao.last_message ? sessao.last_message.message : 'Sem mensagens';
-                    const temNaoLidas = sessao.unread_count_user > 0;
-                    const isActive = sessao.session_id === sessaoAtual;
-                    
+                container.innerHTML = sessoes.map(s => {
+                    const nome = s.assigned_to ? s.assigned_to.name : 'Sistema';
+                    const msg = s.last_message ? s.last_message.message : 'Nenhuma mensagem';
+                    const active = s.session_id === sessaoAtual;
+                    const unread = s.unread_count_user > 0;
+
                     return `
-                        <div onclick="abrirConversa('${sessao.session_id}')" class="p-4 hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer transition-colors ${isActive ? 'bg-indigo-50 dark:bg-indigo-900/20' : ''}">
-                            <div class="flex items-center justify-between">
-                                <div class="flex-1 min-w-0">
-                                    <div class="flex items-center gap-2">
-                                        <p class="font-semibold text-gray-900 dark:text-white truncate ${temNaoLidas ? 'font-bold' : ''}">
-                                            ${escapeHtml(nomeDestinatario)}
-                                        </p>
-                                        ${temNaoLidas ? `<span class="px-2 py-0.5 text-xs font-bold text-white bg-red-500 rounded-full">${sessao.unread_count_user}</span>` : ''}
-                                    </div>
-                                    <p class="text-xs text-gray-500 dark:text-gray-400 truncate mt-1">
-                                        ${escapeHtml(ultimaMensagem.length > 50 ? ultimaMensagem.substring(0, 50) + '...' : ultimaMensagem)}
-                                    </p>
-                                    ${sessao.last_activity_at ? `<p class="text-xs text-gray-400 dark:text-gray-500 mt-1">${new Date(sessao.last_activity_at).toLocaleDateString('pt-BR')}</p>` : ''}
+                        <div onclick="abrirConversa('${s.session_id}')" class="p-6 transition-all cursor-pointer ${active ? 'bg-indigo-500/10 border-l-4 border-indigo-500' : 'hover:bg-gray-50 dark:hover:bg-slate-800/30'}">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-[10px] font-black text-gray-900 dark:text-white uppercase tracking-tight truncate flex-1 ${unread ? 'text-indigo-600 dark:text-indigo-400' : ''}">${escapeHtml(nome)}</span>
+                                ${unread ? `<span class="w-4 h-4 rounded-full bg-indigo-600 text-[10px] font-black text-white flex items-center justify-center">${s.unread_count_user}</span>` : ''}
+                            </div>
+                            <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest truncate italic">${escapeHtml(msg)}</p>
+                        </div>
+                    `;
+                }).join('');
+            }
+        } catch (e) { console.error(e); }
+    }
+
+    async function abrirConversa(sid) {
+        sessaoAtual = sid;
+        document.getElementById('chat-header').classList.remove('hidden');
+        document.getElementById('chat-input-container').classList.remove('hidden');
+
+        try {
+            const res = await fetch(`{{ route("campo.chat.messages", ":id") }}`.replace(':id', sid), { headers: { 'Accept': 'application/json' } });
+            const data = await res.json();
+            if (data.success) {
+                // Atualizar Header
+                const s = data.messages[0]?.sender || { name: 'Chat' };
+                document.getElementById('chat-header-name').textContent = s.name;
+
+                const container = document.getElementById('chat-mensagens-container');
+                container.innerHTML = data.messages.map(m => {
+                    const isMe = m.sender_type === 'user';
+                    return `
+                        <div class="flex ${isMe ? 'justify-end' : 'justify-start'} animate-fade-in">
+                            <div class="max-w-[80%]">
+                                <p class="text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1 italic ${isMe ? 'text-right' : ''}">${escapeHtml(isMe ? 'Você' : m.sender.name)}</p>
+                                <div class="px-6 py-4 rounded-3xl ${isMe ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/20' : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-gray-100 dark:border-slate-700 shadow-sm'}">
+                                    <p class="text-xs font-medium leading-relaxed">${escapeHtml(m.message)}</p>
+                                    <p class="text-[8px] font-black uppercase tracking-widest mt-2 opacity-50">${new Date(m.created_at).toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'})}</p>
                                 </div>
                             </div>
                         </div>
                     `;
                 }).join('');
-            }
-        } catch (error) {
-            console.error('Erro ao carregar conversas:', error);
-        }
-    }
-
-    async function abrirConversa(sessionId) {
-        sessaoAtual = sessionId;
-        document.getElementById('chat-input-container').classList.remove('hidden');
-
-        // Se offline, mostrar mensagem
-        if (!navigator.onLine) {
-            const container = document.getElementById('chat-mensagens-container');
-            container.innerHTML = '<div class="text-center text-gray-500 dark:text-gray-400 py-12">Você está offline. Conecte-se à internet para visualizar mensagens.</div>';
-            return;
-        }
-
-        try {
-            const response = await fetch(`{{ route("campo.chat.messages", ":id") }}`.replace(':id', sessionId), {
-                method: 'GET',
-                headers: {
-                    'Accept': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest',
-                },
-                credentials: 'same-origin'
-            });
-            
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            
-            const data = await response.json();
-
-            if (data.success) {
-                const container = document.getElementById('chat-mensagens-container');
-                const messages = data.messages || [];
-                
-                if (messages.length === 0) {
-                    container.innerHTML = '<div class="text-center text-gray-500 dark:text-gray-400 py-12">Nenhuma mensagem ainda. Envie a primeira mensagem!</div>';
-                } else {
-                    container.innerHTML = messages.map(msg => {
-                        const isUser = msg.sender_type === 'user';
-                        const senderName = msg.sender ? msg.sender.name : (isUser ? 'Você' : 'Outro usuário');
-                        const date = new Date(msg.created_at);
-                        
-                        return `
-                            <div class="mb-4 flex ${isUser ? 'justify-end' : 'justify-start'}">
-                                <div class="max-w-xs lg:max-w-md">
-                                    ${!isUser ? `<p class="text-xs text-gray-500 dark:text-gray-400 mb-1 px-1">${escapeHtml(senderName)}</p>` : ''}
-                                    <div class="px-4 py-2 rounded-lg ${isUser ? 'bg-indigo-600 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white'}">
-                                        <p class="text-sm whitespace-pre-wrap">${escapeHtml(msg.message)}</p>
-                                        <p class="text-xs mt-1 opacity-75">${date.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        `;
-                    }).join('');
-                }
                 container.scrollTop = container.scrollHeight;
+                carregarConversas(); // Sincroniza labels laterais (limpa unread)
             }
-        } catch (error) {
-            console.error('Erro ao carregar mensagens:', error);
-        }
+        } catch (e) { console.error(e); }
     }
 
-    document.getElementById('chat-form')?.addEventListener('submit', async function(e) {
+    document.getElementById('chat-form').onsubmit = async (e) => {
         e.preventDefault();
-        if (!sessaoAtual) return;
-
         const input = document.getElementById('chat-message-input');
-        const message = input.value.trim();
-        if (!message) return;
-
-        // Bloquear envio se offline
-        if (!navigator.onLine) {
-            alert('Você está offline. Conecte-se à internet para enviar mensagens.');
-            return;
-        }
+        const msg = input.value.trim();
+        if (!msg || !sessaoAtual) return;
 
         try {
-            const response = await fetch(`{{ route("campo.chat.send", ":id") }}`.replace(':id', sessaoAtual), {
+            const res = await fetch(`{{ route("campo.chat.send", ":id") }}`.replace(':id', sessaoAtual), {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                },
-                body: JSON.stringify({ message })
+                headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+                body: JSON.stringify({ message: msg })
             });
-
-            const data = await response.json();
-            if (data.success) {
+            if ((await res.json()).success) {
                 input.value = '';
                 abrirConversa(sessaoAtual);
             }
-        } catch (error) {
-            console.error('Erro ao enviar mensagem:', error);
-        }
-    });
-
-    // ============================================
-    // NOVA CONVERSA
-    // ============================================
-    let usuariosDisponiveis = [];
+        } catch (e) { console.error(e); }
+    };
 
     async function abrirNovaConversa() {
-        // Bloquear se offline
-        if (!navigator.onLine) {
-            alert('Você está offline. Conecte-se à internet para criar uma nova conversa.');
-            return;
-        }
-
         const modal = document.getElementById('modal-nova-conversa');
-        if (!modal) {
-            console.error('Modal não encontrado');
-            alert('Erro: Modal não encontrado. Recarregue a página.');
-            return;
-        }
-        
-        // Remover classe hidden e garantir visibilidade
         modal.classList.remove('hidden');
-        modal.style.display = 'block';
-        
-        // Prevenir scroll do body
-        document.body.style.overflow = 'hidden';
-        
-        // Carregar usuários disponíveis
-        await carregarUsuariosDisponiveis();
-    }
-
-    function fecharModalNovaConversa() {
-        const modal = document.getElementById('modal-nova-conversa');
-        if (!modal) return;
-        
-        // Adicionar classe hidden e esconder
-        modal.classList.add('hidden');
-        modal.style.display = 'none';
-        
-        // Restaurar scroll do body
-        document.body.style.overflow = '';
-        
-        // Limpar formulário
-        const selectUsuario = document.getElementById('usuario-select');
-        const mensagemInicial = document.getElementById('mensagem-inicial');
-        if (selectUsuario) selectUsuario.value = '';
-        if (mensagemInicial) mensagemInicial.value = '';
-    }
-
-    async function carregarUsuariosDisponiveis() {
         const select = document.getElementById('usuario-select');
-        select.innerHTML = '<option value="">Carregando usuários...</option>';
-        select.disabled = true;
-
-        // Se offline, tentar carregar do cache
-        if (!navigator.onLine) {
-            await carregarUsuariosDisponiveisOffline();
-            return;
-        }
-
+        select.innerHTML = '<option>SINCRONIZANDO CANAIS...</option>';
         try {
-            const response = await fetch('{{ route("campo.chat.users") }}', {
-                method: 'GET',
-                headers: {
-                    'Accept': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest',
-                },
-                credentials: 'same-origin'
-            });
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+            const res = await fetch('{{ route("campo.chat.users") }}', { headers: { 'Accept': 'application/json' } });
+            const data = await res.json();
+            if (data.users) {
+                select.innerHTML = '<option value="">SELECIONE O ALVO DA TRANSMISSÃO...</option>' +
+                    data.users.map(u => `<option value="${u.id}">${u.name.toUpperCase()} (${u.email.toUpperCase()})</option>`).join('');
             }
-
-            const data = await response.json();
-
-            if (data.success && data.users) {
-                usuariosDisponiveis = data.users;
-                
-                if (usuariosDisponiveis.length === 0) {
-                    select.innerHTML = '<option value="">Nenhum usuário disponível</option>';
-                } else {
-                    select.innerHTML = '<option value="">Selecione um usuário...</option>';
-                    usuariosDisponiveis.forEach(usuario => {
-                        const option = document.createElement('option');
-                        option.value = usuario.id;
-                        option.textContent = usuario.name + (usuario.email ? ` (${usuario.email})` : '');
-                        select.appendChild(option);
-                    });
-                }
-                select.disabled = false;
-            } else {
-                throw new Error('Resposta inválida da API');
-            }
-        } catch (error) {
-            console.error('Erro ao carregar usuários:', error);
-            select.innerHTML = '<option value="">Erro ao carregar usuários</option>';
-            select.disabled = true;
-        }
+        } catch (e) { console.error(e); }
     }
 
-    // Formulário de nova conversa
-    document.getElementById('form-nova-conversa')?.addEventListener('submit', async function(e) {
+    function fecharModalNovaConversa() { document.getElementById('modal-nova-conversa').classList.add('hidden'); }
+
+    document.getElementById('form-nova-conversa').onsubmit = async (e) => {
         e.preventDefault();
-        
-        const btnCriar = document.getElementById('btn-criar-conversa');
-        const selectUsuario = document.getElementById('usuario-select');
-        const mensagemInicial = document.getElementById('mensagem-inicial');
-        
-        const usuarioId = selectUsuario.value;
-        const mensagem = mensagemInicial.value.trim();
-
-        if (!usuarioId || !mensagem) {
-            alert('Por favor, selecione um usuário e digite uma mensagem inicial.');
-            return;
-        }
-
-        // Desabilitar botão
-        btnCriar.disabled = true;
-        btnCriar.textContent = 'Criando...';
-
+        const uid = document.getElementById('usuario-select').value;
+        const msg = document.getElementById('mensagem-inicial').value;
+        const btn = document.getElementById('btn-criar-conversa');
+        btn.disabled = true;
         try {
-            const response = await fetch('{{ route("campo.chat.store") }}', {
+            const res = await fetch('{{ route("campo.chat.store") }}', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                },
-                credentials: 'same-origin',
-                body: JSON.stringify({
-                    assigned_to: parseInt(usuarioId),
-                    message: mensagem
-                })
+                headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+                body: JSON.stringify({ assigned_to: uid, message: msg })
             });
-
-            if (!response.ok) {
-                const errorData = await response.json().catch(() => ({}));
-                throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
-            }
-
-            const data = await response.json();
-
-            if (data.success && data.session) {
-                // Fechar modal
+            const data = await res.json();
+            if (data.success) {
                 fecharModalNovaConversa();
-                
-                // Recarregar conversas
                 await carregarConversas();
-                
-                // Abrir a nova conversa
-                if (data.session.session_id) {
-                    setTimeout(() => {
-                        abrirConversa(data.session.session_id);
-                    }, 500);
-                }
-            } else {
-                throw new Error(data.error || 'Erro ao criar conversa');
+                abrirConversa(data.session.session_id);
             }
-        } catch (error) {
-            console.error('Erro ao criar conversa:', error);
-            alert('Erro ao criar conversa: ' + error.message);
-        } finally {
-            // Reabilitar botão
-            btnCriar.disabled = false;
-            btnCriar.textContent = 'Criar Conversa';
-        }
-    });
+        } catch (e) { console.error(e); } finally { btn.disabled = false; }
+    };
 
-    // Fechar modal com ESC
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
-            const modal = document.getElementById('modal-nova-conversa');
-            if (modal && !modal.classList.contains('hidden')) {
-                fecharModalNovaConversa();
-            }
-        }
-    });
-
-    // Função para carregar conversas offline do cache
-    async function carregarConversasOffline() {
-        try {
-            if (window.campoOffline && window.campoOffline.db) {
-                const db = window.campoOffline.db;
-                const tx = db.transaction('chatSessionsCache', 'readonly');
-                const store = tx.objectStore('chatSessionsCache');
-                const request = store.getAll();
-
-                request.onsuccess = () => {
-                    const sessoes = request.result || [];
-                    const container = document.getElementById('lista-conversas');
-
-                    if (sessoes.length === 0) {
-                        container.innerHTML = '<div class="p-4 text-center text-sm text-gray-500 dark:text-gray-400">Nenhuma conversa em cache offline</div>';
-                        return;
-                    }
-
-                    container.innerHTML = sessoes.map(sessao => {
-                        const nomeDestinatario = sessao.assigned_to ? sessao.assigned_to.name : 'Sistema';
-                        const ultimaMensagem = sessao.last_message ? sessao.last_message.message : 'Sem mensagens';
-                        const temNaoLidas = sessao.unread_count_user > 0;
-                        
-                        return `
-                            <div class="p-4 hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer transition-colors opacity-75">
-                                <div class="flex items-center justify-between">
-                                    <div class="flex-1 min-w-0">
-                                        <div class="flex items-center gap-2">
-                                            <p class="font-semibold text-gray-900 dark:text-white truncate ${temNaoLidas ? 'font-bold' : ''}">
-                                                ${escapeHtml(nomeDestinatario)}
-                                            </p>
-                                            ${temNaoLidas ? `<span class="px-2 py-0.5 text-xs font-bold text-white bg-red-500 rounded-full">${sessao.unread_count_user}</span>` : ''}
-                                        </div>
-                                        <p class="text-xs text-gray-500 dark:text-gray-400 truncate mt-1">
-                                            ${escapeHtml(ultimaMensagem.length > 50 ? ultimaMensagem.substring(0, 50) + '...' : ultimaMensagem)}
-                                        </p>
-                                        <p class="text-xs text-gray-400 dark:text-gray-500 mt-1">📴 Offline</p>
-                                    </div>
-                                </div>
-                            </div>
-                        `;
-                    }).join('');
-                };
-            } else {
-                const container = document.getElementById('lista-conversas');
-                container.innerHTML = '<div class="p-4 text-center text-sm text-gray-500 dark:text-gray-400">Você está offline. Conecte-se para carregar conversas.</div>';
-            }
-        } catch (error) {
-            console.error('Erro ao carregar conversas offline:', error);
-        }
-    }
-
-    // Função para carregar usuários offline do cache
-    async function carregarUsuariosDisponiveisOffline() {
-        const select = document.getElementById('usuario-select');
-        try {
-            if (window.campoOffline && window.campoOffline.db) {
-                const db = window.campoOffline.db;
-                const tx = db.transaction('chatUsersCache', 'readonly');
-                const store = tx.objectStore('chatUsersCache');
-                const request = store.getAll();
-
-                request.onsuccess = () => {
-                    const users = request.result || [];
-                    if (users.length === 0) {
-                        select.innerHTML = '<option value="">Nenhum usuário em cache offline</option>';
-                    } else {
-                        select.innerHTML = '<option value="">Selecione um usuário (offline)...</option>';
-                        users.forEach(usuario => {
-                            const option = document.createElement('option');
-                            option.value = usuario.id;
-                            option.textContent = usuario.name + (usuario.email ? ` (${usuario.email})` : '') + ' 📴';
-                            select.appendChild(option);
-                        });
-                    }
-                    select.disabled = false;
-                };
-            } else {
-                select.innerHTML = '<option value="">Offline - Conecte-se para carregar usuários</option>';
-                select.disabled = true;
-            }
-        } catch (error) {
-            console.error('Erro ao carregar usuários offline:', error);
-            select.innerHTML = '<option value="">Erro ao carregar usuários offline</option>';
-            select.disabled = true;
-        }
-    }
-
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', () => {
         carregarConversas();
-        setInterval(carregarConversas, 30000);
-        
-        // Verificar se há um parâmetro de sessão na URL para abrir automaticamente
+        setInterval(carregarConversas, 10000);
+
+        // Verifica se veio de uma OS
         const urlParams = new URLSearchParams(window.location.search);
-        const sessionId = urlParams.get('session');
-        if (sessionId && navigator.onLine) {
-            // Aguardar um pouco para garantir que as conversas foram carregadas
-            setTimeout(() => {
-                abrirConversa(sessionId);
-                // Remover o parâmetro da URL após abrir
-                window.history.replaceState({}, document.title, window.location.pathname);
-            }, 500);
+        const osNum = urlParams.get('os');
+        if (osNum) {
+            document.getElementById('chat-message-input').value = `SOBRE O PROTOCOLO #${osNum}: `;
+            abrirNovaConversa();
         }
     });
 </script>

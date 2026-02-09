@@ -9,17 +9,17 @@
         <div>
             <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white flex items-center gap-3 mb-2">
                 <div class="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl flex items-center justify-center shadow-lg">
-                    <x-module-icon module="CAF" class="w-6 h-6 md:w-7 md:h-7 text-white" />
+                    <x-module-icon module="CAF" class="w-6 h-6 md:w-7 md:h-7 text-white" style="duotone" />
                 </div>
                 <span>Gerenciar Cadastros CAF</span>
             </h1>
             <nav aria-label="breadcrumb" class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
                 <a href="{{ route('admin.dashboard') }}" class="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Admin</a>
-                <x-icon name="magnifying-glass" class="w-5 h-5" />
+                <x-icon name="magnifying-glass" class="w-5 h-5" style="duotone" />
                         Filtrar
                     </button>
                     <a href="{{ route('admin.caf.index') }}" class="inline-flex items-center justify-center px-4 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:ring-4 focus:ring-gray-200 dark:bg-slate-700 dark:text-gray-300 dark:border-slate-600 dark:hover:bg-slate-600 dark:focus:ring-slate-700 transition-colors">
-                        <x-icon name="rotate-right" class="w-5 h-5" />
+                        <x-icon name="rotate-right" class="w-5 h-5" style="duotone" />
                     </a>
                 </div>
             </form>
@@ -80,7 +80,7 @@
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-right">
                             <a href="{{ route('admin.caf.show', $cadastro->id) }}" class="inline-flex items-center text-emerald-600 hover:text-emerald-900 dark:text-emerald-400 dark:hover:text-emerald-300 transition-colors" title="Visualizar">
-                                <x-icon name="eye" class="w-5 h-5" />
+                                <x-icon name="eye" class="w-5 h-5" style="duotone" />
                             </a>
                         </td>
                     </tr>
@@ -99,7 +99,7 @@
     @else
     <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 p-12 text-center">
         <div class="w-16 h-16 bg-gray-100 dark:bg-slate-700 rounded-full flex items-center justify-center mx-auto mb-4">
-            <x-icon name="file-pdf" class="w-5 h-5" />
+            <x-icon name="file-pdf" class="w-5 h-5" style="duotone" />
         </div>
         <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">Nenhum cadastro encontrado</h3>
         <p class="text-gray-500 dark:text-gray-400">Não há cadastros CAF no sistema ainda.</p>
@@ -107,3 +107,8 @@
     @endif
 </div>
 @endsection
+
+
+
+
+

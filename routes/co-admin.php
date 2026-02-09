@@ -143,6 +143,8 @@ Route::prefix('co-admin')->name('co-admin.')->middleware(['auth', 'co-admin-or-a
     if (\Nwidart\Modules\Facades\Module::isEnabled('Iluminacao')) {
         Route::prefix('iluminacao')->name('iluminacao.')->group(function () {
             Route::get('/', [\Modules\Iluminacao\App\Http\Controllers\IluminacaoController::class, 'index'])->name('index');
+            Route::get('/export-neoenergia', [\Modules\Iluminacao\App\Http\Controllers\IluminacaoController::class, 'exportNeoenergia'])->name('export-neoenergia');
+            Route::post('/import-neoenergia', [\Modules\Iluminacao\App\Http\Controllers\IluminacaoController::class, 'importNeoenergia'])->name('import-neoenergia');
             Route::get('/create', [\Modules\Iluminacao\App\Http\Controllers\IluminacaoController::class, 'create'])->name('create');
             Route::post('/', [\Modules\Iluminacao\App\Http\Controllers\IluminacaoController::class, 'store'])->name('store');
             Route::get('/{id}', [\Modules\Iluminacao\App\Http\Controllers\IluminacaoController::class, 'show'])->name('show');
@@ -236,7 +238,7 @@ if (\Nwidart\Modules\Facades\Module::isEnabled('Chat')) {
         Route::get('/', [\Modules\Chat\App\Http\Controllers\Admin\ChatAdminController::class, 'index'])->name('index');
         Route::get('/realtime', [\Modules\Chat\App\Http\Controllers\Admin\ChatAdminController::class, 'realtime'])->name('realtime');
         Route::get('/statistics', [\Modules\Chat\App\Http\Controllers\Admin\ChatAdminController::class, 'statistics'])->name('statistics');
-        
+
         // Ações em sessões específicas
         Route::get('/{id}', [\Modules\Chat\App\Http\Controllers\Admin\ChatAdminController::class, 'show'])->name('show')->where('id', '[0-9]+');
         Route::post('/{id}/assign', [\Modules\Chat\App\Http\Controllers\Admin\ChatAdminController::class, 'assign'])->name('assign');
@@ -272,4 +274,3 @@ if (\Nwidart\Modules\Facades\Module::isEnabled('Chat')) {
         });
     }
 });
-

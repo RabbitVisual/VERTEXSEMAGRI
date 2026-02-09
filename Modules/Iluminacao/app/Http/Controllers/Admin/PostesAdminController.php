@@ -46,7 +46,7 @@ class PostesAdminController extends Controller
             'trafo' => 'nullable|string',
             'barramento' => 'boolean',
         ]);
-        
+
         Poste::create($validated);
         return redirect()->route('admin.iluminacao.postes.index')->with('success', 'Poste criado com sucesso.');
     }
@@ -64,7 +64,7 @@ class PostesAdminController extends Controller
         $postes = Poste::all();
         $csvFileName = 'audit_neoenergia_' . date('Ymd_His') . '.csv';
         $headers = [
-            "Content-type" => "text/csv",
+            "Content-type" => "text/csv; charset=utf-8",
             "Content-Disposition" => "attachment; filename=$csvFileName",
             "Pragma" => "no-cache",
             "Cache-Control" => "must-revalidate, post-check=0, pre-check=0",
@@ -73,7 +73,9 @@ class PostesAdminController extends Controller
 
         $callback = function() use ($postes) {
             $file = fopen('php://output', 'w');
-            fputcsv($file, ['Codigo', 'Latitude', 'Longitude', 'Tipo Lampada', 'Potencia', 'Logradouro', 'Bairro', 'Trafo', 'Barramento']);
+            fprintf($file, chr(0xEF).chr(0xBB).chr(0xBF)); // BOM for UTF-8 Excel compatibility
+
+            fputcsv($file, ['Codigo', 'Latitude', 'Longitude', 'Tipo Lampada', 'Potencia', 'Logradouro', 'Bairro', 'Trafo', 'Barramento'], ';');
 
             foreach ($postes as $poste) {
                 fputcsv($file, [
@@ -86,7 +88,7 @@ class PostesAdminController extends Controller
                     $poste->bairro,
                     $poste->trafo,
                     $poste->barramento ? 'Sim' : 'Não'
-                ]);
+                ], ';');
             }
             fclose($file);
         };

@@ -18,6 +18,7 @@ class RolesPermissionsSeeder extends Seeder
         $modulos = [
             'localidades',
             'iluminacao',
+            'postes',
             'agua',
             'pocos',
             'estradas',
@@ -71,7 +72,7 @@ class RolesPermissionsSeeder extends Seeder
             'pocos.view',
             'pessoas.view',
         ];
-        
+
         foreach ($permissionsLiderComunidade as $permission) {
             Permission::firstOrCreate(['name' => $permission]);
         }
@@ -173,4 +174,3 @@ class RolesPermissionsSeeder extends Seeder
         $userConsulta->assignRole('consulta');
     }
 }
-

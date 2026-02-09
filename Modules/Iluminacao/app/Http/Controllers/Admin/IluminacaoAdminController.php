@@ -10,9 +10,17 @@ use Modules\Ordens\App\Models\OrdemServico;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
+use Modules\Iluminacao\App\Services\NeoenergiaService;
+use Illuminate\Support\Facades\Response;
 
 class IluminacaoAdminController extends Controller
 {
+    protected $neoenergiaService;
+
+    public function __construct(NeoenergiaService $neoenergiaService)
+    {
+        $this->neoenergiaService = $neoenergiaService;
+    }
     public function index(Request $request)
     {
         $filters = $request->only(['status', 'tipo_lampada', 'localidade_id', 'search']);
@@ -87,6 +95,52 @@ class IluminacaoAdminController extends Controller
             ->get();
 
         return view('iluminacao::admin.show', compact('ponto', 'estatisticasPonto', 'demandasRelacionadas', 'ordensRelacionadas'));
+    }
+
+    public function export()
+    {
+        $pontos = PontoLuz::all();
+        $csvFileName = 'audit_iluminacao_' . date('Ymd_His') . '.csv';
+        $headers = [
+            "Content-type" => "text/csv; charset=utf-8",
+            "Content-Disposition" => "attachment; filename=$csvFileName",
+            "Pragma" => "no-cache",
+            "Cache-Control" => "must-revalidate, post-check=0, pre-check=0",
+            "Expires" => "0"
+        ];
+
+        $callback = function() use ($pontos) {
+            $file = fopen('php://output', 'w');
+            fprintf($file, chr(0xEF).chr(0xBB).chr(0xBF)); // BOM for UTF-8 Excel compatibility
+
+            // Official Audit Header
+            fputcsv($file, ['SISTEMA GESTÃO DE ILUMINAÇÃO PÚBLICA - VERTEX SEMAGRI'], ';');
+            fputcsv($file, ['RELATÓRIO DE AUDITORIA DE PONTOS DE LUZ'], ';');
+            fputcsv($file, ['DATA GERAÇÃO:', date('d/m/Y H:i:s')], ';');
+            fputcsv($file, ['TOTAL DE REGISTROS:', $pontos->count()], ';');
+            fputcsv($file, ['VERSÃO SISTEMA:', '1.0.26-1'], ';');
+            fputcsv($file, [], ';'); // Empty line divider
+
+            // Columns
+            fputcsv($file, ['Codigo', 'Latitude', 'Longitude', 'Tipo Lampada', 'Potencia', 'Endereco', 'Barramento', 'Trafo', 'Status'], ';');
+
+            foreach ($pontos as $ponto) {
+                fputcsv($file, [
+                    $ponto->codigo,
+                    $ponto->latitude,
+                    $ponto->longitude,
+                    $this->neoenergiaService->translateToNeoenergia($ponto->tipo_lampada),
+                    $ponto->potencia . 'W',
+                    $ponto->endereco,
+                    $ponto->barramento ? 'Sim' : 'Não',
+                    $ponto->trafo,
+                    $ponto->status
+                ], ';');
+            }
+            fclose($file);
+        };
+
+        return Response::stream($callback, 200, $headers);
     }
 
     /**
@@ -166,4 +220,3 @@ class IluminacaoAdminController extends Controller
         }
     }
 }
-
