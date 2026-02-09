@@ -54,8 +54,8 @@ jobs:
       - name: Build Assets
         run: npm run build
 
-      # - name: Run Tests
-      #   run: vendor/bin/phpunit
+      - name: Run Tests
+        run: php artisan test
 
       - name: Prepare Artifacts for SLSA
         run: |
@@ -91,13 +91,16 @@ jobs:
   auto-approve:
     name: Auto Approve PR (Bot)
     needs: [build]
+    # Skip if actor is the GITHUB_TOKEN bot itself (it can't approve its own PR)
+    # but still target Jules and other trusted actors.
     if: |
       github.event_name == 'pull_request' &&
       github.event.pull_request.draft == false &&
+      github.actor != 'github-actions[bot]' &&
       (
         github.actor == 'jules-bot' ||
         github.actor == 'dependabot[bot]' ||
-        github.actor == 'github-actions[bot]' ||
+        github.actor == 'jules[bot]' ||
         github.actor == 'RabbitVisual' ||
         github.event.pull_request.user.type == 'Bot' ||
         contains(github.event.pull_request.title, '[Jules]') ||
@@ -119,12 +122,23 @@ jobs:
   auto-merge:
     name: Enable Auto Merge
     needs: [build, auto-approve]
+    # Enable auto-merge ONLY for trusted bots and automated PRs.
     if: |
       always() &&
       needs.build.result == 'success' &&
       (needs.auto-approve.result == 'success' || needs.auto-approve.result == 'skipped') &&
       github.event_name == 'pull_request' &&
-      github.event.pull_request.draft == false
+      github.event.pull_request.draft == false &&
+      (
+        github.actor == 'jules-bot' ||
+        github.actor == 'dependabot[bot]' ||
+        github.actor == 'github-actions[bot]' ||
+        github.actor == 'jules[bot]' ||
+        github.actor == 'RabbitVisual' ||
+        github.event.pull_request.user.type == 'Bot' ||
+        contains(github.event.pull_request.title, '[Jules]') ||
+        contains(github.event.pull_request.head.ref, 'jules')
+      )
     runs-on: ubuntu-latest
     permissions:
       contents: write
