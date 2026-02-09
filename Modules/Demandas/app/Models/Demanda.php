@@ -36,6 +36,7 @@ class Demanda extends Model
         'total_interessados', // Contador de pessoas interessadas/afetadas
         'score_similaridade_max', // Maior score de similaridade encontrado
         'palavras_chave', // Cache de palavras-chave para busca rápida
+        'image_consent', // Consentimento de imagem para o Newsroom
     ];
 
     protected $casts = [
@@ -86,6 +87,11 @@ class Demanda extends Model
     public function interessadosNotificaveis()
     {
         return $this->hasMany(DemandaInteressado::class)->where('notificar', true);
+    }
+
+    public function blogPost()
+    {
+        return $this->hasOne(\Modules\Blog\App\Models\BlogPost::class, 'related_demand_id');
     }
 
     // Accessors
@@ -386,4 +392,3 @@ class Demanda extends Model
         ];
     }
 }
-

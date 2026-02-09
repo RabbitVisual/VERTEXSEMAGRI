@@ -17,13 +17,13 @@
         </div>
     </div>
 
-    <!-- Smart Widgets (Intelligence) -->
+    <!-- Smart Widgets (Cockpit UI) -->
     @if(isset($smartWidgets))
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <!-- Newsroom Widget -->
-        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-gray-200 dark:border-slate-700 p-6 flex flex-col relative overflow-hidden group">
-            <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-                <x-icon name="newspaper" class="w-24 h-24 text-emerald-500" style="duotone" />
+        <!-- Widget A: Redação & Transparência -->
+        <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-gray-200 dark:border-slate-700 p-6 flex flex-col relative overflow-hidden group hover:shadow-lg transition-all duration-300">
+            <div class="absolute -top-4 -right-4 p-8 opacity-5 group-hover:opacity-10 transition-opacity">
+                <x-icon name="newspaper" class="w-24 h-24" style="duotone" />
             </div>
 
             
@@ -31,34 +31,34 @@
                 <div class="p-2 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg text-emerald-600 dark:text-emerald-400">
                     <x-icon name="pen-nib" class="w-6 h-6" style="duotone" />
                 </div>
-                <h3 class="font-semibold text-gray-900 dark:text-white font-poppins">Redação & Transparência</h3>
+                <h3 class="font-bold text-gray-900 dark:text-white font-poppins text-lg">Redação & Transparência</h3>
             </div>
 
             
             <div class="flex-1">
                 <div class="flex items-baseline gap-2 mb-2">
-                    <span class="text-4xl font-bold text-gray-900 dark:text-white font-inter tracking-tight tabular-nums">
+                    <span class="text-5xl font-extrabold text-gray-900 dark:text-white font-inter tracking-tight tabular-nums">
                         {{ $smartWidgets['newsroom_drafts'] }}
                     </span>
-                    <span class="text-sm text-gray-500 dark:text-gray-400">obras para divulgar</span>
+                    <span class="text-sm font-medium text-gray-500 dark:text-gray-400">Obras aguardando divulgação</span>
                 </div>
-                <p class="text-xs text-gray-500 dark:text-gray-400 mb-4">
-                    Demandas concluídas pendentes de publicação no Portal da Transparência.
+                <p class="text-xs text-gray-500 dark:text-gray-400 mb-6">
+                    Módulo Newsroom identificou obras concluídas aptas para publicação automática.
                 </p>
             </div>
 
             
             <div class="mt-auto">
-                <a href="{{ route('admin.blog.create') }}" class="inline-flex items-center justify-center w-full px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium rounded-lg transition-colors shadow-sm hover:shadow">
-                    <x-icon name="plus" class="w-4 h-4 mr-2" /> Criar Notícia
+                <a href="{{ route('admin.blog.create') }}?import_from_demandas=1" class="inline-flex items-center justify-center w-full px-5 py-3 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold rounded-xl transition-all shadow-md hover:shadow-lg active:scale-[0.98]">
+                    <x-icon name="wand-magic-sparkles" class="w-4 h-4 mr-2" /> Gerar Notícias
                 </a>
             </div>
         </div>
 
-        <!-- Field Ops Widget -->
-        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-gray-200 dark:border-slate-700 p-6 flex flex-col relative overflow-hidden group">
-            <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-                <x-icon name="satellite-dish" class="w-24 h-24 text-blue-500" style="duotone" />
+        <!-- Widget B: Operação de Campo -->
+        <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-gray-200 dark:border-slate-700 p-6 flex flex-col relative overflow-hidden group hover:shadow-lg transition-all duration-300">
+            <div class="absolute -top-4 -right-4 p-8 opacity-5 group-hover:opacity-10 transition-opacity">
+                <x-icon name="satellite-dish" class="w-24 h-24" style="duotone" />
             </div>
 
             
@@ -66,7 +66,7 @@
                 <div class="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg text-blue-600 dark:text-blue-400">
                     <x-icon name="wifi" class="w-6 h-6" style="duotone" />
                 </div>
-                <h3 class="font-semibold text-gray-900 dark:text-white font-poppins">Operação de Campo</h3>
+                <h3 class="font-bold text-gray-900 dark:text-white font-poppins text-lg">Operação de Campo</h3>
             </div>
 
             
@@ -88,11 +88,20 @@
                         @endif
                     </div>
                 </div>
-                @empty
-                <div class="text-center py-4 text-gray-500 dark:text-gray-400 text-sm">
-                    Nenhuma sincronização recente.
+                <div class="flex items-center gap-2 mb-6">
+                    <div class="w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse shadow-[0_0_8px_rgba(34,197,94,0.6)]"></div>
+                    <span class="text-xs font-bold text-green-600 dark:text-green-400 uppercase tracking-wider">Campo Ativo</span>
                 </div>
-                @endforelse
+
+                <div class="space-y-2 mb-4">
+                    @forelse($smartWidgets['recent_syncs'] as $sync)
+                    <div class="flex items-center justify-between text-xs bg-gray-50 dark:bg-slate-700/50 p-2 rounded-lg">
+                        <span class="text-gray-600 dark:text-gray-300 font-medium">{{ Str::limit($sync->user_name, 12) }}</span>
+                        <span class="text-gray-400 tabular-nums">{{ $sync->time_ago }}</span>
+                    </div>
+                    @empty
+                    @endforelse
+                </div>
             </div>
 
             
@@ -103,10 +112,10 @@
             </div>
         </div>
 
-        <!-- Inventory Health Widget -->
-        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-gray-200 dark:border-slate-700 p-6 flex flex-col relative overflow-hidden group">
-            <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-                <x-icon name="boxes-stacked" class="w-24 h-24 text-amber-500" style="duotone" />
+        <!-- Widget C: Almoxarifado Crítico -->
+        <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-gray-200 dark:border-slate-700 p-6 flex flex-col relative overflow-hidden group hover:shadow-lg transition-all duration-300">
+            <div class="absolute -top-4 -right-4 p-8 opacity-5 group-hover:opacity-10 transition-opacity">
+                <x-icon name="boxes-stacked" class="w-24 h-24" style="duotone" />
             </div>
 
             
@@ -114,36 +123,36 @@
                 <div class="p-2 bg-amber-100 dark:bg-amber-900/30 rounded-lg text-amber-600 dark:text-amber-400">
                     <x-icon name="box-open" class="w-6 h-6" style="duotone" />
                 </div>
-                <h3 class="font-semibold text-gray-900 dark:text-white font-poppins">Almoxarifado Inteligente</h3>
+                <h3 class="font-bold text-gray-900 dark:text-white font-poppins text-lg">Almoxarifado Crítico</h3>
             </div>
 
             
             <div class="flex-1">
                 @if(count($smartWidgets['low_stock_items']) > 0)
-                <div class="space-y-3">
+                <div class="space-y-3 mb-6">
                     @foreach($smartWidgets['low_stock_items'] as $item)
-                    <div class="flex items-center justify-between p-2 bg-red-50 dark:bg-red-900/20 rounded-lg border border-red-100 dark:border-red-800/30">
-                        <div class="flex items-center gap-2 overflow-hidden">
-                            @if($item->codigo_barras)
-                            <x-icon name="barcode" class="w-4 h-4 text-gray-400 flex-shrink-0" />
-                            @endif
-                            <span class="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">
-                                {{ $item->nome }}
-                            </span>
+                    <div class="flex items-center justify-between p-3 bg-red-50/50 dark:bg-red-900/10 rounded-xl border border-red-100 dark:border-red-900/20">
+                        <div class="flex items-center gap-3 overflow-hidden">
+                            <div class="flex-shrink-0 w-8 h-8 bg-white dark:bg-slate-800 rounded-lg flex items-center justify-center shadow-sm">
+                                <x-icon name="box" class="w-4 h-4 text-amber-600" />
+                            </div>
+                            <div class="flex flex-col min-w-0">
+                                <span class="text-sm font-bold text-gray-900 dark:text-gray-100 truncate">{{ $item->nome }}</span>
+                                @if($item->ncm)
+                                <span class="text-[10px] text-gray-500 dark:text-gray-400 font-mono">NCM: {{ $item->ncm->codigo }}</span>
+                                @endif
+                            </div>
                         </div>
-                        <div class="text-xs font-bold text-red-600 dark:text-red-400 bg-white dark:bg-slate-800 px-2 py-1 rounded border border-red-100 dark:border-red-800/30 font-inter tabular-nums">
-                            {{ $item->quantidade_estoque }} / {{ $item->quantidade_minima }}
+                        <div class="text-xs font-black text-red-600 dark:text-red-400 font-inter tabular-nums">
+                            {{ (int)$item->quantidade_estoque }}
                         </div>
                     </div>
                     @endforeach
                 </div>
                 @else
-                <div class="flex flex-col items-center justify-center h-full text-center py-6">
-                    <div class="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center text-green-600 dark:text-green-400 mb-3">
-                        <x-icon name="check" class="w-6 h-6" />
-                    </div>
-                    <p class="text-sm text-gray-600 dark:text-gray-300 font-medium">Estoque Saudável</p>
-                    <p class="text-xs text-gray-500 dark:text-gray-400">Nenhum item abaixo do mínimo.</p>
+                <div class="flex flex-col items-center justify-center py-10 opacity-60">
+                    <x-icon name="circle-check" class="w-12 h-12 text-green-500 mb-3" style="duotone" />
+                    <p class="text-sm font-bold text-gray-600 dark:text-gray-400">Estoque Saudável</p>
                 </div>
                 @endif
             </div>
@@ -199,14 +208,19 @@
             </div>
         </div>
 
-        <!-- System Health (Placeholder) -->
-        <div class="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-slate-700 flex items-center">
+        <!-- System Health -->
+        <div class="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-slate-700 flex items-center group hover:bg-green-50/50 dark:hover:bg-green-900/10 transition-colors">
             <div class="p-3 rounded-full bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 mr-4">
                 <x-icon name="server" class="w-6 h-6" style="duotone" />
             </div>
             <div>
                 <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Status do Sistema</p>
-                <p class="text-sm font-bold text-green-600 dark:text-green-400">Operacional</p>
+                <div class="flex items-center gap-2">
+                    <p class="text-sm font-bold {{ $smartWidgets['system_health'] ? 'text-green-600' : 'text-amber-600' }}">
+                        {{ $smartWidgets['system_health'] ? 'Operacional' : 'Base NCM pendente' }}
+                    </p>
+                    <div class="w-2 h-2 rounded-full {{ $smartWidgets['system_health'] ? 'bg-green-500' : 'bg-amber-500' }}"></div>
+                </div>
             </div>
         </div>
     </div>
@@ -256,19 +270,38 @@
             </div>
         </div>
 
-        <!-- Module Distribution Chart -->
-        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-gray-200 dark:border-slate-700 p-6">
-            <h3 class="font-semibold text-gray-900 dark:text-white font-poppins mb-4">Distribuição de Atividades</h3>
-            <div class="relative h-64">
-                <canvas id="actionsChart"></canvas>
-            </div>
-            <div class="mt-4 space-y-2">
-                @foreach(array_slice($moduleStats, 0, 5) as $module => $count)
-                <div class="flex justify-between items-center text-sm">
-                    <span class="text-gray-600 dark:text-gray-400">{{ $module }}</span>
-                    <span class="font-bold text-gray-900 dark:text-white font-inter tabular-nums">{{ $count }}</span>
-                </div>
+        <!-- Module Distribution (Zero-CDN CSS Bars) -->
+        <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-gray-200 dark:border-slate-700 p-6">
+            <h3 class="font-bold text-gray-900 dark:text-white font-poppins text-lg mb-6">Distribuição de Dados</h3>
+
+            <div class="space-y-5">
+                @php
+                    $maxCount = count($moduleStats) > 0 ? max($moduleStats) : 1;
+                    $colors = ['bg-blue-500', 'bg-emerald-500', 'bg-amber-500', 'bg-purple-500', 'bg-rose-500', 'bg-indigo-500', 'bg-cyan-500', 'bg-teal-500'];
+                    $i = 0;
+                @endphp
+                @foreach($moduleStats as $module => $count)
+                    @php
+                        $percentage = ($count / $maxCount) * 100;
+                        $color = $colors[$i % count($colors)];
+                        $i++;
+                    @endphp
+                    <div class="space-y-1 group">
+                        <div class="flex justify-between items-center text-sm">
+                            <span class="text-gray-600 dark:text-gray-400 font-medium group-hover:text-gray-900 dark:group-hover:text-white transition-colors">{{ $module }}</span>
+                            <span class="font-bold text-gray-900 dark:text-white font-inter tabular-nums">{{ number_format($count, 0, ',', '.') }}</span>
+                        </div>
+                        <div class="w-full bg-gray-100 dark:bg-slate-700 rounded-full h-2 overflow-hidden">
+                            <div class="{{ $color }} h-full rounded-full transition-all duration-1000 ease-out group-hover:brightness-110" style="width: {{ $percentage }}%"></div>
+                        </div>
+                    </div>
                 @endforeach
+            </div>
+
+            <div class="mt-8 pt-6 border-t border-gray-100 dark:border-slate-700">
+                <p class="text-[10px] text-gray-400 dark:text-gray-500 uppercase tracking-widest font-bold text-center">
+                    Inteligência de Dados Local
+                </p>
             </div>
         </div>
     </div>
@@ -276,8 +309,8 @@
 @endsection
 
 @push('scripts')
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
+    // Local-only dashboard logic (Zero-CDN)
     document.addEventListener('DOMContentLoaded', function() {
         const ctx = document.getElementById('actionsChart').getContext('2d');
         const data = @json($chartData['modules_activity']);
