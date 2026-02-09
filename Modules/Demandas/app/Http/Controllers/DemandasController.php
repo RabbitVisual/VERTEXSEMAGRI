@@ -32,6 +32,32 @@ class DemandasController extends Controller
         $this->ensureModuleEnabled('Demandas');
         $this->similaridadeService = $similaridadeService;
     }
+    public function syncData(Request $request)
+    {
+        $demands = Demanda::with([
+                "localidade",
+                "pessoa",
+                "ordemServico",
+                "ordemServico.materiais"
+            ])
+            ->whereIn("status", ["aberta", "em_andamento"])
+            ->get();
+
+        $materials = [];
+        if ($this->isModuleEnabled("Materiais") && Schema::hasTable("materiais")) {
+             $materials = DB::table("materiais")
+                ->where("ativo", true)
+                ->select("id", "nome", "unidade_medida as unidade", "codigo_barra as codigo")
+                ->get();
+        }
+
+        return response()->json([
+            "demands" => $demands,
+            "materials" => $materials,
+            "timestamp" => now()->toIso8601String()
+        ]);
+    }
+
     public function index(Request $request)
     {
         // Verificar se há exportação solicitada

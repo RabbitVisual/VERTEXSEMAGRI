@@ -3,6 +3,22 @@
 @section('title', 'Demandas')
 
 @section('content')
+<div x-data="offlineManager" @click.capture="handleLinkClick($event)">
+    <div class="mb-4 flex justify-between items-center bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+        <div class="flex items-center gap-3">
+            <div :class="online ? 'bg-green-500' : 'bg-orange-500'" class="w-3 h-3 rounded-full"></div>
+            <span x-text="online ? 'Online' : 'Offline Mode'" class="font-semibold text-gray-700 dark:text-gray-200"></span>
+            <span x-show="!online" class="text-xs text-gray-500">(Dados Locais)</span>
+        </div>
+        <div class="flex gap-2">
+            <button @click="sync()" :disabled="syncing || !online" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded transition disabled:opacity-50 flex items-center gap-2">
+                <x-demandas::icon name="arrow-path" class="w-4 h-4" ::class="{'animate-spin': syncing}" />
+                <span x-text="syncStatus"></span>
+            </button>
+        </div>
+    </div>
+
+    <div x-show="online">
 <div class="space-y-8">
     <!-- Page Header -->
     <div class="bg-gradient-to-r from-indigo-600 via-indigo-700 to-indigo-800 dark:from-indigo-800 dark:via-indigo-900 dark:to-indigo-950 rounded-2xl shadow-2xl p-6 md:p-8 text-white relative overflow-hidden">
@@ -451,4 +467,5 @@ document.addEventListener('click', function(event) {
 });
 </script>
 @endpush
+<div class="mb-4">                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Observações</label>                        <textarea x-model="selectedDemand.observacoes_temp" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-white" rows="3"></textarea>                    </div>                    <div class="flex gap-2">                        <button class="flex-1 bg-green-600 hover:bg-green-700 text-white py-2 rounded" @click="saveStatus()">Concluir</button>                        <button class="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 rounded" @click="selectedDemand = null">Cancelar</button>                    </div>
 @endsection
