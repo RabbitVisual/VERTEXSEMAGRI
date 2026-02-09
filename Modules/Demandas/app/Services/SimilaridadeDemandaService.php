@@ -210,7 +210,7 @@ class SimilaridadeDemandaService
         $loc2 = $this->cacheLocalidades[$localidade2Id];
 
         // Se não encontrar ou não tiver coordenadas, retorna 0
-        if (!$loc1 || !$loc2 || !$loc1->latitude || !$loc1->longitude || !$loc2->latitude || !$loc2->longitude) {
+        if (!$loc1 || !$loc2 || is_null($loc1->latitude) || is_null($loc1->longitude) || is_null($loc2->latitude) || is_null($loc2->longitude)) {
             return 0;
         }
 

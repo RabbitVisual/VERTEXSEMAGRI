@@ -9,6 +9,7 @@ export default defineConfig({
                 // Assets principais
                 'resources/css/app.css',
                 'resources/js/app.js',
+                'resources/js/offline/init.js',
                 'resources/js/quill-editor.js',
                 'resources/js/map.js',
                 'resources/js/carousel-admin.js',

@@ -19,6 +19,8 @@ class Localidade extends Model
         'cidade',
         'estado',
         'ativo',
+        'latitude',
+        'longitude',
     ];
 
     // Relacionamentos

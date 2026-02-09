@@ -20,6 +20,7 @@ Route::middleware(['auth', 'module.enabled:Demandas'])->group(function () {
     Route::get('/demandas/{id}/print', [DemandasController::class, 'print'])->name('demandas.print');
     Route::get('/demandas/relatorio/abertas/pdf', [DemandasController::class, 'relatorioAbertasPdf'])->name('demandas.relatorio.abertas.pdf');
     Route::post('/demandas/{demanda}/reenviar-email', [DemandasController::class, 'reenviarEmail'])->name('demandas.reenviar-email');
+Route::get('/demandas/offline/sync', [DemandasController::class, 'syncData'])->name('demandas.offline.sync');
 
     // Rotas para sistema de detecção de duplicatas e interessados
     Route::post('/demandas/verificar-similares', [DemandasController::class, 'verificarSimilares'])->name('demandas.verificar-similares');
