@@ -80,8 +80,9 @@ async function processPhotoUpload(item) {
     formData.append('demand_id', item.payload.demandId);
     formData.append('description', item.payload.description || 'Foto de Campo');
 
-    // Adjust endpoint as needed. Assuming standard route or specific media endpoint.
-    // Using a dedicated upload endpoint might be safer than the generic sync one for FormData.
+    // Add Consent (Default to 0 if undefined)
+    formData.append('consent', media.consent ? '1' : '0');
+
     await axios.post('/api/v1/campo/upload-media', formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
     });

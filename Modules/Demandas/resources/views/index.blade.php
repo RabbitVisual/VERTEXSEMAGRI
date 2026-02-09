@@ -519,7 +519,18 @@ document.addEventListener('click', function(event) {
 });
 </script>
 @endpush
-<div class="mb-4">                                            <div class="grid grid-cols-2 gap-3 mb-4">
+<div class="mb-4">                                                                <div class="mb-4 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg border border-gray-200 dark:border-gray-600">
+                        <label class="flex items-center space-x-3 cursor-pointer">
+                            <input type="checkbox" x-model="imageConsent" class="form-checkbox h-5 w-5 text-indigo-600 rounded border-gray-300 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600">
+                            <span class="text-sm text-gray-700 dark:text-gray-200 font-medium">Cidadão autorizou uso de imagem?</span>
+                        </label>
+                        <p x-show="!imageConsent" class="mt-2 text-xs text-amber-600 dark:text-amber-400 flex items-center">
+                            <x-demandas::icon name="lock" class="w-3 h-3 mr-1" />
+                            Foto será marcada como Uso Interno (LGPD)
+                        </p>
+                    </div>
+
+<div class="grid grid-cols-2 gap-3 mb-4">
                         <label class="flex flex-col items-center justify-center p-3 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 dark:border-gray-600 transition">
                             <x-demandas::icon name="camera" class="w-6 h-6 text-gray-400 mb-1" />
                             <span class="text-xs text-gray-500">Adicionar Foto</span>

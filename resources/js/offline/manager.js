@@ -13,6 +13,9 @@ export default () => ({
     localDemands: [],
     selectedDemand: null,
 
+    // Consent
+    imageConsent: false,
+
     // Radar
     radarActive: false,
     radarWatchId: null,
@@ -49,8 +52,7 @@ export default () => ({
                     // iOS
                     this.currentHeading = e.webkitCompassHeading;
                 } else if (e.alpha !== null) {
-                    // Android/Others (alpha is 0 at initial device orientation, need absolute if available)
-                    // Assuming absolute for now or simple relative rotation
+                    // Android/Others
                     this.currentHeading = 360 - e.alpha;
                 }
             }, true);
@@ -183,6 +185,7 @@ export default () => ({
         if (demand) {
             this.selectedDemand = demand;
             this.stopRadar();
+            this.imageConsent = false; // Reset consent
         } else {
             alert('Demanda não encontrada offline. Sincronize antes.');
         }
@@ -209,18 +212,16 @@ export default () => ({
         if (!file || !this.selectedDemand) return;
 
         try {
-            // Compress
             const compressedBlob = await this.compressImage(file);
 
-            // Store blob
             const mediaId = await db.offline_media.add({
                 demandId: this.selectedDemand.id,
                 type: 'photo',
                 blob: compressedBlob,
-                timestamp: Date.now()
+                timestamp: Date.now(),
+                consent: this.imageConsent // Save consent
             });
 
-            // Queue Action
             await queueAction('upload_photo', {
                 demandId: this.selectedDemand.id,
                 description: 'Foto ' + new Date().toLocaleTimeString()
@@ -238,7 +239,7 @@ export default () => ({
         if (this.radarActive) {
             this.stopRadar();
         } else {
-            this.requestCompassPermission(); // Request permission on toggle
+            this.requestCompassPermission();
             this.startRadar();
         }
     },
@@ -266,8 +267,6 @@ export default () => ({
 
                 this.targetDistance = this.calculateDistance(userLat, userLon, targetLat, targetLon);
                 this.targetBearing = this.calculateBearing(userLat, userLon, targetLat, targetLon);
-
-                // Update heading from speed if moving? No, prefer Compass.
 
             }, (err) => {
                 console.error(err);
