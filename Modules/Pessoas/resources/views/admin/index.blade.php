@@ -9,7 +9,7 @@
         <div>
             <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white flex items-center gap-3 mb-2">
                 <div class="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg">
-                    <x-module-icon module="Pessoas" class="w-6 h-6 md:w-7 md:h-7 text-white" style="duotone" />
+                    <x-icon module="pessoas" class="w-6 h-6 md:w-7 md:h-7 text-white" style="duotone" />
                 </div>
                 <span>Pessoas - CadÚnico</span>
             </h1>
@@ -74,8 +74,3 @@
     </div>
 </div>
 @endsection
-
-
-
-
-

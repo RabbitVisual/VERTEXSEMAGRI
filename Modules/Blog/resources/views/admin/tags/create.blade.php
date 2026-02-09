@@ -8,9 +8,7 @@
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
             <h1 class="text-3xl font-bold text-gray-900 dark:text-white flex items-center gap-3 mb-2">
-                <svg class="w-8 h-8 text-emerald-600 dark:text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
-                </svg>
+                <x-icon name="tags" class="w-8 h-8 text-emerald-600 dark:text-emerald-500" />
                 Nova Tag
             </h1>
             <nav aria-label="breadcrumb">
@@ -28,9 +26,7 @@
         <div class="flex gap-2">
             <a href="{{ route('admin.blog.tags.index') }}"
                class="inline-flex items-center px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg font-medium transition-colors">
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
-                </svg>
+                <x-icon name="arrow-left" class="w-4 h-4 mr-2" />
                 Voltar
             </a>
         </div>
@@ -79,11 +75,11 @@
             <div class="mt-6 pt-6 border-t border-gray-200 dark:border-slate-700">
                 <div class="flex gap-3">
                     <button type="submit"
-                            class="px-6 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-medium transition-colors">
-                        Criar Tag
+                            class="px-6 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-bold shadow-lg shadow-emerald-500/20 transition-all transform hover:-translate-y-0.5">
+                        <x-icon name="save" class="w-4 h-4 inline mr-2" /> Criar Tag
                     </button>
                     <a href="{{ route('admin.blog.tags.index') }}"
-                       class="px-6 py-2 bg-gray-300 hover:bg-gray-400 text-gray-700 rounded-lg font-medium transition-colors">
+                       class="px-6 py-2 bg-gray-100 dark:bg-slate-700 hover:bg-gray-200 dark:hover:bg-slate-600 text-gray-700 dark:text-gray-300 rounded-lg font-medium transition-colors">
                         Cancelar
                     </a>
                 </div>

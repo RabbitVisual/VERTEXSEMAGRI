@@ -6,7 +6,7 @@
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
             <h1 class="text-3xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
-                <x-module-icon module="CAF" class="w-8 h-8" />
+                <x-icon module="caf" class="w-8 h-8" />
                 Meus Cadastros CAF
             </h1>
             <p class="text-gray-600 dark:text-gray-400 mt-1">Gerencie seus cadastros de agricultores familiares</p>

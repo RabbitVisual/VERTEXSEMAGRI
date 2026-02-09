@@ -8,7 +8,7 @@
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 border-b border-gray-200 dark:border-gray-700">
         <div>
             <h1 class="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
-                <x-module-icon module="Pessoas" class="w-6 h-6" />
+                <x-icon module="pessoas" class="w-6 h-6" />
                 Cadastrar Pessoa
             </h1>
             <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Cadastre uma nova pessoa no sistema</p>
@@ -424,4 +424,3 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 @endpush
 @endsection
-

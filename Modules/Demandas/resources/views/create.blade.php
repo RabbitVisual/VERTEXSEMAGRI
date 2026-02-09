@@ -9,7 +9,7 @@
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div class="flex items-center gap-4">
                 <div class="p-3 bg-white/20 rounded-xl backdrop-blur-sm">
-                    <x-module-icon module="Demandas" class="w-8 h-8 text-white" />
+                    <x-icon module="demandas" class="w-8 h-8 text-white" />
                 </div>
                 <div>
                     <h1 class="text-3xl font-bold">Cadastrar Nova Demanda</h1>

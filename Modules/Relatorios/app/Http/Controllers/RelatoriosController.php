@@ -229,10 +229,26 @@ class RelatoriosController extends Controller
             LogFacade::error("Erro ao carregar dashboard de relatórios: " . $e->getMessage(), [
                 'trace' => $e->getTraceAsString()
             ]);
+
+            // Estrutura robusta padrão para evitar Undefined Array Key
+            $defaultStats = [
+                'demandas' => ['total' => 0, 'abertas' => 0, 'concluidas' => 0, 'em_andamento' => 0, 'urgentes' => 0, 'por_tipo' => []],
+                'ordens' => ['total' => 0, 'pendentes' => 0, 'em_execucao' => 0, 'concluidas' => 0, 'canceladas' => 0],
+                'localidades' => ['total' => 0, 'ativas' => 0, 'com_mais_pessoas' => [], 'com_mais_beneficiarias' => []],
+                'materiais' => ['total' => 0, 'baixo_estoque' => 0, 'ativos' => 0],
+                // Adicione outros conforme necessário pela view
+            ];
+
             return view('relatorios::index', [
-                'stats' => [],
-                'chartData' => [],
-                'error' => 'Erro ao carregar estatísticas. Por favor, tente novamente.'
+                'stats' => $defaultStats,
+                'chartData' => [
+                    'demandas_por_mes' => [],
+                    'os_por_status' => [],
+                    'materiais_por_categoria' => [],
+                    'pessoas_por_localidade' => [],
+                    'demandas_por_localidade' => [],
+                ],
+                'error' => 'Erro ao carregar estatísticas. Algumas informações podem estar indisponíveis.'
             ]);
         }
     }

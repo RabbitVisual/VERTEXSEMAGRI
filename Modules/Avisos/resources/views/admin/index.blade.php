@@ -9,7 +9,7 @@
         <div>
             <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white flex items-center gap-3 mb-2">
                 <div class="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg">
-                    <x-module-icon module="Avisos" class="w-6 h-6 md:w-7 md:h-7 text-white" style="duotone" />
+                    <x-icon module="avisos" class="w-6 h-6 md:w-7 md:h-7 text-white" style="duotone" />
                 </div>
                 <span>Avisos e Banners</span>
             </h1>
@@ -45,7 +45,7 @@
                     <tr>
                         <td colspan="8" class="px-6 py-12 text-center">
                             <div class="flex flex-col items-center justify-center">
-                                <x-module-icon module="Avisos" class="w-16 h-16 text-gray-400 dark:text-gray-500 mb-4" style="duotone" />
+                                <x-icon module="avisos" class="w-16 h-16 text-gray-400 dark:text-gray-500 mb-4" style="duotone" />
                                 <p class="text-gray-500 dark:text-gray-400 text-lg font-medium">Nenhum aviso encontrado</p>
                                 <p class="text-gray-400 dark:text-gray-500 text-sm mt-2">Crie seu primeiro aviso para começar</p>
                                 <a href="{{ route('admin.avisos.create') }}" class="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">

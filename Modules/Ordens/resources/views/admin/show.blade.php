@@ -9,7 +9,7 @@
         <div>
             <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white flex items-center gap-3 mb-2">
                 <div class="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg">
-                    <x-module-icon module="Ordens" class="w-6 h-6 md:w-7 md:h-7 text-white" />
+                    <x-icon module="ordens" class="w-6 h-6 md:w-7 md:h-7 text-white" />
                 </div>
                 <span>OS #{{ $ordem->numero }}</span>
             </h1>

@@ -13,7 +13,7 @@
         <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-8">
             <div class="flex items-center gap-6">
                 <div class="w-20 h-20 bg-white/20 rounded-[2rem] backdrop-blur-xl flex items-center justify-center shadow-inner border border-white/30 transform transition-transform hover:rotate-6">
-                    <x-module-icon module="Funcionarios" class="w-10 h-10 text-white" />
+                    <x-icon module="funcionarios" class="w-10 h-10 text-white" />
                 </div>
                 <div>
                     <h1 class="text-3xl md:text-5xl font-black tracking-tight uppercase leading-none mb-3">Gestão de Agentes</h1>

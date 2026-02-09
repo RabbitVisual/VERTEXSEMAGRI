@@ -6,7 +6,7 @@
     <title>Redefinição de Senha - {{ config('app.name') }}</title>
     <style>
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            font-family: 'Inter', sans-serif;
             line-height: 1.6;
             color: #1f2937;
             background-color: #f3f4f6;
@@ -226,4 +226,3 @@
     </div>
 </body>
 </html>
-

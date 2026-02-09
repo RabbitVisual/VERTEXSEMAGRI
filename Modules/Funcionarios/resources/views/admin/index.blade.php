@@ -8,7 +8,7 @@
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 pb-6 border-b border-gray-200 dark:border-slate-800">
         <div class="flex items-center gap-4">
             <div class="w-14 h-14 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center text-white shadow-xl shadow-emerald-500/10 transform -rotate-3 group hover:rotate-0 transition-all duration-300">
-                <x-module-icon module="Funcionarios" class="w-8 h-8" style="duotone" />
+                <x-icon module="funcionarios" class="w-8 h-8" style="duotone" />
             </div>
             <div>
                 <h1 class="text-2xl md:text-3xl font-black text-gray-900 dark:text-white tracking-tight uppercase leading-none">Dossiê de Colaboradores</h1>

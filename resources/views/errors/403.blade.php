@@ -25,7 +25,7 @@
 
     <style>
         body {
-            font-family: system-ui, -apple-system, sans-serif;
+            font-family: 'Inter', sans-serif;
         }
     </style>
 </head>

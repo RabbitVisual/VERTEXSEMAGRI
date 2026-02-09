@@ -85,7 +85,7 @@
         <!-- Nenhum post encontrado -->
         <div class="text-center py-12">
             <div class="w-24 h-24 bg-gray-100 dark:bg-slate-700 rounded-full flex items-center justify-center mx-auto mb-6">
-                <x-module-icon module="Blog" class="w-12 h-12 text-gray-400" />
+                <x-icon module="blog" class="w-12 h-12 text-gray-400" />
             </div>
             <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Nenhum artigo encontrado</h3>
             <p class="text-gray-600 dark:text-gray-400 mb-6">Não há artigos publicados nesta categoria ainda.</p>

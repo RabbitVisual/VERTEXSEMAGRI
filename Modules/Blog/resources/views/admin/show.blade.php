@@ -8,9 +8,7 @@
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
             <h1 class="text-3xl font-bold text-gray-900 dark:text-white flex items-center gap-3 mb-2">
-                <svg class="w-8 h-8 text-emerald-600 dark:text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    {!! \App\Helpers\ModuleIcons::getIconPath('Blog') !!}
-                </svg>
+                <x-icon module="Blog" class="w-8 h-8 text-emerald-600 dark:text-emerald-500" />
                 {{ $post->title }}
             </h1>
             <nav aria-label="breadcrumb">
@@ -24,27 +22,21 @@
             </nav>
         </div>
         <div class="flex gap-2">
-            <a href="{{ route('admin.blog.index') }}" 
+            <a href="{{ route('admin.blog.index') }}"
                class="inline-flex items-center px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg font-medium transition-colors">
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
-                </svg>
+                <x-icon name="arrow-left" class="w-4 h-4 mr-2" />
                 Voltar
             </a>
             @if($post->status === 'published')
             <a href="{{ route('blog.show', $post->slug) }}" target="_blank"
-               class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors">
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
-                </svg>
+               class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors shadow-lg shadow-blue-500/20">
+                <x-icon name="eye" class="w-4 h-4 mr-2" />
                 Ver Post
             </a>
             @endif
             <a href="{{ route('admin.blog.edit', $post->id) }}"
-               class="inline-flex items-center px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-medium transition-colors">
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-                </svg>
+               class="inline-flex items-center px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-bold transition-all transform hover:-translate-y-0.5 shadow-lg shadow-emerald-500/20">
+                <x-icon name="pen-to-square" class="w-4 h-4 mr-2" />
                 Editar
             </a>
         </div>
@@ -57,13 +49,13 @@
         <!-- Post Info -->
         <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 p-6">
             <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Informações do Post</h3>
-            
+
             <div class="space-y-4">
                 <!-- Featured Image -->
                 @if($post->featured_image)
                 <div>
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Imagem Destacada</label>
-                    <img src="{{ Storage::url($post->featured_image) }}" alt="{{ $post->title }}" 
+                    <img src="{{ Storage::url($post->featured_image) }}" alt="{{ $post->title }}"
                          class="w-full max-w-md h-48 object-cover rounded-lg shadow-sm">
                 </div>
                 @endif
@@ -72,7 +64,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Categoria</label>
-                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium" 
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium"
                               style="background-color: {{ $post->category->color }}20; color: {{ $post->category->color }}">
                             {{ $post->category->name }}
                         </span>
@@ -142,23 +134,26 @@
         <!-- Statistics -->
         @if(isset($estatisticas))
         <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 p-6">
-            <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Estatísticas</h3>
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center">
+                <x-icon name="chart-simple" class="w-5 h-5 mr-2 text-emerald-600" />
+                Estatísticas
+            </h3>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div class="text-center p-4 bg-gray-50 dark:bg-slate-700 rounded-lg">
+                <div class="text-center p-4 bg-gray-50 dark:bg-slate-700/50 rounded-xl border border-gray-100 dark:border-slate-700">
                     <div class="text-2xl font-bold text-blue-600 dark:text-blue-400">{{ $estatisticas['total_views'] ?? 0 }}</div>
-                    <div class="text-sm text-gray-600 dark:text-gray-400">Visualizações</div>
+                    <div class="text-xs font-bold text-gray-500 uppercase tracking-widest mt-1">Visualizações</div>
                 </div>
-                <div class="text-center p-4 bg-gray-50 dark:bg-slate-700 rounded-lg">
+                <div class="text-center p-4 bg-gray-50 dark:bg-slate-700/50 rounded-xl border border-gray-100 dark:border-slate-700">
                     <div class="text-2xl font-bold text-green-600 dark:text-green-400">{{ $estatisticas['total_comments'] ?? 0 }}</div>
-                    <div class="text-sm text-gray-600 dark:text-gray-400">Comentários</div>
+                    <div class="text-xs font-bold text-gray-500 uppercase tracking-widest mt-1">Comentários</div>
                 </div>
-                <div class="text-center p-4 bg-gray-50 dark:bg-slate-700 rounded-lg">
-                    <div class="text-2xl font-bold text-yellow-600 dark:text-yellow-400">{{ $estatisticas['pending_comments'] ?? 0 }}</div>
-                    <div class="text-sm text-gray-600 dark:text-gray-400">Pendentes</div>
+                <div class="text-center p-4 bg-gray-50 dark:bg-slate-700/50 rounded-xl border border-gray-100 dark:border-slate-700">
+                    <div class="text-2xl font-bold text-amber-600 dark:text-amber-400">{{ $estatisticas['pending_comments'] ?? 0 }}</div>
+                    <div class="text-xs font-bold text-gray-500 uppercase tracking-widest mt-1">Pendentes</div>
                 </div>
-                <div class="text-center p-4 bg-gray-50 dark:bg-slate-700 rounded-lg">
+                <div class="text-center p-4 bg-gray-50 dark:bg-slate-700/50 rounded-xl border border-gray-100 dark:border-slate-700">
                     <div class="text-2xl font-bold text-purple-600 dark:text-purple-400">{{ $post->reading_time ?? 0 }}</div>
-                    <div class="text-sm text-gray-600 dark:text-gray-400">Min leitura</div>
+                    <div class="text-xs font-bold text-gray-500 uppercase tracking-widest mt-1">Min leitura</div>
                 </div>
             </div>
         </div>
@@ -169,12 +164,12 @@
         <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 p-6">
             <div class="flex items-center justify-between mb-4">
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Comentários Recentes</h3>
-                <a href="{{ route('admin.blog.comments.index') }}?post={{ $post->id }}" 
+                <a href="{{ route('admin.blog.comments.index') }}?post={{ $post->id }}"
                    class="text-sm text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300">
                     Ver todos
                 </a>
             </div>
-            
+
             <div class="space-y-4">
                 @foreach($comentariosRecentes as $comment)
                 <div class="border border-gray-200 dark:border-slate-600 rounded-lg p-4">
@@ -215,41 +210,33 @@
             <div class="space-y-3">
                 @if($post->status === 'published')
                 <a href="{{ route('blog.show', $post->slug) }}" target="_blank"
-                   class="w-full flex items-center justify-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors">
-                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
-                    </svg>
+                   class="w-full flex items-center justify-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-bold transition-all shadow-md shadow-blue-500/20">
+                    <x-icon name="eye" class="w-4 h-4 mr-2" />
                     Ver no Site
                 </a>
                 @endif
-                
+
                 <a href="{{ route('admin.blog.edit', $post->id) }}"
-                   class="w-full flex items-center justify-center px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-medium transition-colors">
-                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-                    </svg>
+                   class="w-full flex items-center justify-center px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-bold transition-all shadow-md shadow-emerald-500/20">
+                    <x-icon name="pen-to-square" class="w-4 h-4 mr-2" />
                     Editar Post
                 </a>
 
                 @if($post->comments()->where('status', 'pending')->count() > 0)
                 <a href="{{ route('admin.blog.comments.index') }}?post={{ $post->id }}&status=pending"
-                   class="w-full flex items-center justify-center px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg font-medium transition-colors">
-                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
-                    </svg>
+                   class="w-full flex items-center justify-center px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-lg font-bold transition-all shadow-md shadow-amber-500/20">
+                    <x-icon name="comments" class="w-4 h-4 mr-2" />
                     Moderar Comentários
                 </a>
                 @endif
 
-                <form action="{{ route('admin.blog.destroy', $post->id) }}" method="POST" 
+                <form action="{{ route('admin.blog.destroy', $post->id) }}" method="POST"
                       onsubmit="return confirm('Tem certeza que deseja excluir este post? Esta ação não pode ser desfeita.')">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" 
-                            class="w-full flex items-center justify-center px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium transition-colors">
-                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                        </svg>
+                    <button type="submit"
+                            class="w-full flex items-center justify-center px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-bold transition-all shadow-md shadow-red-500/20">
+                        <x-icon name="trash" class="w-4 h-4 mr-2" />
                         Excluir Post
                     </button>
                 </form>

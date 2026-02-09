@@ -86,10 +86,17 @@ class AdminDashboardController extends Controller
                     ->get();
             }
 
+            // 4. System Health: Check if NCMS table has data
+            $systemHealth = true;
+            if (Schema::hasTable('ncms')) {
+                $systemHealth = DB::table('ncms')->exists();
+            }
+
             return [
                 'newsroom_drafts' => $newsroomDrafts,
                 'recent_syncs' => $recentSyncs,
-                'low_stock_items' => $lowStockItems
+                'low_stock_items' => $lowStockItems,
+                'system_health' => $systemHealth
             ];
         });
 

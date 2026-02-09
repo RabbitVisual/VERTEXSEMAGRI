@@ -250,7 +250,7 @@
                     <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-emerald-100/50 to-transparent dark:from-emerald-900/20 rounded-bl-full"></div>
                     <div class="relative">
                         <div class="w-16 h-16 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-lg">
-                            <x-module-icon module="demandas" class="w-8 h-8 text-white" />
+                            <x-icon module="demandas" class="w-8 h-8 text-white" />
                         </div>
                         <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">
                             Atendimento de Demandas

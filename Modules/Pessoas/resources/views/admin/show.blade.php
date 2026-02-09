@@ -9,7 +9,7 @@
         <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
             <div class="flex items-start gap-4">
                 <div class="w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-gradient-to-br from-indigo-500 to-emerald-500 flex items-center justify-center shadow-lg text-white">
-                    <x-module-icon module="Pessoas" class="w-8 h-8" />
+                    <x-icon module="pessoas" class="w-8 h-8" />
                 </div>
                 <div class="min-w-0 space-y-1">
                     <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white truncate">

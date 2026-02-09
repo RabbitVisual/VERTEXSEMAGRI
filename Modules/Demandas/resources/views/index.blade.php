@@ -38,7 +38,7 @@
         <div class="relative z-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div class="flex items-center gap-4">
                 <div class="p-4 bg-white/20 rounded-2xl backdrop-blur-sm shadow-lg">
-                    <x-module-icon module="Demandas" class="w-10 h-10 text-white" />
+                    <x-icon module="demandas" class="w-10 h-10 text-white" />
                 </div>
                 <div>
                     <h1 class="text-3xl md:text-4xl font-bold flex items-center gap-2">
@@ -134,7 +134,7 @@
         <x-slot name="header">
             <div class="flex items-center gap-3">
                 <div class="p-2 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg">
-                    <x-module-icon module="Demandas" class="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+                    <x-icon module="demandas" class="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
                 </div>
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
                     Demandas por Tipo
@@ -145,7 +145,7 @@
             <!-- Água -->
             <div class="flex items-center gap-4 p-4 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg border border-indigo-200 dark:border-indigo-800 hover:shadow-md transition-shadow">
                 <div class="p-3 bg-indigo-100 dark:bg-indigo-900/40 rounded-lg flex-shrink-0">
-                    <x-module-icon module="Agua" class="w-8 h-8 text-indigo-600 dark:text-indigo-400" />
+                    <x-icon module="agua" class="w-8 h-8 text-indigo-600 dark:text-indigo-400" />
                 </div>
                 <div class="flex-1 min-w-0">
                     <div class="text-2xl font-bold text-gray-900 dark:text-white">{{ number_format($estatisticas['por_tipo']['agua'] ?? 0, 0, ',', '.') }}</div>
@@ -156,7 +156,7 @@
             <!-- Iluminação -->
             <div class="flex items-center gap-4 p-4 bg-amber-50 dark:bg-amber-900/20 rounded-lg border border-amber-200 dark:border-amber-800 hover:shadow-md transition-shadow">
                 <div class="p-3 bg-amber-100 dark:bg-amber-900/40 rounded-lg flex-shrink-0">
-                    <x-module-icon module="Iluminacao" class="w-8 h-8 text-amber-600 dark:text-amber-400" />
+                    <x-icon module="iluminacao" class="w-8 h-8 text-amber-600 dark:text-amber-400" />
                 </div>
                 <div class="flex-1 min-w-0">
                     <div class="text-2xl font-bold text-gray-900 dark:text-white">{{ number_format($estatisticas['por_tipo']['luz'] ?? 0, 0, ',', '.') }}</div>
@@ -167,7 +167,7 @@
             <!-- Estrada -->
             <div class="flex items-center gap-4 p-4 bg-violet-50 dark:bg-violet-900/20 rounded-lg border border-violet-200 dark:border-violet-800 hover:shadow-md transition-shadow">
                 <div class="p-3 bg-violet-100 dark:bg-violet-900/40 rounded-lg flex-shrink-0">
-                    <x-module-icon module="Estradas" class="w-8 h-8 text-violet-600 dark:text-violet-400" />
+                    <x-icon module="estradas" class="w-8 h-8 text-violet-600 dark:text-violet-400" />
                 </div>
                 <div class="flex-1 min-w-0">
                     <div class="text-2xl font-bold text-gray-900 dark:text-white">{{ number_format($estatisticas['por_tipo']['estrada'] ?? 0, 0, ',', '.') }}</div>
@@ -178,7 +178,7 @@
             <!-- Poço -->
             <div class="flex items-center gap-4 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800 hover:shadow-md transition-shadow">
                 <div class="p-3 bg-blue-100 dark:bg-blue-900/40 rounded-lg flex-shrink-0">
-                    <x-module-icon module="Pocos" class="w-8 h-8 text-blue-600 dark:text-blue-400" />
+                    <x-icon module="pocos" class="w-8 h-8 text-blue-600 dark:text-blue-400" />
                 </div>
                 <div class="flex-1 min-w-0">
                     <div class="text-2xl font-bold text-gray-900 dark:text-white">{{ number_format($estatisticas['por_tipo']['poco'] ?? 0, 0, ',', '.') }}</div>
@@ -249,7 +249,7 @@
                 <td class="px-6 py-4 whitespace-nowrap">
                     <div class="flex items-center gap-2">
                         <div class="p-2 bg-gradient-to-br from-indigo-100 to-indigo-200 dark:from-indigo-900/30 dark:to-indigo-800/30 rounded-xl shadow-sm">
-                            <x-module-icon module="Demandas" class="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+                            <x-icon module="demandas" class="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
                         </div>
                         <div class="flex flex-col">
                             <span class="font-semibold text-indigo-600 dark:text-indigo-400">{{ $demanda->codigo ?? 'N/A' }}</span>
@@ -304,7 +304,7 @@
                         $tipoModule = $tipoModules[$demanda->tipo] ?? 'Demandas';
                     @endphp
                     <div class="flex items-center gap-2">
-                        <x-module-icon module="{{ $tipoModule }}" class="w-5 h-5 text-gray-600 dark:text-gray-400" />
+                        <x-icon module="{{ $tipomodule }}" class="w-5 h-5 text-gray-600 dark:text-gray-400" />
                         <span class="text-gray-900 dark:text-white">{{ $demanda->tipo_texto }}</span>
                     </div>
                 </td>
@@ -429,7 +429,7 @@
                 <td colspan="10" class="px-6 py-20 text-center">
                     <div class="flex flex-col items-center justify-center max-w-md mx-auto">
                         <div class="p-6 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900 rounded-2xl mb-6 shadow-lg">
-                            <x-module-icon module="Demandas" class="w-16 h-16 text-gray-400 dark:text-gray-500" />
+                            <x-icon module="demandas" class="w-16 h-16 text-gray-400 dark:text-gray-500" />
                         </div>
                         <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">
                             Nenhuma demanda encontrada

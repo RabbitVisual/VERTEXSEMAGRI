@@ -26,7 +26,7 @@
                 <x-icon name="newspaper" class="w-24 h-24" style="duotone" />
             </div>
 
-            
+
             <div class="flex items-center gap-3 mb-4">
                 <div class="p-2 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg text-emerald-600 dark:text-emerald-400">
                     <x-icon name="pen-nib" class="w-6 h-6" style="duotone" />
@@ -34,11 +34,11 @@
                 <h3 class="font-bold text-gray-900 dark:text-white font-poppins text-lg">Redação & Transparência</h3>
             </div>
 
-            
+
             <div class="flex-1">
                 <div class="flex items-baseline gap-2 mb-2">
                     <span class="text-5xl font-extrabold text-gray-900 dark:text-white font-inter tracking-tight tabular-nums">
-                        {{ $smartWidgets['newsroom_drafts'] }}
+                        {{ $smartWidgets['newsroom_drafts'] ?? 0 }}
                     </span>
                     <span class="text-sm font-medium text-gray-500 dark:text-gray-400">Obras aguardando divulgação</span>
                 </div>
@@ -47,7 +47,7 @@
                 </p>
             </div>
 
-            
+
             <div class="mt-auto">
                 <a href="{{ route('admin.blog.create') }}?import_from_demandas=1" class="inline-flex items-center justify-center w-full px-5 py-3 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold rounded-xl transition-all shadow-md hover:shadow-lg active:scale-[0.98]">
                     <x-icon name="wand-magic-sparkles" class="w-4 h-4 mr-2" /> Gerar Notícias
@@ -61,7 +61,7 @@
                 <x-icon name="satellite-dish" class="w-24 h-24" style="duotone" />
             </div>
 
-            
+
             <div class="flex items-center gap-3 mb-4">
                 <div class="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg text-blue-600 dark:text-blue-400">
                     <x-icon name="wifi" class="w-6 h-6" style="duotone" />
@@ -69,9 +69,9 @@
                 <h3 class="font-bold text-gray-900 dark:text-white font-poppins text-lg">Operação de Campo</h3>
             </div>
 
-            
+
             <div class="flex-1 space-y-3">
-                @forelse($smartWidgets['recent_syncs'] as $sync)
+                @forelse($smartWidgets['recent_syncs'] ?? [] as $sync)
                 <div class="flex items-center justify-between text-sm">
                     <div class="flex items-center gap-2">
                         <div class="w-2 h-2 rounded-full {{ $sync->is_recent ? 'bg-green-500 animate-pulse' : 'bg-amber-500' }}"></div>
@@ -88,6 +88,8 @@
                         @endif
                     </div>
                 </div>
+                @empty
+                @endforelse
                 <div class="flex items-center gap-2 mb-6">
                     <div class="w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse shadow-[0_0_8px_rgba(34,197,94,0.6)]"></div>
                     <span class="text-xs font-bold text-green-600 dark:text-green-400 uppercase tracking-wider">Campo Ativo</span>
@@ -104,7 +106,7 @@
                 </div>
             </div>
 
-            
+
             <div class="mt-4 pt-4 border-t border-gray-100 dark:border-slate-700">
                 <a href="{{ route('admin.audit.index') }}" class="text-xs text-blue-600 dark:text-blue-400 hover:underline flex items-center justify-center">
                     Ver logs de sincronização <x-icon name="arrow-right" class="w-3 h-3 ml-1" />
@@ -118,7 +120,7 @@
                 <x-icon name="boxes-stacked" class="w-24 h-24" style="duotone" />
             </div>
 
-            
+
             <div class="flex items-center gap-3 mb-4">
                 <div class="p-2 bg-amber-100 dark:bg-amber-900/30 rounded-lg text-amber-600 dark:text-amber-400">
                     <x-icon name="box-open" class="w-6 h-6" style="duotone" />
@@ -126,11 +128,11 @@
                 <h3 class="font-bold text-gray-900 dark:text-white font-poppins text-lg">Almoxarifado Crítico</h3>
             </div>
 
-            
+
             <div class="flex-1">
-                @if(count($smartWidgets['low_stock_items']) > 0)
+                @if(count($smartWidgets['low_stock_items'] ?? []) > 0)
                 <div class="space-y-3 mb-6">
-                    @foreach($smartWidgets['low_stock_items'] as $item)
+                    @foreach($smartWidgets['low_stock_items'] ?? [] as $item)
                     <div class="flex items-center justify-between p-3 bg-red-50/50 dark:bg-red-900/10 rounded-xl border border-red-100 dark:border-red-900/20">
                         <div class="flex items-center gap-3 overflow-hidden">
                             <div class="flex-shrink-0 w-8 h-8 bg-white dark:bg-slate-800 rounded-lg flex items-center justify-center shadow-sm">
@@ -157,13 +159,6 @@
                 @endif
             </div>
 
-            <div class="mt-4 pt-4 border-t border-gray-100 dark:border-slate-700">
-                <a href="{{ route('admin.materiais.index') }}" class="text-xs text-amber-600 dark:text-amber-400 hover:underline flex items-center justify-center">
-                    Gerenciar estoque <x-icon name="arrow-right" class="w-3 h-3 ml-1" />
-                </a>
-            </div>
-            </div>
-            
             <div class="mt-4 pt-4 border-t border-gray-100 dark:border-slate-700">
                 <a href="{{ route('admin.materiais.index') }}" class="text-xs text-amber-600 dark:text-amber-400 hover:underline flex items-center justify-center">
                     Gerenciar estoque <x-icon name="arrow-right" class="w-3 h-3 ml-1" />
@@ -216,10 +211,10 @@
             <div>
                 <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Status do Sistema</p>
                 <div class="flex items-center gap-2">
-                    <p class="text-sm font-bold {{ $smartWidgets['system_health'] ? 'text-green-600' : 'text-amber-600' }}">
-                        {{ $smartWidgets['system_health'] ? 'Operacional' : 'Base NCM pendente' }}
+                    <p class="text-sm font-bold {{ ($smartWidgets['system_health'] ?? true) ? 'text-green-600' : 'text-amber-600' }}">
+                        {{ ($smartWidgets['system_health'] ?? true) ? 'Operacional' : 'Base NCM pendente' }}
                     </p>
-                    <div class="w-2 h-2 rounded-full {{ $smartWidgets['system_health'] ? 'bg-green-500' : 'bg-amber-500' }}"></div>
+                    <div class="w-2 h-2 rounded-full {{ ($smartWidgets['system_health'] ?? true) ? 'bg-green-500' : 'bg-amber-500' }}"></div>
                 </div>
             </div>
         </div>
@@ -315,7 +310,7 @@
         const ctx = document.getElementById('actionsChart').getContext('2d');
         const data = @json($chartData['modules_activity']);
 
-        
+
         new Chart(ctx, {
             type: 'doughnut',
             data: {

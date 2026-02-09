@@ -9,7 +9,7 @@
         <div>
             <h1 class="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-3">
                 <div class="p-2 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg text-emerald-600 dark:text-emerald-400">
-                    <x-module-icon module="Equipes" class="w-6 h-6" />
+                    <x-icon module="equipes" class="w-6 h-6" />
                 </div>
                 Editar Equipe
             </h1>

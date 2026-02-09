@@ -8,7 +8,7 @@
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
             <h1 class="text-3xl font-bold text-gray-900 dark:text-white flex items-center gap-3 mb-2">
-                <x-module-icon module="Demandas" class="w-8 h-8 text-emerald-600 dark:text-emerald-500" />
+                <x-icon module="demandas" class="w-8 h-8 text-emerald-600 dark:text-emerald-500" />
                 Demanda #{{ $demanda->codigo }}
             </h1>
             <nav aria-label="breadcrumb" class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">

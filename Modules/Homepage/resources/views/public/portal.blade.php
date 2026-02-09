@@ -39,7 +39,7 @@
                 <div class="group bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 rounded-xl p-6 border border-emerald-200 dark:border-emerald-800 hover:shadow-lg transition-all duration-300 hover:scale-105">
                     <div class="flex flex-col items-center text-center">
                         <div class="w-16 h-16 bg-emerald-500 dark:bg-emerald-600 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                            <x-module-icon module="localidades" class="w-8 h-8 text-white" />
+                            <x-icon module="localidades" class="w-8 h-8 text-white" />
                         </div>
                         <div class="text-3xl md:text-4xl font-bold text-emerald-600 dark:text-emerald-400 mb-2">{{ number_format($estatisticas['localidades'] ?? 0, 0, ',', '.') }}</div>
                         <div class="text-sm font-medium text-gray-700 dark:text-gray-300">Localidades</div>
@@ -50,7 +50,7 @@
                 <div class="group bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 rounded-xl p-6 border border-blue-200 dark:border-blue-800 hover:shadow-lg transition-all duration-300 hover:scale-105">
                     <div class="flex flex-col items-center text-center">
                         <div class="w-16 h-16 bg-blue-500 dark:bg-blue-600 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                            <x-module-icon module="pocos" class="w-8 h-8 text-white" />
+                            <x-icon module="pocos" class="w-8 h-8 text-white" />
                         </div>
                         <div class="text-3xl md:text-4xl font-bold text-blue-600 dark:text-blue-400 mb-2">{{ number_format($estatisticas['poços'] ?? 0, 0, ',', '.') }}</div>
                         <div class="text-sm font-medium text-gray-700 dark:text-gray-300">Poços Artesianos</div>
@@ -61,7 +61,7 @@
                 <div class="group bg-gradient-to-br from-cyan-50 to-sky-50 dark:from-cyan-900/20 dark:to-sky-900/20 rounded-xl p-6 border border-cyan-200 dark:border-cyan-800 hover:shadow-lg transition-all duration-300 hover:scale-105">
                     <div class="flex flex-col items-center text-center">
                         <div class="w-16 h-16 bg-cyan-500 dark:bg-cyan-600 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                            <x-module-icon module="agua" class="w-8 h-8 text-white" />
+                            <x-icon module="agua" class="w-8 h-8 text-white" />
                         </div>
                         <div class="text-3xl md:text-4xl font-bold text-cyan-600 dark:text-cyan-400 mb-2">{{ number_format($estatisticas['pontos_agua'] ?? 0, 0, ',', '.') }}</div>
                         <div class="text-sm font-medium text-gray-700 dark:text-gray-300">Pontos de Água</div>
@@ -72,7 +72,7 @@
                 <div class="group bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-900/20 dark:to-yellow-900/20 rounded-xl p-6 border border-amber-200 dark:border-amber-800 hover:shadow-lg transition-all duration-300 hover:scale-105">
                     <div class="flex flex-col items-center text-center">
                         <div class="w-16 h-16 bg-amber-500 dark:bg-amber-600 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                            <x-module-icon module="iluminacao" class="w-8 h-8 text-white" />
+                            <x-icon module="iluminacao" class="w-8 h-8 text-white" />
                         </div>
                         <div class="text-3xl md:text-4xl font-bold text-amber-600 dark:text-amber-400 mb-2">{{ number_format($estatisticas['pontos_luz'] ?? 0, 0, ',', '.') }}</div>
                         <div class="text-sm font-medium text-gray-700 dark:text-gray-300">Pontos de Luz</div>
@@ -83,7 +83,7 @@
                 <div class="group bg-gradient-to-br from-violet-50 to-purple-50 dark:from-violet-900/20 dark:to-purple-900/20 rounded-xl p-6 border border-violet-200 dark:border-violet-800 hover:shadow-lg transition-all duration-300 hover:scale-105">
                     <div class="flex flex-col items-center text-center">
                         <div class="w-16 h-16 bg-violet-500 dark:bg-violet-600 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                            <x-module-icon module="estradas" class="w-8 h-8 text-white" />
+                            <x-icon module="estradas" class="w-8 h-8 text-white" />
                         </div>
                         <div class="text-3xl md:text-4xl font-bold text-violet-600 dark:text-violet-400 mb-2">{{ number_format($estatisticas['km_estradas'] ?? 0, 1, ',', '.') }}</div>
                         <div class="text-sm font-medium text-gray-700 dark:text-gray-300">Km de Estradas</div>
@@ -98,7 +98,7 @@
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-10 md:mb-12 lg:mb-16">
                 <div class="inline-flex items-center gap-2 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 px-4 py-2 rounded-full text-sm font-semibold mb-4">
-                    <x-module-icon module="localidades" class="w-4 h-4" />
+                    <x-icon module="localidades" class="w-4 h-4" />
                     <span>Explorar Localidades</span>
                 </div>
                 <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4 md:mb-6">
@@ -121,7 +121,7 @@
                             <div class="flex-1 min-w-0 pr-4">
                                 <div class="flex items-center gap-2 mb-3">
                                     <div class="w-10 h-10 bg-gradient-to-br from-emerald-500 to-teal-600 dark:from-emerald-600 dark:to-teal-700 rounded-lg flex items-center justify-center flex-shrink-0 shadow-md">
-                                        <x-module-icon module="localidades" class="w-5 h-5 text-white" />
+                                        <x-icon module="localidades" class="w-5 h-5 text-white" />
                                     </div>
                                     <h3 class="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors line-clamp-2">
                                         {{ $localidade->nome }}
@@ -189,7 +189,7 @@
                 <a href="{{ route('demandas.public.consulta') }}" class="group bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 rounded-xl p-6 border border-emerald-200 dark:border-emerald-800 hover:shadow-lg transition-all">
                     <div class="flex items-center gap-4">
                         <div class="flex-shrink-0 w-12 h-12 bg-emerald-500 rounded-lg flex items-center justify-center">
-                            <x-module-icon module="demandas" class="w-6 h-6 text-white" />
+                            <x-icon module="demandas" class="w-6 h-6 text-white" />
                         </div>
                         <div class="flex-1">
                             <h3 class="text-lg font-semibold text-gray-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">

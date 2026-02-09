@@ -22,7 +22,7 @@
             </nav>
         </div>
         <div class="flex gap-2">
-            <a href="{{ route('admin.blog.index') }}" 
+            <a href="{{ route('admin.blog.index') }}"
                class="inline-flex items-center px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg font-medium transition-colors">
                 <x-icon name="arrow-left" class="w-4 h-4 mr-2" />
                 Voltar
@@ -34,14 +34,14 @@
 <!-- Form -->
 <form action="{{ route('admin.blog.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
     @csrf
-    
+
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <!-- Main Content -->
         <div class="lg:col-span-2 space-y-6">
             <!-- Basic Info -->
             <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 p-6">
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Informações Básicas</h3>
-                
+
                 <div class="space-y-4">
                     <!-- Title -->
                     <div>
@@ -82,7 +82,7 @@
             <!-- Content Editor -->
             <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 p-6">
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Conteúdo</h3>
-                
+
                 <div class="blog-editor-wrapper">
                     <div id="editor-container" class="h-96"></div>
                     <input type="hidden" name="content" id="content">
@@ -91,12 +91,15 @@
 
             <!-- Media -->
             <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 p-6">
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Mídia</h3>
-                
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center">
+                    <x-icon name="images" class="w-5 h-5 mr-2 text-emerald-600" />
+                    Mídia
+                </h3>
+
                 <div class="space-y-6">
                     <!-- Featured Image -->
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 font-bold">
                             Imagem Destacada
                         </label>
                         <input type="file" name="featured_image" accept="image/*"
@@ -105,12 +108,12 @@
                                       file:rounded-full file:border-0
                                       file:text-sm file:font-semibold
                                       file:bg-emerald-50 file:text-emerald-700
-                                      hover:file:bg-emerald-100">
+                                      hover:file:bg-emerald-100 dark:file:bg-slate-700 dark:file:text-emerald-400">
                     </div>
 
                     <!-- Gallery Images -->
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 font-bold">
                             Galeria de Imagens
                         </label>
                         <input type="file" name="gallery_images[]" multiple accept="image/*"
@@ -119,27 +122,33 @@
                                       file:rounded-full file:border-0
                                       file:text-sm file:font-semibold
                                       file:bg-emerald-50 file:text-emerald-700
-                                      hover:file:bg-emerald-100">
+                                      hover:file:bg-emerald-100 dark:file:bg-slate-700 dark:file:text-emerald-400">
                     </div>
                 </div>
             </div>
 
             <!-- Attachments -->
             <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 p-6">
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Anexos (PDFs, Editais)</h3>
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center">
+                    <x-icon name="paperclip" class="w-5 h-5 mr-2 text-emerald-600" />
+                    Anexos e Documentos (PDF)
+                </h3>
                 <input type="file" name="attachments[]" multiple accept=".pdf"
                        class="block w-full text-sm text-slate-500
                               file:mr-4 file:py-2 file:px-4
                               file:rounded-full file:border-0
                               file:text-sm file:font-semibold
-                              file:bg-blue-50 file:text-blue-700
-                              hover:file:bg-blue-100">
+                              file:bg-red-50 file:text-red-700
+                              hover:file:bg-red-100 dark:file:bg-slate-700 dark:file:text-red-400">
             </div>
 
             <!-- SEO -->
             <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 p-6">
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Otimização SEO</h3>
-                
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center">
+                    <x-icon name="magnifying-glass" class="w-5 h-5 mr-2 text-emerald-600" />
+                    Otimização SEO
+                </h3>
+
                 <div class="space-y-4">
                     <!-- Meta Title -->
                     <div>
@@ -158,21 +167,21 @@
                         </label>
                         <textarea id="meta_description" name="meta_description" rows="3"
                                   class="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
-                                  placeholder="Descrição para SEO..."></textarea>
+                                  placeholder="Descrição curta para o Google..."></textarea>
                     </div>
 
                     <!-- OG Image -->
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            Imagem de Compartilhamento (OG Image)
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 font-bold">
+                            Imagem Social (Open Graph)
                         </label>
                         <input type="file" name="og_image" accept="image/*"
                                class="block w-full text-sm text-slate-500
                                       file:mr-4 file:py-2 file:px-4
                                       file:rounded-full file:border-0
                                       file:text-sm file:font-semibold
-                                      file:bg-purple-50 file:text-purple-700
-                                      hover:file:bg-purple-100">
+                                      file:bg-blue-50 file:text-blue-700
+                                      hover:file:bg-blue-100 dark:file:bg-slate-700 dark:file:text-blue-400">
                     </div>
                 </div>
             </div>
@@ -181,17 +190,20 @@
         <!-- Sidebar -->
         <div class="space-y-6">
             <!-- Publish -->
-            <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 p-6">
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Publicação</h3>
-                
+            <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-emerald-200 dark:border-emerald-900/30 p-6">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+                    <x-icon name="paper-plane" class="w-5 h-5 mr-2 text-emerald-600" />
+                    Publicação
+                </h3>
+
                 <div class="space-y-4">
                     <!-- Status -->
                     <div>
-                        <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-2">
                             Status
                         </label>
-                        <select id="status" name="status" 
-                                class="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+                        <select id="status" name="status"
+                                class="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 appearance-none">
                             <option value="draft">Rascunho</option>
                             <option value="review">Em Revisão</option>
                             <option value="published">Publicado</option>
@@ -201,32 +213,30 @@
 
                     <!-- Published At -->
                     <div>
-                        <label for="published_at" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        <label for="published_at" class="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-2">
                             Data de Publicação
                         </label>
                         <input type="datetime-local" id="published_at" name="published_at"
-                               class="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+                               class="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500">
                     </div>
 
                     <!-- Featured -->
-                    <div class="flex items-center">
-                        <input type="checkbox" id="is_featured" name="is_featured" value="1"
-                               class="h-4 w-4 text-emerald-600 focus:ring-emerald-500 border-gray-300 rounded">
-                        <label for="is_featured" class="ml-2 block text-sm text-gray-900 dark:text-gray-100">
-                            Post em destaque
-                        </label>
-                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="is_featured" name="is_featured" value="1" class="sr-only peer">
+                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-emerald-300 dark:peer-focus:ring-emerald-800 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-600"></div>
+                        <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">Post em destaque</span>
+                    </label>
                 </div>
 
                 <!-- Action Buttons -->
                 <div class="mt-6 pt-6 border-t border-gray-200 dark:border-slate-700">
                     <div class="flex flex-col gap-3">
-                        <button type="submit" 
-                                class="w-full px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-medium transition-colors">
-                            <x-icon name="check" class="w-4 h-4 inline mr-1" /> Criar Post
+                        <button type="submit"
+                                class="w-full px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-bold shadow-lg shadow-emerald-500/20 transition-all transform hover:-translate-y-0.5">
+                            <x-icon name="check" class="w-4 h-4 inline mr-2" /> Criar Post
                         </button>
-                        <a href="{{ route('admin.blog.index') }}" 
-                           class="w-full px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-700 rounded-lg font-medium transition-colors text-center">
+                        <a href="{{ route('admin.blog.index') }}"
+                           class="w-full px-4 py-2 bg-gray-100 dark:bg-slate-700 hover:bg-gray-200 dark:hover:bg-slate-600 text-gray-700 dark:text-gray-300 rounded-lg font-medium transition-colors text-center">
                             Cancelar
                         </a>
                     </div>
@@ -235,16 +245,19 @@
 
             <!-- Integrations -->
             <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 p-6">
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Integrações</h3>
-                
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+                    <x-icon name="link" class="w-5 h-5 mr-2 text-emerald-600" />
+                    Integrações e Relacionamentos
+                </h3>
+
                 <div class="space-y-4">
                     <!-- Category -->
                     <div>
-                        <label for="category_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        <label for="category_id" class="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-2">
                             Categoria *
                         </label>
                         <select id="category_id" name="category_id" required
-                                class="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+                                class="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500">
                             <option value="">Selecione...</option>
                             @foreach($categories as $category)
                             <option value="{{ $category->id }}">{{ $category->name }}</option>
@@ -252,29 +265,14 @@
                         </select>
                     </div>
 
-                    <!-- Team Members -->
-                    <div>
-                        <label for="team_members" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            Equipe Responsável
-                        </label>
-                        <select id="team_members" name="team_members[]" multiple size="5"
-                                class="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-sm">
-                            @if(isset($employees))
-                                @foreach($employees as $emp)
-                                    <option value="{{ $emp->id }}">{{ $emp->nom_pessoa }}</option>
-                                @endforeach
-                            @endif
-                        </select>
-                    </div>
-
                     <!-- Related Demand & IMPORT BUTTON -->
                     <div>
-                        <label for="related_demand_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        <label for="related_demand_id" class="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-2">
                             Demanda Relacionada
                         </label>
                         <div class="flex gap-2">
                             <select id="related_demand_id" name="related_demand_id"
-                                    class="flex-1 px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-sm">
+                                    class="flex-1 px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 text-sm">
                                 <option value="">Nenhuma</option>
                                 @if(isset($demandas))
                                     @foreach($demandas as $dem)
@@ -283,26 +281,26 @@
                                 @endif
                             </select>
                             <button type="button" onclick="importDemanda()"
-                            <button type="button" onclick="importDemanda()" 
-                                    class="px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors whitespace-nowrap"
+                                    class="px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-all shadow-lg shadow-blue-500/20 flex items-center group"
                                     title="Importar dados da demanda">
-                                <x-icon name="cloud-arrow-down" class="w-4 h-4" />
+                                <x-icon name="cloud-arrow-down" class="w-4 h-4 group-hover:animate-bounce" />
                             </button>
                         </div>
-                        <p class="text-xs text-gray-500 mt-1">Selecione uma demanda e clique para importar dados.</p>
+                        <p class="text-[10px] text-gray-500 mt-2 uppercase font-bold tracking-widest">Selecione uma demanda e clique para importar dados.</p>
                     </div>
                 </div>
             </div>
 
             <!-- Tags -->
             <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 p-6">
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Tags</h3>
-                
-                <div>
-                    <input type="text" id="tags" name="tags[]" 
-                           class="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
-                           placeholder="Digite as tags...">
-                </div>
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+                    <x-icon name="tags" class="w-5 h-5 mr-2 text-emerald-600" />
+                    Tags
+                </h3>
+
+                <input type="text" id="tags" name="tags[]"
+                       class="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500"
+                       placeholder="Digite as tags separadas por vírgula...">
             </div>
         </div>
     </div>
@@ -366,7 +364,7 @@ function importDemanda() {
             const event = new Event('input');
             document.getElementById('title').dispatchEvent(event);
 
-            
+
             // Update Editor Content (assuming Quill or similar attached to #editor-container)
             // If checking global quill instance (common pattern)
             if (window.quill) {
@@ -375,7 +373,7 @@ function importDemanda() {
                  document.getElementById('content').value = data.content;
             }
 
-            
+
             // Assuming we might have logic for images later
         })
         .catch(error => {

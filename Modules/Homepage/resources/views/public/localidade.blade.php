@@ -33,7 +33,7 @@
                 <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
                     <div class="flex-1">
                         <div class="inline-flex items-center gap-2 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 px-4 py-2 rounded-full text-sm font-semibold mb-4">
-                            <x-module-icon module="localidades" class="w-4 h-4" />
+                            <x-icon module="localidades" class="w-4 h-4" />
                             {{ ucfirst($localidade->tipo ?? 'Localidade') }}
                         </div>
                         <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold font-poppins text-gray-900 dark:text-white mb-3 leading-tight">
@@ -41,7 +41,7 @@
                         </h1>
                         <div class="flex flex-wrap items-center gap-4 text-gray-600 dark:text-gray-300">
                             <div class="flex items-center gap-2">
-                                <x-module-icon module="localidades" class="w-5 h-5" />
+                                <x-icon module="localidades" class="w-5 h-5" />
                                 <span>{{ $localidade->cidade ?? 'N/A' }}, {{ $localidade->estado ?? 'BA' }}</span>
                             </div>
                             @if($localidade->numero_moradores)
@@ -68,7 +68,7 @@
             <div class="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-900/30 rounded-xl p-4 md:p-6 border border-blue-200 dark:border-blue-800">
                 <div class="flex items-center gap-3 mb-3">
                     <div class="w-10 h-10 md:w-12 md:h-12 bg-blue-500 dark:bg-blue-600 rounded-lg flex items-center justify-center flex-shrink-0">
-                        <x-module-icon module="pocos" class="w-5 h-5 md:w-6 md:h-6 text-white" />
+                        <x-icon module="pocos" class="w-5 h-5 md:w-6 md:h-6 text-white" />
                     </div>
                     <div class="min-w-0 flex-1">
                         <p class="text-xs md:text-sm text-blue-600 dark:text-blue-400 font-medium">Poços</p>
@@ -81,7 +81,7 @@
             <div class="bg-gradient-to-br from-cyan-50 to-cyan-100 dark:from-cyan-900/20 dark:to-cyan-900/30 rounded-xl p-4 md:p-6 border border-cyan-200 dark:border-cyan-800">
                 <div class="flex items-center gap-3 mb-3">
                     <div class="w-10 h-10 md:w-12 md:h-12 bg-cyan-500 dark:bg-cyan-600 rounded-lg flex items-center justify-center flex-shrink-0">
-                        <x-module-icon module="agua" class="w-5 h-5 md:w-6 md:h-6 text-white" />
+                        <x-icon module="agua" class="w-5 h-5 md:w-6 md:h-6 text-white" />
                     </div>
                     <div class="min-w-0 flex-1">
                         <p class="text-xs md:text-sm text-cyan-600 dark:text-cyan-400 font-medium">Água</p>
@@ -94,7 +94,7 @@
             <div class="bg-gradient-to-br from-amber-50 to-amber-100 dark:from-amber-900/20 dark:to-amber-900/30 rounded-xl p-4 md:p-6 border border-amber-200 dark:border-amber-800">
                 <div class="flex items-center gap-3 mb-3">
                     <div class="w-10 h-10 md:w-12 md:h-12 bg-amber-500 dark:bg-amber-600 rounded-lg flex items-center justify-center flex-shrink-0">
-                        <x-module-icon module="iluminacao" class="w-5 h-5 md:w-6 md:h-6 text-white" />
+                        <x-icon module="iluminacao" class="w-5 h-5 md:w-6 md:h-6 text-white" />
                     </div>
                     <div class="min-w-0 flex-1">
                         <p class="text-xs md:text-sm text-amber-600 dark:text-amber-400 font-medium">Luz</p>
@@ -107,7 +107,7 @@
             <div class="bg-gradient-to-br from-violet-50 to-violet-100 dark:from-violet-900/20 dark:to-violet-900/30 rounded-xl p-4 md:p-6 border border-violet-200 dark:border-violet-800">
                 <div class="flex items-center gap-3 mb-3">
                     <div class="w-10 h-10 md:w-12 md:h-12 bg-violet-500 dark:bg-violet-600 rounded-lg flex items-center justify-center flex-shrink-0">
-                        <x-module-icon module="estradas" class="w-5 h-5 md:w-6 md:h-6 text-white" />
+                        <x-icon module="estradas" class="w-5 h-5 md:w-6 md:h-6 text-white" />
                     </div>
                     <div class="min-w-0 flex-1">
                         <p class="text-xs md:text-sm text-violet-600 dark:text-violet-400 font-medium">Estradas</p>
@@ -123,7 +123,7 @@
             <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-gray-200 dark:border-slate-700 p-6 md:p-8 hover:shadow-2xl transition-all duration-300">
                 <div class="flex items-center gap-4 mb-6 pb-4 border-b border-gray-200 dark:border-slate-700">
                     <div class="w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 dark:from-blue-600 dark:to-blue-700 rounded-xl flex items-center justify-center shadow-lg">
-                        <x-module-icon module="pocos" class="w-7 h-7 text-white" />
+                        <x-icon module="pocos" class="w-7 h-7 text-white" />
                     </div>
                     <div class="flex-1">
                         <h2 class="text-xl md:text-2xl font-bold font-poppins text-gray-900 dark:text-white">Poços Artesianos</h2>
@@ -170,7 +170,7 @@
                 @else
                 <div class="text-center py-12 text-gray-500 dark:text-gray-400">
                     <div class="w-16 h-16 mx-auto mb-4 opacity-50">
-                        <x-module-icon module="pocos" class="w-16 h-16" />
+                        <x-icon module="pocos" class="w-16 h-16" />
                     </div>
                     <p class="text-lg font-medium">Nenhum poço cadastrado</p>
                     <p class="text-sm mt-1">Não há poços artesianos cadastrados nesta localidade</p>
@@ -182,7 +182,7 @@
             <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-gray-200 dark:border-slate-700 p-6 md:p-8 hover:shadow-2xl transition-all duration-300">
                 <div class="flex items-center gap-4 mb-6 pb-4 border-b border-gray-200 dark:border-slate-700">
                     <div class="w-14 h-14 bg-gradient-to-br from-cyan-500 to-cyan-600 dark:from-cyan-600 dark:to-cyan-700 rounded-xl flex items-center justify-center shadow-lg">
-                        <x-module-icon module="agua" class="w-7 h-7 text-white" />
+                        <x-icon module="agua" class="w-7 h-7 text-white" />
                     </div>
                     <div class="flex-1">
                         <h2 class="text-xl md:text-2xl font-bold font-poppins text-gray-900 dark:text-white">Pontos de Distribuição de Água</h2>
@@ -214,7 +214,7 @@
                 @else
                 <div class="text-center py-12 text-gray-500 dark:text-gray-400">
                     <div class="w-16 h-16 mx-auto mb-4 opacity-50">
-                        <x-module-icon module="agua" class="w-16 h-16" />
+                        <x-icon module="agua" class="w-16 h-16" />
                     </div>
                     <p class="text-lg font-medium">Nenhum ponto cadastrado</p>
                     <p class="text-sm mt-1">Não há pontos de água cadastrados nesta localidade</p>
@@ -226,7 +226,7 @@
             <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-gray-200 dark:border-slate-700 p-6 md:p-8 hover:shadow-2xl transition-all duration-300">
                 <div class="flex items-center gap-4 mb-6 pb-4 border-b border-gray-200 dark:border-slate-700">
                     <div class="w-14 h-14 bg-gradient-to-br from-amber-500 to-amber-600 dark:from-amber-600 dark:to-amber-700 rounded-xl flex items-center justify-center shadow-lg">
-                        <x-module-icon module="iluminacao" class="w-7 h-7 text-white" />
+                        <x-icon module="iluminacao" class="w-7 h-7 text-white" />
                     </div>
                     <div class="flex-1">
                         <h2 class="text-xl md:text-2xl font-bold font-poppins text-gray-900 dark:text-white">Iluminação Pública</h2>
@@ -273,7 +273,7 @@
                 @else
                 <div class="text-center py-12 text-gray-500 dark:text-gray-400">
                     <div class="w-16 h-16 mx-auto mb-4 opacity-50">
-                        <x-module-icon module="iluminacao" class="w-16 h-16" />
+                        <x-icon module="iluminacao" class="w-16 h-16" />
                     </div>
                     <p class="text-lg font-medium">Nenhum ponto cadastrado</p>
                     <p class="text-sm mt-1">Não há pontos de luz cadastrados nesta localidade</p>
@@ -285,7 +285,7 @@
             <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-gray-200 dark:border-slate-700 p-6 md:p-8 hover:shadow-2xl transition-all duration-300 lg:col-span-2">
                 <div class="flex items-center gap-4 mb-6 pb-4 border-b border-gray-200 dark:border-slate-700">
                     <div class="w-14 h-14 bg-gradient-to-br from-violet-500 to-violet-600 dark:from-violet-600 dark:to-violet-700 rounded-xl flex items-center justify-center shadow-lg">
-                        <x-module-icon module="estradas" class="w-7 h-7 text-white" />
+                        <x-icon module="estradas" class="w-7 h-7 text-white" />
                     </div>
                     <div class="flex-1">
                         <h2 class="text-xl md:text-2xl font-bold font-poppins text-gray-900 dark:text-white">Estradas e Vicinais</h2>
@@ -328,7 +328,7 @@
                 @else
                 <div class="text-center py-12 text-gray-500 dark:text-gray-400">
                     <div class="w-16 h-16 mx-auto mb-4 opacity-50">
-                        <x-module-icon module="estradas" class="w-16 h-16" />
+                        <x-icon module="estradas" class="w-16 h-16" />
                     </div>
                     <p class="text-lg font-medium">Nenhuma estrada cadastrada</p>
                     <p class="text-sm mt-1">Não há estradas cadastradas nesta localidade</p>

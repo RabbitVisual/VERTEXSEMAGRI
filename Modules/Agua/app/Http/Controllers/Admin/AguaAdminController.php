@@ -145,30 +145,31 @@ class AguaAdminController extends Controller
 
             return [
                 'redes' => [
-                    'total' => $totalRedes,
-                    'funcionando' => $redesFuncionando,
-                    'com_vazamento' => $redesComVazamento,
-                    'interrompida' => $redesInterrompidas,
+                    'total' => $totalRedes ?? 0,
+                    'funcionando' => $redesFuncionando ?? 0,
+                    'com_vazamento' => $redesComVazamento ?? 0,
+                    'interrompida' => $redesInterrompidas ?? 0,
                 ],
                 'pontos' => [
-                    'total' => $totalPontos,
-                    'funcionando' => $pontosFuncionando,
-                    'com_defeito' => $pontosComDefeito,
+                    'total' => $totalPontos ?? 0,
+                    'funcionando' => $pontosFuncionando ?? 0,
+                    'com_defeito' => $pontosComDefeito ?? 0,
                 ],
                 'demandas' => [
-                    'total' => $totalDemandas,
-                    'abertas' => $demandasAbertas,
-                    'em_andamento' => $demandasEmAndamento,
-                    'concluidas' => $demandasConcluidas,
+                    'total' => $totalDemandas ?? 0,
+                    'abertas' => $demandasAbertas ?? 0,
+                    'em_andamento' => $demandasEmAndamento ?? 0,
+                    'concluidas' => $demandasConcluidas ?? 0,
                 ],
                 'ordens' => [
-                    'total' => $totalOrdens,
-                    'pendentes' => $ordensPendentes,
-                    'em_execucao' => $ordensEmExecucao,
-                    'concluidas' => $ordensConcluidas,
+                    'total' => $totalOrdens ?? 0,
+                    'pendentes' => $ordensPendentes ?? 0,
+                    'em_execucao' => $ordensEmExecucao ?? 0,
+                    'concluidas' => $ordensConcluidas ?? 0,
                 ],
             ];
         } catch (\Exception $e) {
+            \Log::error("Erro no AguaAdminController: " . $e->getMessage());
             return [
                 'redes' => ['total' => 0, 'funcionando' => 0, 'com_vazamento' => 0, 'interrompida' => 0],
                 'pontos' => ['total' => 0, 'funcionando' => 0, 'com_defeito' => 0],
@@ -178,4 +179,3 @@ class AguaAdminController extends Controller
         }
     }
 }
-

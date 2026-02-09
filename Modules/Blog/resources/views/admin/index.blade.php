@@ -8,9 +8,7 @@
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
             <h1 class="text-3xl font-bold text-gray-900 dark:text-white flex items-center gap-3 mb-2">
-                <svg class="w-8 h-8 text-emerald-600 dark:text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    {!! \App\Helpers\ModuleIcons::getIconPath('Blog') !!}
-                </svg>
+                <x-icon module="Blog" class="w-8 h-8 text-emerald-600 dark:text-emerald-500" />
                 Gerenciar Blog
             </h1>
             <nav aria-label="breadcrumb">
@@ -24,16 +22,12 @@
         <div class="flex gap-2">
             <a href="{{ route('blog.index') }}" target="_blank"
                class="inline-flex items-center px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg font-medium transition-colors">
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
-                </svg>
+                <x-icon name="eye" class="w-4 h-4 mr-2" />
                 Ver Blog
             </a>
             <a href="{{ route('admin.blog.create') }}"
-               class="inline-flex items-center px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-medium transition-colors">
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-                </svg>
+               class="inline-flex items-center px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-bold shadow-lg shadow-emerald-500/20 transition-all transform hover:-translate-y-0.5">
+                <x-icon name="plus" class="w-4 h-4 mr-2" />
                 Novo Post
             </a>
         </div>
@@ -45,10 +39,8 @@
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
     <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 p-6">
         <div class="flex items-center">
-            <div class="p-2 bg-blue-100 dark:bg-blue-900/20 rounded-lg">
-                <svg class="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
-                </svg>
+            <div class="p-2 bg-blue-100 dark:bg-blue-900/40 rounded-lg">
+                <x-icon name="newspaper" class="w-6 h-6 text-blue-600 dark:text-blue-400" />
             </div>
             <div class="ml-4">
                 <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Total de Posts</p>
@@ -59,10 +51,8 @@
 
     <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 p-6">
         <div class="flex items-center">
-            <div class="p-2 bg-green-100 dark:bg-green-900/20 rounded-lg">
-                <svg class="w-6 h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                </svg>
+            <div class="p-2 bg-emerald-100 dark:bg-emerald-900/40 rounded-lg">
+                <x-icon name="circle-check" class="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
             </div>
             <div class="ml-4">
                 <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Publicados</p>
@@ -73,10 +63,8 @@
 
     <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 p-6">
         <div class="flex items-center">
-            <div class="p-2 bg-yellow-100 dark:bg-yellow-900/20 rounded-lg">
-                <svg class="w-6 h-6 text-yellow-600 dark:text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-                </svg>
+            <div class="p-2 bg-amber-100 dark:bg-amber-900/40 rounded-lg">
+                <x-icon name="pen-to-square" class="w-6 h-6 text-amber-600 dark:text-amber-400" />
             </div>
             <div class="ml-4">
                 <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Rascunhos</p>
@@ -87,11 +75,8 @@
 
     <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 p-6">
         <div class="flex items-center">
-            <div class="p-2 bg-purple-100 dark:bg-purple-900/20 rounded-lg">
-                <svg class="w-6 h-6 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                </svg>
+            <div class="p-2 bg-purple-100 dark:bg-purple-900/40 rounded-lg">
+                <x-icon name="eye" class="w-6 h-6 text-purple-600 dark:text-purple-400" />
             </div>
             <div class="ml-4">
                 <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Total Visualizações</p>
@@ -108,10 +93,8 @@
         <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Ações Rápidas</h3>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <a href="{{ route('admin.blog.categories.index') }}"
-               class="flex items-center p-4 bg-gray-50 dark:bg-slate-700 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-600 transition-colors">
-                <svg class="w-5 h-5 text-gray-600 dark:text-gray-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
-                </svg>
+               class="flex items-center p-4 bg-gray-50 dark:bg-slate-700/50 rounded-lg hover:bg-emerald-50 dark:hover:bg-emerald-900/10 transition-all border border-transparent hover:border-emerald-200 group">
+                <x-icon name="folder-tree" class="w-5 h-5 text-gray-400 group-hover:text-emerald-600 mr-3 transition-colors" />
                 <div>
                     <div class="font-medium text-gray-900 dark:text-gray-100">Categorias</div>
                     <div class="text-sm text-gray-500 dark:text-gray-400">{{ $estatisticas['total_categories'] ?? 0 }} categorias</div>
@@ -119,10 +102,8 @@
             </a>
 
             <a href="{{ route('admin.blog.tags.index') }}"
-               class="flex items-center p-4 bg-gray-50 dark:bg-slate-700 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-600 transition-colors">
-                <svg class="w-5 h-5 text-gray-600 dark:text-gray-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
-                </svg>
+               class="flex items-center p-4 bg-gray-50 dark:bg-slate-700/50 rounded-lg hover:bg-emerald-50 dark:hover:bg-emerald-900/10 transition-all border border-transparent hover:border-emerald-200 group">
+                <x-icon name="tags" class="w-5 h-5 text-gray-400 group-hover:text-emerald-600 mr-3 transition-colors" />
                 <div>
                     <div class="font-medium text-gray-900 dark:text-gray-100">Tags</div>
                     <div class="text-sm text-gray-500 dark:text-gray-400">{{ $estatisticas['total_tags'] ?? 0 }} tags</div>
@@ -130,10 +111,8 @@
             </a>
 
             <a href="{{ route('admin.blog.comments.index') }}"
-               class="flex items-center p-4 bg-gray-50 dark:bg-slate-700 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-600 transition-colors">
-                <svg class="w-5 h-5 text-gray-600 dark:text-gray-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
-                </svg>
+               class="flex items-center p-4 bg-gray-50 dark:bg-slate-700/50 rounded-lg hover:bg-emerald-50 dark:hover:bg-emerald-900/10 transition-all border border-transparent hover:border-emerald-200 group">
+                <x-icon name="comments" class="w-5 h-5 text-gray-400 group-hover:text-emerald-600 mr-3 transition-colors" />
                 <div>
                     <div class="font-medium text-gray-900 dark:text-gray-100">Comentários</div>
                     <div class="text-sm text-gray-500 dark:text-gray-400">{{ $estatisticas['pending_comments'] ?? 0 }} pendentes</div>
@@ -141,10 +120,8 @@
             </a>
 
             <button onclick="generateMonthlyReport()"
-                    class="flex items-center p-4 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg hover:bg-emerald-100 dark:hover:bg-emerald-900/30 transition-colors">
-                <svg class="w-5 h-5 text-emerald-600 dark:text-emerald-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
-                </svg>
+                    class="flex items-center p-4 bg-emerald-50/50 dark:bg-emerald-900/20 rounded-lg hover:bg-emerald-100 dark:hover:bg-emerald-900/30 transition-all border border-emerald-100/50 dark:border-emerald-900/30 group text-left">
+                <x-icon name="file-chart-column" class="w-5 h-5 text-emerald-600 dark:text-emerald-400 mr-3 group-hover:scale-110 transition-transform" />
                 <div>
                     <div class="font-medium text-emerald-700 dark:text-emerald-300">Relatório Mensal</div>
                     <div class="text-sm text-emerald-600 dark:text-emerald-400">Gerar automaticamente</div>
@@ -223,10 +200,8 @@
                             <img src="{{ Storage::url($post->featured_image) }}" alt="{{ $post->title }}"
                                  class="w-12 h-12 rounded-lg object-cover mr-4">
                             @else
-                            <div class="w-12 h-12 bg-gray-200 dark:bg-slate-600 rounded-lg mr-4 flex items-center justify-center">
-                                <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
-                                </svg>
+                            <div class="w-12 h-12 bg-gray-100 dark:bg-slate-700 rounded-lg mr-4 flex items-center justify-center border border-gray-200 dark:border-slate-600">
+                                <x-icon name="image" class="w-6 h-6 text-gray-400" />
                             </div>
                             @endif
                             <div>
@@ -275,16 +250,11 @@
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                         <div class="flex space-x-4">
                             <span class="flex items-center" title="Visualizações">
-                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                                </svg>
+                                <x-icon name="eye" class="w-4 h-4 mr-1 text-gray-400" />
                                 {{ $post->views()->count() }}
                             </span>
                             <span class="flex items-center" title="Comentários">
-                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
-                                </svg>
+                                <x-icon name="comments" class="w-4 h-4 mr-1 text-gray-400" />
                                 {{ $post->comments->count() }}
                             </span>
                         </div>
@@ -296,42 +266,31 @@
                         <div class="flex items-center justify-end space-x-2">
                             @if($post->status === 'published')
                             <a href="{{ route('blog.show', $post->slug) }}" target="_blank"
-                               class="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100" title="Ver post">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
-                                </svg>
+                               class="p-2 bg-gray-100 dark:bg-slate-700 text-gray-600 hover:text-emerald-600 dark:text-gray-400 dark:hover:text-emerald-400 rounded-lg transition-colors border border-gray-200 dark:border-slate-600 shadow-sm" title="Ver post">
+                                <x-icon name="eye" class="w-4 h-4" />
                             </a>
                             @endif
                             <a href="{{ route('admin.blog.edit', $post->id) }}"
-                               class="text-emerald-600 hover:text-emerald-900 dark:text-emerald-400 dark:hover:text-emerald-300" title="Editar">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-                                </svg>
+                               class="p-2 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 hover:text-white hover:bg-emerald-600 dark:text-emerald-400 dark:hover:bg-emerald-500 rounded-lg transition-all border border-emerald-200 dark:border-emerald-800 shadow-sm" title="Editar">
+                                <x-icon name="pen-to-square" class="w-4 h-4" />
                             </a>
                             <button type="button"
                                     onclick="confirmDelete({{ $post->id }}, '{{ $post->title }}')"
-                                    class="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300" title="Excluir">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                                </svg>
+                                    class="p-2 bg-red-50 dark:bg-red-900/20 text-red-600 hover:text-white hover:bg-red-600 dark:text-red-400 dark:hover:bg-red-500 rounded-lg transition-all border border-red-200 dark:border-red-800 shadow-sm" title="Excluir">
+                                <x-icon name="trash" class="w-4 h-4" />
                             </button>
                         </div>
                     </td>
                 </tr>
                 @empty
-                <tr>
                     <td colspan="7" class="px-6 py-12 text-center">
-                        <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
-                        </svg>
+                        <x-icon name="newspaper" class="mx-auto h-12 w-12 text-gray-300 dark:text-slate-600" />
                         <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-gray-100">Nenhum post encontrado</h3>
                         <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Comece criando seu primeiro post no blog.</p>
                         <div class="mt-6">
                             <a href="{{ route('admin.blog.create') }}"
-                               class="inline-flex items-center px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-medium transition-colors">
-                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-                                </svg>
+                               class="inline-flex items-center px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-bold shadow-lg shadow-emerald-500/20 transition-all transform hover:-translate-y-0.5">
+                                <x-icon name="plus" class="w-4 h-4 mr-2" />
                                 Novo Post
                             </a>
                         </div>
@@ -384,10 +343,8 @@ async function generateMonthlyReport() {
     <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white dark:bg-slate-800">
         <div class="mt-3">
             <div class="flex items-center justify-center mb-4">
-                <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 dark:bg-red-900">
-                    <svg class="h-6 w-6 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.5 0L4.268 16.5c-.77.833.192 2.5 1.732 2.5z"/>
-                    </svg>
+                <div class="mx-auto flex-shrink-0 flex items-center justify-center h-16 w-16 rounded-full bg-red-100 dark:bg-red-900/40 mb-4">
+                    <x-icon name="triangle-exclamation" class="h-8 w-8 text-red-600 dark:text-red-400" />
                 </div>
             </div>
             <h3 class="text-lg font-medium text-gray-900 dark:text-white text-center mb-2" id="delete-modal-title">
@@ -407,8 +364,3 @@ async function generateMonthlyReport() {
         </div>
     </div>
 </div>
-
-
-
-
-

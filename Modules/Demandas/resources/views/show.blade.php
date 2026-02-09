@@ -10,7 +10,7 @@
         <div class="relative z-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div class="flex items-center gap-4">
                 <div class="p-4 bg-white/20 rounded-2xl backdrop-blur-sm shadow-lg">
-                    <x-module-icon module="Demandas" class="w-10 h-10 text-white" />
+                    <x-icon module="demandas" class="w-10 h-10 text-white" />
                 </div>
                 <div>
                     <h1 class="text-3xl md:text-4xl font-bold flex items-center gap-3">
@@ -185,7 +185,7 @@
                                             ];
                                             $tipoModule = $tipoModules[$demanda->tipo] ?? 'Demandas';
                                         @endphp
-                                        <x-module-icon module="{{ $tipoModule }}" class="w-5 h-5 text-gray-600 dark:text-gray-400" />
+                                        <x-icon module="{{ $tipomodule }}" class="w-5 h-5 text-gray-600 dark:text-gray-400" />
                                         <span class="font-semibold text-gray-900 dark:text-white">{{ $demanda->tipo_texto }}</span>
                                     </div>
                                 </div>
