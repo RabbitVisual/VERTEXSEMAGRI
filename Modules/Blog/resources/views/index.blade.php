@@ -5,6 +5,7 @@
 
 @section('content')
 <div class="font-sans antialiased text-gray-900 bg-white dark:bg-slate-900">
+
     
     <!-- Hero Slider (Featured News) -->
     @if($featuredPosts->count() > 0)
@@ -12,6 +13,7 @@
         <!-- Slides -->
         <div class="relative h-[400px] md:h-[500px]">
             @foreach($featuredPosts as $index => $post)
+            <div x-show="activeSlide === {{ $index }}"
             <div x-show="activeSlide === {{ $index }}" 
                  x-transition:enter="transition ease-out duration-700"
                  x-transition:enter-start="opacity-0 transform scale-105"
@@ -20,12 +22,14 @@
                  x-transition:leave-start="opacity-100"
                  x-transition:leave-end="opacity-0"
                  class="absolute inset-0 w-full h-full">
+
                 
                 @if($post->featured_image)
                 <img src="{{ Storage::url($post->featured_image) }}" class="object-cover w-full h-full opacity-60">
                 @else
                 <div class="w-full h-full bg-emerald-900 opacity-60"></div>
                 @endif
+
                 
                 <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
 
@@ -42,6 +46,7 @@
                         <p class="text-lg md:text-xl text-gray-100 mb-8 max-w-2xl mx-auto line-clamp-2 drop-shadow-sm hidden md:block">
                             {{ $post->excerpt }}
                         </p>
+                        <a href="{{ route('blog.show', $post->slug) }}"
                         <a href="{{ route('blog.show', $post->slug) }}" 
                            class="inline-flex items-center px-8 py-3 bg-white text-gray-900 font-bold rounded-full hover:bg-emerald-50 transition-all transform hover:scale-105 shadow-lg group">
                             Ler Matéria Completa
@@ -57,11 +62,17 @@
         @if($featuredPosts->count() > 1)
         <div class="absolute bottom-8 left-0 right-0 flex justify-center space-x-3 z-10">
             @foreach($featuredPosts as $index => $post)
+            <button @click="activeSlide = {{ $index }}"
             <button @click="activeSlide = {{ $index }}" 
                     :class="{ 'bg-emerald-500 w-8': activeSlide === {{ $index }}, 'bg-white/50 w-3': activeSlide !== {{ $index }} }"
                     class="h-3 rounded-full transition-all duration-300 focus:outline-none"></button>
             @endforeach
         </div>
+        <button @click="activeSlide = (activeSlide === 0) ? slides - 1 : activeSlide - 1"
+                class="absolute left-4 top-1/2 -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white p-3 rounded-full backdrop-blur-sm transition-colors z-10 hidden md:block">
+            <x-icon name="chevron-left" class="w-6 h-6" />
+        </button>
+        <button @click="activeSlide = (activeSlide === slides - 1) ? 0 : activeSlide + 1"
         <button @click="activeSlide = (activeSlide === 0) ? slides - 1 : activeSlide - 1" 
                 class="absolute left-4 top-1/2 -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white p-3 rounded-full backdrop-blur-sm transition-colors z-10 hidden md:block">
             <x-icon name="chevron-left" class="w-6 h-6" />
@@ -93,6 +104,12 @@
                     <x-icon name="filter" class="w-5 h-5 text-emerald-600" style="duotone" />
                     <span class="font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wide text-sm">Filtrar Notícias:</span>
                 </div>
+
+                <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto flex-1 justify-end">
+                    <!-- Search -->
+                    <div class="relative w-full sm:w-64">
+                        <input type="text" name="search" value="{{ request('search') }}"
+                               placeholder="Buscar notícia..."
                 
                 <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto flex-1 justify-end">
                     <!-- Search -->
@@ -107,6 +124,7 @@
 
                     <!-- Category -->
                     <div class="relative">
+                        <select name="category" onchange="this.form.submit()"
                         <select name="category" onchange="this.form.submit()" 
                                 class="w-full sm:w-48 py-2 pl-3 pr-8 rounded-lg border border-gray-300 dark:border-slate-600 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 dark:bg-slate-700 dark:text-white text-sm appearance-none cursor-pointer">
                             <option value="">Todas as Categorias</option>
@@ -133,6 +151,7 @@
                             <x-icon name="calendar" class="w-4 h-4 text-gray-400" />
                         </div>
                     </div>
+
                     
                      <button type="submit" class="bg-emerald-600 text-white px-6 py-2 rounded-lg hover:bg-emerald-700 transition-colors text-sm font-bold shadow-sm hover:shadow">
                         Filtrar
@@ -150,6 +169,7 @@
                 <!-- Image -->
                 <a href="{{ route('blog.show', $post->slug) }}" class="relative block overflow-hidden">
                     @if($post->featured_image)
+                        <img src="{{ Storage::url($post->featured_image) }}" alt="{{ $post->title }}"
                         <img src="{{ Storage::url($post->featured_image) }}" alt="{{ $post->title }}" 
                              class="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-110">
                     @else

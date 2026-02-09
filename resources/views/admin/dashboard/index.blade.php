@@ -26,13 +26,15 @@
                 <x-icon name="newspaper" class="w-24 h-24" style="duotone" />
             </div>
 
-            <div class="flex items-center gap-4 mb-6">
-                <div class="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-xl">
-                    <x-icon name="newspaper" style="duotone" class="w-6 h-6 text-blue-500" />
+            
+            <div class="flex items-center gap-3 mb-4">
+                <div class="p-2 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg text-emerald-600 dark:text-emerald-400">
+                    <x-icon name="pen-nib" class="w-6 h-6" style="duotone" />
                 </div>
                 <h3 class="font-bold text-gray-900 dark:text-white font-poppins text-lg">Redação & Transparência</h3>
             </div>
 
+            
             <div class="flex-1">
                 <div class="flex items-baseline gap-2 mb-2">
                     <span class="text-5xl font-extrabold text-gray-900 dark:text-white font-inter tracking-tight tabular-nums">
@@ -45,6 +47,7 @@
                 </p>
             </div>
 
+            
             <div class="mt-auto">
                 <a href="{{ route('admin.blog.create') }}?import_from_demandas=1" class="inline-flex items-center justify-center w-full px-5 py-3 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold rounded-xl transition-all shadow-md hover:shadow-lg active:scale-[0.98]">
                     <x-icon name="wand-magic-sparkles" class="w-4 h-4 mr-2" /> Gerar Notícias
@@ -58,19 +61,32 @@
                 <x-icon name="satellite-dish" class="w-24 h-24" style="duotone" />
             </div>
 
-            <div class="flex items-center gap-4 mb-6">
-                <div class="p-3 bg-green-50 dark:bg-green-900/20 rounded-xl">
-                    <x-icon name="satellite-dish" style="duotone" class="w-6 h-6 text-green-500" />
+            
+            <div class="flex items-center gap-3 mb-4">
+                <div class="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg text-blue-600 dark:text-blue-400">
+                    <x-icon name="wifi" class="w-6 h-6" style="duotone" />
                 </div>
                 <h3 class="font-bold text-gray-900 dark:text-white font-poppins text-lg">Operação de Campo</h3>
             </div>
 
-            <div class="flex-1">
-                <div class="flex items-baseline gap-2 mb-2">
-                    <span class="text-5xl font-extrabold text-gray-900 dark:text-white font-inter tracking-tight tabular-nums">
-                        {{ $smartWidgets['field_pulse_24h'] }}
-                    </span>
-                    <span class="text-sm font-medium text-gray-500 dark:text-gray-400">Atendimentos nas últimas 24h</span>
+            
+            <div class="flex-1 space-y-3">
+                @forelse($smartWidgets['recent_syncs'] as $sync)
+                <div class="flex items-center justify-between text-sm">
+                    <div class="flex items-center gap-2">
+                        <div class="w-2 h-2 rounded-full {{ $sync->is_recent ? 'bg-green-500 animate-pulse' : 'bg-amber-500' }}"></div>
+                        <span class="font-medium text-gray-700 dark:text-gray-300 truncate max-w-[120px]">
+                            {{ Str::limit($sync->user_name, 15) }}
+                        </span>
+                    </div>
+                    <div class="text-right text-xs text-gray-500">
+                        <span class="block">{{ $sync->time_ago }}</span>
+                        @if($sync->photos_count > 0)
+                        <span class="text-blue-500 flex items-center justify-end gap-1">
+                            <x-icon name="camera" class="w-3 h-3" /> {{ $sync->photos_count }}
+                        </span>
+                        @endif
+                    </div>
                 </div>
                 <div class="flex items-center gap-2 mb-6">
                     <div class="w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse shadow-[0_0_8px_rgba(34,197,94,0.6)]"></div>
@@ -88,9 +104,10 @@
                 </div>
             </div>
 
-            <div class="mt-auto pt-4 border-t border-gray-100 dark:border-slate-700">
-                <a href="{{ route('admin.audit.index') }}" class="text-xs text-blue-600 dark:text-blue-400 font-bold hover:underline flex items-center justify-center">
-                    Ver Monitoramento em Tempo Real <x-icon name="arrow-right" class="w-3 h-3 ml-2" />
+            
+            <div class="mt-4 pt-4 border-t border-gray-100 dark:border-slate-700">
+                <a href="{{ route('admin.audit.index') }}" class="text-xs text-blue-600 dark:text-blue-400 hover:underline flex items-center justify-center">
+                    Ver logs de sincronização <x-icon name="arrow-right" class="w-3 h-3 ml-1" />
                 </a>
             </div>
         </div>
@@ -101,13 +118,15 @@
                 <x-icon name="boxes-stacked" class="w-24 h-24" style="duotone" />
             </div>
 
-            <div class="flex items-center gap-4 mb-6">
-                <div class="p-3 bg-amber-50 dark:bg-amber-900/20 rounded-xl">
-                    <x-icon name="boxes-stacked" style="duotone" class="w-6 h-6 text-amber-500" />
+            
+            <div class="flex items-center gap-3 mb-4">
+                <div class="p-2 bg-amber-100 dark:bg-amber-900/30 rounded-lg text-amber-600 dark:text-amber-400">
+                    <x-icon name="box-open" class="w-6 h-6" style="duotone" />
                 </div>
                 <h3 class="font-bold text-gray-900 dark:text-white font-poppins text-lg">Almoxarifado Crítico</h3>
             </div>
 
+            
             <div class="flex-1">
                 @if(count($smartWidgets['low_stock_items']) > 0)
                 <div class="space-y-3 mb-6">
@@ -138,9 +157,16 @@
                 @endif
             </div>
 
-            <div class="mt-auto">
-                <a href="{{ route('admin.materiais.index') }}" class="inline-flex items-center justify-center w-full px-5 py-3 bg-amber-500 hover:bg-amber-600 text-white text-sm font-bold rounded-xl transition-all shadow-md hover:shadow-lg active:scale-[0.98]">
-                    <x-icon name="cart-shopping" class="w-4 h-4 mr-2" /> Repor Materiais
+            <div class="mt-4 pt-4 border-t border-gray-100 dark:border-slate-700">
+                <a href="{{ route('admin.materiais.index') }}" class="text-xs text-amber-600 dark:text-amber-400 hover:underline flex items-center justify-center">
+                    Gerenciar estoque <x-icon name="arrow-right" class="w-3 h-3 ml-1" />
+                </a>
+            </div>
+            </div>
+            
+            <div class="mt-4 pt-4 border-t border-gray-100 dark:border-slate-700">
+                <a href="{{ route('admin.materiais.index') }}" class="text-xs text-amber-600 dark:text-amber-400 hover:underline flex items-center justify-center">
+                    Gerenciar estoque <x-icon name="arrow-right" class="w-3 h-3 ml-1" />
                 </a>
             </div>
         </div>
@@ -286,7 +312,34 @@
 <script>
     // Local-only dashboard logic (Zero-CDN)
     document.addEventListener('DOMContentLoaded', function() {
-        console.log('Admin Cockpit Fully Loaded');
+        const ctx = document.getElementById('actionsChart').getContext('2d');
+        const data = @json($chartData['modules_activity']);
+
+        
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: Object.keys(data),
+                datasets: [{
+                    data: Object.values(data),
+                    backgroundColor: [
+                        '#10B981', '#3B82F6', '#F59E0B', '#EF4444', '#8B5CF6',
+                        '#EC4899', '#6366F1', '#14B8A6', '#F97316', '#64748B'
+                    ],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                cutout: '70%'
+            }
+        });
     });
 </script>
 @endpush

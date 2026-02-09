@@ -112,6 +112,11 @@ class BlogAdminController extends Controller
             $validated['og_image'] = $this->uploadImage($request->file('og_image'));
         }
 
+        // Processar OG Image
+        if ($request->hasFile('og_image')) {
+            $validated['og_image'] = $this->uploadImage($request->file('og_image'));
+        }
+
         // Processar galeria de imagens
         if ($request->hasFile('gallery_images')) {
             $galleryImages = [];
@@ -258,6 +263,15 @@ class BlogAdminController extends Controller
             $validated['og_image'] = $this->uploadImage($request->file('og_image'));
         }
 
+        // Processar OG Image
+        if ($request->hasFile('og_image')) {
+            // Remover imagem antiga
+            if ($post->og_image) {
+                Storage::disk('public')->delete($post->og_image);
+            }
+            $validated['og_image'] = $this->uploadImage($request->file('og_image'));
+        }
+
         // Processar galeria de imagens
         if ($request->hasFile('gallery_images')) {
             // Remover imagens antigas
@@ -274,6 +288,24 @@ class BlogAdminController extends Controller
             $validated['gallery_images'] = $galleryImages;
         }
         
+        // Attachments
+        if ($request->hasFile('attachments')) {
+            if ($post->attachments) {
+                 foreach ($post->attachments as $att) {
+                     Storage::disk('public')->delete($att['path']);
+                 }
+            }
+
+            $attachments = [];
+            foreach ($request->file('attachments') as $file) {
+                $attachments[] = [
+                    'name' => $file->getClientOriginalName(),
+                    'path' => $this->uploadAttachment($file)
+                ];
+            }
+            $validated['attachments'] = $attachments;
+        }
+
         // Attachments
         if ($request->hasFile('attachments')) {
             if ($post->attachments) {
@@ -342,6 +374,13 @@ class BlogAdminController extends Controller
                  }
             }
 
+            // Remover attachments
+             if ($post->attachments) {
+                 foreach ($post->attachments as $att) {
+                     Storage::disk('public')->delete($att['path']);
+                 }
+            }
+
             $post->delete();
 
             return redirect()->route('admin.blog.index')
@@ -380,6 +419,14 @@ class BlogAdminController extends Controller
         return $fullPath;
     }
     
+    private function uploadAttachment($file)
+    {
+        $filename = Str::random(40) . '.' . $file->getClientOriginalExtension();
+        $path = 'blog/attachments/' . date('Y/m');
+        Storage::disk('public')->putFileAs($path, $file, $filename);
+        return $path . '/' . $filename;
+    }
+
     private function uploadAttachment($file)
     {
         $filename = Str::random(40) . '.' . $file->getClientOriginalExtension();
@@ -478,6 +525,7 @@ class BlogAdminController extends Controller
             ], 500);
         }
     }
+
     
     /**
      * Generate Monthly Bulletin
@@ -486,12 +534,14 @@ class BlogAdminController extends Controller
     {
         $month = $request->input('month', now()->month);
         $year = $request->input('year', now()->year);
+
         
         $posts = BlogPost::whereMonth('published_at', $month)
                          ->whereYear('published_at', $year)
                          ->where('status', 'published')
                          ->orderBy('published_at', 'desc')
                          ->get();
+
                          
         return view('blog::admin.bulletin', compact('posts', 'month', 'year'));
     }
@@ -533,6 +583,7 @@ class BlogAdminController extends Controller
             'title' => $title,
             'content' => $content,
             // Assuming Demanda has photos/attachments logic, but we'll return empty for now as it varies
+            'images' => []
             'images' => [] 
         ]);
     }
@@ -550,6 +601,7 @@ class BlogAdminController extends Controller
         $path = $request->input('image_path');
         // Remove storage URL prefix if present to get relative path
         $relativePath = str_replace('/storage/', '', $path);
+
         
         // Security check: ensure path is within blog/images
         if (!Str::contains($relativePath, "blog/images")) {
@@ -561,6 +613,9 @@ class BlogAdminController extends Controller
             // Remove header (data:image/png;base64,)
             $image = str_replace('data:image/png;base64,', '', $imageData);
             $image = str_replace(' ', '+', $image);
+
+            Storage::disk('public')->put($relativePath, base64_decode($image));
+
             
             Storage::disk('public')->put($relativePath, base64_decode($image));
             
