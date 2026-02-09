@@ -343,3 +343,5 @@ if (\Nwidart\Modules\Facades\Module::isEnabled('Chat')) {
 Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function() {
     Route::get('/stop-impersonation', [\App\Http\Controllers\Admin\FuncionarioSenhaController::class, 'stopImpersonating'])->name('stop-impersonation');
 });
+
+

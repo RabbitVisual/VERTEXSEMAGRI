@@ -15,10 +15,14 @@ import './map'; // Importar sistema de mapas
 import Alpine from 'alpinejs';
 import collapse from '@alpinejs/collapse';
 import focus from '@alpinejs/focus';
+import offlineManager from './offline/manager';
 
 window.Alpine = Alpine;
 Alpine.plugin(collapse);
 Alpine.plugin(focus);
+
+Alpine.data('offlineManager', offlineManager);
+
 Alpine.start();
 
 // Flowbite 4.0 - Importar localmente (sem CDN)

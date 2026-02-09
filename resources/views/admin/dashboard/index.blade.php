@@ -26,6 +26,7 @@
                 <x-icon name="newspaper" class="w-24 h-24 text-emerald-500" style="duotone" />
             </div>
 
+            
             <div class="flex items-center gap-3 mb-4">
                 <div class="p-2 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg text-emerald-600 dark:text-emerald-400">
                     <x-icon name="pen-nib" class="w-6 h-6" style="duotone" />
@@ -33,6 +34,7 @@
                 <h3 class="font-semibold text-gray-900 dark:text-white font-poppins">Redação & Transparência</h3>
             </div>
 
+            
             <div class="flex-1">
                 <div class="flex items-baseline gap-2 mb-2">
                     <span class="text-4xl font-bold text-gray-900 dark:text-white font-inter tracking-tight tabular-nums">
@@ -45,6 +47,7 @@
                 </p>
             </div>
 
+            
             <div class="mt-auto">
                 <a href="{{ route('admin.blog.create') }}" class="inline-flex items-center justify-center w-full px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium rounded-lg transition-colors shadow-sm hover:shadow">
                     <x-icon name="plus" class="w-4 h-4 mr-2" /> Criar Notícia
@@ -58,6 +61,7 @@
                 <x-icon name="satellite-dish" class="w-24 h-24 text-blue-500" style="duotone" />
             </div>
 
+            
             <div class="flex items-center gap-3 mb-4">
                 <div class="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg text-blue-600 dark:text-blue-400">
                     <x-icon name="wifi" class="w-6 h-6" style="duotone" />
@@ -65,6 +69,7 @@
                 <h3 class="font-semibold text-gray-900 dark:text-white font-poppins">Operação de Campo</h3>
             </div>
 
+            
             <div class="flex-1 space-y-3">
                 @forelse($smartWidgets['recent_syncs'] as $sync)
                 <div class="flex items-center justify-between text-sm">
@@ -90,6 +95,7 @@
                 @endforelse
             </div>
 
+            
             <div class="mt-4 pt-4 border-t border-gray-100 dark:border-slate-700">
                 <a href="{{ route('admin.audit.index') }}" class="text-xs text-blue-600 dark:text-blue-400 hover:underline flex items-center justify-center">
                     Ver logs de sincronização <x-icon name="arrow-right" class="w-3 h-3 ml-1" />
@@ -103,6 +109,7 @@
                 <x-icon name="boxes-stacked" class="w-24 h-24 text-amber-500" style="duotone" />
             </div>
 
+            
             <div class="flex items-center gap-3 mb-4">
                 <div class="p-2 bg-amber-100 dark:bg-amber-900/30 rounded-lg text-amber-600 dark:text-amber-400">
                     <x-icon name="box-open" class="w-6 h-6" style="duotone" />
@@ -110,6 +117,7 @@
                 <h3 class="font-semibold text-gray-900 dark:text-white font-poppins">Almoxarifado Inteligente</h3>
             </div>
 
+            
             <div class="flex-1">
                 @if(count($smartWidgets['low_stock_items']) > 0)
                 <div class="space-y-3">
@@ -140,6 +148,13 @@
                 @endif
             </div>
 
+            <div class="mt-4 pt-4 border-t border-gray-100 dark:border-slate-700">
+                <a href="{{ route('admin.materiais.index') }}" class="text-xs text-amber-600 dark:text-amber-400 hover:underline flex items-center justify-center">
+                    Gerenciar estoque <x-icon name="arrow-right" class="w-3 h-3 ml-1" />
+                </a>
+            </div>
+            </div>
+            
             <div class="mt-4 pt-4 border-t border-gray-100 dark:border-slate-700">
                 <a href="{{ route('admin.materiais.index') }}" class="text-xs text-amber-600 dark:text-amber-400 hover:underline flex items-center justify-center">
                     Gerenciar estoque <x-icon name="arrow-right" class="w-3 h-3 ml-1" />
@@ -267,6 +282,7 @@
         const ctx = document.getElementById('actionsChart').getContext('2d');
         const data = @json($chartData['modules_activity']);
 
+        
         new Chart(ctx, {
             type: 'doughnut',
             data: {

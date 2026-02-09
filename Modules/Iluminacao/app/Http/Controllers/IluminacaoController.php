@@ -54,7 +54,17 @@ class IluminacaoController extends Controller
             $localidades = Localidade::where('ativo', true)->select('id', 'nome')->orderBy('nome')->get();
         }
 
-        return view('iluminacao::index', compact('pontos', 'localidades', 'filters'));
+        // Estatísticas
+        $estatisticas = [
+            'pontos' => [
+                'total' => PontoLuz::count(),
+                'funcionando' => PontoLuz::where('status', 'funcionando')->count(),
+                'com_defeito' => PontoLuz::where('status', 'com_defeito')->count(),
+                'desligado' => PontoLuz::where('status', 'desligado')->count(),
+            ]
+        ];
+
+        return view('iluminacao::index', compact('pontos', 'localidades', 'filters', 'estatisticas'));
     }
 
     public function export(Request $request)

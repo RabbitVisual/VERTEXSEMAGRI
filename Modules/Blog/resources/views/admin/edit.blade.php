@@ -44,7 +44,7 @@
             <!-- Basic Info -->
             <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 p-6">
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Informações Básicas</h3>
-
+                
                 <div class="space-y-4">
                     <!-- Title -->
                     <div>
@@ -83,7 +83,7 @@
             <!-- Content Editor -->
             <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 p-6">
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Conteúdo</h3>
-
+                
                 <div class="blog-editor-wrapper">
                     <div id="editor-container" class="h-96">{!! old('content', $post->content) !!}</div>
                     <input type="hidden" name="content" id="content" value="{{ old('content', $post->content) }}">
@@ -139,6 +139,86 @@
                         @endif
 
                         <input type="file" name="gallery_images[]" multiple accept="image/*" class="block w-full text-sm text-slate-500 ...">
+                
+                <div class="space-y-6">
+                    <!-- Featured Image -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Imagem Destacada
+                        </label>
+                        
+                        @if($post->featured_image)
+                        <div class="mb-4 relative w-48 h-32 rounded-lg overflow-hidden border border-gray-200 dark:border-slate-600 group">
+                            <img src="{{ Storage::url($post->featured_image) }}" class="object-cover w-full h-full">
+                            <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                <button type="button" onclick="openPrivacyEditor('{{ Storage::url($post->featured_image) }}')" 
+                                        class="bg-red-600 text-white p-2 rounded-full hover:bg-red-700" title="Censurar/Editar">
+                                    <x-icon name="eye-slash" class="w-4 h-4" />
+                                </button>
+                            </div>
+                        </div>
+                        @endif
+
+                        <input type="file" name="featured_image" accept="image/*" class="block w-full text-sm text-slate-500 ...">
+                    </div>
+
+                    <!-- Gallery Images -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Galeria de Imagens
+                        </label>
+                        
+                        @if($post->gallery_images)
+                        <div class="grid grid-cols-4 gap-2 mb-4">
+                            @foreach($post->gallery_images as $img)
+                            <div class="relative aspect-square rounded overflow-hidden border border-gray-200 dark:border-slate-600 group">
+                                <img src="{{ Storage::url($img) }}" class="object-cover w-full h-full">
+                                <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                                    <button type="button" onclick="openPrivacyEditor('{{ Storage::url($img) }}')" 
+                                            class="bg-red-600 text-white p-2 rounded-full hover:bg-red-700" title="Censurar/Editar">
+                                        <x-icon name="eye-slash" class="w-4 h-4" />
+                                    </button>
+                                </div>
+                            </div>
+                            @endforeach
+                        </div>
+                        @endif
+
+                        <input type="file" name="gallery_images[]" multiple accept="image/*" class="block w-full text-sm text-slate-500 ...">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Attachments -->
+            <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 p-6">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Anexos (PDFs, Editais)</h3>
+                
+                @if($post->attachments)
+                <ul class="mb-4 space-y-2">
+                    @foreach($post->attachments as $att)
+                    <li class="flex items-center text-sm text-gray-600 dark:text-gray-400">
+                        <x-icon name="file-pdf" class="w-4 h-4 mr-2" />
+                        {{ $att['name'] }}
+                    </li>
+                    @endforeach
+                </ul>
+                @endif
+                
+                <input type="file" name="attachments[]" multiple accept=".pdf" class="block w-full text-sm text-slate-500 ...">
+            </div>
+
+            <!-- SEO -->
+            <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 p-6">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Otimização SEO</h3>
+                
+                <div class="space-y-4">
+                    <!-- Meta Title -->
+                    <div>
+                        <label for="meta_title" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Meta Título
+                        </label>
+                        <input type="text" id="meta_title" name="meta_title" value="{{ old('meta_title', $post->meta_title) }}"
+                               class="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
                     </div>
                 </div>
             </div>
@@ -180,6 +260,11 @@
                         <label for="meta_description" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                             Meta Descrição
                         </label>
+                    <!-- Meta Description -->
+                    <div>
+                        <label for="meta_description" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Meta Descrição
+                        </label>
                         <textarea id="meta_description" name="meta_description" rows="3"
                                   class="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">{{ old('meta_description', $post->meta_description) }}</textarea>
                     </div>
@@ -190,6 +275,7 @@
                             Imagem de Compartilhamento (OG Image)
                         </label>
 
+                        
                         @if($post->og_image)
                         <div class="mb-2">
                             <img src="{{ Storage::url($post->og_image) }}" class="h-20 w-auto rounded border">
@@ -207,7 +293,7 @@
             <!-- Publish -->
             <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 p-6">
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Publicação</h3>
-
+                
                 <div class="space-y-4">
                     <!-- Status -->
                     <div>
@@ -215,6 +301,7 @@
                             Status
                         </label>
                         <select id="status" name="status"
+                        <select id="status" name="status" 
                                 class="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
                             <option value="draft" {{ $post->status == 'draft' ? 'selected' : '' }}>Rascunho</option>
                             <option value="review" {{ $post->status == 'review' ? 'selected' : '' }}>Em Revisão</option>
@@ -246,11 +333,12 @@
                 <!-- Action Buttons -->
                 <div class="mt-6 pt-6 border-t border-gray-200 dark:border-slate-700">
                     <div class="flex flex-col gap-3">
-                        <button type="submit"
+                        <button type="submit" 
                                 class="w-full px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-medium transition-colors">
                             <x-icon name="save" class="w-4 h-4 inline mr-1" /> Salvar Alterações
                         </button>
                         <a href="{{ route('admin.blog.index') }}"
+                        <a href="{{ route('admin.blog.index') }}" 
                            class="w-full px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-700 rounded-lg font-medium transition-colors text-center">
                             Cancelar
                         </a>
@@ -262,6 +350,27 @@
             <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 p-6">
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Integrações</h3>
 
+                <div class="space-y-4">
+                    <!-- Category -->
+                    <div>
+                        <label for="category_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Categoria *
+                        </label>
+                        <select id="category_id" name="category_id" required
+                                class="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+                            @foreach($categories as $category)
+                            <option value="{{ $category->id }}" {{ $post->category_id == $category->id ? 'selected' : '' }}>
+                                {{ $category->name }}
+                            </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+            
+            <!-- Integrations -->
+            <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 p-6">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Integrações</h3>
+                
                 <div class="space-y-4">
                     <!-- Category -->
                     <div>
@@ -318,7 +427,7 @@
             <!-- Tags -->
             <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 p-6">
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Tags</h3>
-
+                
                 <div>
                     <input type="text" id="tags" name="tags[]" value="{{ implode(',', $post->tags->pluck('name')->toArray()) }}"
                            class="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
@@ -346,6 +455,11 @@
             <canvas id="editorCanvas" class="max-w-full cursor-crosshair"></canvas>
         </div>
 
+        
+        <div class="flex-1 overflow-auto p-4 bg-gray-900 flex justify-center items-center relative" id="canvas-container">
+            <canvas id="editorCanvas" class="max-w-full cursor-crosshair"></canvas>
+        </div>
+        
         <div class="p-4 border-t border-gray-200 dark:border-slate-700 flex justify-between items-center bg-gray-50 dark:bg-slate-900">
             <div class="text-sm text-gray-500">
                 Selecione uma área na imagem para censurar.
@@ -385,22 +499,29 @@ function openPrivacyEditor(src) {
     canvas = document.getElementById('editorCanvas');
     ctx = canvas.getContext('2d');
 
+    
+    canvas = document.getElementById('editorCanvas');
+    ctx = canvas.getContext('2d');
+    
     imgObj.onload = function() {
         // Set canvas size to image size
         canvas.width = imgObj.width;
         canvas.height = imgObj.height;
 
+        
         // Scale logic for display would be handled by CSS max-w-full
         ctx.drawImage(imgObj, 0, 0);
     };
     imgObj.src = src;
 
+    
     // Mouse Events for Selection
     canvas.onmousedown = function(e) {
         const rect = canvas.getBoundingClientRect();
         const scaleX = canvas.width / rect.width;
         const scaleY = canvas.height / rect.height;
 
+        
         startX = (e.clientX - rect.left) * scaleX;
         startY = (e.clientY - rect.top) * scaleY;
         isDrawing = true;
@@ -419,12 +540,27 @@ function openPrivacyEditor(src) {
         // Redraw image
         ctx.drawImage(imgObj, 0, 0);
 
+    
+    canvas.onmousemove = function(e) {
+        if (!isDrawing) return;
+        
+        const rect = canvas.getBoundingClientRect();
+        const scaleX = canvas.width / rect.width;
+        const scaleY = canvas.height / rect.height;
+        
+        currentX = (e.clientX - rect.left) * scaleX;
+        currentY = (e.clientY - rect.top) * scaleY;
+        
+        // Redraw image
+        ctx.drawImage(imgObj, 0, 0);
+        
         // Draw selection rectangle
         ctx.strokeStyle = 'red';
         ctx.lineWidth = 2;
         ctx.strokeRect(startX, startY, currentX - startX, currentY - startY);
     };
 
+    
     canvas.onmouseup = function() {
         isDrawing = false;
         // Keep the selection rect visible until action
@@ -448,6 +584,17 @@ function applyPixelate() {
     // Draw original image to clear selection box
     ctx.drawImage(imgObj, 0, 0);
 
+    
+    const w = currentX - startX;
+    const h = currentY - startY;
+    const size = 10; // Pixel size
+    
+    // Get image data of selected area
+    // Simplified pixelation: draw small version then scale up
+    
+    // Draw original image to clear selection box
+    ctx.drawImage(imgObj, 0, 0);
+    
     // We need to manipulate pixels or use drawImage trick
     // Create temp canvas
     const tempCanvas = document.createElement('canvas');
@@ -459,11 +606,19 @@ function applyPixelate() {
     // Draw selected area to temp canvas reduced size
     tCtx.drawImage(canvas, startX, startY, w, h, 0, 0, w/size, h/size);
 
+    
+    tempCanvas.width = Math.abs(w);
+    tempCanvas.height = Math.abs(h);
+    
+    // Draw selected area to temp canvas reduced size
+    tCtx.drawImage(canvas, startX, startY, w, h, 0, 0, w/size, h/size);
+    
     // Draw back scaled up
     ctx.imageSmoothingEnabled = false;
     ctx.drawImage(tempCanvas, 0, 0, w/size, h/size, startX, startY, w, h);
     ctx.imageSmoothingEnabled = true;
 
+    
     // Update imgObj to current state so we can add multiple redactions
     imgObj.src = canvas.toDataURL();
 }
@@ -476,16 +631,24 @@ function applyBlur() {
 
     ctx.drawImage(imgObj, 0, 0);
 
+    
+    const w = currentX - startX;
+    const h = currentY - startY;
+    
+    ctx.drawImage(imgObj, 0, 0);
+    
     ctx.filter = 'blur(10px)';
     // Draw the image again but clipped to rect
     // This is tricky in single canvas.
     // Easier approach: put image data, blur it.
 
+    
     // Fallback: Fill with black rectangle for "Redact" style since Canvas blur is complex without StackBlur
     ctx.filter = 'none';
     ctx.fillStyle = 'black';
     ctx.fillRect(startX, startY, w, h);
 
+    
     // Update imgObj
     imgObj.src = canvas.toDataURL();
 }
@@ -493,6 +656,7 @@ function applyBlur() {
 function saveRedaction() {
     const dataUrl = canvas.toDataURL('image/jpeg', 0.9);
 
+    
     fetch('{{ route("admin.blog.redact-image") }}', {
         method: 'POST',
         headers: {

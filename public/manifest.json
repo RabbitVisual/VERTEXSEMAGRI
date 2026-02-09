@@ -2,7 +2,7 @@
     "name": "SEMAGRI Campo - Aplicativo de Campo",
     "short_name": "SEMAGRI Campo",
     "description": "Aplicativo profissional para funcionários de campo. Gerencie ordens de serviço, materiais e relatórios. Funciona 100% offline com sincronização automática.",
-    "start_url": "/campo/dashboard",
+    "start_url": "/demandas",
     "scope": "/",
     "display": "standalone",
     "orientation": "portrait-primary",
@@ -88,7 +88,7 @@
             "name": "Dashboard",
             "short_name": "Início",
             "description": "Painel principal do aplicativo",
-            "url": "/campo/dashboard",
+            "url": "/demandas",
             "icons": [
                 {
                     "src": "/icons/icon.svg",
@@ -145,5 +145,5 @@
         "preferred_width": 400
     },
     "iarc_rating_id": "",
-    "id": "/campo/dashboard"
+    "id": "/demandas"
 }
