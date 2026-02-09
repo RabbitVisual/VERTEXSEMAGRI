@@ -146,6 +146,12 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
         Route::post('/blog/upload-image', [\Modules\Blog\App\Http\Controllers\Admin\BlogAdminController::class, 'uploadEditorImage'])->name('blog.upload-image');
 
         // Posts - Route::resource deve vir POR ÚLTIMO para evitar conflitos
+        // Importar Demanda
+        Route::get('/blog/import-demanda', [\Modules\Blog\App\Http\Controllers\Admin\BlogAdminController::class, 'importDemanda'])->name('blog.import-demanda');
+
+        // Redact Image
+        Route::post('/blog/redact-image', [\Modules\Blog\App\Http\Controllers\Admin\BlogAdminController::class, 'redactImage'])->name('blog.redact-image');
+
         Route::resource('blog', \Modules\Blog\App\Http\Controllers\Admin\BlogAdminController::class);
     }
 
@@ -338,5 +344,4 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function() {
     Route::get('/stop-impersonation', [\App\Http\Controllers\Admin\FuncionarioSenhaController::class, 'stopImpersonating'])->name('stop-impersonation');
 });
 
-        // Importar Demanda
-        Route::get('/blog/import-demanda', [\Modules\Blog\App\Http\Controllers\Admin\BlogAdminController::class, 'importDemanda'])->name('blog.import-demanda');
+

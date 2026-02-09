@@ -12,17 +12,17 @@ export default () => ({
     queueItems: [],
     localDemands: [],
     selectedDemand: null,
-
+    
     // Consent
     imageConsent: false,
-
+    
     // Radar
     radarActive: false,
     radarWatchId: null,
     targetDistance: null,
     targetBearing: null,
     currentHeading: 0,
-
+    
     async init() {
         if (!window.isSecureContext && window.location.hostname !== 'localhost') {
             console.warn('Insecure context: Camera and Geolocation may fail.');
@@ -33,18 +33,18 @@ export default () => ({
             this.processQueue();
         });
         window.addEventListener('offline', () => this.online = false);
-
+        
         await this.refreshData();
         this.updateSyncColor();
-
+        
         setInterval(() => {
             this.updateQueueCount();
             this.updateSyncColor();
         }, 5000);
-
+        
         this.initCompass();
     },
-
+    
     initCompass() {
         if (window.DeviceOrientationEvent) {
             window.addEventListener('deviceorientation', (e) => {
@@ -53,7 +53,7 @@ export default () => ({
                     this.currentHeading = e.webkitCompassHeading;
                 } else if (e.alpha !== null) {
                     // Android/Others
-                    this.currentHeading = 360 - e.alpha;
+                    this.currentHeading = 360 - e.alpha; 
                 }
             }, true);
         }
@@ -73,40 +73,40 @@ export default () => ({
             }
         }
     },
-
+    
     async refreshData() {
         this.localDemands = await db.demands.toArray();
         this.updateQueueCount();
         this.loadQueueItems();
     },
-
+    
     async updateQueueCount() {
         this.queueCount = await db.syncQueue.count();
     },
-
+    
     async loadQueueItems() {
         this.queueItems = await db.syncQueue.orderBy('timestamp').reverse().toArray();
     },
-
+    
     updateSyncColor() {
         if (!this.lastSync) {
             this.syncColor = 'gray';
             return;
         }
-
+        
         const lastSyncTime = localStorage.getItem('lastSyncISO');
         if (!lastSyncTime) {
              this.syncColor = 'gray';
              return;
         }
-
+        
         const diffHours = (new Date() - new Date(lastSyncTime)) / (1000 * 60 * 60);
-
+        
         if (diffHours < 4) this.syncColor = 'green';
         else if (diffHours < 12) this.syncColor = 'amber';
         else this.syncColor = 'red';
     },
-
+    
     async processQueue() {
         if (!this.online) return;
         this.syncing = true;
@@ -120,18 +120,18 @@ export default () => ({
 
     async sync() {
         if (!this.online) return;
-
+        
         this.syncing = true;
         this.syncStatus = 'Baixando...';
         try {
             await uploadData();
             const downloadResult = await downloadData();
-
+            
             const now = new Date();
             this.lastSync = now.toLocaleString('pt-BR');
             localStorage.setItem('lastSync', this.lastSync);
             localStorage.setItem('lastSyncISO', now.toISOString());
-
+            
             this.syncStatus = `Ok (${downloadResult.count})`;
             await this.refreshData();
             this.updateSyncColor();
@@ -143,9 +143,9 @@ export default () => ({
             setTimeout(() => this.syncStatus = 'Sincronizar', 3000);
         }
     },
-
+    
     handleLinkClick(e) {
-        if (this.online) return;
+        if (this.online) return; 
 
         const link = e.target.closest('a');
         if (!link) return;
@@ -157,19 +157,19 @@ export default () => ({
             this.openDemand(id);
         }
     },
-
+    
     async saveStatus() {
         if (!this.selectedDemand) return;
-
+        
         const payload = {
             ordem_id: this.selectedDemand.ordem_servico?.id,
             demanda_id: this.selectedDemand.id,
             observacoes: this.selectedDemand.observacoes_temp,
             client_timestamp: new Date().toISOString()
         };
-
+        
         await queueAction('concluir_ordem', payload);
-
+        
         const demand = await db.demands.get(this.selectedDemand.id);
         if (demand) {
             demand.status = 'concluida';
@@ -190,7 +190,7 @@ export default () => ({
             alert('Demanda não encontrada offline. Sincronize antes.');
         }
     },
-
+    
     compressImage(file) {
         return new Promise((resolve, reject) => {
             new Compressor(file, {
@@ -210,10 +210,10 @@ export default () => ({
     async capturePhoto(event) {
         const file = event.target.files[0];
         if (!file || !this.selectedDemand) return;
-
+        
         try {
             const compressedBlob = await this.compressImage(file);
-
+            
             const mediaId = await db.offline_media.add({
                 demandId: this.selectedDemand.id,
                 type: 'photo',
@@ -221,12 +221,12 @@ export default () => ({
                 timestamp: Date.now(),
                 consent: this.imageConsent // Save consent
             });
-
+            
             await queueAction('upload_photo', {
                 demandId: this.selectedDemand.id,
                 description: 'Foto ' + new Date().toLocaleTimeString()
             }, mediaId);
-
+            
             await this.updateQueueCount();
             alert('Foto salva na fila de envio!');
         } catch (e) {
@@ -234,7 +234,7 @@ export default () => ({
             alert('Erro ao salvar foto: ' + e.message);
         }
     },
-
+    
     toggleRadar() {
         if (this.radarActive) {
             this.stopRadar();
@@ -243,31 +243,31 @@ export default () => ({
             this.startRadar();
         }
     },
-
+    
     startRadar() {
         if (!this.selectedDemand?.localidade) {
             alert('Localidade sem coordenadas.');
             return;
         }
-
+        
         const targetLat = this.selectedDemand.localidade.latitude;
         const targetLon = this.selectedDemand.localidade.longitude;
-
+        
         if (targetLat === null || targetLon === null) {
              alert('Coordenadas inválidas para esta demanda.');
              return;
         }
-
+        
         this.radarActive = true;
-
+        
         if (navigator.geolocation) {
             this.radarWatchId = navigator.geolocation.watchPosition((pos) => {
                 const userLat = pos.coords.latitude;
                 const userLon = pos.coords.longitude;
-
+                
                 this.targetDistance = this.calculateDistance(userLat, userLon, targetLat, targetLon);
                 this.targetBearing = this.calculateBearing(userLat, userLon, targetLat, targetLon);
-
+                
             }, (err) => {
                 console.error(err);
                 alert('Erro de GPS: ' + err.message);
@@ -279,7 +279,7 @@ export default () => ({
             alert('Geolocalização não suportada.');
         }
     },
-
+    
     stopRadar() {
         this.radarActive = false;
         if (this.radarWatchId) {
@@ -287,9 +287,9 @@ export default () => ({
             this.radarWatchId = null;
         }
     },
-
+    
     calculateDistance(lat1, lon1, lat2, lon2) {
-        const R = 6371e3;
+        const R = 6371e3; 
         const φ1 = lat1 * Math.PI/180;
         const φ2 = lat2 * Math.PI/180;
         const Δφ = (lat2-lat1) * Math.PI/180;
@@ -302,7 +302,7 @@ export default () => ({
 
         return Math.round(R * c);
     },
-
+    
     calculateBearing(startLat, startLng, destLat, destLng) {
         startLat = startLat * Math.PI / 180;
         startLng = startLng * Math.PI / 180;
@@ -313,10 +313,10 @@ export default () => ({
         const x = Math.cos(startLat) * Math.sin(destLat) -
                   Math.sin(startLat) * Math.cos(destLat) * Math.cos(destLng - startLng);
         const brng = Math.atan2(y, x);
-        const deg = (brng * 180 / Math.PI + 360) % 360;
+        const deg = (brng * 180 / Math.PI + 360) % 360; 
         return deg;
     },
-
+    
     getRelativeBearing() {
         if (!this.targetBearing) return 0;
         return (this.targetBearing - this.currentHeading + 360) % 360;

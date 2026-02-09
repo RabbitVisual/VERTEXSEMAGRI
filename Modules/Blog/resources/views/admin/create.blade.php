@@ -282,7 +282,7 @@
                                     @endforeach
                                 @endif
                             </select>
-                            <button type="button" onclick="importDemanda()"
+                            <button type="button" onclick="importDemanda()" 
                                     class="px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors whitespace-nowrap"
                                     title="Importar dados da demanda">
                                 <x-icon name="cloud-arrow-down" class="w-4 h-4" />
@@ -364,7 +364,7 @@ function importDemanda() {
             // Update slug
             const event = new Event('input');
             document.getElementById('title').dispatchEvent(event);
-
+            
             // Update Editor Content (assuming Quill or similar attached to #editor-container)
             // If checking global quill instance (common pattern)
             if (window.quill) {
@@ -372,7 +372,7 @@ function importDemanda() {
             } else {
                  document.getElementById('content').value = data.content;
             }
-
+            
             // Assuming we might have logic for images later
         })
         .catch(error => {

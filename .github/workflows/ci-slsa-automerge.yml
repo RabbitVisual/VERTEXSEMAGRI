@@ -118,7 +118,6 @@ jobs:
         continue-on-error: true
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-        continue-on-error: true
 
   # =========================================================
   # 4. AUTO MERGE

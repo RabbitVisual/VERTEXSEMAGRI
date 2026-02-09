@@ -470,7 +470,7 @@
                  </h2>
                  <button @click="open = false" class="text-gray-500 hover:text-gray-700">&times;</button>
              </div>
-
+             
              <div class="flex-1 overflow-y-auto space-y-3">
                 <template x-for="item in queueItems" :key="item.id">
                     <div class="p-3 border rounded bg-gray-50 dark:bg-gray-700/50 flex items-start gap-3">
@@ -490,7 +490,7 @@
                     Nenhuma pendência na fila.
                 </div>
              </div>
-
+             
              <div class="mt-4 pt-4 border-t dark:border-gray-700">
                  <button @click="processQueue()" :disabled="!online || queueCount === 0" class="w-full bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white py-3 rounded-lg font-semibold flex items-center justify-center gap-2">
                      <x-demandas::icon name="arrow-path" class="w-5 h-5" />
@@ -519,54 +519,36 @@ document.addEventListener('click', function(event) {
 });
 </script>
 @endpush
-    <!-- Demand Details Modal (Offline Actions) -->
-    <div x-show="selectedDemand" style="display: none;" class="fixed inset-0 z-50 overflow-y-auto bg-gray-900 bg-opacity-75 flex items-center justify-center p-4">
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-lg w-full p-6 relative" @click.outside="selectedDemand = null">
-
-            <template x-if="selectedDemand">
-                <div class="space-y-4">
-                    <div class="flex justify-between items-start">
-                        <h3 class="text-lg font-bold text-gray-900 dark:text-white">
-                            Ação na Demanda #<span x-text="selectedDemand.codigo"></span>
-                        </h3>
-                        <button @click="selectedDemand = null" class="text-gray-400 hover:text-gray-500">
-                            <span class="sr-only">Fechar</span>
-                            <x-demandas::icon name="x-mark" class="w-6 h-6" />
-                        </button>
-                    </div>
-
-                    <p class="text-sm text-gray-500 dark:text-gray-400" x-text="selectedDemand.descricao"></p>
-
-                    <div class="p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg border border-gray-200 dark:border-gray-600">
+<div class="mb-4">                                                                <div class="mb-4 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg border border-gray-200 dark:border-gray-600">
                         <label class="flex items-center space-x-3 cursor-pointer">
                             <input type="checkbox" x-model="imageConsent" class="form-checkbox h-5 w-5 text-indigo-600 rounded border-gray-300 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600">
                             <span class="text-sm text-gray-700 dark:text-gray-200 font-medium">Cidadão autorizou uso de imagem?</span>
                         </label>
                         <p x-show="!imageConsent" class="mt-2 text-xs text-amber-600 dark:text-amber-400 flex items-center">
-                            <x-demandas::icon name="lock-closed" class="w-3 h-3 mr-1" />
+                            <x-demandas::icon name="lock" class="w-3 h-3 mr-1" />
                             Foto será marcada como Uso Interno (LGPD)
                         </p>
                     </div>
 
-                    <div class="grid grid-cols-2 gap-3">
+<div class="grid grid-cols-2 gap-3 mb-4">
                         <label class="flex flex-col items-center justify-center p-3 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 dark:border-gray-600 transition">
                             <x-demandas::icon name="camera" class="w-6 h-6 text-gray-400 mb-1" />
                             <span class="text-xs text-gray-500">Adicionar Foto</span>
                             <input type="file" accept="image/*" capture="environment" class="hidden" @change="capturePhoto($event)">
                         </label>
-
+                        
                         <button @click="toggleRadar()" class="flex flex-col items-center justify-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 dark:border-gray-600 transition" :class="{'bg-indigo-50 border-indigo-200 dark:bg-indigo-900/30': radarActive}">
                             <x-demandas::icon name="map-pin" class="w-6 h-6 mb-1" x-bind:class="radarActive ? 'text-indigo-600' : 'text-gray-400'" />
                             <span class="text-xs" x-bind:class="radarActive ? 'text-indigo-700 font-semibold' : 'text-gray-500'" x-text="radarActive ? 'Parar Radar' : 'Ativar Radar'"></span>
                         </button>
                     </div>
 
-                    <div x-show="radarActive" class="p-4 bg-gray-900 rounded-lg text-center text-white relative overflow-hidden">
+                    <div x-show="radarActive" class="mb-4 p-4 bg-gray-900 rounded-lg text-center text-white relative overflow-hidden">
                         <div class="absolute inset-0 opacity-20 bg-[radial-gradient(circle,_var(--tw-gradient-stops))] from-green-500 to-transparent animate-pulse"></div>
                         <div class="relative z-10">
                             <div class="text-3xl font-bold mb-1" x-text="targetDistance ? targetDistance + 'm' : 'Calculando...'"></div>
                             <div class="text-xs text-gray-400 uppercase tracking-widest">Distância do Alvo</div>
-
+                            
                             <div class="mt-4 flex justify-center">
                                 <div class="w-16 h-16 rounded-full border-2 border-green-500 flex items-center justify-center" :style="'transform: rotate(' + getRelativeBearing() + 'deg)'">
                                     <x-demandas::icon name="arrow-up" class="w-8 h-8 text-green-500" />
@@ -575,21 +557,5 @@ document.addEventListener('click', function(event) {
                         </div>
                     </div>
 
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Observações</label>
-                        <textarea x-model="selectedDemand.observacoes_temp" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-white" rows="3" placeholder="Adicione observações sobre a execução..."></textarea>
-                    </div>
-
-                    <div class="flex gap-2 pt-2">
-                        <button class="flex-1 bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg font-medium shadow-sm transition-colors" @click="saveStatus()">
-                            Concluir Atendimento
-                        </button>
-                        <button class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-white py-2 rounded-lg font-medium transition-colors" @click="selectedDemand = null">
-                            Cancelar
-                        </button>
-                    </div>
-                </div>
-            </template>
-        </div>
-    </div>
+<label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Observações</label>                        <textarea x-model="selectedDemand.observacoes_temp" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-white" rows="3"></textarea>                    </div>                    <div class="flex gap-2">                        <button class="flex-1 bg-green-600 hover:bg-green-700 text-white py-2 rounded" @click="saveStatus()">Concluir</button>                        <button class="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 rounded" @click="selectedDemand = null">Cancelar</button>                    </div>
 @endsection

@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\AuditLog;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Http\Request;
 
 class AdminDashboardController extends Controller
@@ -21,7 +22,7 @@ class AdminDashboardController extends Controller
 
     public function index()
     {
-        // Estatísticas gerais
+        // Estatísticas gerais (Mantendo as existentes)
         $stats = [
             'total_users' => User::count(),
             'active_users' => User::where('active', true)->count(),
@@ -37,6 +38,60 @@ class AdminDashboardController extends Controller
                 return $query->where('status', 'pendente')->count();
             }, 0),
         ];
+
+        // Smart Widgets (New Intelligence) - Cached for 5 minutes
+        $smartWidgets = Cache::remember('dashboard_smart_widgets', 300, function () {
+            // 1. Newsroom: Demandas Concluídas sem Post no Blog
+            $newsroomDrafts = 0;
+            if (Schema::hasTable('demandas') && \Nwidart\Modules\Facades\Module::isEnabled('Demandas')) {
+                // Check if Blog module is enabled to know where to check relationship
+                if (\Nwidart\Modules\Facades\Module::isEnabled('Blog') && Schema::hasTable('blog_posts')) {
+                    $newsroomDrafts = \Modules\Demandas\App\Models\Demanda::where('status', 'concluida')
+                        ->whereNotExists(function ($query) {
+                            $query->select(DB::raw(1))
+                                ->from('blog_posts')
+                                ->whereRaw('blog_posts.related_demand_id = demandas.id');
+                        })
+                        ->count();
+                } else {
+                    $newsroomDrafts = \Modules\Demandas\App\Models\Demanda::where('status', 'concluida')->count();
+                }
+            }
+
+            // 2. Field Ops: Recent Syncs
+            $recentSyncs = [];
+            if (Schema::hasTable('offline_sync_logs')) {
+                $recentSyncs = DB::table('offline_sync_logs')
+                    ->join('users', 'offline_sync_logs.user_id', '=', 'users.id')
+                    ->select('offline_sync_logs.*', 'users.name as user_name', 'users.photo as user_avatar')
+                    ->orderBy('created_at', 'desc')
+                    ->limit(5)
+                    ->get()
+                    ->map(function ($log) {
+                        $log->time_ago = \Carbon\Carbon::parse($log->created_at)->diffForHumans();
+                        $log->is_recent = \Carbon\Carbon::parse($log->created_at)->gt(now()->subHour());
+                        $log->payload_size = strlen($log->payload ?? '') / 1024; // KB
+                        $payload = json_decode($log->payload, true);
+                        $log->photos_count = isset($payload['photos']) ? count($payload['photos']) : 0;
+                        return $log;
+                    });
+            }
+
+            // 3. Inventory Health: Low Stock
+            $lowStockItems = [];
+            if (Schema::hasTable('materiais') && \Nwidart\Modules\Facades\Module::isEnabled('Materiais')) {
+                $lowStockItems = \Modules\Materiais\App\Models\Material::whereColumn('quantidade_estoque', '<=', 'quantidade_minima')
+                    ->orderBy('quantidade_estoque', 'asc')
+                    ->limit(5)
+                    ->get();
+            }
+
+            return [
+                'newsroom_drafts' => $newsroomDrafts,
+                'recent_syncs' => $recentSyncs,
+                'low_stock_items' => $lowStockItems
+            ];
+        });
 
         // Estatísticas por módulo
         $moduleStats = $this->getModuleStats();
@@ -59,7 +114,8 @@ class AdminDashboardController extends Controller
             'moduleStats',
             'recentLogs',
             'auditStats',
-            'chartData'
+            'chartData',
+            'smartWidgets'
         ));
     }
 
