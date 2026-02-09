@@ -407,4 +407,46 @@ class BlogAdminController extends Controller
             ], 500);
         }
     }
+
+
+    /**
+     * Import data from Demanda (Privacy Shield)
+     */
+    public function importDemanda(Request $request)
+    {
+        $id = $request->input('id');
+        $demanda = \Modules\Demandas\App\Models\Demanda::with('pessoa')->findOrFail($id);
+
+        // Privacy Shield: Consent Check
+        if (!$demanda->image_consent) {
+            return response()->json([
+                'success' => false,
+                'message' => 'AVISO DE PRIVACIDADE: O solicitante NÃO autorizou o uso de imagens para esta demanda. O uso de fotos é PROIBIDO.',
+                'restricted' => true
+            ]);
+        }
+
+        // Sanitization Logic: Mask Address
+        $address = $demanda->endereco ?? '';
+        // Regex to remove house numbers (e.g., ", 123" or " nº 123")
+        $sanitizedAddress = preg_replace('/,\s*n?º?\s*\d+/i', '', $address);
+        $sanitizedAddress = preg_replace('/\s+\d+$/', '', $sanitizedAddress); // Remove number at end if no comma
+
+        $title = "Serviço Realizado: " . ($demanda->tipoServico->nome ?? 'Manutenção');
+        $content = "
+            <h2>Relatório de Execução</h2>
+            <p><strong>Local:</strong> {$sanitizedAddress}</p>
+            <p><strong>Descrição:</strong> {$demanda->descricao}</p>
+            <p><strong>Status:</strong> Concluído</p>
+            <p>A Secretaria Municipal de Agricultura informa que a solicitação foi atendida com sucesso, garantindo melhorias para a comunidade local.</p>
+        ";
+
+        return response()->json([
+            'success' => true,
+            'title' => $title,
+            'content' => $content,
+            // Assuming Demanda has photos/attachments logic, but we'll return empty for now as it varies
+            'images' => []
+        ]);
+    }
 }
