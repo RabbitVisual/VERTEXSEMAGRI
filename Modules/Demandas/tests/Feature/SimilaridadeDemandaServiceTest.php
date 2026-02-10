@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Modules\Demandas;
+namespace Modules\Demandas\Tests\Feature;
 
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
