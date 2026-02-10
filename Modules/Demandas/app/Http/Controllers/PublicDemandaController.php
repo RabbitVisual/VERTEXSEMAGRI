@@ -25,7 +25,7 @@ class PublicDemandaController extends Controller
     {
         // Registrar acesso à página de consulta (LGPD - apenas estatísticas)
         $this->logPublicAccess('consulta_page', null, request()->ip());
-        
+
         return view('demandas::public.consulta');
     }
 
@@ -35,33 +35,33 @@ class PublicDemandaController extends Controller
     public function consultar(Request $request)
     {
         $request->validate([
-            'codigo' => 'required|string|max:50|regex:/^[A-Z0-9\-]+$/',
+            'codigo' => 'required|string|max:50|regex:/^[a-zA-Z0-9\-]+$/',
         ], [
             'codigo.required' => 'Por favor, informe o código/protocolo da demanda.',
             'codigo.regex' => 'O código deve conter apenas letras maiúsculas, números e hífens.',
         ]);
 
         $codigo = strtoupper(trim($request->codigo));
-        
+
         // Rate limiting para prevenir abuso
         $cacheKey = 'consulta_demanda_' . md5($codigo . request()->ip());
         $attempts = Cache::get($cacheKey, 0);
-        
+
         if ($attempts >= 10) {
             Log::warning('Tentativas excessivas de consulta de demanda', [
                 'codigo' => $codigo,
                 'ip' => request()->ip(),
                 'attempts' => $attempts
             ]);
-            
+
             return redirect()
                 ->route('demandas.public.consulta')
                 ->with('error', 'Muitas tentativas. Por favor, aguarde alguns minutos antes de tentar novamente.')
                 ->withInput();
         }
-        
+
         Cache::put($cacheKey, $attempts + 1, now()->addMinutes(15));
-        
+
         try {
             $demanda = Demanda::with([
                 'localidade',
@@ -77,7 +77,7 @@ class PublicDemandaController extends Controller
             if (!$demanda) {
                 // Registrar tentativa de consulta inválida (LGPD - sem dados pessoais)
                 $this->logPublicAccess('consulta_invalida', null, request()->ip(), ['codigo' => $codigo]);
-                
+
                 return redirect()
                     ->route('demandas.public.consulta')
                     ->with('error', 'Demanda não encontrada. Verifique o código/protocolo informado.')
@@ -102,14 +102,14 @@ class PublicDemandaController extends Controller
             ];
 
             return view('demandas::public.resultado', compact('demanda', 'historico', 'estatisticas'));
-            
+
         } catch (\Exception $e) {
             Log::error('Erro ao consultar demanda pública', [
                 'codigo' => $codigo,
                 'ip' => request()->ip(),
                 'error' => $e->getMessage()
             ]);
-            
+
             return redirect()
                 ->route('demandas.public.consulta')
                 ->with('error', 'Ocorreu um erro ao processar sua consulta. Por favor, tente novamente mais tarde.')
@@ -123,14 +123,14 @@ class PublicDemandaController extends Controller
     public function show($codigo)
     {
         $codigo = strtoupper(trim($codigo));
-        
+
         // Validação básica do código
         if (!preg_match('/^[A-Z0-9\-]+$/', $codigo)) {
             return redirect()
                 ->route('demandas.public.consulta')
                 ->with('error', 'Código inválido.');
         }
-        
+
         try {
             $demanda = Demanda::with([
                 'localidade',
@@ -145,7 +145,7 @@ class PublicDemandaController extends Controller
 
             if (!$demanda) {
                 $this->logPublicAccess('consulta_invalida', null, request()->ip(), ['codigo' => $codigo]);
-                
+
                 return redirect()
                     ->route('demandas.public.consulta')
                     ->with('error', 'Demanda não encontrada. Verifique o código/protocolo informado.');
@@ -169,14 +169,14 @@ class PublicDemandaController extends Controller
             ];
 
             return view('demandas::public.resultado', compact('demanda', 'historico', 'estatisticas'));
-            
+
         } catch (\Exception $e) {
             Log::error('Erro ao exibir demanda pública', [
                 'codigo' => $codigo,
                 'ip' => request()->ip(),
                 'error' => $e->getMessage()
             ]);
-            
+
             return redirect()
                 ->route('demandas.public.consulta')
                 ->with('error', 'Ocorreu um erro ao processar sua consulta. Por favor, tente novamente mais tarde.');
@@ -191,14 +191,14 @@ class PublicDemandaController extends Controller
     {
         // Validar código diretamente (vem da URL)
         $codigo = strtoupper(trim($codigo));
-        
+
         // Validação básica do formato
         if (!preg_match('/^[A-Z0-9\-]+$/', $codigo) || strlen($codigo) > 50) {
             return response()->json([
                 'error' => 'Código inválido'
             ], 422);
         }
-        
+
         try {
             $demanda = Demanda::with(['ordemServico'])
                 ->where('codigo', $codigo)
@@ -235,7 +235,7 @@ class PublicDemandaController extends Controller
                 'ip' => request()->ip(),
                 'error' => $e->getMessage()
             ]);
-            
+
             return response()->json([
                 'error' => 'Erro ao processar solicitação'
             ], 500);
@@ -263,4 +263,3 @@ class PublicDemandaController extends Controller
         }
     }
 }
-
