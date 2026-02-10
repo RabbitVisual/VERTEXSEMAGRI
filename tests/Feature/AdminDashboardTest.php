@@ -15,14 +15,11 @@ class AdminDashboardTest extends TestCase
 
     public function test_dashboard_loads_with_smart_widgets()
     {
+        $this->seed(\Database\Seeders\RolesPermissionsSeeder::class);
         $user = User::factory()->create();
-        
-        // Mock modules enabled
-        // Note: Nwidart modules usually persist in config/cache, might be hard to mock in feature test without extensive setup.
-        // Assuming environment has them enabled or logic handles it.
-        
-        $response = $this->actingAs($user)->get('/admin');
+        $user->assignRole('admin');
 
+        $response = $this->actingAs($user)->get('/admin');
         $response->assertStatus(200);
         $response->assertViewHas('smartWidgets');
         $response->assertViewHas('stats');

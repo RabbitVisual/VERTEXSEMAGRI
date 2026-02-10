@@ -271,7 +271,7 @@
 
             <div class="space-y-5">
                 @php
-                    $maxCount = count($moduleStats) > 0 ? max($moduleStats) : 1;
+                    $maxCount = (count($moduleStats) > 0 && max($moduleStats) > 0) ? max($moduleStats) : 1;
                     $colors = ['bg-blue-500', 'bg-emerald-500', 'bg-amber-500', 'bg-purple-500', 'bg-rose-500', 'bg-indigo-500', 'bg-cyan-500', 'bg-teal-500'];
                     $i = 0;
                 @endphp
