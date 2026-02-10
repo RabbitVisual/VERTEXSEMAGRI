@@ -34,6 +34,8 @@ class PublicDemandaController extends Controller
      */
     public function consultar(Request $request)
     {
+        if ($request->has('codigo')) { $request->merge(['codigo' => strtoupper(trim($request->codigo))]); }
+
         $request->validate([
             'codigo' => 'required|string|max:50|regex:/^[A-Z0-9\-]+$/',
         ], [

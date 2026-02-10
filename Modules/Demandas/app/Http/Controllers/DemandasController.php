@@ -47,7 +47,7 @@ class DemandasController extends Controller
         if ($this->isModuleEnabled("Materiais") && Schema::hasTable("materiais")) {
              $materials = DB::table("materiais")
                 ->where("ativo", true)
-                ->select("id", "nome", "unidade_medida as unidade", "codigo_barra as codigo")
+                ->select("id", "nome", "unidade_medida as unidade", "codigo_barra as codigo", "ncm_id")
                 ->get();
         }
 
