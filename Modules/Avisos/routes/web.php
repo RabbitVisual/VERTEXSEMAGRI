@@ -17,6 +17,9 @@ Route::prefix('api/avisos')->name('avisos.api.')->group(function () {
     Route::post('/{id}/clique', [AvisosPublicController::class, 'registrarClique'])->name('clique');
 });
 
+// Rota pública para listagem de avisos
+Route::get('/avisos', [Modules\Avisos\App\Http\Controllers\AvisosController::class, 'index'])->name('avisos.index');
+
 // Rotas admin
 Route::prefix('admin/avisos')->name('admin.avisos.')->middleware(['web', 'auth'])->group(function () {
     Route::get('/', [AvisosAdminController::class, 'index'])->name('index');

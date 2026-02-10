@@ -19,7 +19,7 @@
                 </div>
             </div>
             <x-demandas::button href="{{ route('demandas.show', $demanda) }}" variant="outline" class="bg-white/10 text-white border-white/30 hover:bg-white/20">
-                <x-demandas::icon name="arrow-left" class="w-5 h-5 mr-2" />
+                <x-icon name="arrow-left" class="w-5 h-5 mr-2" />
                 Voltar
             </x-demandas::button>
         </div>
@@ -29,7 +29,7 @@
     @if(session('success'))
         <x-demandas::alert type="success" dismissible>
             <div class="flex items-center gap-2">
-                <x-demandas::icon name="check-circle" class="w-5 h-5" />
+                <x-icon name="circle-check" class="w-5 h-5" />
                 <span class="font-medium">{{ session('success') }}</span>
             </div>
         </x-demandas::alert>
@@ -38,7 +38,7 @@
     @if($errors->any())
         <x-demandas::alert type="danger" dismissible>
             <div class="flex items-start gap-2">
-                <x-demandas::icon name="exclamation-triangle" class="w-5 h-5 flex-shrink-0 mt-0.5" />
+                <x-icon name="triangle-exclamation" class="w-5 h-5 flex-shrink-0 mt-0.5" />
                 <div>
                     <p class="font-medium mb-2">Por favor, corrija os seguintes erros:</p>
                     <ul class="list-disc list-inside space-y-1 text-sm">
@@ -58,7 +58,7 @@
                 <x-slot name="header">
                     <div class="flex items-center gap-3">
                         <div class="p-2 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg">
-                            <x-demandas::icon name="information-circle" class="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+                            <x-icon name="circle-info" class="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
                         </div>
                         <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
                             Informações da Demanda
@@ -74,7 +74,7 @@
                     <div class="space-y-4">
                         <div class="flex items-center gap-2 pb-3 border-b border-gray-200 dark:border-gray-700">
                             <div class="p-1.5 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg">
-                                <x-demandas::icon name="user-circle" class="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                                <x-icon name="circle-user" class="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                             </div>
                             <h4 class="text-sm font-semibold text-gray-700 dark:text-gray-300">
                                 Informações do Solicitante
@@ -104,7 +104,7 @@
                                     placeholder="Ex: Zé, Maria, João da Silva"
                                 />
                                 <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
-                                    <x-demandas::icon name="information-circle" class="w-4 h-4 inline mr-1" />
+                                    <x-icon name="circle-info" class="w-4 h-4 inline mr-1" />
                                     Informe o apelido ou nome social do solicitante. Este campo facilita a identificação e localização da pessoa na comunidade.
                                 </p>
                                 @error('solicitante_apelido')
@@ -126,7 +126,7 @@
                                        placeholder="(00) 00000-0000"
                                        class="block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white sm:text-sm @error('solicitante_telefone') border-red-500 @enderror">
                                 <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
-                                    <x-demandas::icon name="information-circle" class="w-4 h-4 inline mr-1" />
+                                    <x-icon name="circle-info" class="w-4 h-4 inline mr-1" />
                                     Informe o telefone ou WhatsApp para contato. O formato será aplicado automaticamente.
                                 </p>
                                 @error('solicitante_telefone')
@@ -151,7 +151,7 @@
                     <div class="space-y-4 pt-4 border-t border-gray-200 dark:border-gray-700">
                         <div class="flex items-center gap-2 pb-3">
                             <div class="p-1.5 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
-                                <x-demandas::icon name="document-text" class="w-4 h-4 text-purple-600 dark:text-purple-400" />
+                                <x-icon name="file-lines" class="w-4 h-4 text-purple-600 dark:text-purple-400" />
                             </div>
                             <h4 class="text-sm font-semibold text-gray-700 dark:text-gray-300">
                                 Informações da Demanda
@@ -229,7 +229,7 @@
                                     <option value="cancelada" {{ old('status', $demanda->status) == 'cancelada' ? 'selected' : '' }}>Cancelada</option>
                                 </select>
                                 <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                                    <x-demandas::icon name="information-circle" class="w-4 h-4 inline mr-1" />
+                                    <x-icon name="circle-info" class="w-4 h-4 inline mr-1" />
                                     Ao finalizar a demanda, você poderá criar uma OS automaticamente.
                                 </p>
                                 @error('status')
@@ -257,7 +257,7 @@
                     <div class="space-y-4 pt-4 border-t border-gray-200 dark:border-gray-700">
                         <div class="flex items-center gap-2 pb-3">
                             <div class="p-1.5 bg-amber-100 dark:bg-amber-900/30 rounded-lg">
-                                <x-demandas::icon name="document-text" class="w-4 h-4 text-amber-600 dark:text-amber-400" />
+                                <x-icon name="file-lines" class="w-4 h-4 text-amber-600 dark:text-amber-400" />
                             </div>
                             <h4 class="text-sm font-semibold text-gray-700 dark:text-gray-300">
                                 Descrição Detalhada
@@ -278,7 +278,7 @@
                             <!-- Dicas de Preenchimento -->
                             <div class="mt-3 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
                                 <div class="flex items-start gap-3">
-                                    <x-demandas::icon name="information-circle" class="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
+                                    <x-icon name="circle-info" class="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
                                     <div class="flex-1">
                                         <h4 class="text-sm font-semibold text-blue-900 dark:text-blue-200 mb-2">Como preencher a descrição de forma precisa:</h4>
                                         <ul class="text-xs text-blue-800 dark:text-blue-300 space-y-1 list-disc list-inside">
@@ -305,7 +305,7 @@
                     <div class="space-y-4 pt-4 border-t border-gray-200 dark:border-gray-700">
                         <div class="flex items-center gap-2 pb-3">
                             <div class="p-1.5 bg-gray-100 dark:bg-gray-700 rounded-lg">
-                                <x-demandas::icon name="document-text" class="w-4 h-4 text-gray-600 dark:text-gray-400" />
+                                <x-icon name="file-lines" class="w-4 h-4 text-gray-600 dark:text-gray-400" />
                             </div>
                             <h4 class="text-sm font-semibold text-gray-700 dark:text-gray-300">
                                 Informações Adicionais
@@ -329,11 +329,11 @@
                     <!-- Botões de Ação -->
                     <div class="flex items-center justify-end gap-3 pt-6 border-t-2 border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50 -mx-6 -mb-6 px-6 py-4 rounded-b-xl">
                         <x-demandas::button href="{{ route('demandas.show', $demanda) }}" variant="outline" class="border-2">
-                            <x-demandas::icon name="x-mark" class="w-4 h-4 mr-2" />
+                            <x-icon name="xmark" class="w-4 h-4 mr-2" />
                             Cancelar
                         </x-demandas::button>
                         <x-demandas::button type="submit" variant="primary" class="shadow-lg hover:shadow-xl transition-shadow">
-                            <x-demandas::icon name="check-circle" class="w-4 h-4 mr-2" />
+                            <x-icon name="circle-check" class="w-4 h-4 mr-2" />
                             Atualizar Demanda
                         </x-demandas::button>
                     </div>
@@ -347,7 +347,7 @@
                 <x-slot name="header">
                     <div class="flex items-center gap-3">
                         <div class="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
-                            <x-demandas::icon name="information-circle" class="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                            <x-icon name="circle-info" class="w-5 h-5 text-blue-600 dark:text-blue-400" />
                         </div>
                         <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
                             Informações do Sistema
@@ -373,7 +373,7 @@
                     @if($demanda->ordemServico)
                     <div class="rounded-lg border border-blue-200 bg-blue-50 dark:bg-blue-900/20 dark:border-blue-800 p-3">
                         <div class="flex items-center gap-2 text-blue-800 dark:text-blue-200">
-                            <x-demandas::icon name="information-circle" class="h-5 w-5 text-blue-400" />
+                            <x-icon name="circle-info" class="h-5 w-5 text-blue-400" />
                             <div>
                                 <strong>OS Vinculada:</strong>
                                 <a href="{{ route('ordens.show', $demanda->ordemServico->id) }}" class="underline font-medium ml-1">

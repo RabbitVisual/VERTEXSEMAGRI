@@ -19,12 +19,12 @@
         </div>
         <div class="flex gap-2 w-full sm:w-auto">
             <button @click="$dispatch('open-outbox')" class="flex-1 sm:flex-none px-4 py-2 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 rounded transition flex items-center justify-center gap-2 relative">
-                <x-demandas::icon name="paper-airplane" class="w-4 h-4" />
+                <x-icon name="paper-airplane" class="w-4 h-4" />
                 <span>Pendências</span>
                 <span x-show="queueCount > 0" x-text="queueCount" class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center"></span>
             </button>
             <button @click="sync()" :disabled="syncing || !online" class="flex-1 sm:flex-none px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded transition disabled:opacity-50 flex items-center justify-center gap-2">
-                <x-demandas::icon name="arrow-path" class="w-4 h-4" ::class="{'animate-spin': syncing}" />
+                <x-icon name="rotate" class="w-4 h-4" ::class="{'animate-spin': syncing}" />
                 <span x-text="syncStatus"></span>
             </button>
         </div>
@@ -51,11 +51,11 @@
             </div>
             <div class="flex flex-wrap gap-2">
                 <x-demandas::button href="{{ route('demandas.relatorio.abertas.pdf') }}" target="_blank" variant="outline-primary" class="!bg-white !text-indigo-600 hover:!bg-indigo-50 !border-indigo-600 shadow-xl hover:shadow-2xl transition-all transform hover:scale-105">
-                    <x-demandas::icon name="document-arrow-down" class="w-5 h-5 mr-2" />
+                    <x-icon name="file-arrow-down" class="w-5 h-5 mr-2" />
                     Relatório PDF
                 </x-demandas::button>
                 <x-demandas::button href="{{ route('demandas.create') }}" variant="outline-primary" class="!bg-white !text-indigo-600 hover:!bg-indigo-50 !border-indigo-600 shadow-xl hover:shadow-2xl transition-all transform hover:scale-105">
-                    <x-demandas::icon name="plus-circle" class="w-5 h-5 mr-2" />
+                    <x-icon name="circle-plus" class="w-5 h-5 mr-2" />
                     Nova Demanda
                 </x-demandas::button>
             </div>
@@ -66,7 +66,7 @@
     @if(session('warning'))
         <x-demandas::alert type="warning" dismissible>
             <div class="flex items-center gap-2">
-                <x-demandas::icon name="exclamation-triangle" class="w-5 h-5" />
+                <x-icon name="triangle-exclamation" class="w-5 h-5" />
                 <span class="font-medium">{!! session('warning') !!}</span>
             </div>
         </x-demandas::alert>
@@ -75,7 +75,7 @@
     @if(session('success'))
         <x-demandas::alert type="success" dismissible>
             <div class="flex items-center gap-2">
-                <x-demandas::icon name="check-circle" class="w-5 h-5" />
+                <x-icon name="circle-check" class="w-5 h-5" />
                 <span class="font-medium">{!! session('success') !!}</span>
             </div>
         </x-demandas::alert>
@@ -208,7 +208,7 @@
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div class="flex items-center gap-3">
                 <div class="p-2 bg-blue-200 dark:bg-blue-800 rounded-lg">
-                    <x-demandas::icon name="information-circle" class="w-5 h-5 text-blue-700 dark:text-blue-300" />
+                    <x-icon name="circle-info" class="w-5 h-5 text-blue-700 dark:text-blue-300" />
                 </div>
                 <div>
                     <p class="text-sm font-semibold text-blue-900 dark:text-blue-200">
@@ -224,7 +224,7 @@
             </div>
             @if($demandas->hasPages())
             <div class="flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 rounded-lg border border-blue-200 dark:border-blue-700 shadow-sm">
-                <x-demandas::icon name="document-text" class="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                <x-icon name="file-lines" class="w-4 h-4 text-blue-600 dark:text-blue-400" />
                 <span class="text-sm font-medium text-blue-900 dark:text-blue-200">
                     Página <span class="text-indigo-600 dark:text-indigo-400 font-bold">{{ $demandas->currentPage() }}</span> de <span class="text-indigo-600 dark:text-indigo-400 font-bold">{{ $demandas->lastPage() }}</span>
                 </span>
@@ -265,7 +265,7 @@
                 <td class="px-6 py-4">
                     <div class="flex items-center gap-3">
                         <div class="p-2.5 bg-gradient-to-br from-emerald-100 to-emerald-200 dark:from-emerald-900/30 dark:to-emerald-800/30 rounded-xl shadow-sm">
-                            <x-demandas::icon name="user" class="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+                            <x-icon name="clipboard-check" class="w-8 h-8 text-emerald-600 dark:text-emerald-400" />
                         </div>
                         <div class="flex-1 min-w-0">
                             <div class="text-sm font-semibold text-gray-900 dark:text-white truncate">
@@ -276,7 +276,7 @@
                             </div>
                             @if($demanda->solicitante_telefone)
                                 <div class="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-1 mt-1">
-                                    <x-demandas::icon name="phone" class="w-4 h-4" />
+                                    <x-icon name="phone" class="w-4 h-4" />
                                     {{ $demanda->solicitante_telefone }}
                                 </div>
                             @endif
@@ -286,7 +286,7 @@
                 <td class="px-6 py-4 whitespace-nowrap">
                     @if($demanda->localidade)
                         <a href="{{ route('localidades.show', $demanda->localidade->id) }}" class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 flex items-center gap-1">
-                            <x-demandas::icon name="map-pin" class="w-4 h-4" />
+                            <x-icon name="location-dot" class="w-4 h-4" />
                             {{ $demanda->localidade->nome }}
                         </a>
                     @else
@@ -304,7 +304,7 @@
                         $tipoModule = $tipoModules[$demanda->tipo] ?? 'Demandas';
                     @endphp
                     <div class="flex items-center gap-2">
-                        <x-icon module="{{ $tipomodule }}" class="w-5 h-5 text-gray-600 dark:text-gray-400" />
+                        <x-icon module="{{ $tipoModule }}" class="w-5 h-5 text-gray-600 dark:text-gray-400" />
                         <span class="text-gray-900 dark:text-white">{{ $demanda->tipo_texto }}</span>
                     </div>
                 </td>
@@ -334,7 +334,7 @@
                     @if($totalInteressados > 1)
                         <a href="{{ route('demandas.interessados', $demanda->id) }}" class="inline-flex items-center gap-1 group" title="Ver pessoas afetadas">
                             <x-demandas::badge :variant="$badgeColor" class="group-hover:scale-110 transition-transform">
-                                <x-demandas::icon name="users" class="w-3.5 h-3.5 mr-1" />
+                                <x-icon name="users" class="w-3.5 h-3.5 mr-1" />
                                 {{ $totalInteressados }}
                             </x-demandas::badge>
                         </a>
@@ -345,13 +345,13 @@
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
                     @if($demanda->data_abertura)
                         <div class="flex items-center gap-1">
-                            <x-demandas::icon name="calendar" class="w-4 h-4" />
+                            <x-icon name="calendar" class="w-4 h-4" />
                             {{ $demanda->data_abertura->format('d/m/Y') }}
                         </div>
                         <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">{{ $demanda->data_abertura->format('H:i') }}</div>
                         @if($demanda->diasAberta() !== null)
                             <div class="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1 mt-1">
-                                <x-demandas::icon name="clock" class="w-3 h-3" />
+                                <x-icon name="clock" class="w-3 h-3" />
                                 {{ $demanda->diasAberta() }} dias
                             </div>
                         @endif
@@ -377,7 +377,7 @@
                         <a href="{{ route('demandas.show', $demanda) }}"
                            class="p-2.5 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 rounded-lg transition-all hover:scale-110"
                            title="Ver detalhes">
-                            <x-demandas::icon name="eye" class="w-5 h-5" />
+                            <x-icon name="eye" class="w-5 h-5" />
                         </a>
                         @if($demanda->solicitante_email)
                             <form action="{{ route('demandas.reenviar-email', $demanda) }}"
@@ -388,7 +388,7 @@
                                 <button type="submit"
                                         class="p-2.5 text-purple-600 dark:text-purple-400 hover:bg-purple-50 dark:hover:bg-purple-900/30 rounded-lg transition-all hover:scale-110"
                                         title="Reenviar Email">
-                                    <x-demandas::icon name="envelope" class="w-5 h-5" />
+                                    <x-icon name="envelope" class="w-5 h-5" />
                                 </button>
                             </form>
                         @endif
@@ -396,18 +396,18 @@
                             <a href="{{ route('ordens.create', ['demanda_id' => $demanda->id]) }}"
                                class="p-2.5 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-lg transition-all hover:scale-110"
                                title="Criar OS">
-                                <x-demandas::icon name="document-plus" class="w-5 h-5" />
+                                <x-icon name="file-circle-plus" class="w-5 h-5" />
                             </a>
                         @endif
                         <a href="{{ route('demandas.edit', $demanda) }}"
                            class="p-2.5 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-all hover:scale-110"
                            title="Editar">
-                            <x-demandas::icon name="pencil" class="w-5 h-5" />
+                            <x-icon name="pencil" class="w-5 h-5" />
                         </a>
                         <a href="{{ route('demandas.print', $demanda) }}" target="_blank"
                            class="p-2.5 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 rounded-lg transition-all hover:scale-110"
                            title="Imprimir">
-                            <x-demandas::icon name="printer" class="w-5 h-5" />
+                            <x-icon name="print" class="w-5 h-5" />
                         </a>
                         <form action="{{ route('demandas.destroy', $demanda) }}"
                               method="POST"
@@ -418,7 +418,7 @@
                             <button type="submit"
                                     class="p-2.5 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg transition-all hover:scale-110"
                                     title="Deletar">
-                                <x-demandas::icon name="trash" class="w-5 h-5" />
+                                <x-icon name="trash" class="w-5 h-5" />
                             </button>
                         </form>
                     </div>
@@ -444,13 +444,14 @@
                         <div class="flex flex-col sm:flex-row gap-3">
                             @if(request()->hasAny(['search', 'status', 'tipo', 'prioridade', 'localidade_id']))
                                 <x-demandas::button href="{{ route('demandas.index') }}" variant="outline" class="border-2">
-                                    <x-demandas::icon name="arrow-path" class="w-4 h-4 mr-2" />
+                                    <x-icon name="rotate" class="w-4 h-4 mr-2" />
                                     Limpar Filtros
                                 </x-demandas::button>
                             @endif
                             <x-demandas::button href="{{ route('demandas.create') }}" variant="primary" class="shadow-lg hover:shadow-xl transition-all">
-                                <x-demandas::icon name="plus-circle" class="w-4 h-4 mr-2" />
-                                Criar Primeira Demanda
+                                <x-icon name="circle-plus" class="w-4 h-4 mr-2" />
+                                <span class="hidden sm:inline">Criar Primeira Demanda</span>
+                                <span class="sm:hidden">Novo</span>
                             </x-demandas::button>
                         </div>
                     </div>
@@ -465,17 +466,17 @@
         <div class="bg-white dark:bg-gray-800 rounded-lg max-w-lg w-full p-6 relative shadow-xl h-[80vh] flex flex-col" @click.outside="open = false">
              <div class="flex justify-between items-center mb-4">
                  <h2 class="text-xl font-bold dark:text-white flex items-center gap-2">
-                     <x-demandas::icon name="paper-airplane" class="w-5 h-5" />
+                     <x-icon name="folder-open" class="w-5 h-5" />
                      Fila de Envio
                  </h2>
                  <button @click="open = false" class="text-gray-500 hover:text-gray-700">&times;</button>
              </div>
-             
+
              <div class="flex-1 overflow-y-auto space-y-3">
                 <template x-for="item in queueItems" :key="item.id">
                     <div class="p-3 border rounded bg-gray-50 dark:bg-gray-700/50 flex items-start gap-3">
                         <div class="mt-1">
-                            <x-demandas::icon name="clock" class="w-4 h-4 text-gray-400" />
+                            <x-icon name="clock" class="w-4 h-4 text-gray-400" />
                         </div>
                         <div class="flex-1">
                             <div class="flex justify-between">
@@ -490,10 +491,10 @@
                     Nenhuma pendência na fila.
                 </div>
              </div>
-             
+
              <div class="mt-4 pt-4 border-t dark:border-gray-700">
                  <button @click="processQueue()" :disabled="!online || queueCount === 0" class="w-full bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white py-3 rounded-lg font-semibold flex items-center justify-center gap-2">
-                     <x-demandas::icon name="arrow-path" class="w-5 h-5" />
+                     <x-icon name="rotate" class="w-5 h-5" />
                      Sincronizar Agora
                  </button>
              </div>
@@ -525,20 +526,20 @@ document.addEventListener('click', function(event) {
                             <span class="text-sm text-gray-700 dark:text-gray-200 font-medium">Cidadão autorizou uso de imagem?</span>
                         </label>
                         <p x-show="!imageConsent" class="mt-2 text-xs text-amber-600 dark:text-amber-400 flex items-center">
-                            <x-demandas::icon name="lock" class="w-3 h-3 mr-1" />
+                            <x-icon name="lock" class="w-3 h-3 mr-1" />
                             Foto será marcada como Uso Interno (LGPD)
                         </p>
                     </div>
 
 <div class="grid grid-cols-2 gap-3 mb-4">
                         <label class="flex flex-col items-center justify-center p-3 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 dark:border-gray-600 transition">
-                            <x-demandas::icon name="camera" class="w-6 h-6 text-gray-400 mb-1" />
+                            <x-icon name="camera" class="w-6 h-6 text-gray-400 mb-1" />
                             <span class="text-xs text-gray-500">Adicionar Foto</span>
                             <input type="file" accept="image/*" capture="environment" class="hidden" @change="capturePhoto($event)">
                         </label>
-                        
+
                         <button @click="toggleRadar()" class="flex flex-col items-center justify-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 dark:border-gray-600 transition" :class="{'bg-indigo-50 border-indigo-200 dark:bg-indigo-900/30': radarActive}">
-                            <x-demandas::icon name="map-pin" class="w-6 h-6 mb-1" x-bind:class="radarActive ? 'text-indigo-600' : 'text-gray-400'" />
+                            <x-icon name="location-dot" class="w-6 h-6 mb-1" x-bind:class="radarActive ? 'text-indigo-600' : 'text-gray-400'" />
                             <span class="text-xs" x-bind:class="radarActive ? 'text-indigo-700 font-semibold' : 'text-gray-500'" x-text="radarActive ? 'Parar Radar' : 'Ativar Radar'"></span>
                         </button>
                     </div>
@@ -548,10 +549,10 @@ document.addEventListener('click', function(event) {
                         <div class="relative z-10">
                             <div class="text-3xl font-bold mb-1" x-text="targetDistance ? targetDistance + 'm' : 'Calculando...'"></div>
                             <div class="text-xs text-gray-400 uppercase tracking-widest">Distância do Alvo</div>
-                            
+
                             <div class="mt-4 flex justify-center">
                                 <div class="w-16 h-16 rounded-full border-2 border-green-500 flex items-center justify-center" :style="'transform: rotate(' + getRelativeBearing() + 'deg)'">
-                                    <x-demandas::icon name="arrow-up" class="w-8 h-8 text-green-500" />
+                                    <x-icon name="arrow-up" class="w-8 h-8 text-green-500" />
                                 </div>
                             </div>
                         </div>

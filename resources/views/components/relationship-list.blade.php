@@ -9,7 +9,7 @@
         </h6>
         @if($items->count() > $limit)
             <a href="{{ route($route) }}" class="btn btn-sm btn-outline-primary">
-                Ver todos <i class="bi bi-arrow-right"></i>
+                Ver todos <x-icon name="arrow-right" />
             </a>
         @endif
     </div>
@@ -31,10 +31,9 @@
             </div>
         @empty
             <p class="text-muted mb-0 text-center py-3">
-                <i class="bi bi-inbox fs-4 d-block mb-2"></i>
+                <x-icon name="inbox" class="fs-4 d-block mb-2" />
                 Nenhum registro encontrado
             </p>
         @endforelse
     </div>
 </div>
-

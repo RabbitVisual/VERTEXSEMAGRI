@@ -19,7 +19,7 @@
                 </div>
             </div>
             <x-demandas::button href="{{ route('demandas.index') }}" variant="outline" class="bg-white/10 text-white border-white/30 hover:bg-white/20">
-                <x-demandas::icon name="arrow-left" class="w-5 h-5 mr-2" />
+                <x-icon name="arrow-left" class="w-5 h-5 mr-2" />
                 Voltar
             </x-demandas::button>
         </div>
@@ -29,7 +29,7 @@
     @if($errors->any())
         <x-demandas::alert type="danger" dismissible>
             <div class="flex items-start gap-2">
-                <x-demandas::icon name="exclamation-triangle" class="w-5 h-5 flex-shrink-0 mt-0.5" />
+                <x-icon name="triangle-exclamation" class="w-5 h-5 flex-shrink-0 mt-0.5" />
                 <div>
                     <p class="font-medium mb-2">Por favor, corrija os seguintes erros:</p>
                     <ul class="list-disc list-inside space-y-1 text-sm">
@@ -58,7 +58,7 @@
                 <x-slot name="header">
                     <div class="flex items-center gap-3">
                         <div class="p-2 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg">
-                            <x-demandas::icon name="information-circle" class="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+                            <x-icon name="circle-info" class="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
                         </div>
                         <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
                             Informações da Demanda
@@ -74,7 +74,7 @@
                     <div class="space-y-4">
                         <div class="flex items-center gap-2 pb-3 border-b border-gray-200 dark:border-gray-700">
                             <div class="p-1.5 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
-                                <x-demandas::icon name="user" class="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                                <x-icon name="user" class="w-4 h-4 text-blue-600 dark:text-blue-400" />
                             </div>
                             <h4 class="text-sm font-semibold text-gray-700 dark:text-gray-300">
                                 Buscar Solicitante no CadÚnico
@@ -89,7 +89,7 @@
                             <div class="flex gap-2">
                                 <div class="flex-1 relative">
                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                        <x-demandas::icon name="search" class="h-5 w-5 text-gray-400" />
+                                        <x-icon name="magnifying-glass" class="h-5 w-5 text-gray-400" />
                                     </div>
                                     <input type="text"
                                            id="buscar_pessoa"
@@ -98,7 +98,7 @@
                                            class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 sm:text-sm">
                                 </div>
                                 <button type="button" id="limpar_busca" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-700">
-                                    <x-demandas::icon name="x-mark" class="w-5 h-5" />
+                                    <x-icon name="xmark" class="w-5 h-5" />
                                 </button>
                             </div>
                             <div id="resultados_busca" class="mt-2 hidden"></div>
@@ -107,13 +107,13 @@
                                     <div class="flex items-start justify-between">
                                         <div class="flex-1">
                                             <div class="flex items-center gap-2 mb-1">
-                                                <x-demandas::icon name="check-circle" class="h-5 w-5 text-emerald-400" />
+                                                <x-icon name="circle-check" class="h-5 w-5 text-emerald-400" />
                                                 <strong id="pessoa_nome_selecionada" class="text-emerald-800 dark:text-emerald-200"></strong>
                                             </div>
                                             <small id="pessoa_info_selecionada" class="text-emerald-700 dark:text-emerald-300 text-sm"></small>
                                         </div>
                                         <button type="button" id="remover_pessoa" class="ml-4 p-1 text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300">
-                                            <x-demandas::icon name="x-mark" class="w-5 h-5" />
+                                            <x-icon name="xmark" class="w-5 h-5" />
                                         </button>
                                     </div>
                                 </div>
@@ -126,7 +126,7 @@
                     <div class="space-y-4 pt-4 border-t border-gray-200 dark:border-gray-700">
                         <div class="flex items-center gap-2 pb-3">
                             <div class="p-1.5 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg">
-                                <x-demandas::icon name="user-circle" class="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                                <x-icon name="circle-user" class="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                             </div>
                             <h4 class="text-sm font-semibold text-gray-700 dark:text-gray-300">
                                 Informações do Solicitante
@@ -146,7 +146,7 @@
                                     placeholder="Selecione uma pessoa acima para preencher automaticamente"
                                 />
                                 <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
-                                    <x-demandas::icon name="information-circle" class="w-4 h-4 inline mr-1" />
+                                    <x-icon name="circle-info" class="w-4 h-4 inline mr-1" />
                                     Este campo é preenchido automaticamente ao selecionar uma pessoa. Se a pessoa não estiver cadastrada, <a href="{{ route('pessoas.create') }}" target="_blank" class="text-indigo-600 dark:text-indigo-400 hover:underline font-medium">cadastre-a primeiro</a>.
                                 </p>
                                 @error('solicitante_nome')
@@ -163,7 +163,7 @@
                                     placeholder="Ex: Zé, Maria, João da Silva"
                                 />
                                 <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
-                                    <x-demandas::icon name="information-circle" class="w-4 h-4 inline mr-1" />
+                                    <x-icon name="circle-info" class="w-4 h-4 inline mr-1" />
                                     Informe o apelido ou nome social do solicitante. Este campo facilita a identificação e localização da pessoa na comunidade.
                                 </p>
                                 @error('solicitante_apelido')
@@ -190,7 +190,7 @@
                                     </button>
                                 </div>
                                 <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
-                                    <x-demandas::icon name="information-circle" class="w-4 h-4 inline mr-1" />
+                                    <x-icon name="circle-info" class="w-4 h-4 inline mr-1" />
                                     Informe o telefone ou WhatsApp para contato. O formato será aplicado automaticamente.
                                 </p>
                                 @error('solicitante_telefone')
@@ -209,7 +209,7 @@
                                 />
                                 <div id="email_info_box" class="mt-2 hidden p-3 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg border border-emerald-200 dark:border-emerald-800">
                                     <div class="flex items-start gap-2">
-                                        <x-demandas::icon name="envelope" class="w-5 h-5 text-emerald-600 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
+                                        <x-icon name="envelope" class="w-5 h-5 text-emerald-600 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
                                         <div class="flex-1">
                                             <p class="text-sm text-emerald-800 dark:text-emerald-200">
                                                 <strong>📧 Email de Confirmação:</strong> Um email será enviado automaticamente para este endereço com o código/protocolo da demanda e instruções para acompanhamento.
@@ -228,7 +228,7 @@
                     <div class="space-y-4 pt-4 border-t border-gray-200 dark:border-gray-700">
                         <div class="flex items-center gap-2 pb-3">
                             <div class="p-1.5 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
-                                <x-demandas::icon name="document-text" class="w-4 h-4 text-purple-600 dark:text-purple-400" />
+                                <x-icon name="file-lines" class="w-4 h-4 text-purple-600 dark:text-purple-400" />
                             </div>
                             <h4 class="text-sm font-semibold text-gray-700 dark:text-gray-300">
                                 Informações da Demanda
@@ -319,7 +319,7 @@
                     <div class="space-y-4 pt-4 border-t border-gray-200 dark:border-gray-700">
                         <div class="flex items-center gap-2 pb-3">
                             <div class="p-1.5 bg-amber-100 dark:bg-amber-900/30 rounded-lg">
-                                <x-demandas::icon name="document-text" class="w-4 h-4 text-amber-600 dark:text-amber-400" />
+                                <x-icon name="file-lines" class="w-4 h-4 text-amber-600 dark:text-amber-400" />
                             </div>
                             <h4 class="text-sm font-semibold text-gray-700 dark:text-gray-300">
                                 Descrição Detalhada
@@ -340,7 +340,7 @@
                             <!-- Dicas de Preenchimento -->
                             <div class="mt-3 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
                                 <div class="flex items-start gap-3">
-                                    <x-demandas::icon name="information-circle" class="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
+                                    <x-icon name="circle-info" class="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
                                     <div class="flex-1">
                                         <h4 class="text-sm font-semibold text-blue-900 dark:text-blue-200 mb-2">Como preencher a descrição de forma precisa:</h4>
                                         <ul class="text-xs text-blue-800 dark:text-blue-300 space-y-1 list-disc list-inside">
@@ -367,7 +367,7 @@
                     <div class="space-y-4 pt-4 border-t border-gray-200 dark:border-gray-700">
                         <div class="flex items-center gap-2 pb-3">
                             <div class="p-1.5 bg-gray-100 dark:bg-gray-700 rounded-lg">
-                                <x-demandas::icon name="document-text" class="w-4 h-4 text-gray-600 dark:text-gray-400" />
+                                <x-icon name="file-lines" class="w-4 h-4 text-gray-600 dark:text-gray-400" />
                             </div>
                             <h4 class="text-sm font-semibold text-gray-700 dark:text-gray-300">
                                 Informações Adicionais
@@ -383,7 +383,7 @@
                                 placeholder="Informe observações adicionais, notas internas, ou qualquer informação relevante que não se encaixe nos campos anteriores..."
                             />
                             <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
-                                <x-demandas::icon name="information-circle" class="w-4 h-4 inline mr-1" />
+                                <x-icon name="circle-info" class="w-4 h-4 inline mr-1" />
                                 Este campo é opcional e pode ser usado para anotações internas, informações complementares ou observações relevantes sobre a demanda.
                             </p>
                             @error('observacoes')
@@ -395,11 +395,11 @@
                     <!-- Botões de Ação -->
                     <div class="flex items-center justify-end gap-3 pt-6 border-t-2 border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50 -mx-6 -mb-6 px-6 py-4 rounded-b-xl">
                         <x-demandas::button href="{{ route('demandas.index') }}" variant="outline" class="border-2">
-                            <x-demandas::icon name="x-mark" class="w-4 h-4 mr-2" />
+                            <x-icon name="xmark" class="w-4 h-4 mr-2" />
                             Cancelar
                         </x-demandas::button>
                         <x-demandas::button type="submit" id="submitBtn" variant="primary" class="shadow-lg hover:shadow-xl transition-shadow">
-                            <x-demandas::icon name="check-circle" class="w-4 h-4 mr-2" />
+                            <x-icon name="circle-check" class="w-4 h-4 mr-2" />
                             <span id="submitText">Salvar Demanda</span>
                             <span id="submitLoading" class="hidden">
                                 <x-icon name="circle-notch" style="duotone" class="animate-spin -ml-1 mr-2 h-4 w-4 text-white inline" />
@@ -417,7 +417,7 @@
                 <x-slot name="header">
                     <div class="flex items-center gap-3">
                         <div class="p-2 bg-amber-100 dark:bg-amber-900/30 rounded-lg">
-                            <x-demandas::icon name="light-bulb" class="w-5 h-5 text-amber-600 dark:text-amber-400" />
+                            <x-icon name="lightbulb" class="w-5 h-5 text-amber-600 dark:text-amber-400" />
                         </div>
                         <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
                             Dicas e Informações
@@ -428,7 +428,7 @@
                 <div class="space-y-4">
                     <div class="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
                         <div class="flex items-start gap-3">
-                            <x-demandas::icon name="information-circle" class="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
+                            <x-icon name="circle-info" class="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
                             <div class="flex-1">
                                 <h4 class="text-sm font-semibold text-blue-900 dark:text-blue-200 mb-1">Código</h4>
                                 <p class="text-xs text-blue-800 dark:text-blue-300">
@@ -440,7 +440,7 @@
 
                     <div class="p-4 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg border border-emerald-200 dark:border-emerald-800">
                         <div class="flex items-start gap-3">
-                            <x-demandas::icon name="check-circle" class="w-5 h-5 text-emerald-600 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
+                            <x-icon name="circle-check" class="w-5 h-5 text-emerald-600 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
                             <div class="flex-1">
                                 <h4 class="text-sm font-semibold text-emerald-900 dark:text-emerald-200 mb-1">Buscar Pessoa</h4>
                                 <p class="text-xs text-emerald-800 dark:text-emerald-300">
@@ -452,7 +452,7 @@
 
                     <div class="p-4 bg-amber-50 dark:bg-amber-900/20 rounded-lg border border-amber-200 dark:border-amber-800">
                         <div class="flex items-start gap-3">
-                            <x-demandas::icon name="exclamation-triangle" class="w-5 h-5 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" />
+                            <x-icon name="triangle-exclamation" class="w-5 h-5 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" />
                             <div class="flex-1">
                                 <h4 class="text-sm font-semibold text-amber-900 dark:text-amber-200 mb-1">Localidade</h4>
                                 <p class="text-xs text-amber-800 dark:text-amber-300">
@@ -464,7 +464,7 @@
 
                     <div class="p-4 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg border border-indigo-200 dark:border-indigo-800">
                         <div class="flex items-start gap-3">
-                            <x-demandas::icon name="envelope" class="w-5 h-5 text-indigo-600 dark:text-indigo-400 flex-shrink-0 mt-0.5" />
+                            <x-icon name="envelope" class="w-5 h-5 text-indigo-600 dark:text-indigo-400 flex-shrink-0 mt-0.5" />
                             <div class="flex-1">
                                 <h4 class="text-sm font-semibold text-indigo-900 dark:text-indigo-200 mb-1">Notificação por Email</h4>
                                 <p class="text-xs text-indigo-800 dark:text-indigo-300">
@@ -481,7 +481,7 @@
                 <x-slot name="header">
                     <div class="flex items-center gap-3">
                         <div class="p-2 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg">
-                            <x-demandas::icon name="user-plus" class="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+                            <x-icon name="user-plus" class="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
                         </div>
                         <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
                             Cadastrar Nova Pessoa
@@ -494,7 +494,7 @@
                         Se a pessoa não estiver cadastrada no sistema, você pode cadastrá-la primeiro e depois criar a demanda.
                     </p>
                     <x-demandas::button href="{{ route('pessoas.create') }}" target="_blank" variant="primary" class="w-full">
-                        <x-demandas::icon name="user-plus" class="w-4 h-4 mr-2" />
+                        <x-icon name="user-plus" class="w-4 h-4 mr-2" />
                         Cadastrar Nova Pessoa
                     </x-demandas::button>
                 </div>
@@ -512,11 +512,11 @@
             <div class="bg-amber-50 dark:bg-amber-900/20 px-6 py-4 border-b border-amber-200 dark:border-amber-800">
                 <div class="flex items-center justify-between">
                     <h3 class="text-lg font-semibold text-amber-900 dark:text-amber-100 flex items-center gap-2">
-                        <x-demandas::icon name="exclamation-triangle" class="w-5 h-5" />
+                        <x-icon name="triangle-exclamation" class="w-5 h-5" />
                         Localidade Obrigatória
                     </h3>
                     <button type="button" onclick="closeModal()" class="text-amber-400 hover:text-amber-500">
-                        <x-demandas::icon name="x-mark" class="w-6 h-6" />
+                        <x-icon name="xmark" class="w-6 h-6" />
                     </button>
                 </div>
             </div>
@@ -529,7 +529,7 @@
                     Cancelar
                 </x-demandas::button>
                 <x-demandas::button href="{{ route('localidades.create') }}" variant="primary">
-                    <x-demandas::icon name="plus-circle" class="w-4 h-4 mr-2" />
+                    <x-icon name="circle-plus" class="w-4 h-4 mr-2" />
                     Cadastrar Localidade
                 </x-demandas::button>
             </div>

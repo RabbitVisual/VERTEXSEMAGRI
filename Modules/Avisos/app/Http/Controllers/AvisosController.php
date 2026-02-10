@@ -12,7 +12,12 @@ class AvisosController extends Controller
      */
     public function index()
     {
-        return view('avisos::index');
+        $avisos = \Modules\Avisos\App\Models\Aviso::ativos()
+            ->orderBy('destacar', 'desc')
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
+        return view('avisos::index', compact('avisos'));
     }
 
     /**

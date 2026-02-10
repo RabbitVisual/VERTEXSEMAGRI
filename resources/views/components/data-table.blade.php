@@ -4,12 +4,12 @@
         @if($exportRoute)
             <div class="btn-group">
                 <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown">
-                    <i class="bi bi-download"></i> Exportar
+                    <x-icon name="download" /> Exportar
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end">
-                    <li><a class="dropdown-item" href="{{ $exportRoute }}?format=csv"><i class="bi bi-filetype-csv"></i> CSV</a></li>
-                    <li><a class="dropdown-item" href="{{ $exportRoute }}?format=excel"><i class="bi bi-file-earmark-excel"></i> Excel</a></li>
-                    <li><a class="dropdown-item" href="{{ $exportRoute }}?format=pdf"><i class="bi bi-file-earmark-pdf"></i> PDF</a></li>
+                    <li><a class="dropdown-item" href="{{ $exportRoute }}?format=csv"><x-icon name="file-csv" /> CSV</a></li>
+                    <li><a class="dropdown-item" href="{{ $exportRoute }}?format=excel"><x-icon name="file-excel" /> Excel</a></li>
+                    <li><a class="dropdown-item" href="{{ $exportRoute }}?format=pdf"><x-icon name="file-pdf" /> PDF</a></li>
                 </ul>
             </div>
         @endif
@@ -46,4 +46,3 @@
         </div>
     @endif
 </div>
-

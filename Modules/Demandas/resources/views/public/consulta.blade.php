@@ -5,74 +5,75 @@
 @section('content')
 @include('homepage::layouts.navbar-homepage')
 
-<div class="min-h-screen bg-gradient-to-br from-slate-50 via-white to-emerald-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 py-12 md:py-20">
+<div class="min-h-screen bg-slate-50 dark:bg-slate-900 py-12 md:py-20">
     <div class="container mx-auto px-4">
         <div class="max-w-4xl mx-auto">
             <!-- Header Institucional -->
-            <div class="text-center mb-12">
-                <div class="inline-flex items-center gap-2 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 px-4 py-2 rounded-full text-sm font-semibold mb-4">
+            <div class="text-center mb-12 animate-fade-in-up">
+                <div class="inline-flex items-center gap-2 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 px-4 py-2 rounded-full text-sm font-semibold mb-6 shadow-sm">
                     <x-icon name="magnifying-glass" style="duotone" class="w-4 h-4" />
                     Consulta Pública de Demandas
                 </div>
-                <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-4">
-                    Acompanhe sua Demanda
+                <h1 class="text-3xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6 tracking-tight">
+                    Acompanhe sua <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-500">Demanda</span>
                 </h1>
-                <p class="text-base md:text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto leading-relaxed font-poppins">
-                    Digite o código/protocolo da sua demanda para acompanhar o status em tempo real e obter informações atualizadas sobre o andamento do seu atendimento.
+                <p class="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto leading-relaxed">
+                    Digite o código da sua demanda para verificar o status atual, visualizar o histórico de atualizações e obter informações detalhadas sobre o atendimento.
                 </p>
             </div>
 
             <!-- Card de Consulta -->
-            <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border-2 border-gray-200 dark:border-slate-700 overflow-hidden mb-8 transition-transform hover:shadow-2xl">
+            <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-xl border border-gray-100 dark:border-slate-700/50 overflow-hidden mb-12 relative group hover:shadow-2xl transition-all duration-300 animate-fade-in-up delay-100">
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-500 to-teal-500"></div>
+
                 <!-- Alertas -->
                 @if(session('error'))
-                    <div class="m-6 mb-0 rounded-xl bg-red-50 dark:bg-red-900/20 border-2 border-red-200 dark:border-red-800 p-5" role="alert">
+                    <div class="mx-6 mt-6 md:mx-8 md:mt-8 rounded-xl bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 p-4 animate-shake" role="alert">
                         <div class="flex items-start gap-4">
                             <div class="flex-shrink-0">
                                 <x-icon name="circle-exclamation" style="duotone" class="h-6 w-6 text-red-500" />
                             </div>
                             <div class="flex-1">
-                                <h3 class="text-base font-bold text-red-800 dark:text-red-200 mb-1 font-poppins">Erro na Consulta</h3>
-                                <p class="text-sm text-red-700 dark:text-red-300 leading-relaxed">{{ session('error') }}</p>
+                                <h3 class="text-sm font-bold text-red-800 dark:text-red-200 mb-1">Não encontramos essa demanda</h3>
+                                <p class="text-sm text-red-700 dark:text-red-300">{{ session('error') }}</p>
                             </div>
                         </div>
                     </div>
                 @endif
 
                 @if(session('success'))
-                    <div class="m-6 mb-0 rounded-xl bg-emerald-50 dark:bg-emerald-900/20 border-2 border-emerald-200 dark:border-emerald-800 p-5" role="alert">
+                    <div class="mx-6 mt-6 md:mx-8 md:mt-8 rounded-xl bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 p-4" role="alert">
                         <div class="flex items-start gap-4">
                             <div class="flex-shrink-0">
                                 <x-icon name="circle-check" style="duotone" class="h-6 w-6 text-emerald-500" />
                             </div>
                             <div class="flex-1">
-                                <p class="text-sm text-emerald-800 dark:text-emerald-200 font-medium font-poppins">{{ session('success') }}</p>
+                                <p class="text-sm text-emerald-800 dark:text-emerald-200 font-medium">{{ session('success') }}</p>
                             </div>
                         </div>
                     </div>
                 @endif
 
-                <div class="p-6 md:p-8">
-                    <form action="{{ route('demandas.public.consultar') }}" method="POST" class="space-y-6" id="consultaForm">
+                <div class="p-6 md:p-10">
+                    <form action="{{ route('demandas.public.consultar') }}" method="POST" class="space-y-8" id="consultaForm">
                         @csrf
 
-                        <div>
-                            <label for="codigo" class="block text-sm font-bold text-gray-900 dark:text-white mb-3 flex items-center gap-2 font-poppins">
-                                <x-icon name="hashtag" style="duotone" class="w-5 h-5 text-emerald-500" />
-                                Código/Protocolo da Demanda
-                                <span class="text-red-500">*</span>
+                        <div class="space-y-4">
+                            <label for="codigo" class="block text-base font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+                                Código do Protocolo
+                                <span class="text-red-500" title="Obrigatório">*</span>
                             </label>
-                            <div class="relative">
-                                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                    <x-icon name="file-invoice" style="duotone" class="h-6 w-6 text-gray-400" />
+                            <div class="relative group/input">
+                                <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
+                                    <x-icon name="hashtag" style="duotone" class="h-6 w-6 text-gray-400 group-focus-within/input:text-emerald-500 transition-colors" />
                                 </div>
                                 <input
                                     type="text"
                                     id="codigo"
                                     name="codigo"
                                     value="{{ old('codigo') }}"
-                                    placeholder="Ex: DEM-AGU-202411-0001"
-                                    class="block w-full pl-14 pr-4 py-4 border-2 border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-lg font-mono transition-all @error('codigo') border-red-500 focus:ring-red-500 focus:border-red-500 @enderror"
+                                    placeholder="Ex: DEM-2024-0001"
+                                    class="block w-full pl-14 pr-5 py-5 border-2 border-gray-200 dark:border-slate-600 rounded-2xl bg-gray-50 dark:bg-slate-900 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-0 focus:border-emerald-500 text-xl font-mono tracking-wide transition-all uppercase hover:bg-white dark:hover:bg-slate-800"
                                     required
                                     autofocus
                                     autocomplete="off"
@@ -80,132 +81,83 @@
                                 >
                             </div>
                             @error('codigo')
-                                <p class="mt-2 text-sm text-red-600 dark:text-red-400 flex items-center gap-2 font-poppins">
-                                    <x-icon name="circle-info" style="duotone" class="w-4 h-4" />
+                                <p class="text-sm text-red-600 dark:text-red-400 flex items-center gap-2 mt-2">
+                                    <x-icon name="circle-exclamation" style="duotone" class="w-4 h-4" />
                                     {{ $message }}
                                 </p>
                             @enderror
                         </div>
 
-                        <!-- Guia Visual de Como Encontrar o Código -->
-                        <div class="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border-2 border-blue-200 dark:border-blue-800 rounded-xl p-6">
-                            <h3 class="text-base font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2 font-poppins">
-                                <x-icon name="circle-question" style="duotone" class="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                                Onde encontrar o código/protocolo?
+                        <!-- Onde encontrar o código -->
+                        <div class="bg-blue-50/50 dark:bg-blue-900/10 rounded-2xl p-6 border border-blue-100 dark:border-blue-800/30">
+                            <h3 class="text-sm font-bold text-blue-900 dark:text-blue-100 mb-4 flex items-center gap-2">
+                                <x-icon name="circle-info" style="duotone" class="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                                Onde encontrar meu código?
                             </h3>
-                            <div class="grid md:grid-cols-3 gap-4">
-                                <div class="flex items-start gap-3 p-3 bg-white dark:bg-slate-700 rounded-lg shadow-sm border border-gray-100 dark:border-slate-600">
-                                    <div class="flex-shrink-0 w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
-                                        <x-icon name="file-lines" style="duotone" class="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                            <div class="grid sm:grid-cols-3 gap-4">
+                                <div class="flex items-center gap-3 text-sm text-gray-600 dark:text-gray-400 bg-white dark:bg-slate-800 p-3 rounded-xl border border-blue-100 dark:border-slate-700 shadow-sm">
+                                    <div class="w-8 h-8 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center flex-shrink-0">
+                                        <x-icon name="file-invoice" style="duotone" class="w-4 h-4 text-blue-600 dark:text-blue-400" />
                                     </div>
-                                    <div class="flex-1">
-                                        <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1 font-poppins">Comprovante</p>
-                                        <p class="text-xs text-gray-600 dark:text-gray-400 leading-tight">No documento recebido na abertura da demanda</p>
-                                    </div>
+                                    <span>No comprovante impresso</span>
                                 </div>
-                                <div class="flex items-start gap-3 p-3 bg-white dark:bg-slate-700 rounded-lg shadow-sm border border-gray-100 dark:border-slate-600">
-                                    <div class="flex-shrink-0 w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
-                                        <x-icon name="envelope" style="duotone" class="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                                <div class="flex items-center gap-3 text-sm text-gray-600 dark:text-gray-400 bg-white dark:bg-slate-800 p-3 rounded-xl border border-blue-100 dark:border-slate-700 shadow-sm">
+                                    <div class="w-8 h-8 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center flex-shrink-0">
+                                        <x-icon name="envelope" style="duotone" class="w-4 h-4 text-blue-600 dark:text-blue-400" />
                                     </div>
-                                    <div class="flex-1">
-                                        <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1 font-poppins">E-mail</p>
-                                        <p class="text-xs text-gray-600 dark:text-gray-400 leading-tight">Na mensagem de confirmação enviada por e-mail</p>
-                                    </div>
+                                    <span>No e-mail de confirmação</span>
                                 </div>
-                                <div class="flex items-start gap-3 p-3 bg-white dark:bg-slate-700 rounded-lg shadow-sm border border-gray-100 dark:border-slate-600">
-                                    <div class="flex-shrink-0 w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
-                                        <x-icon name="hashtag" style="duotone" class="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                                <div class="flex items-center gap-3 text-sm text-gray-600 dark:text-gray-400 bg-white dark:bg-slate-800 p-3 rounded-xl border border-blue-100 dark:border-slate-700 shadow-sm">
+                                    <div class="w-8 h-8 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center flex-shrink-0">
+                                        <x-icon name="message-sms" style="duotone" class="w-4 h-4 text-blue-600 dark:text-blue-400" />
                                     </div>
-                                    <div class="flex-1">
-                                        <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1 font-poppins">Protocolo</p>
-                                        <p class="text-xs text-gray-600 dark:text-gray-400 leading-tight">No protocolo de atendimento fornecido</p>
-                                    </div>
+                                    <span>Via SMS (se solicitado)</span>
                                 </div>
                             </div>
                         </div>
 
                         <button
                             type="submit"
-                            class="w-full bg-gradient-to-r from-emerald-500 to-teal-600 text-white px-8 py-4 rounded-xl font-bold hover:from-emerald-600 hover:to-teal-700 active:scale-[0.98] transition-all duration-300 shadow-lg hover:shadow-emerald-500/30 flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed text-lg group"
-                            id="submitBtn"
+                            class="w-full bg-emerald-600 hover:bg-emerald-700 text-white text-lg font-bold py-5 rounded-2xl shadow-lg shadow-emerald-600/20 hover:shadow-emerald-600/40 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 flex items-center justify-center gap-3"
                         >
-                            <x-icon name="magnifying-glass" style="duotone" class="w-6 h-6 group-hover:scale-110 transition-transform" />
-                            <span id="submitText">Consultar Demanda</span>
-                            <x-icon name="spinner" style="duotone" class="hidden w-6 h-6 fa-spin" id="loadingSpinner" />
+                            <x-icon name="magnifying-glass" style="duotone" class="w-6 h-6" />
+                            Consultar Demanda
                         </button>
                     </form>
                 </div>
             </div>
 
-            <!-- Informações sobre a Consulta -->
-            <div class="grid md:grid-cols-2 gap-6 mb-8">
-                <!-- Benefícios da Consulta -->
-                <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-lg border-2 border-gray-200 dark:border-slate-700 p-6 flex flex-col">
-                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2 font-poppins">
-                        <x-icon name="list-check" style="duotone" class="w-5 h-5 text-emerald-500" />
-                        O que você pode fazer
-                    </h3>
-                    <ul class="space-y-4 flex-1">
-                        <li class="flex items-start gap-3 group">
-                            <x-icon name="clock" style="duotone" class="w-5 h-5 text-emerald-500 mt-1 flex-shrink-0 group-hover:scale-110 transition-transform" />
-                            <div>
-                                <p class="text-sm font-semibold text-gray-900 dark:text-white font-poppins">Acompanhamento em tempo real</p>
-                                <p class="text-xs text-gray-600 dark:text-gray-400">Status atualizado instantaneamente pela nossa equipe</p>
-                            </div>
-                        </li>
-                        <li class="flex items-start gap-3 group">
-                            <x-icon name="history" style="duotone" class="w-5 h-5 text-emerald-500 mt-1 flex-shrink-0 group-hover:scale-110 transition-transform" />
-                            <div>
-                                <p class="text-sm font-semibold text-gray-900 dark:text-white font-poppins">Histórico completo</p>
-                                <p class="text-xs text-gray-600 dark:text-gray-400">Visualize todas as etapas desde a abertura</p>
-                            </div>
-                        </li>
-                        <li class="flex items-start gap-3 group">
-                            <x-icon name="location-dot" style="duotone" class="w-5 h-5 text-emerald-500 mt-1 flex-shrink-0 group-hover:scale-110 transition-transform" />
-                            <div>
-                                <p class="text-sm font-semibold text-gray-900 dark:text-white font-poppins">Localização no mapa</p>
-                                <p class="text-xs text-gray-600 dark:text-gray-400">Visualize o local exato da demanda no mapa</p>
-                            </div>
-                        </li>
-                    </ul>
+            <!-- Informações Adicionais -->
+            <div class="grid md:grid-cols-2 gap-6 animate-fade-in-up delay-200">
+                <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-slate-700">
+                    <div class="w-12 h-12 bg-emerald-100 dark:bg-emerald-900/30 rounded-xl flex items-center justify-center mb-4">
+                        <x-icon name="shield-check" style="duotone" class="w-7 h-7 text-emerald-600 dark:text-emerald-400" />
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">Transparência Total</h3>
+                    <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
+                        Acompanhe cada etapa do processo, desde a solicitação até a conclusão, com atualizações em tempo real sobre o andamento.
+                    </p>
                 </div>
 
-                <!-- Proteção LGPD -->
-                <div class="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-2xl shadow-lg border-2 border-blue-200 dark:border-blue-800 p-6 flex flex-col">
-                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2 font-poppins">
-                        <x-icon name="shield-halved" style="duotone" class="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                        Proteção de Dados (LGPD)
-                    </h3>
-                    <div class="space-y-4 flex-1">
-                        <div class="flex items-start gap-3 group">
-                            <x-icon name="lock" style="duotone" class="w-5 h-5 text-blue-600 dark:text-blue-400 mt-1 flex-shrink-0 group-hover:scale-110 transition-transform" />
-                            <div>
-                                <p class="text-sm font-semibold text-gray-900 dark:text-white font-poppins">Segurança garantida</p>
-                                <p class="text-xs text-gray-600 dark:text-gray-400">Dados tratados conforme a Lei nº 13.709/2018</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start gap-3 group">
-                            <x-icon name="user-shield" style="duotone" class="w-5 h-5 text-blue-600 dark:text-blue-400 mt-1 flex-shrink-0 group-hover:scale-110 transition-transform" />
-                            <div>
-                                <p class="text-sm font-semibold text-gray-900 dark:text-white font-poppins">Privacidade absoluta</p>
-                                <p class="text-xs text-gray-600 dark:text-gray-400">Nenhum dado pessoal sensível é exposto</p>
-                            </div>
-                        </div>
+                <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-slate-700">
+                    <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center mb-4">
+                        <x-icon name="user-lock" style="duotone" class="w-7 h-7 text-blue-600 dark:text-blue-400" />
                     </div>
-                    <div class="mt-4 pt-4 border-t border-blue-200 dark:border-blue-700">
-                        <a href="{{ route('privacidade') }}" target="_blank" class="inline-flex items-center gap-2 text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium group">
-                            <span class="font-poppins">Política de Privacidade</span>
-                            <x-icon name="arrow-right" style="duotone" class="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                        </a>
-                    </div>
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">Segurança e Privacidade</h3>
+                    <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
+                        Seus dados são protegidos. O acesso às informações detalhadas é exclusivo para quem possui o protocolo da demanda.
+                    </p>
+                    <a href="{{ route('privacidade') }}" class="inline-flex items-center gap-1 text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium mt-3">
+                        Ler Política de Privacidade
+                        <x-icon name="arrow-right" class="w-3 h-3" />
+                    </a>
                 </div>
             </div>
 
-            <!-- Links de Navegação -->
-            <div class="text-center">
-                <a href="{{ route('homepage') }}" class="inline-flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-all font-medium group">
-                    <x-icon name="arrow-left" style="duotone" class="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-                    <span class="font-poppins">Voltar para a página inicial</span>
+            <div class="mt-12 text-center animate-fade-in-up delay-300">
+                <a href="{{ route('homepage') }}" class="inline-flex items-center gap-2 text-gray-500 hover:text-emerald-600 dark:text-gray-400 dark:hover:text-emerald-400 transition-colors font-medium">
+                    <x-icon name="arrow-left" class="w-4 h-4" />
+                    Voltar para a Página Inicial
                 </a>
             </div>
         </div>
@@ -217,24 +169,14 @@
 @push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('consultaForm');
-    const submitBtn = document.getElementById('submitBtn');
-    const submitText = document.getElementById('submitText');
-    const loadingSpinner = document.getElementById('loadingSpinner');
-
-    if (form && submitBtn) {
-        form.addEventListener('submit', function() {
-            submitBtn.disabled = true;
-            submitText.textContent = 'Consultando...';
-            loadingSpinner.classList.remove('hidden');
-        });
-    }
-
     // Auto-uppercase no código
     const codigoInput = document.getElementById('codigo');
     if (codigoInput) {
         codigoInput.addEventListener('input', function(e) {
-            e.target.value = e.target.value.toUpperCase();
+            let start = this.selectionStart;
+            let end = this.selectionEnd;
+            this.value = this.value.toUpperCase();
+            this.setSelectionRange(start, end);
         });
     }
 });

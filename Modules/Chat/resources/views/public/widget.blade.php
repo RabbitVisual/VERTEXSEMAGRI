@@ -7,152 +7,153 @@ $publicEnabled = \Modules\Chat\App\Models\ChatConfig::isPublicEnabled();
 <div id="semagri-chat-widget" class="fixed" style="position: fixed !important; bottom: 6rem !important; right: 1.5rem !important; z-index: 9999 !important;">
     <!-- Botão Flutuante -->
     <button id="chat-toggle-btn"
-            class="group relative w-14 h-14 md:w-16 md:h-16 bg-gradient-to-br from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center focus:outline-none focus:ring-4 focus:ring-green-300 dark:focus:ring-green-800 transform hover:scale-110"
+            class="group relative w-16 h-16 bg-gradient-to-br from-green-500 to-green-700 hover:from-green-600 hover:to-green-800 text-white rounded-[1.5rem] shadow-2xl hover:shadow-green-500/20 transition-all duration-300 flex items-center justify-center focus:outline-none focus:ring-4 focus:ring-green-500/20 transform hover:scale-110 active:scale-95 border-b-4 border-green-800"
             aria-label="Abrir chat de suporte">
         <!-- Ícone de Chat -->
-        <svg id="chat-icon" class="w-6 h-6 md:w-7 md:h-7 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 01-2.555-.337A5.972 5.972 0 015.41 20.97a5.969 5.969 0 01-.474-.065 4.48 4.48 0 00.978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25z" />
-        </svg>
+        <span id="chat-icon" class="transition-all duration-300 group-hover:rotate-12">
+            <x-icon name="comment-dots" style="duotone" class="w-7 h-7" />
+        </span>
         <!-- Ícone de Fechar -->
-        <svg id="chat-close-icon" class="w-6 h-6 md:w-7 md:h-7 transition-transform duration-300 hidden" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-        </svg>
+        <span id="chat-close-icon" class="hidden transition-all duration-300 rotate-90">
+            <x-icon name="xmark" class="w-7 h-7" />
+        </span>
         <!-- Badge de Notificação -->
-        <span id="chat-notification-badge" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center hidden animate-pulse">1</span>
+        <span id="chat-notification-badge" class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-black rounded-full w-6 h-6 flex items-center justify-center hidden animate-bounce border-2 border-white dark:border-slate-900 shadow-lg">1</span>
     </button>
 
     <!-- Janela do Chat -->
-    <div id="chat-window" class="hidden fixed bg-white dark:bg-slate-800 rounded-2xl shadow-2xl border border-gray-200 dark:border-slate-700 flex flex-col overflow-hidden" 
-         style="bottom: 7rem !important; right: 1.5rem !important; width: 380px !important; max-width: calc(100vw - 2rem) !important; height: 600px !important; max-height: calc(100vh - 8rem) !important; z-index: 10000 !important;">
-        
+    <div id="chat-window" class="hidden fixed bg-white dark:bg-slate-800 rounded-[2.5rem] shadow-2xl border border-slate-100 dark:border-slate-700 flex flex-col overflow-hidden animate__animated animate__fadeInUp"
+         style="bottom: 7.5rem !important; right: 1.5rem !important; width: 400px !important; max-width: calc(100vw - 2rem) !important; height: 650px !important; max-height: calc(100vh - 9rem) !important; z-index: 10000 !important;">
+
         <!-- Header -->
-        <div class="flex items-center justify-between px-5 py-4 bg-gradient-to-r from-green-500 to-green-600 text-white flex-shrink-0">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
-                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 01-2.555-.337A5.972 5.972 0 015.41 20.97a5.969 5.969 0 01-.474-.065 4.48 4.48 0 00.978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25z" />
-                    </svg>
+        <div class="flex items-center justify-between px-8 py-6 bg-gradient-to-br from-green-600 to-green-800 text-white flex-shrink-0 relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -mr-16 -mt-16 blur-2xl"></div>
+            <div class="relative z-10 flex items-center gap-4">
+                <div class="w-12 h-12 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center shadow-inner">
+                    <x-icon name="headset" style="duotone" class="w-6 h-6 text-white" />
                 </div>
                 <div>
-                    <h3 class="font-semibold text-lg">Suporte SEMAGRI</h3>
-                    <p id="chat-status-text" class="text-sm text-green-100">
-                        <span class="inline-block w-2 h-2 bg-green-300 rounded-full mr-1 animate-pulse"></span>
-                        Online
+                    <h3 class="font-black text-lg uppercase tracking-tight leading-none mb-1">Suporte SEMAGRI</h3>
+                    <p id="chat-status-text" class="text-[10px] font-black uppercase tracking-widest text-green-100/80 flex items-center gap-2">
+                        <span class="inline-block w-2 h-2 bg-green-300 rounded-full animate-pulse"></span>
+                        Disponível Agora
                     </p>
                 </div>
             </div>
-            <button id="chat-minimize-btn" class="w-8 h-8 flex items-center justify-center text-white/80 hover:text-white hover:bg-white/10 rounded-full transition-colors">
-                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                </svg>
+            <button id="chat-minimize-btn" class="w-10 h-10 flex items-center justify-center text-white/80 hover:text-white hover:bg-white/10 rounded-xl transition-all active:scale-95 relative z-10">
+                <x-icon name="chevron-down" class="w-5 h-5" />
             </button>
         </div>
 
         <!-- Mensagem Offline -->
-        <div id="chat-offline-message" class="hidden px-5 py-8 text-center bg-amber-50 dark:bg-amber-900/20 border-b border-amber-200 dark:border-amber-800">
-            <div class="w-16 h-16 mx-auto mb-4 bg-amber-100 dark:bg-amber-900/30 rounded-full flex items-center justify-center">
-                <svg class="w-8 h-8 text-amber-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
+        <div id="chat-offline-message" class="hidden px-8 py-10 text-center bg-amber-50 dark:bg-amber-900/10 border-b border-amber-100 dark:border-amber-800/30">
+            <div class="w-16 h-16 mx-auto mb-5 bg-amber-100 dark:bg-amber-900/30 rounded-2xl flex items-center justify-center shadow-inner text-amber-500">
+                <x-icon name="clock" style="duotone" class="w-8 h-8" />
             </div>
-            <h4 class="font-semibold text-amber-800 dark:text-amber-200 mb-2">Fora do horário de atendimento</h4>
-            <p class="text-sm text-amber-600 dark:text-amber-300" id="chat-next-availability">Voltamos em breve!</p>
+            <h4 class="text-lg font-black text-amber-900 dark:text-amber-200 uppercase tracking-tight mb-2">Fora de Horário</h4>
+            <p class="text-[11px] font-bold text-amber-600 dark:text-amber-400 uppercase tracking-widest" id="chat-next-availability">Voltamos em breve!</p>
         </div>
 
         <!-- Formulário Inicial -->
-        <div id="chat-initial-form" class="hidden px-5 py-6 bg-gray-50 dark:bg-slate-900/50 border-b border-gray-200 dark:border-slate-700">
-            <div class="text-center mb-5">
-                <h4 class="font-semibold text-gray-900 dark:text-white mb-1">Bem-vindo ao Chat!</h4>
-                <p class="text-sm text-gray-600 dark:text-gray-400">Preencha seus dados para iniciar o atendimento</p>
+        <div id="chat-initial-form" class="hidden px-8 py-8 bg-slate-50 dark:bg-slate-900/30 border-b border-slate-100 dark:border-slate-800/50">
+            <div class="text-center mb-8">
+                <h4 class="text-xl font-black text-slate-900 dark:text-white uppercase tracking-tight mb-2">Bem-vindo!</h4>
+                <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">Preencha os dados para iniciar</p>
             </div>
-            <form id="chat-start-form" class="space-y-4">
-                <div>
-                    <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Nome completo *</label>
-                    <input type="text" id="visitor-name" name="name" required
-                           placeholder="Digite seu nome completo"
-                           class="w-full px-4 py-2.5 text-sm bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-600 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 dark:text-white transition-colors">
+            <form id="chat-start-form" class="space-y-5">
+                <div class="group">
+                    <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-1">Nome Completo</label>
+                    <div class="relative">
+                        <x-icon name="user" class="absolute left-4 top-3.5 w-4 h-4 text-slate-300 group-focus-within:text-green-500 transition-colors" />
+                        <input type="text" id="visitor-name" name="name" required
+                            placeholder="Como podemos te chamar?"
+                            class="w-full pl-11 pr-4 py-3.5 text-sm font-bold bg-white dark:bg-slate-800 border-slate-100 dark:border-slate-700 rounded-2xl focus:ring-4 focus:ring-green-500/10 focus:border-green-500 dark:text-white transition-all shadow-sm">
+                    </div>
                 </div>
-                <div>
-                    <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">CPF *</label>
-                    <input type="text" id="visitor-cpf" name="cpf" required
-                           placeholder="000.000.000-00" maxlength="14"
-                           class="w-full px-4 py-2.5 text-sm bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-600 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 dark:text-white transition-colors">
-                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Usado para identificar seu atendimento</p>
+                <div class="group">
+                    <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-1">CPF</label>
+                    <div class="relative">
+                        <x-icon name="id-card" class="absolute left-4 top-3.5 w-4 h-4 text-slate-300 group-focus-within:text-green-500 transition-colors" />
+                        <input type="text" id="visitor-cpf" name="cpf" required
+                            placeholder="000.000.000-00" maxlength="14"
+                            class="w-full pl-11 pr-4 py-3.5 text-sm font-bold bg-white dark:bg-slate-800 border-slate-100 dark:border-slate-700 rounded-2xl focus:ring-4 focus:ring-green-500/10 focus:border-green-500 dark:text-white transition-all shadow-sm">
+                    </div>
                 </div>
-                <div>
-                    <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">E-mail (opcional)</label>
-                    <input type="email" id="visitor-email" name="email"
-                           placeholder="seu@email.com"
-                           class="w-full px-4 py-2.5 text-sm bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-600 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 dark:text-white transition-colors">
-                </div>
-                <div>
-                    <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Telefone (opcional)</label>
-                    <input type="tel" id="visitor-phone" name="phone"
-                           placeholder="(00) 00000-0000"
-                           class="w-full px-4 py-2.5 text-sm bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-600 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 dark:text-white transition-colors">
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="group">
+                        <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-1">E-mail</label>
+                        <input type="email" id="visitor-email" name="email"
+                            placeholder="Opcional"
+                            class="w-full px-5 py-3.5 text-sm font-bold bg-white dark:bg-slate-800 border-slate-100 dark:border-slate-700 rounded-2xl focus:ring-4 focus:ring-green-500/10 focus:border-green-500 dark:text-white transition-all shadow-sm">
+                    </div>
+                    <div class="group">
+                        <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-1">Telefone</label>
+                        <input type="tel" id="visitor-phone" name="phone"
+                            placeholder="Opcional"
+                            class="w-full px-5 py-3.5 text-sm font-bold bg-white dark:bg-slate-800 border-slate-100 dark:border-slate-700 rounded-2xl focus:ring-4 focus:ring-green-500/10 focus:border-green-500 dark:text-white transition-all shadow-sm">
+                    </div>
                 </div>
                 <button type="submit" id="chat-start-btn"
-                        class="w-full px-4 py-3 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white text-sm font-semibold rounded-xl transition-all transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-2">
-                    <span>Iniciar Conversa</span>
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                    </svg>
+                        class="w-full mt-4 px-8 py-5 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white text-[11px] font-black uppercase tracking-widest rounded-2xl transition-all shadow-xl shadow-green-500/20 active:scale-95 border-b-4 border-green-800 flex items-center justify-center gap-3">
+                    <span>Iniciar Atendimento</span>
+                    <x-icon name="arrow-right" class="w-4 h-4" />
                 </button>
             </form>
         </div>
 
         <!-- Área de Mensagens -->
-        <div id="chat-messages-container" class="flex-1 overflow-y-auto p-4 space-y-3" style="background-image: url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%239C92AC\' fill-opacity=\'0.03\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');">
-            <div id="chat-welcome-message" class="text-center py-8">
-                <div class="w-16 h-16 mx-auto mb-4 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center">
-                    <svg class="w-8 h-8 text-green-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 01-2.555-.337A5.972 5.972 0 015.41 20.97a5.969 5.969 0 01-.474-.065 4.48 4.48 0 00.978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25z" />
-                    </svg>
+        <div id="chat-messages-container" class="flex-1 overflow-y-auto p-6 space-y-4 bg-slate-50/50 dark:bg-slate-900/10 custom-scrollbar"
+             style="background-image: url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%239C92AC\' fill-opacity=\'0.05\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');">
+            <div id="chat-welcome-message" class="flex flex-col items-center justify-center h-full text-center py-12">
+                <div class="w-20 h-20 bg-green-50 dark:bg-green-900/20 rounded-[2rem] flex items-center justify-center mb-6 border-2 border-dashed border-green-200 dark:border-green-700/50">
+                    <x-icon name="message-heart" style="duotone" class="w-10 h-10 text-green-500" />
                 </div>
-                <p class="text-sm text-gray-500 dark:text-gray-400">Carregando...</p>
+                <h4 class="text-lg font-black text-slate-900 dark:text-white uppercase tracking-tight leading-none mb-2">Conectando...</h4>
+                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Aguarde um momento</p>
             </div>
         </div>
 
         <!-- Indicador de Digitação -->
-        <div id="chat-typing-indicator" class="hidden px-4 py-2 bg-gray-50 dark:bg-slate-900/50 border-t border-gray-100 dark:border-slate-700">
-            <div class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
-                <div class="flex gap-1">
-                    <span class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0ms;"></span>
-                    <span class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 150ms;"></span>
-                    <span class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 300ms;"></span>
+        <div id="chat-typing-indicator" class="hidden px-6 py-3 bg-white dark:bg-slate-800 border-t border-slate-100 dark:border-slate-700">
+            <div class="flex items-center gap-3">
+                <div class="flex gap-1.5 bg-slate-100 dark:bg-slate-900 p-2 rounded-xl">
+                    <span class="w-1.5 h-1.5 bg-green-500 rounded-full animate-bounce" style="animation-delay: 0ms;"></span>
+                    <span class="w-1.5 h-1.5 bg-green-500 rounded-full animate-bounce" style="animation-delay: 150ms;"></span>
+                    <span class="w-1.5 h-1.5 bg-green-500 rounded-full animate-bounce" style="animation-delay: 300ms;"></span>
                 </div>
-                <span>Atendente digitando...</span>
+                <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest italic animate-pulse">Atendente digitando...</span>
             </div>
         </div>
 
         <!-- Input de Mensagem -->
-        <div id="chat-input-container" class="hidden px-4 py-3 border-t border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800">
-            <form id="chat-message-form" class="flex items-end gap-2">
+        <div id="chat-input-container" class="hidden px-6 py-5 border-t border-slate-100 dark:border-slate-700 bg-white dark:bg-slate-800 relative z-10 transition-all duration-300">
+            <form id="chat-message-form" class="flex items-end gap-3 group">
                 <div class="flex-1 relative">
-                    <textarea id="chat-message-input" 
+                    <textarea id="chat-message-input"
                               rows="1"
-                              placeholder="Digite sua mensagem..."
-                              class="w-full px-4 py-2.5 pr-10 text-sm bg-gray-100 dark:bg-slate-700 border-0 rounded-2xl focus:ring-2 focus:ring-green-500 dark:text-white resize-none"
-                              style="max-height: 100px;"></textarea>
+                              placeholder="Digite aqui..."
+                              class="w-full px-6 py-4 pr-12 text-sm font-bold bg-slate-50 dark:bg-slate-900/50 border-transparent focus:bg-white dark:focus:bg-slate-900 border-slate-100 dark:border-slate-700 rounded-2xl focus:ring-4 focus:ring-green-500/10 dark:text-white transition-all shadow-inner overflow-hidden resize-none"
+                              style="max-height: 120px;"></textarea>
                 </div>
                 <button type="submit" id="chat-send-btn"
-                        class="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none">
-                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
-                    </svg>
+                        class="flex-shrink-0 w-14 h-14 bg-gradient-to-br from-green-500 to-green-700 hover:from-green-600 hover:to-green-800 text-white rounded-2xl flex items-center justify-center shadow-lg hover:shadow-green-500/20 transition-all transform hover:scale-105 active:scale-95 disabled:opacity-50 disabled:grayscale border-b-4 border-green-800">
+                    <x-icon name="paper-plane" class="w-6 h-6" />
                 </button>
             </form>
-            <p class="text-xs text-gray-400 dark:text-gray-500 text-center mt-2">
-                Pressione Enter para enviar
+            <p class="text-[9px] font-black text-slate-300 dark:text-slate-600 uppercase tracking-widest text-center mt-3">
+                Enter para enviar • Shift+Enter para nova linha
             </p>
         </div>
 
         <!-- Sessão Encerrada -->
-        <div id="chat-session-closed" class="hidden px-4 py-4 border-t border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-900/50 text-center">
-            <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">Esta conversa foi encerrada</p>
+        <div id="chat-session-closed" class="hidden px-8 py-10 bg-slate-50 dark:bg-slate-900/50 border-t border-slate-100 dark:border-slate-700 text-center animate__animated animate__fadeIn">
+            <div class="w-16 h-16 mx-auto mb-6 bg-slate-100 dark:bg-slate-800 rounded-2xl flex items-center justify-center text-slate-400 shadow-inner">
+                <x-icon name="check-double" style="duotone" class="w-8 h-8" />
+            </div>
+            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-6">Esta conversa foi encerrada com sucesso.</p>
             <button id="chat-new-session-btn"
-                    class="px-4 py-2 text-sm font-medium text-green-600 hover:text-green-700 dark:text-green-400 dark:hover:text-green-300 transition-colors">
-                Iniciar nova conversa
+                    class="w-full py-4 text-[11px] font-black text-green-600 hover:text-white hover:bg-green-600 dark:text-green-400 dark:hover:text-white dark:hover:bg-green-600 rounded-2xl transition-all uppercase tracking-widest border-2 border-green-500/20 active:scale-95 shadow-sm">
+                Iniciar Nova Conversa
             </button>
         </div>
     </div>
@@ -172,38 +173,45 @@ $publicEnabled = \Modules\Chat\App\Models\ChatConfig::isPublicEnabled();
 }
 
 #semagri-chat-widget .message-bubble.sent {
-    background: linear-gradient(135deg, #dcf8c6 0%, #c5e1a5 100%);
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
     margin-left: auto;
-    border-radius: 16px 16px 4px 16px;
-}
-
-.dark #semagri-chat-widget .message-bubble.sent {
-    background: linear-gradient(135deg, #005c4b 0%, #00695c 100%);
+    border-radius: 20px 20px 4px 20px;
     color: white;
+    font-weight: 500;
 }
 
 #semagri-chat-widget .message-bubble.received {
     background: white;
     margin-right: auto;
-    border-radius: 16px 16px 16px 4px;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    border-radius: 20px 20px 20px 4px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    color: #1e293b;
+    font-weight: 500;
 }
 
 .dark #semagri-chat-widget .message-bubble.received {
     background: #1e293b;
+    color: #f8fafc;
+    border: 1px solid #334155;
 }
 
 #semagri-chat-widget .message-bubble.system {
-    background: rgba(59, 130, 246, 0.1);
-    margin: 0 auto;
-    border-radius: 12px;
-    font-size: 0.75rem;
+    background: rgba(148, 163, 184, 0.1);
+    margin: 8px auto;
+    border-radius: 99px;
+    font-size: 10px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
     max-width: 90%;
     text-align: center;
+    color: #64748b;
+    border: 1px solid rgba(148, 163, 184, 0.1);
 }
 
 .dark #semagri-chat-widget .message-bubble.system {
-    background: rgba(59, 130, 246, 0.2);
+    background: rgba(255, 255, 255, 0.05);
+    color: #94a3b8;
 }
 
 @keyframes chatFadeIn {
@@ -238,11 +246,11 @@ $publicEnabled = \Modules\Chat\App\Models\ChatConfig::isPublicEnabled();
 <script>
 (function() {
     'use strict';
-    
+
     // Evitar inicialização duplicada
     if (window.semagriChatInitialized) return;
     window.semagriChatInitialized = true;
-    
+
     // Configuração
     const POLLING_INTERVAL = 3000;
     const ROUTES = {
@@ -251,7 +259,7 @@ $publicEnabled = \Modules\Chat\App\Models\ChatConfig::isPublicEnabled();
         session: (id) => `/chat/session/${id}`,
         message: (id) => `/chat/session/${id}/message`,
     };
-    
+
     // Estado
     const state = {
             isOpen: false,
@@ -261,7 +269,7 @@ $publicEnabled = \Modules\Chat\App\Models\ChatConfig::isPublicEnabled();
             pollInterval: null,
             notificationSound: null,
     };
-    
+
     // Elementos DOM
     const elements = {
         toggleBtn: null,
@@ -285,7 +293,7 @@ $publicEnabled = \Modules\Chat\App\Models\ChatConfig::isPublicEnabled();
         statusText: null,
         nextAvailability: null,
     };
-    
+
     // Inicialização
     function init() {
         cacheElements();
@@ -293,7 +301,7 @@ $publicEnabled = \Modules\Chat\App\Models\ChatConfig::isPublicEnabled();
         setupCpfMask();
         restoreSession();
     }
-    
+
     // Cache de elementos
     function cacheElements() {
         elements.toggleBtn = document.getElementById('chat-toggle-btn');
@@ -318,35 +326,35 @@ $publicEnabled = \Modules\Chat\App\Models\ChatConfig::isPublicEnabled();
         elements.nextAvailability = document.getElementById('chat-next-availability');
         state.notificationSound = document.getElementById('chat-notification-sound');
     }
-    
+
     // Event Listeners
     function setupEventListeners() {
         if (elements.toggleBtn) {
             elements.toggleBtn.addEventListener('click', toggleChat);
         }
-        
+
         if (elements.minimizeBtn) {
             elements.minimizeBtn.addEventListener('click', toggleChat);
         }
-        
+
         if (elements.startForm) {
             elements.startForm.addEventListener('submit', handleStartChat);
         }
-        
+
         if (elements.messageForm) {
             elements.messageForm.addEventListener('submit', handleSendMessage);
         }
-        
+
         if (elements.messageInput) {
             elements.messageInput.addEventListener('input', handleInputResize);
             elements.messageInput.addEventListener('keydown', handleInputKeydown);
         }
-        
+
         if (elements.newSessionBtn) {
             elements.newSessionBtn.addEventListener('click', handleNewSession);
         }
     }
-    
+
     // Máscara de CPF
     function setupCpfMask() {
         const cpfInput = document.getElementById('visitor-cpf');
@@ -354,7 +362,7 @@ $publicEnabled = \Modules\Chat\App\Models\ChatConfig::isPublicEnabled();
             cpfInput.addEventListener('input', function(e) {
                 let value = e.target.value.replace(/\D/g, '');
                 if (value.length > 11) value = value.slice(0, 11);
-                
+
                 if (value.length > 9) {
                     value = value.replace(/(\d{3})(\d{3})(\d{3})(\d{1,2})/, '$1.$2.$3-$4');
                 } else if (value.length > 6) {
@@ -362,22 +370,22 @@ $publicEnabled = \Modules\Chat\App\Models\ChatConfig::isPublicEnabled();
                 } else if (value.length > 3) {
                     value = value.replace(/(\d{3})(\d{1,3})/, '$1.$2');
                 }
-                
+
                 e.target.value = value;
             });
         }
     }
-    
+
     // Toggle chat
     function toggleChat() {
         state.isOpen = !state.isOpen;
-        
+
         if (state.isOpen) {
             elements.chatWindow?.classList.remove('hidden');
             elements.chatIcon?.classList.add('hidden');
             elements.closeIcon?.classList.remove('hidden');
             elements.notificationBadge?.classList.add('hidden');
-            
+
             checkAvailability().then(() => {
                 if (state.sessionId) {
                     showChatInterface();
@@ -396,15 +404,15 @@ $publicEnabled = \Modules\Chat\App\Models\ChatConfig::isPublicEnabled();
             stopPolling();
         }
     }
-    
+
     // Verificar disponibilidade
     async function checkAvailability() {
         try {
             const response = await fetch(ROUTES.status);
             const data = await response.json();
-            
+
             state.isAvailable = data.available || false;
-            
+
             if (elements.statusText) {
                 if (state.isAvailable) {
                     elements.statusText.innerHTML = '<span class="inline-block w-2 h-2 bg-green-300 rounded-full mr-1 animate-pulse"></span>Online';
@@ -412,7 +420,7 @@ $publicEnabled = \Modules\Chat\App\Models\ChatConfig::isPublicEnabled();
                     elements.statusText.innerHTML = '<span class="inline-block w-2 h-2 bg-amber-300 rounded-full mr-1"></span>Offline';
                 }
             }
-            
+
             if (!state.isAvailable && data.next_availability && elements.nextAvailability) {
                 elements.nextAvailability.textContent = `Próxima disponibilidade: ${data.next_availability.day} às ${data.next_availability.time}`;
             }
@@ -421,24 +429,24 @@ $publicEnabled = \Modules\Chat\App\Models\ChatConfig::isPublicEnabled();
             state.isAvailable = true; // Assumir disponível em caso de erro
         }
     }
-    
+
     // Restaurar sessão
     async function restoreSession() {
         const savedSessionId = localStorage.getItem('semagri_chat_session');
         if (!savedSessionId) return;
-        
+
         try {
             const response = await fetch(ROUTES.session(savedSessionId), {
                 headers: { 'Accept': 'application/json' }
             });
-            
+
             if (response.ok) {
                 const data = await response.json();
                 if (data.success && data.session && data.session.status !== 'closed') {
                     state.sessionId = savedSessionId;
                 }
             }
-            
+
             if (!state.sessionId) {
                 localStorage.removeItem('semagri_chat_session');
             }
@@ -446,11 +454,11 @@ $publicEnabled = \Modules\Chat\App\Models\ChatConfig::isPublicEnabled();
             console.error('Erro ao restaurar sessão:', error);
         }
     }
-    
+
     // Iniciar chat
     async function handleStartChat(e) {
         e.preventDefault();
-        
+
         const name = document.getElementById('visitor-name')?.value.trim();
         const cpf = document.getElementById('visitor-cpf')?.value.replace(/\D/g, '');
         const email = document.getElementById('visitor-email')?.value.trim();
@@ -465,7 +473,7 @@ $publicEnabled = \Modules\Chat\App\Models\ChatConfig::isPublicEnabled();
             showAlert('Por favor, informe um CPF válido com 11 dígitos.');
                 return;
             }
-        
+
         const startBtn = document.getElementById('chat-start-btn');
         if (startBtn) {
             startBtn.disabled = true;
@@ -511,23 +519,23 @@ $publicEnabled = \Modules\Chat\App\Models\ChatConfig::isPublicEnabled();
             }
         }
     }
-    
+
     // Enviar mensagem
     async function handleSendMessage(e) {
         e.preventDefault();
-        
+
         if (!state.sessionId || !elements.messageInput) return;
-        
+
         const message = elements.messageInput.value.trim();
         if (!message) return;
-        
+
         elements.messageInput.disabled = true;
         if (elements.sendBtn) elements.sendBtn.disabled = true;
-        
+
         const originalValue = elements.messageInput.value;
         elements.messageInput.value = '';
         elements.messageInput.style.height = 'auto';
-        
+
         try {
             const response = await fetch(ROUTES.message(state.sessionId), {
                 method: 'POST',
@@ -538,15 +546,15 @@ $publicEnabled = \Modules\Chat\App\Models\ChatConfig::isPublicEnabled();
                 },
                 body: JSON.stringify({ message }),
             });
-            
+
             const data = await response.json();
-            
+
             if (data.success) {
                 appendMessage(data.message);
                 scrollToBottom();
             } else {
                 elements.messageInput.value = originalValue;
-                
+
                 if (data.message?.includes('encerrada')) {
                     handleSessionClosed();
                     } else {
@@ -563,11 +571,11 @@ $publicEnabled = \Modules\Chat\App\Models\ChatConfig::isPublicEnabled();
             elements.messageInput.focus();
         }
     }
-    
+
     // Carregar mensagens
     async function loadMessages() {
         if (!state.sessionId) return;
-        
+
         try {
             const response = await fetch(ROUTES.session(state.sessionId), {
                 headers: { 'Accept': 'application/json' }
@@ -591,53 +599,53 @@ $publicEnabled = \Modules\Chat\App\Models\ChatConfig::isPublicEnabled();
 
                 const previousCount = state.lastMessageId;
                 let hasNewFromAgent = false;
-                
+
                 // Limpar container se for primeira carga
                 if (previousCount === 0 && elements.messagesContainer) {
                     elements.messagesContainer.innerHTML = '';
                 }
-                
+
                 data.messages.forEach(msg => {
                     if (msg.id > state.lastMessageId) {
                         appendMessage(msg);
                         state.lastMessageId = msg.id;
-                        
+
                         if (msg.sender_type === 'user' && previousCount > 0) {
                             hasNewFromAgent = true;
                         }
                     }
                 });
-                
+
                 if (hasNewFromAgent && !state.isOpen) {
                     showNotificationBadge();
                     playNotificationSound();
                 } else if (hasNewFromAgent) {
                     playNotificationSound();
                 }
-                
+
                 scrollToBottom();
             }
         } catch (error) {
             console.error('Erro ao carregar mensagens:', error);
         }
     }
-    
+
     // Adicionar mensagem ao DOM
     function appendMessage(msg) {
         if (!elements.messagesContainer) return;
-        
+
         // Verificar se já existe
         if (elements.messagesContainer.querySelector(`[data-message-id="${msg.id}"]`)) return;
-        
+
         const isSent = msg.sender_type === 'visitor';
             const isSystem = msg.sender_type === 'system';
 
         const wrapper = document.createElement('div');
         wrapper.className = `flex ${isSent ? 'justify-end' : (isSystem ? 'justify-center' : 'justify-start')}`;
         wrapper.setAttribute('data-message-id', msg.id);
-        
+
         const time = new Date(msg.created_at).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-        
+
         if (isSystem) {
             wrapper.innerHTML = `
                 <div class="message-bubble system px-4 py-2">
@@ -659,10 +667,10 @@ $publicEnabled = \Modules\Chat\App\Models\ChatConfig::isPublicEnabled();
                 </div>
             `;
         }
-        
+
         elements.messagesContainer.appendChild(wrapper);
     }
-    
+
     // UI Helpers
     function showInitialForm() {
         elements.offlineMessage?.classList.add('hidden');
@@ -672,7 +680,7 @@ $publicEnabled = \Modules\Chat\App\Models\ChatConfig::isPublicEnabled();
         elements.inputContainer?.classList.add('hidden');
         elements.sessionClosed?.classList.add('hidden');
     }
-    
+
     function showOfflineMessage() {
         elements.offlineMessage?.classList.remove('hidden');
         elements.initialForm?.classList.add('hidden');
@@ -681,7 +689,7 @@ $publicEnabled = \Modules\Chat\App\Models\ChatConfig::isPublicEnabled();
         elements.inputContainer?.classList.add('hidden');
         elements.sessionClosed?.classList.add('hidden');
     }
-    
+
     function showChatInterface() {
         elements.offlineMessage?.classList.add('hidden');
         elements.initialForm?.classList.add('hidden');
@@ -690,100 +698,100 @@ $publicEnabled = \Modules\Chat\App\Models\ChatConfig::isPublicEnabled();
         elements.inputContainer?.classList.remove('hidden');
         elements.sessionClosed?.classList.add('hidden');
     }
-    
+
     function handleSessionClosed() {
         localStorage.removeItem('semagri_chat_session');
         state.sessionId = null;
         state.lastMessageId = 0;
         stopPolling();
-        
+
         elements.inputContainer?.classList.add('hidden');
         elements.sessionClosed?.classList.remove('hidden');
     }
-    
+
     function handleNewSession() {
         localStorage.removeItem('semagri_chat_session');
         state.sessionId = null;
         state.lastMessageId = 0;
-        
+
         if (elements.messagesContainer) {
             elements.messagesContainer.innerHTML = '';
         }
-        
+
         if (state.isAvailable) {
             showInitialForm();
         } else {
             showOfflineMessage();
         }
     }
-    
+
     function handleInputResize() {
         if (elements.messageInput) {
             elements.messageInput.style.height = 'auto';
             elements.messageInput.style.height = Math.min(elements.messageInput.scrollHeight, 100) + 'px';
         }
     }
-    
+
     function handleInputKeydown(e) {
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
             elements.messageForm?.dispatchEvent(new Event('submit'));
         }
     }
-    
+
     function showNotificationBadge() {
         if (elements.notificationBadge) {
             elements.notificationBadge.classList.remove('hidden');
         }
     }
-    
+
     function playNotificationSound() {
         if (state.notificationSound && !document.hidden) {
             state.notificationSound.currentTime = 0;
             state.notificationSound.play().catch(() => {});
         }
     }
-    
+
     function scrollToBottom() {
         if (elements.messagesContainer) {
             elements.messagesContainer.scrollTop = elements.messagesContainer.scrollHeight;
         }
     }
-    
+
     // Polling
     function startPolling() {
         stopPolling();
         state.pollInterval = setInterval(loadMessages, POLLING_INTERVAL);
     }
-    
+
     function stopPolling() {
         if (state.pollInterval) {
             clearInterval(state.pollInterval);
             state.pollInterval = null;
         }
     }
-    
+
     // Utilitários
     function escapeHtml(text) {
             const div = document.createElement('div');
             div.textContent = text;
             return div.innerHTML;
         }
-    
+
     function showAlert(message) {
         // Toast simples
         const toast = document.createElement('div');
         toast.className = 'fixed bottom-20 right-4 px-4 py-3 bg-gray-900 text-white text-sm rounded-lg shadow-lg z-[10001] animate-pulse';
         toast.textContent = message;
         document.body.appendChild(toast);
-        
+
         setTimeout(() => {
             toast.style.opacity = '0';
             toast.style.transition = 'opacity 0.3s';
             setTimeout(() => toast.remove(), 300);
         }, 3000);
     }
-    
+
     // Pausar polling quando aba não está visível
     document.addEventListener('visibilitychange', () => {
         if (document.hidden) {
@@ -793,10 +801,10 @@ $publicEnabled = \Modules\Chat\App\Models\ChatConfig::isPublicEnabled();
             startPolling();
         }
     });
-    
+
     // Cleanup
     window.addEventListener('beforeunload', stopPolling);
-    
+
     // Inicializar quando DOM estiver pronto
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', init);

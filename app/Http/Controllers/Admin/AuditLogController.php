@@ -37,12 +37,19 @@ class AuditLogController extends Controller
 
     public function clean(Request $request)
     {
-        $days = $request->input('days', 90);
-        
+        $days = (int) $request->input('days', 90);
+
         try {
+            // Se days for 0, limpa tudo (opcional, vamos ver se o usuário quer isso)
+            // Mas seguindo o pedido por "período", vamos manter a lógica de subDays
             $deleted = $this->auditService->cleanOldLogs($days);
+
+            $message = $days === 0
+                ? "Todos os logs foram removidos com sucesso."
+                : "{$deleted} logs com mais de {$days} dias foram removidos.";
+
             return redirect()->route('admin.audit.index')
-                ->with('success', "{$deleted} logs antigos foram removidos");
+                ->with('success', $message);
         } catch (\Exception $e) {
             return redirect()->back()
                 ->with('error', 'Erro ao limpar logs: ' . $e->getMessage());

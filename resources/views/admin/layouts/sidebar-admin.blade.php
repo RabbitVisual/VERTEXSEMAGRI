@@ -185,6 +185,32 @@
             </div>
         </div>
 
+        <!-- Solicitações -->
+        <div class="pt-4 mt-4 border-t border-gray-200 dark:border-slate-700">
+            <div class="px-3 mb-3">
+                <h3 class="text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400 flex items-center gap-2">
+                    <x-icon name="clipboard-list" class="w-3.5 h-3.5" style="duotone" />
+                    Solicitações
+                </h3>
+            </div>
+            <div class="space-y-1">
+                @if(\Nwidart\Modules\Facades\Module::isEnabled('Materiais') && Route::has('admin.materiais.solicitar.create'))
+                <a href="{{ route('admin.materiais.solicitar.create') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 {{ request()->routeIs('admin.materiais.solicitar.*') ? 'bg-teal-100 text-teal-700 dark:bg-teal-900/30 dark:text-teal-400' : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-slate-700' }}">
+                    <div class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center {{ request()->routeIs('admin.materiais.solicitar.*') ? 'bg-teal-500 dark:bg-teal-600' : 'bg-gray-100 dark:bg-slate-700' }}">
+                        <x-icon name="file-lines" style="duotone" class="w-5 h-5 {{ request()->routeIs('admin.materiais.solicitar.*') ? 'text-white' : 'text-gray-600 dark:text-gray-400' }}" />
+                    </div>
+                    <span class="flex-1">Solicitar Materiais</span>
+                </a>
+                <a href="{{ route('admin.materiais.solicitacoes.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 {{ request()->routeIs('admin.materiais.solicitacoes.*') ? 'bg-teal-100 text-teal-700 dark:bg-teal-900/30 dark:text-teal-400' : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-slate-700' }}">
+                    <div class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center {{ request()->routeIs('admin.materiais.solicitacoes.*') ? 'bg-teal-500 dark:bg-teal-600' : 'bg-gray-100 dark:bg-slate-700' }}">
+                        <x-icon name="file-invoice" style="duotone" class="w-5 h-5 {{ request()->routeIs('admin.materiais.solicitacoes.*') ? 'text-white' : 'text-gray-600 dark:text-gray-400' }}" />
+                    </div>
+                    <span class="flex-1">Solicitações Registradas</span>
+                </a>
+                @endif
+            </div>
+        </div>
+
         <!-- Gestão de Recursos -->
         <div class="pt-4 mt-4 border-t border-gray-200 dark:border-slate-700">
             <div class="px-3 mb-3">
@@ -201,24 +227,6 @@
                     </div>
                     <span class="flex-1">Materiais</span>
                 </a>
-                @endif
-
-                @if(\Nwidart\Modules\Facades\Module::isEnabled('Materiais') && Route::has('admin.materiais.solicitar.create'))
-                <a href="{{ route('admin.materiais.solicitar.create') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 {{ request()->routeIs('admin.materiais.solicitar.*') ? 'bg-teal-100 text-teal-700 dark:bg-teal-900/30 dark:text-teal-400' : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-slate-700' }}">
-                    <div class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center {{ request()->routeIs('admin.materiais.solicitar.*') ? 'bg-teal-500 dark:bg-teal-600' : 'bg-gray-100 dark:bg-slate-700' }}">
-                        <x-icon name="file-lines" style="duotone" class="w-5 h-5 {{ request()->routeIs('admin.materiais.solicitar.*') ? 'text-white' : 'text-gray-600 dark:text-gray-400' }}" />
-                    </div>
-                    <span class="flex-1">Solicitar Materiais</span>
-                </a>
-                <a href="{{ route('admin.materiais.solicitacoes.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 {{ request()->routeIs('admin.materiais.solicitacoes.*') ? 'bg-teal-100 text-teal-700 dark:bg-teal-900/30 dark:text-teal-400' : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-slate-700' }}">
-                    <div class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center {{ request()->routeIs('admin.materiais.solicitacoes.*') ? 'bg-teal-500 dark:bg-teal-600' : 'bg-gray-100 dark:bg-slate-700' }}">
-                        <x-icon name="file-invoice" style="duotone" class="w-5 h-5 {{ request()->routeIs('admin.materiais.solicitacoes.*') ? 'text-white' : 'text-gray-600 dark:text-gray-400' }}" />
-                    </div>
-                    <span class="flex-1">Solicitações Registradas</span>
-                </a>
-                @endif
-
-                @if(\Nwidart\Modules\Facades\Module::isEnabled('Materiais') && Route::has('admin.materiais.categorias.index'))
                 <a href="{{ route('admin.materiais.categorias.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 {{ request()->routeIs('admin.materiais.categorias.*') ? 'bg-teal-100 text-teal-700 dark:bg-teal-900/30 dark:text-teal-400' : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-slate-700' }}">
                     <div class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center {{ request()->routeIs('admin.materiais.categorias.*') ? 'bg-teal-500 dark:bg-teal-600' : 'bg-gray-100 dark:bg-slate-700' }}">
                         <x-icon name="grid-2" style="duotone" class="w-5 h-5 {{ request()->routeIs('admin.materiais.categorias.*') ? 'text-white' : 'text-gray-600 dark:text-gray-400' }}" />
@@ -226,6 +234,7 @@
                     <span class="flex-1">Categorias de Materiais</span>
                 </a>
                 @endif
+
             </div>
         </div>
 

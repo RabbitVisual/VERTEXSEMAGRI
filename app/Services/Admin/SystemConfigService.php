@@ -252,6 +252,13 @@ class SystemConfigService
                 'group' => 'recaptcha',
                 'description' => 'Score mínimo aceito (0.0 a 1.0). Recomendado: 0.5',
             ],
+            // Configurações Google Maps
+            'google_maps.api_key' => [
+                'value' => env('GOOGLE_MAPS_API_KEY', ''),
+                'type' => 'password',
+                'group' => 'integrations',
+                'description' => 'Chave de API do Google Maps (Javascript API)',
+            ],
         ];
     }
 
@@ -351,31 +358,104 @@ class SystemConfigService
     }
 
     /**
-     * Update config and sync with .env file
+     * Ensure Google Maps configs exist (sync with .env)
      */
-    public function updateConfigWithEnvSync(string $key, $value, ?string $type = null, ?string $description = null): SystemConfig
+    public function ensureGoogleMapsConfigs(): void
+    {
+        $mapsConfigs = [
+            'google_maps.api_key' => env('GOOGLE_MAPS_API_KEY', ''),
+        ];
+
+        foreach ($mapsConfigs as $key => $envValue) {
+            $config = SystemConfig::where('key', $key)->first();
+            $defaultConfig = $this->getDefaultConfigs()[$key] ?? null;
+
+            if (!$config) {
+                SystemConfig::create([
+                    'key' => $key,
+                    'value' => $envValue,
+                    'type' => $defaultConfig['type'] ?? 'string',
+                    'group' => 'integrations',
+                    'description' => $defaultConfig['description'] ?? '',
+                ]);
+            } elseif ($config->value !== $envValue && !empty($envValue)) {
+                // Sincronizar com .env se o valor do .env não estiver vazio
+                $config->value = $envValue;
+                $config->save();
+            }
+        }
+    }
+
+    /**
+     * Update config and sync with .env file (supports deferred sync for batch operations)
+     */
+    public function updateConfigWithEnvSync(string $key, $value, ?string $type = null, ?string $description = null, bool $deferSync = false): SystemConfig
     {
         $config = $this->updateConfig($key, $value, $type, $description);
 
-        // Sincronizar com .env para configurações PIX
-        if (str_starts_with($key, 'pix.')) {
-            $envKey = strtoupper(str_replace('.', '_', $key));
-            $this->syncToEnv($envKey, $config->value);
-        }
-
-        // Sincronizar com .env para configurações reCAPTCHA
-        if (str_starts_with($key, 'recaptcha.')) {
-            $envKey = strtoupper(str_replace('.', '_', $key));
-            $this->syncToEnv($envKey, $config->value);
+        if (!$deferSync) {
+            $this->syncOneToEnv($key, $config->value);
         }
 
         return $config;
     }
 
     /**
-     * Sync config value to .env file
+     * Update multiple configs and sync with .env in a single write operation
      */
-    protected function syncToEnv(string $envKey, string $value): void
+    public function batchUpdateConfigsWithEnvSync(array $configsToUpdate): void
+    {
+        $envUpdates = [];
+
+        foreach ($configsToUpdate as $key => $value) {
+            $config = SystemConfig::where('key', $key)->first();
+
+            if ($config) {
+                // Se for boolean, garantir formato 0 ou 1
+                $processedValue = $value;
+                if ($config->type === 'boolean') {
+                    $processedValue = $value ? '1' : '0';
+                }
+
+                $this->updateConfig($key, $value, $config->type, $config->description);
+
+                // Verificar se a chave deve ir para o .env
+                if (str_starts_with($key, 'pix.') ||
+                    str_starts_with($key, 'recaptcha.') ||
+                    str_starts_with($key, 'google_maps.')) {
+
+                    $envKey = strtoupper(str_replace('.', '_', $key));
+                    $envUpdates[$envKey] = $processedValue;
+                }
+            } else {
+                // Caso a config não exista na DB, apenas atualiza
+                $this->updateConfig($key, $value);
+            }
+        }
+
+        if (!empty($envUpdates)) {
+            $this->syncBatchToEnv($envUpdates);
+        }
+    }
+
+    /**
+     * Sync a single config to .env
+     */
+    protected function syncOneToEnv(string $key, string $value): void
+    {
+        if (str_starts_with($key, 'pix.') ||
+            str_starts_with($key, 'recaptcha.') ||
+            str_starts_with($key, 'google_maps.')) {
+
+            $envKey = strtoupper(str_replace('.', '_', $key));
+            $this->syncBatchToEnv([$envKey => $value]);
+        }
+    }
+
+    /**
+     * Sync multiple config values to .env file in one go
+     */
+    protected function syncBatchToEnv(array $updates): void
     {
         $envPath = base_path('.env');
 
@@ -385,28 +465,33 @@ class SystemConfigService
 
         try {
             $envContent = file_get_contents($envPath);
+            $modified = false;
 
-            // Escapar caracteres especiais para regex
-            $escapedKey = preg_quote($envKey, '/');
-            $pattern = "/^{$escapedKey}=.*/m";
+            foreach ($updates as $envKey => $value) {
+                // Escapar caracteres especiais para regex
+                $escapedKey = preg_quote($envKey, '/');
+                $pattern = "/^{$escapedKey}=.*/m";
 
-            // Se o valor contém espaços ou caracteres especiais, usar aspas
-            $formattedValue = $value;
-            if (preg_match('/[\s#=]/', $value)) {
-                $formattedValue = '"' . addslashes($value) . '"';
+                // Se o valor contém espaços ou caracteres especiais, usar aspas
+                $formattedValue = $value;
+                if (preg_match('/[\s#=]/', (string)$value)) {
+                    $formattedValue = '"' . addslashes((string)$value) . '"';
+                }
+
+                if (preg_match($pattern, $envContent)) {
+                    $envContent = preg_replace($pattern, "{$envKey}={$formattedValue}", $envContent);
+                } else {
+                    // Adicionar no final do arquivo
+                    $envContent .= "\n{$envKey}={$formattedValue}";
+                }
+                $modified = true;
             }
 
-            if (preg_match($pattern, $envContent)) {
-                $envContent = preg_replace($pattern, "{$envKey}={$formattedValue}", $envContent);
-            } else {
-                // Adicionar no final do arquivo
-                $envContent .= "\n{$envKey}={$formattedValue}";
+            if ($modified) {
+                file_put_contents($envPath, $envContent);
             }
-
-            file_put_contents($envPath, $envContent);
         } catch (\Exception $e) {
-            // Log erro mas não interrompe o processo
-            \Log::warning("Erro ao sincronizar configuração {$envKey} com .env: " . $e->getMessage());
+            \Log::warning("Erro ao sincronizar lote de configurações com .env: " . $e->getMessage());
         }
     }
 }

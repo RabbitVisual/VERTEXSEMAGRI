@@ -1,239 +1,249 @@
 @extends('Co-Admin.layouts.app')
 
-@section('title', 'Sessão de Chat - ' . ($session->visitor_name ?? 'Sem nome'))
+@section('title', 'Sessão de Chat - ' . ($session->visitor_name ?? 'Visitante'))
 
 @section('content')
-<div class="container mx-auto px-4 sm:px-6 lg:px-8 py-6 max-w-7xl">
-    <div class="space-y-6 md:space-y-8">
-        <!-- Page Header -->
-        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 md:pb-6 border-b border-gray-200 dark:border-slate-700">
-            <div>
-                <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white flex items-center gap-3 mb-2">
-                    <div class="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center shadow-lg">
-                        <x-icon name="rotate-right" class="w-5 h-5" />
+<div class="space-y-8 animate__animated animate__fadeIn pb-12">
+    <!-- Page Header -->
+    <div class="relative overflow-hidden bg-white dark:bg-slate-800 rounded-[2.5rem] p-8 md:p-10 shadow-sm border border-slate-100 dark:border-slate-700 transition-all duration-300">
+        <div class="absolute top-0 right-0 w-80 h-80 bg-green-50/50 dark:bg-green-900/10 rounded-full -mr-40 -mt-40 blur-3xl"></div>
+
+        <div class="relative z-10 flex flex-col md:flex-row md:items-center md:justify-between gap-8">
+            <div class="flex items-center gap-5">
+                <a href="{{ route('co-admin.chat.index') }}"
+                   class="w-12 h-12 bg-slate-100 dark:bg-slate-700 rounded-2xl flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-green-600 hover:text-white transition-all active:scale-95 group">
+                    <x-icon name="arrow-left" class="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
+                </a>
+                <div>
+                    <div class="flex items-center gap-3 mb-1">
+                        <h1 class="text-3xl md:text-4xl font-black text-slate-900 dark:text-white tracking-tight leading-none">
+                            {{ $session->visitor_name ?? 'Visitante' }}
+                        </h1>
+                        @php
+                            $statusConfig = [
+                                'waiting' => ['bg' => 'bg-amber-100/50 text-amber-600', 'label' => 'Aguardando'],
+                                'active' => ['bg' => 'bg-green-100/50 text-green-600', 'label' => 'Em Atendimento'],
+                                'closed' => ['bg' => 'bg-slate-100 text-slate-500', 'label' => 'Encerrado'],
+                            ];
+                            $s = $statusConfig[$session->status] ?? ['bg' => 'bg-slate-100', 'label' => $session->status];
+                        @endphp
+                        <span class="px-3 py-1 text-[10px] font-black uppercase tracking-widest rounded-full {{ $s['bg'] }}">
+                            {{ $s['label'] }}
+                        </span>
+                    </div>
+                    <nav aria-label="breadcrumb" class="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-400">
+                        <x-icon name="id-card" class="w-3 h-3" />
+                        <span>Sessão: #{{ $session->id }}</span>
+                        <span class="mx-1">•</span>
+                        <span>{{ $session->created_at->format('d/m/Y H:i') }}</span>
+                    </nav>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-3">
+                @if($session->status !== 'closed')
+                <form action="{{ route('co-admin.chat.close', $session->id) }}" method="POST" onsubmit="return confirm('Encerrar esta sessão?')">
+                    @csrf
+                    <button type="submit" class="inline-flex items-center gap-3 px-8 py-4 text-sm font-black text-white bg-red-600 rounded-2xl hover:bg-red-700 shadow-xl shadow-red-500/20 transition-all active:scale-95 border-b-4 border-red-800 uppercase tracking-widest group">
+                        <x-icon name="xmark" class="w-5 h-5 group-hover:rotate-90 transition-transform" />
+                        Encerrar Chat
+                    </button>
+                </form>
+                @else
+                <form action="{{ route('co-admin.chat.reopen', $session->id) }}" method="POST">
+                    @csrf
+                    <button type="submit" class="inline-flex items-center gap-3 px-8 py-4 text-sm font-black text-white bg-green-600 rounded-2xl hover:bg-green-700 shadow-xl shadow-green-500/20 transition-all active:scale-95 border-b-4 border-green-800 uppercase tracking-widest group">
+                        <x-icon name="rotate-right" class="w-5 h-5 group-hover:rotate-180 transition-transform" />
                         Reabrir
                     </button>
                 </form>
                 @endif
             </div>
         </div>
+    </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <!-- Chat Messages -->
-            <div class="lg:col-span-2 min-w-0">
-                <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-gray-200 dark:border-slate-700 overflow-hidden">
-                    <div class="px-6 py-4 border-b border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-900/50 flex items-center justify-between">
-                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
-                            <svg class="w-5 h-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 01-2.555-.337A5.972 5.972 0 015.41 20.97a5.969 5.969 0 01-.474-.065 4.48 4.48 0 00.978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25z" />
-                            </svg>
-                            Histórico de Mensagens
-                        </h3>
-                        <span class="text-sm text-gray-500 dark:text-gray-400">{{ $session->messages->count() }} mensagens</span>
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <!-- Main Chat Area -->
+        <div class="lg:col-span-8 space-y-6">
+            <div class="bg-white dark:bg-slate-800 rounded-[2.5rem] shadow-sm border border-slate-100 dark:border-slate-700 overflow-hidden flex flex-col h-[700px]">
+                <!-- Chat Header -->
+                <div class="px-8 py-6 border-b border-slate-100 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-900/50 flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-green-500 flex items-center justify-center text-white shadow-lg shadow-green-500/20">
+                            <x-icon name="comments" style="duotone" class="w-5 h-5" />
+                        </div>
+                        <h3 class="text-lg font-black text-slate-900 dark:text-white uppercase tracking-tight">Histórico</h3>
                     </div>
-                    <div id="chat-messages-container" class="p-6 h-[500px] overflow-y-auto space-y-4" style="background-image: url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%239C92AC\' fill-opacity=\'0.03\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');">
-                        @forelse($session->messages as $message)
-                        <div class="flex {{ $message->sender_type === 'user' ? 'justify-end' : ($message->sender_type === 'system' ? 'justify-center' : 'justify-start') }}">
-                            <div class="max-w-[75%] {{ $message->sender_type === 'system' ? 'max-w-[90%]' : '' }}">
-                                @if($message->sender_type !== 'system')
-                                <div class="flex items-center gap-2 mb-1 {{ $message->sender_type === 'user' ? 'justify-end' : '' }}">
-                                    <span class="text-xs font-medium {{ $message->sender_type === 'user' ? 'text-green-600 dark:text-green-400' : 'text-gray-600 dark:text-gray-400' }}">
-                                        {{ $message->sender_name }}
-                                    </span>
-                                    <span class="text-xs text-gray-500 dark:text-gray-400">
-                                        {{ $message->created_at->format('d/m H:i') }}
-                                    </span>
-                                </div>
-                                @endif
-                                <div class="px-4 py-2.5 rounded-2xl shadow-sm
-                                    {{ $message->sender_type === 'user' ? 'bg-gradient-to-br from-green-100 to-green-50 dark:from-green-900/40 dark:to-green-800/30 text-gray-900 dark:text-white rounded-br-md' : '' }}
-                                    {{ $message->sender_type === 'visitor' ? 'bg-white dark:bg-slate-700 border border-gray-200 dark:border-slate-600 text-gray-900 dark:text-white rounded-bl-md' : '' }}
-                                    {{ $message->sender_type === 'system' ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 text-sm text-center' : '' }}
-                                ">
-                                    <p class="whitespace-pre-wrap break-words">{{ $message->message }}</p>
-                                    @if($message->sender_type === 'system')
-                                    <p class="text-xs mt-1 opacity-70">{{ $message->created_at->format('d/m H:i') }}</p>
-                                    @endif
+                    <div class="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                        {{ $session->messages->count() }} Mensagens
+                    </div>
+                </div>
+
+                <!-- Messages Container -->
+                <div id="chat-messages-container" class="flex-1 p-8 overflow-y-auto space-y-6 bg-slate-50/30 dark:bg-slate-900/10 custom-scrollbar" style="background-image: url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%239C92AC\' fill-opacity=\'0.05\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');">
+                    @forelse($session->messages as $message)
+                        @if($message->sender_type === 'system')
+                            <div class="flex justify-center">
+                                <div class="px-6 py-2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 text-[10px] font-black uppercase tracking-widest border border-slate-200/50 dark:border-slate-700 shadow-sm">
+                                    {{ $message->message }}
+                                    <span class="ml-2 opacity-50">{{ $message->created_at->format('H:i') }}</span>
                                 </div>
                             </div>
+                        @else
+                            <div class="flex {{ $message->sender_type === 'user' ? 'justify-end' : 'justify-start' }}">
+                                <div class="max-w-[80%] group">
+                                    <div class="flex items-center gap-2 mb-2 {{ $message->sender_type === 'user' ? 'justify-end' : '' }}">
+                                        @if($message->sender_type !== 'user')
+                                            <div class="w-6 h-6 rounded-lg bg-green-500 flex items-center justify-center text-[10px] font-black text-white shadow-sm">
+                                                {{ strtoupper(substr($message->sender_name, 0, 1)) }}
+                                            </div>
+                                        @endif
+                                        <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">{{ $message->sender_name }}</span>
+                                        <span class="text-[9px] font-black text-slate-300 uppercase">{{ $message->created_at->format('H:i') }}</span>
+                                        @if($message->sender_type === 'user')
+                                            <div class="w-6 h-6 rounded-lg bg-slate-900 dark:bg-green-600 flex items-center justify-center text-[10px] font-black text-white shadow-sm">
+                                                {{ strtoupper(substr($message->sender_name, 0, 1)) }}
+                                            </div>
+                                        @endif
+                                    </div>
+                                    <div class="relative px-6 py-4 rounded-3xl shadow-sm border {{ $message->sender_type === 'user' ? 'bg-slate-900 dark:bg-green-600 text-white border-slate-800 dark:border-green-500 rounded-tr-none' : 'bg-white dark:bg-slate-800 text-slate-900 dark:text-white border-slate-100 dark:border-slate-700 rounded-tl-none' }}">
+                                        <p class="text-sm font-medium leading-relaxed whitespace-pre-wrap break-words">{{ $message->message }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+                    @empty
+                        <div class="h-full flex flex-col items-center justify-center text-center p-12">
+                            <div class="w-20 h-20 bg-slate-100 dark:bg-slate-800/50 rounded-3xl flex items-center justify-center mb-6 border-2 border-dashed border-slate-200 dark:border-slate-700">
+                                <x-icon name="message-slash" class="w-10 h-10 text-slate-300" />
+                            </div>
+                            <h4 class="text-xl font-black text-slate-900 dark:text-white uppercase tracking-tight mb-2">Sem Mensagens</h4>
+                            <p class="text-slate-400 text-sm max-w-[250px]">Nenhuma interação foi registrada nesta sessão até o momento.</p>
                         </div>
-                        @empty
-                        <div class="text-center py-8 text-gray-500 dark:text-gray-400">
-                            <svg class="w-12 h-12 mx-auto mb-3 text-gray-300 dark:text-gray-600" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 01-2.555-.337A5.972 5.972 0 015.41 20.97a5.969 5.969 0 01-.474-.065 4.48 4.48 0 00.978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25z" />
-                            </svg>
-                            <p>Nenhuma mensagem nesta sessão</p>
+                    @endforelse
+                </div>
+
+                <!-- Message Input -->
+                @if($session->status !== 'closed')
+                <div class="p-8 border-t border-slate-100 dark:border-slate-700 bg-white dark:bg-slate-800">
+                    <form id="message-form" class="relative group">
+                        @csrf
+                        <input type="text" id="message-input" autocomplete="off" placeholder="Escreva sua resposta aqui..."
+                               class="w-full bg-slate-50 dark:bg-slate-900/50 border-slate-100 dark:border-slate-700 rounded-2xl focus:ring-4 focus:ring-green-500/10 focus:bg-white dark:focus:bg-slate-900 text-slate-900 dark:text-white text-sm font-bold pl-6 pr-32 py-5 transition-all shadow-inner">
+                        <button type="submit" class="absolute right-2 top-2 bottom-2 px-6 bg-slate-900 dark:bg-green-600 text-white rounded-xl font-black text-xs uppercase tracking-widest hover:bg-black dark:hover:bg-green-700 transition-all active:scale-95 shadow-lg group">
+                            <span>Enviar</span>
+                            <x-icon name="paper-plane" class="w-4 h-4 ml-2 inline group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                        </button>
+                    </form>
+                </div>
+                @endif
+            </div>
+        </div>
+
+        <!-- Sidebar Info -->
+        <div class="lg:col-span-4 space-y-8">
+            <!-- Visitor Info Card -->
+            <div class="bg-white dark:bg-slate-800 rounded-[2.5rem] shadow-sm border border-slate-100 dark:border-slate-700 overflow-hidden">
+                <div class="p-8 space-y-8">
+                    <div class="flex flex-col items-center text-center">
+                        <div class="w-24 h-24 rounded-[2rem] bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white text-4xl font-black shadow-xl shadow-blue-500/20 mb-6">
+                            {{ strtoupper(substr($session->visitor_name ?? 'V', 0, 1)) }}
                         </div>
-                        @endforelse
+                        <h3 class="text-2xl font-black text-slate-900 dark:text-white tracking-tight uppercase leading-none mb-2">
+                            {{ $session->visitor_name ?? 'Visitante' }}
+                        </h3>
+                        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-50 dark:bg-slate-900 text-[10px] font-black uppercase tracking-widest text-slate-400 border border-slate-100 dark:border-slate-800">
+                            <span class="w-2 h-2 rounded-full @if($session->status === 'active') bg-green-500 animate-pulse @else bg-slate-300 @endif"></span>
+                            {{ $session->status_texto }}
+                        </div>
                     </div>
-                    
-                    @if($session->status !== 'closed')
-                    <div class="px-6 py-4 border-t border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-900/50">
-                        <form id="message-form" class="flex gap-3">
-                            @csrf
-                            <input type="text" id="message-input" placeholder="Digite sua mensagem..." 
-                                   class="flex-1 px-4 py-2.5 text-sm border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 dark:bg-slate-700 dark:border-slate-600 dark:text-white">
-                            <button type="submit" class="px-6 py-2.5 text-white bg-gradient-to-r from-green-500 to-green-600 rounded-xl hover:from-green-600 hover:to-green-700 transition-all shadow-md flex items-center gap-2">
-                                <span>Enviar</span>
-                                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
-                                </svg>
-                            </button>
-                        </form>
+
+                    <div class="space-y-4 pt-8 border-t border-slate-50 dark:border-slate-700/50">
+                        @if($session->visitor_cpf)
+                        <div class="flex items-center gap-4 group">
+                            <div class="w-12 h-12 bg-slate-50 dark:bg-slate-900 rounded-2xl flex items-center justify-center text-slate-400 group-hover:bg-green-50 group-hover:text-green-600 transition-colors">
+                                <x-icon name="id-card" style="duotone" class="w-5 h-5" />
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-0.5">CPF do Visitante</p>
+                                <p class="text-sm font-bold text-slate-700 dark:text-slate-300">{{ \Modules\Chat\App\Helpers\CpfHelper::format($session->visitor_cpf) }}</p>
+                            </div>
+                        </div>
+                        @endif
+
+                        @if($session->visitor_email)
+                        <div class="flex items-center gap-4 group">
+                            <div class="w-12 h-12 bg-slate-50 dark:bg-slate-900 rounded-2xl flex items-center justify-center text-slate-400 group-hover:bg-green-50 group-hover:text-green-600 transition-colors">
+                                <x-icon name="envelope" style="duotone" class="w-5 h-5" />
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-0.5">E-mail</p>
+                                <p class="text-sm font-bold text-slate-700 dark:text-slate-300 truncate">{{ $session->visitor_email }}</p>
+                            </div>
+                        </div>
+                        @endif
+
+                        <div class="flex items-center gap-4 group">
+                            <div class="w-12 h-12 bg-slate-50 dark:bg-slate-900 rounded-2xl flex items-center justify-center text-slate-400 group-hover:bg-green-50 group-hover:text-green-600 transition-colors">
+                                <x-icon name="clock" style="duotone" class="w-5 h-5" />
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-0.5">Duração</p>
+                                <p class="text-sm font-bold text-slate-700 dark:text-slate-300">{{ $session->created_at->diffForHumans() }}</p>
+                            </div>
+                        </div>
                     </div>
-                    @endif
                 </div>
             </div>
 
-            <!-- Sidebar -->
-            <div class="lg:col-span-1 min-w-0 space-y-6">
-                <!-- Informações do Visitante -->
-                <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-gray-200 dark:border-slate-700">
-                    <div class="px-6 py-4 border-b border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-900/50">
-                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
-                            <svg class="w-5 h-5 text-blue-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
-                            </svg>
-                            Informações do Visitante
-                        </h3>
-                    </div>
-                    <div class="p-6 space-y-4">
-                        <div class="flex items-center gap-4">
-                            <div class="w-16 h-16 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white text-2xl font-bold flex-shrink-0">
-                                {{ strtoupper(substr($session->visitor_name ?? 'V', 0, 1)) }}
-                            </div>
-                            <div>
-                                <p class="font-semibold text-gray-900 dark:text-white text-lg">{{ $session->visitor_name ?? 'Visitante' }}</p>
-                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-full mt-1
-                                    {{ $session->status === 'waiting' ? 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400' : '' }}
-                                    {{ $session->status === 'active' ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400' : '' }}
-                                    {{ $session->status === 'closed' ? 'bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-400' : '' }}
-                                ">
-                                    <span class="w-1.5 h-1.5 rounded-full
-                                        {{ $session->status === 'waiting' ? 'bg-amber-500' : '' }}
-                                        {{ $session->status === 'active' ? 'bg-green-500' : '' }}
-                                        {{ $session->status === 'closed' ? 'bg-gray-500' : '' }}
-                                    "></span>
-                                    {{ $session->status_texto }}
-                                </span>
-                            </div>
-                        </div>
-                        
-                        <div class="space-y-3 pt-4 border-t border-gray-200 dark:border-slate-700">
-                            @if($session->visitor_cpf)
-                            <div class="flex items-center gap-3">
-                                <div class="w-8 h-8 bg-gray-100 dark:bg-slate-700 rounded-lg flex items-center justify-center flex-shrink-0">
-                                    <svg class="w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5zm6-10.125a1.875 1.875 0 11-3.75 0 1.875 1.875 0 013.75 0zm1.294 6.336a6.721 6.721 0 01-3.17.789 6.721 6.721 0 01-3.168-.789 3.376 3.376 0 016.338 0z" />
-                                    </svg>
-                                </div>
-                                <div>
-                                    <p class="text-xs text-gray-500 dark:text-gray-400">CPF</p>
-                                    <p class="text-sm font-medium text-gray-900 dark:text-white">{{ \Modules\Chat\App\Helpers\CpfHelper::format($session->visitor_cpf) }}</p>
-                                </div>
-                            </div>
-                            @endif
-                            
-                            @if($session->visitor_email)
-                            <div class="flex items-center gap-3">
-                                <div class="w-8 h-8 bg-gray-100 dark:bg-slate-700 rounded-lg flex items-center justify-center flex-shrink-0">
-                                    <svg class="w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
-                                    </svg>
-                                </div>
-                                <div>
-                                    <p class="text-xs text-gray-500 dark:text-gray-400">E-mail</p>
-                                    <p class="text-sm font-medium text-gray-900 dark:text-white">{{ $session->visitor_email }}</p>
-                                </div>
-                            </div>
-                            @endif
-                            
-                            @if($session->visitor_phone)
-                            <div class="flex items-center gap-3">
-                                <div class="w-8 h-8 bg-gray-100 dark:bg-slate-700 rounded-lg flex items-center justify-center flex-shrink-0">
-                                    <svg class="w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
-                                    </svg>
-                                </div>
-                                <div>
-                                    <p class="text-xs text-gray-500 dark:text-gray-400">Telefone</p>
-                                    <p class="text-sm font-medium text-gray-900 dark:text-white">{{ $session->visitor_phone }}</p>
-                                </div>
-                            </div>
-                            @endif
-                            
-                            <div class="flex items-center gap-3">
-                                <div class="w-8 h-8 bg-gray-100 dark:bg-slate-700 rounded-lg flex items-center justify-center flex-shrink-0">
-                                    <svg class="w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
-                                </div>
-                                <div>
-                                    <p class="text-xs text-gray-500 dark:text-gray-400">Iniciada em</p>
-                                    <p class="text-sm font-medium text-gray-900 dark:text-white">{{ $session->created_at->format('d/m/Y H:i') }}</p>
-                                </div>
-                            </div>
-                            
-                            @if($session->closed_at)
-                            <div class="flex items-center gap-3">
-                                <div class="w-8 h-8 bg-gray-100 dark:bg-slate-700 rounded-lg flex items-center justify-center flex-shrink-0">
-                                    <svg class="w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
-                                </div>
-                                <div>
-                                    <p class="text-xs text-gray-500 dark:text-gray-400">Encerrada em</p>
-                                    <p class="text-sm font-medium text-gray-900 dark:text-white">{{ $session->closed_at->format('d/m/Y H:i') }}</p>
-                                </div>
-                            </div>
-                            @endif
-                        </div>
-                    </div>
+            <!-- Assignment Card -->
+            <div class="bg-white dark:bg-slate-800 rounded-[2.5rem] shadow-sm border border-slate-100 dark:border-slate-700 overflow-hidden">
+                <div class="px-8 py-6 border-b border-slate-100 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-900/50">
+                    <h3 class="text-sm font-black text-slate-900 dark:text-white uppercase tracking-widest flex items-center gap-2">
+                        <x-icon name="user-plus" style="duotone" class="w-4 h-4 text-green-500" />
+                        Atribuir Atendente
+                    </h3>
                 </div>
-
-                <!-- Atendente -->
-                <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-gray-200 dark:border-slate-700">
-                    <div class="px-6 py-4 border-b border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-900/50">
-                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
-                            <svg class="w-5 h-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" />
-                            </svg>
-                            Atendente
-                        </h3>
-                    </div>
-                    <div class="p-6">
-                        @if($session->assignedTo)
-                        <div class="flex items-center gap-3 mb-4">
-                            <div class="w-12 h-12 rounded-full bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center text-white font-bold">
+                <div class="p-8">
+                    @if($session->assignedTo)
+                        <div class="flex items-center gap-4 mb-8 p-4 bg-slate-50 dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800">
+                            <div class="w-12 h-12 rounded-xl bg-slate-200 dark:bg-slate-800 flex items-center justify-center text-slate-600 font-black text-lg">
                                 {{ strtoupper(substr($session->assignedTo->name, 0, 1)) }}
                             </div>
-                            <div>
-                                <p class="font-semibold text-gray-900 dark:text-white">{{ $session->assignedTo->name }}</p>
-                                <p class="text-sm text-gray-500 dark:text-gray-400">{{ $session->assignedTo->email }}</p>
+                            <div class="flex-1 min-w-0">
+                                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-0.5">Responsável Atual</p>
+                                <p class="text-sm font-black text-slate-900 dark:text-white truncate uppercase tracking-tight">{{ $session->assignedTo->name }}</p>
                             </div>
                         </div>
-                        @else
-                        <p class="text-gray-500 dark:text-gray-400 italic mb-4">Nenhum atendente atribuído</p>
-                        @endif
-                        
-                        @if($session->status !== 'closed')
-                        <form action="{{ route('co-admin.chat.assign', $session->id) }}" method="POST">
+                    @else
+                        <div class="text-center py-6 bg-slate-50 dark:bg-slate-900/50 rounded-3xl border border-dashed border-slate-200 dark:border-slate-800 mb-8">
+                            <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">Ninguém Atribuído</p>
+                        </div>
+                    @endif
+
+                    @if($session->status !== 'closed')
+                        <form action="{{ route('co-admin.chat.assign', $session->id) }}" method="POST" class="space-y-4">
                             @csrf
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                {{ $session->assignedTo ? 'Transferir para' : 'Atribuir a' }}
-                            </label>
-                            <select name="assigned_to" class="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 dark:bg-slate-700 dark:border-slate-600 dark:text-white mb-3">
-                                <option value="">Selecione um atendente</option>
-                                @foreach($agents as $agent)
-                                <option value="{{ $agent->id }}" {{ $session->assigned_to == $agent->id ? 'selected' : '' }}>{{ $agent->name }}</option>
-                                @endforeach
-                            </select>
-                            <button type="submit" class="w-full px-4 py-2.5 text-sm font-medium text-white bg-green-600 rounded-xl hover:bg-green-700 transition-colors">
-                                {{ $session->assignedTo ? 'Transferir' : 'Atribuir' }}
+                            <div class="relative group">
+                                <div class="absolute inset-y-0 left-0 flex items-center pl-5 pointer-events-none text-slate-400 group-focus-within:text-green-500 transition-colors">
+                                    <x-icon name="users" style="duotone" class="w-4 h-4" />
+                                </div>
+                                <select name="assigned_to" required
+                                        class="w-full bg-slate-50 dark:bg-slate-900 border-slate-100 dark:border-slate-800 rounded-2xl focus:ring-4 focus:ring-green-500/10 text-slate-900 dark:text-white text-xs font-black uppercase tracking-widest pl-12 p-4 transition-all appearance-none">
+                                    <option value="">Trocar Atendente</option>
+                                    @foreach($agents as $agent)
+                                        <option value="{{ $agent->id }}" {{ $session->assigned_to == $agent->id ? 'selected' : '' }}>{{ $agent->name }}</option>
+                                    @endforeach
+                                </select>
+                                <div class="absolute inset-y-0 right-4 flex items-center pointer-events-none text-slate-300">
+                                    <x-icon name="chevron-down" class="w-3 h-3" />
+                                </div>
+                            </div>
+                            <button type="submit" class="w-full py-5 bg-slate-900 dark:bg-green-600 text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-black dark:hover:bg-green-700 transition-all shadow-xl shadow-green-500/10 active:scale-95 border-b-4 border-slate-700 dark:border-green-800">
+                                {{ $session->assignedTo ? 'Transferir Chat' : 'Assumir Chat' }}
                             </button>
                         </form>
-                        @endif
-                    </div>
+                    @endif
                 </div>
             </div>
         </div>
@@ -248,23 +258,23 @@
     const sessionId = {{ $session->id }};
     let lastMessageId = {{ $session->messages->last()?->id ?? 0 }};
     let pollInterval = null;
-    
+
     const messageForm = document.getElementById('message-form');
     const messageInput = document.getElementById('message-input');
     const messagesContainer = document.getElementById('chat-messages-container');
-    
+
     // Enviar mensagem
     if (messageForm) {
         messageForm.addEventListener('submit', async function(e) {
             e.preventDefault();
-            
+
             const message = messageInput.value.trim();
             if (!message) return;
-            
+
             messageInput.disabled = true;
             const originalValue = messageInput.value;
             messageInput.value = '';
-            
+
             try {
                 const response = await fetch(`{{ url('co-admin/chat') }}/${sessionId}/api/message`, {
                     method: 'POST',
@@ -275,9 +285,9 @@
                     },
                     body: JSON.stringify({ message }),
                 });
-                
+
                 const data = await response.json();
-                
+
                 if (data.success) {
                     appendMessage(data.message);
                     scrollToBottom();
@@ -295,7 +305,7 @@
             }
         });
     }
-    
+
     // Polling para novas mensagens
     async function checkNewMessages() {
         try {
@@ -305,9 +315,9 @@
                     'X-CSRF-TOKEN': CSRF_TOKEN,
                 },
             });
-            
+
             const data = await response.json();
-            
+
             if (data.success && data.messages && data.messages.length > 0) {
                 data.messages.forEach(msg => {
                     if (msg.id > lastMessageId) {
@@ -321,63 +331,71 @@
             console.error('Erro ao verificar mensagens:', error);
         }
     }
-    
+
     function appendMessage(msg) {
         if (!messagesContainer) return;
         if (messagesContainer.querySelector(`[data-message-id="${msg.id}"]`)) return;
-        
+
         const isSent = msg.sender_type === 'user';
         const isSystem = msg.sender_type === 'system';
-        
+
         const wrapper = document.createElement('div');
         wrapper.className = `flex ${isSent ? 'justify-end' : (isSystem ? 'justify-center' : 'justify-start')}`;
         wrapper.setAttribute('data-message-id', msg.id);
-        
-        const time = new Date(msg.created_at).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
-        const senderName = msg.sender?.name || (isSent ? 'Você' : '{{ $session->visitor_name ?? "Visitante" }}');
-        
+
+        const time = new Date(msg.created_at).toLocaleString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+        const senderName = msg.sender_name || (isSent ? 'Você' : 'Visitante');
+
         if (isSystem) {
             wrapper.innerHTML = `
-                <div class="max-w-[90%]">
-                    <div class="px-4 py-2.5 rounded-2xl bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 text-sm text-center">
-                        <p class="whitespace-pre-wrap">${escapeHtml(msg.message)}</p>
-                        <p class="text-xs mt-1 opacity-70">${time}</p>
-                    </div>
+                <div class="px-6 py-2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 text-[10px] font-black uppercase tracking-widest border border-slate-200/50 dark:border-slate-700 shadow-sm">
+                    ${escapeHtml(msg.message)}
+                    <span class="ml-2 opacity-50">${time}</span>
                 </div>
             `;
         } else {
             wrapper.innerHTML = `
-                <div class="max-w-[75%]">
-                    <div class="flex items-center gap-2 mb-1 ${isSent ? 'justify-end' : ''}">
-                        <span class="text-xs font-medium ${isSent ? 'text-green-600 dark:text-green-400' : 'text-gray-600 dark:text-gray-400'}">${escapeHtml(senderName)}</span>
-                        <span class="text-xs text-gray-500 dark:text-gray-400">${time}</span>
+                <div class="max-w-[80%] group">
+                    <div class="flex items-center gap-2 mb-2 ${isSent ? 'justify-end' : ''}">
+                        ${!isSent ? `
+                            <div class="w-6 h-6 rounded-lg bg-green-500 flex items-center justify-center text-[10px] font-black text-white shadow-sm">
+                                ${escapeHtml(senderName.substring(0,1).toUpperCase())}
+                            </div>
+                        ` : ''}
+                        <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">${escapeHtml(senderName)}</span>
+                        <span class="text-[9px] font-black text-slate-300 uppercase">${time}</span>
+                        ${isSent ? `
+                            <div class="w-6 h-6 rounded-lg bg-slate-900 dark:bg-green-600 flex items-center justify-center text-[10px] font-black text-white shadow-sm">
+                                ${escapeHtml(senderName.substring(0,1).toUpperCase())}
+                            </div>
+                        ` : ''}
                     </div>
-                    <div class="px-4 py-2.5 rounded-2xl shadow-sm ${isSent ? 'bg-gradient-to-br from-green-100 to-green-50 dark:from-green-900/40 dark:to-green-800/30 text-gray-900 dark:text-white rounded-br-md' : 'bg-white dark:bg-slate-700 border border-gray-200 dark:border-slate-600 text-gray-900 dark:text-white rounded-bl-md'}">
-                        <p class="whitespace-pre-wrap break-words">${escapeHtml(msg.message)}</p>
+                    <div class="relative px-6 py-4 rounded-3xl shadow-sm border ${isSent ? 'bg-slate-900 dark:bg-green-600 text-white border-slate-800 dark:border-green-500 rounded-tr-none' : 'bg-white dark:bg-slate-800 text-slate-900 dark:text-white border-slate-100 dark:border-slate-700 rounded-tl-none'}">
+                        <p class="text-sm font-medium leading-relaxed whitespace-pre-wrap break-words">${escapeHtml(msg.message)}</p>
                     </div>
                 </div>
             `;
         }
-        
+
         messagesContainer.appendChild(wrapper);
     }
-    
+
     function scrollToBottom() {
         if (messagesContainer) {
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
         }
     }
-    
+
     function escapeHtml(text) {
         const div = document.createElement('div');
         div.textContent = text;
         return div.innerHTML;
     }
-    
+
     // Iniciar polling
     scrollToBottom();
     pollInterval = setInterval(checkNewMessages, 3000);
-    
+
     // Cleanup
     window.addEventListener('beforeunload', () => {
         if (pollInterval) clearInterval(pollInterval);

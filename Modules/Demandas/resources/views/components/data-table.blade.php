@@ -6,7 +6,7 @@
         @if($exportRoute)
             <div class="relative inline-block" id="export-dropdown-{{ uniqid() }}">
                 <button type="button" onclick="toggleDropdown(this)" class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:ring-2 focus:ring-indigo-500 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-700">
-                    <x-demandas::icon name="arrow-down-tray" class="w-4 h-4" />
+                    <x-icon name="download" class="w-4 h-4" />
                     Exportar
                 </button>
                 <div id="dropdown-menu-{{ uniqid() }}" class="hidden absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-lg bg-white dark:bg-gray-800 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
@@ -64,4 +64,3 @@ document.addEventListener('click', function(event) {
     }
 });
 </script>
-

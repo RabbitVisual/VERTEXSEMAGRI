@@ -301,10 +301,10 @@ document.addEventListener('DOMContentLoaded', function() {
         card.className = 'animate-fadeIn p-6 bg-emerald-50 text-emerald-900 dark:bg-emerald-900/10 dark:text-emerald-400 rounded-3xl border border-emerald-200 dark:border-emerald-800 relative group';
         card.innerHTML = `
             <button type="button" class="btn-remover-customizado absolute -top-3 -right-3 w-8 h-8 bg-red-500 text-white rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform">
-                <i class="fa-solid fa-xmark"></i>
+                <i class="fa-duotone fa-xmark"></i>
             </button>
             <h4 class="font-bold text-xs uppercase tracking-widest mb-4 flex items-center gap-2">
-                <i class="fa-solid fa-file-circle-plus"></i> Material Não Cadastrado
+                <i class="fa-duotone fa-file-circle-plus"></i> Material Não Cadastrado
             </h4>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div class="md:col-span-2">

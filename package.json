@@ -19,8 +19,6 @@
         "idb": "^8.0.3",
         "jquery": "^3.7.1",
         "jquery-mask-plugin": "^1.14.16",
-        "leaflet": "^1.9.4",
-        "leaflet-geosearch": "^4.2.2",
         "localforage": "^1.10.0",
         "playwright": "^1.58.2",
         "preline": "^3.2.3",

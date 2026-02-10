@@ -65,6 +65,7 @@ class FormatHelper
             'fardo', 'fardos',
             'saco', 'sacos',
             'embalagem', 'embalagens',
+            'unid', 'und', 'un',
         ];
 
         // Para unidades inteiras, sempre mostrar sem decimais
@@ -82,4 +83,3 @@ class FormatHelper
         return number_format($quantidade, 2, ',', '.');
     }
 }
-

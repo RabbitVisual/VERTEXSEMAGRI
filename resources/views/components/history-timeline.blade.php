@@ -1,7 +1,7 @@
 <div class="card shadow-sm">
     <div class="card-header">
         <h6 class="mb-0">
-            <i class="bi bi-clock-history me-2"></i>
+            <x-icon name="clock-rotate-left" class="me-2" />
             {{ $title }}
         </h6>
     </div>
@@ -37,7 +37,7 @@
                             <i class="{{ $icon }} me-2"></i>
                             <strong>{{ $label }}</strong>
                             @if(isset($entry->user_id) && $entry->user_id)
-                                <span class="text-muted ms-2">por 
+                                <span class="text-muted ms-2">por
                                     @php
                                         $user = \App\Models\User::find($entry->user_id);
                                     @endphp
@@ -47,7 +47,7 @@
                         </div>
                         @if(isset($entry->created_at))
                             <small class="text-muted">
-                                <i class="bi bi-calendar3 me-1"></i>
+                                <x-icon name="calendar-days" class="me-1" />
                                 {{ \Carbon\Carbon::parse($entry->created_at)->format('d/m/Y H:i:s') }}
                             </small>
                         @endif
@@ -60,7 +60,7 @@
                                             <li>
                                                 <strong>{{ $key }}:</strong>
                                                 <span class="text-danger">{{ $entry->old_data[$key] }}</span>
-                                                <i class="bi bi-arrow-right mx-1"></i>
+                                                <x-icon name="arrow-right" class="mx-1" />
                                                 <span class="text-success">{{ $newValue }}</span>
                                             </li>
                                         @endif
@@ -73,7 +73,7 @@
             </div>
         @empty
             <p class="text-muted mb-0 text-center py-3">
-                <i class="bi bi-inbox fs-4 d-block mb-2"></i>
+                <x-icon name="inbox" class="fs-4 d-block mb-2" />
                 Nenhum histórico disponível
             </p>
         @endforelse
@@ -87,4 +87,3 @@
         padding-bottom: 0 !important;
     }
 </style>
-

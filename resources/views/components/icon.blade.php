@@ -15,8 +15,18 @@
 @php
     // 1. Resolve Name from Module (if applicable)
     if ($module && empty($name)) {
-        $moduleKey = Illuminate\Support\Str::studly($module);
-        $name = config("icons.modules.{$moduleKey}");
+        // Try exact match first, then lowercase, then studly
+        $name = config("icons.modules.{$module}");
+
+        if (!$name) {
+            $moduleLower = strtolower($module);
+            $name = config("icons.modules.{$moduleLower}");
+        }
+
+        if (!$name) {
+            $moduleKey = Illuminate\Support\Str::studly($module);
+            $name = config("icons.modules.{$moduleKey}");
+        }
 
         if (!$name) {
             $name = 'circle-question'; // Fallback if module mapping missing

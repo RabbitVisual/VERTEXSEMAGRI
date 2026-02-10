@@ -307,9 +307,11 @@
 <script>
     // Local-only dashboard logic (Zero-CDN)
     document.addEventListener('DOMContentLoaded', function() {
-        const ctx = document.getElementById('actionsChart').getContext('2d');
-        const data = @json($chartData['modules_activity']);
+        const canvas = document.getElementById('actionsChart');
+        if (!canvas) return;
 
+        const ctx = canvas.getContext('2d');
+        const data = @json($chartData['modules_activity']);
 
         new Chart(ctx, {
             type: 'doughnut',

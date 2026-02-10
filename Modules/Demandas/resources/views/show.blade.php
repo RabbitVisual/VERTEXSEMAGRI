@@ -23,15 +23,15 @@
             </div>
             <div class="flex flex-wrap gap-2">
                 <x-demandas::button href="{{ route('demandas.print', $demanda) }}" target="_blank" variant="outline-primary" class="!bg-white !text-indigo-600 hover:!bg-indigo-50 !border-indigo-600 shadow-xl hover:shadow-2xl transition-all transform hover:scale-105">
-                    <x-demandas::icon name="printer" class="w-5 h-5 mr-2" />
+                    <x-icon name="print" class="w-5 h-5 mr-2" />
                     Imprimir
                 </x-demandas::button>
                 <x-demandas::button href="{{ route('demandas.edit', $demanda) }}" variant="outline-primary" class="!bg-white !text-indigo-600 hover:!bg-indigo-50 !border-indigo-600 shadow-xl hover:shadow-2xl transition-all transform hover:scale-105">
-                    <x-demandas::icon name="pencil" class="w-5 h-5 mr-2" />
+                    <x-icon name="pencil" class="w-5 h-5 mr-2" />
                     Editar
                 </x-demandas::button>
                 <x-demandas::button href="{{ route('demandas.index') }}" variant="outline" class="bg-white/10 text-white border-white/30 hover:bg-white/20">
-                    <x-demandas::icon name="arrow-left" class="w-5 h-5 mr-2" />
+                    <x-icon name="arrow-left" class="w-5 h-5 mr-2" />
                     Voltar
                 </x-demandas::button>
             </div>
@@ -42,7 +42,7 @@
     @if(session('warning'))
         <x-demandas::alert type="warning" dismissible>
             <div class="flex items-center gap-2">
-                <x-demandas::icon name="exclamation-triangle" class="w-5 h-5" />
+                <x-icon name="triangle-exclamation" class="w-5 h-5" />
                 <span class="font-medium">{!! session('warning') !!}</span>
             </div>
         </x-demandas::alert>
@@ -51,7 +51,7 @@
     @if(session('success'))
         <x-demandas::alert type="success" dismissible>
             <div class="flex items-center gap-2">
-                <x-demandas::icon name="check-circle" class="w-5 h-5" />
+                <x-icon name="circle-check" class="w-5 h-5" />
                 <span class="font-medium">{{ session('success') }}</span>
             </div>
         </x-demandas::alert>
@@ -60,7 +60,7 @@
     @if(session('error'))
         <x-demandas::alert type="danger" dismissible>
             <div class="flex items-center gap-2">
-                <x-demandas::icon name="x-circle" class="w-5 h-5" />
+                <x-icon name="circle-xmark" class="w-5 h-5" />
                 <span class="font-medium">{{ session('error') }}</span>
             </div>
         </x-demandas::alert>
@@ -70,16 +70,16 @@
     <x-demandas::card class="rounded-xl shadow-lg p-0">
         <nav class="flex space-x-1 p-1 bg-gray-50 dark:bg-gray-900/50" aria-label="Tabs">
             <button data-tab-target="detalhes" class="flex-1 border-b-2 border-indigo-500 text-indigo-600 dark:text-indigo-400 whitespace-nowrap py-3 px-4 text-sm font-semibold bg-white dark:bg-gray-800 rounded-t-lg transition-colors">
-                <x-demandas::icon name="information-circle" class="w-4 h-4 inline mr-2" />
+                <x-icon name="circle-info" class="w-4 h-4 inline mr-2" />
                 Detalhes
             </button>
             <button data-tab-target="relacionamentos" class="flex-1 border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300 whitespace-nowrap py-3 px-4 text-sm font-medium hover:bg-white dark:hover:bg-gray-800 rounded-t-lg transition-colors">
-                <x-demandas::icon name="link" class="w-4 h-4 inline mr-2" />
+                <x-icon name="link" class="w-4 h-4 inline mr-2" />
                 Relacionamentos
             </button>
             @if(method_exists($demanda, 'getHistory'))
             <button data-tab-target="historico" class="flex-1 border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300 whitespace-nowrap py-3 px-4 text-sm font-medium hover:bg-white dark:hover:bg-gray-800 rounded-t-lg transition-colors">
-                <x-demandas::icon name="clock" class="w-4 h-4 inline mr-2" />
+                <x-icon name="clock" class="w-4 h-4 inline mr-2" />
                 Histórico
             </button>
             @endif
@@ -98,7 +98,7 @@
                         <x-slot name="header">
                             <div class="flex items-center gap-3">
                                 <div class="p-2 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg">
-                                    <x-demandas::icon name="information-circle" class="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+                                    <x-icon name="circle-info" class="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
                                 </div>
                                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
                                     Informações da Demanda
@@ -140,13 +140,13 @@
                                         </div>
                                         @if($demanda->solicitante_telefone)
                                             <div class="text-sm text-gray-600 dark:text-gray-400 flex items-center gap-1 mt-1">
-                                                <x-demandas::icon name="phone" class="w-4 h-4" />
+                                                <x-icon name="phone" class="w-4 h-4" />
                                                 {{ $demanda->solicitante_telefone }}
                                             </div>
                                         @endif
                                         @if($demanda->solicitante_email)
                                             <div class="text-sm text-gray-600 dark:text-gray-400 flex items-center gap-1 mt-1">
-                                                <x-demandas::icon name="envelope" class="w-4 h-4" />
+                                                <x-icon name="envelope" class="w-4 h-4" />
                                                 {{ $demanda->solicitante_email }}
                                             </div>
                                         @endif
@@ -157,7 +157,7 @@
                                     <div>
                                         @if($demanda->localidade)
                                             <a href="{{ route('localidades.show', $demanda->localidade->id) }}" class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 flex items-center gap-1">
-                                                <x-demandas::icon name="map-pin" class="w-4 h-4" />
+                                                <x-icon name="location-dot" class="w-4 h-4" />
                                                 <span class="font-semibold">{{ $demanda->localidade->nome }}</span>
                                                 @if($demanda->localidade->codigo)
                                                     <span class="text-gray-500 dark:text-gray-400">({{ $demanda->localidade->codigo }})</span>
@@ -185,7 +185,7 @@
                                             ];
                                             $tipoModule = $tipoModules[$demanda->tipo] ?? 'Demandas';
                                         @endphp
-                                        <x-icon module="{{ $tipomodule }}" class="w-5 h-5 text-gray-600 dark:text-gray-400" />
+                                        <x-icon module="{{ $tipoModule }}" class="w-5 h-5 text-gray-600 dark:text-gray-400" />
                                         <span class="font-semibold text-gray-900 dark:text-white">{{ $demanda->tipo_texto }}</span>
                                     </div>
                                 </div>
@@ -205,7 +205,7 @@
                                     <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Criado por</label>
                                     <div class="flex items-center gap-1 text-gray-900 dark:text-white">
                                         @if($demanda->usuario)
-                                            <x-demandas::icon name="user" class="w-4 h-4" />
+                                            <x-icon name="user" class="w-4 h-4" />
                                             {{ $demanda->usuario->name }}
                                         @else
                                             <span class="text-gray-500 dark:text-gray-400">N/A</span>
@@ -275,7 +275,7 @@
                                 <div>
                                     <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Data de Abertura</label>
                                     <div class="flex items-center gap-1 text-gray-900 dark:text-white">
-                                        <x-demandas::icon name="calendar" class="w-4 h-4" />
+                                        <x-icon name="calendar" class="w-4 h-4" />
                                         @if($demanda->data_abertura)
                                             {{ is_string($demanda->data_abertura) ? \Carbon\Carbon::parse($demanda->data_abertura)->format('d/m/Y H:i') : $demanda->data_abertura->format('d/m/Y H:i') }}
                                         @else
@@ -287,7 +287,7 @@
                                 <div>
                                     <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Data de Conclusão</label>
                                     <div class="flex items-center gap-1 text-emerald-600 dark:text-emerald-400">
-                                        <x-demandas::icon name="check-circle" class="w-4 h-4" />
+                                        <x-icon name="circle-check" class="w-4 h-4" />
                                         @if($demanda->data_conclusao)
                                             {{ is_string($demanda->data_conclusao) ? \Carbon\Carbon::parse($demanda->data_conclusao)->format('d/m/Y H:i') : $demanda->data_conclusao->format('d/m/Y H:i') }}
                                         @else
@@ -309,7 +309,7 @@
                         <x-slot name="header">
                             <div class="flex items-center gap-3">
                                 <div class="p-2 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg">
-                                    <x-demandas::icon name="chart-bar" class="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+                                    <x-icon name="chart-simple" class="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
                                 </div>
                                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
                                     Estatísticas
@@ -328,12 +328,12 @@
                                 <div>
                                     @if($estatisticas['tem_os'])
                                         <x-demandas::badge variant="success">
-                                            <x-demandas::icon name="check-circle" class="w-3 h-3 mr-1" />
+                                            <x-icon name="circle-check" class="w-3 h-3 mr-1" />
                                             Sim
                                         </x-demandas::badge>
                                     @else
                                         <x-demandas::badge variant="secondary">
-                                            <x-demandas::icon name="x-circle" class="w-3 h-3 mr-1" />
+                                            <x-icon name="circle-xmark" class="w-3 h-3 mr-1" />
                                             Não
                                         </x-demandas::badge>
                                     @endif
@@ -348,7 +348,7 @@
                         <x-slot name="header">
                             <div class="flex items-center gap-3">
                                 <div class="p-2 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg">
-                                    <x-demandas::icon name="bolt" class="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+                                    <x-icon name="bolt" class="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
                                 </div>
                                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
                                     Ações Rápidas
@@ -357,29 +357,29 @@
                         </x-slot>
                         <div class="space-y-3">
                             <x-demandas::button href="{{ route('demandas.print', $demanda) }}" target="_blank" variant="primary" class="w-full">
-                                <x-demandas::icon name="printer" class="w-4 h-4 mr-2" />
+                                <x-icon name="print" class="w-4 h-4 mr-2" />
                                 Imprimir Demanda
                             </x-demandas::button>
                             @if(isset($estatisticas) && $estatisticas['pode_criar_os'] && Route::has('ordens.create'))
                                 <x-demandas::button href="{{ route('ordens.create', ['demanda_id' => $demanda->id]) }}" variant="primary" class="w-full">
-                                    <x-demandas::icon name="document-plus" class="w-4 h-4 mr-2" />
+                                    <x-icon name="file-circle-plus" class="w-4 h-4 mr-2" />
                                     Criar OS
                                 </x-demandas::button>
                             @elseif($demanda->ordemServico)
                                 <x-demandas::button href="{{ route('ordens.show', $demanda->ordemServico->id) }}" variant="primary" class="w-full">
-                                    <x-demandas::icon name="document-text" class="w-4 h-4 mr-2" />
+                                    <x-icon name="file-lines" class="w-4 h-4 mr-2" />
                                     Ver OS
                                 </x-demandas::button>
                             @endif
                             <x-demandas::button href="{{ route('demandas.edit', $demanda) }}" variant="primary" class="w-full">
-                                <x-demandas::icon name="pencil" class="w-4 h-4 mr-2" />
+                                <x-icon name="pencil" class="w-4 h-4 mr-2" />
                                 Editar Demanda
                             </x-demandas::button>
                             @if($demanda->solicitante_email && filter_var($demanda->solicitante_email, FILTER_VALIDATE_EMAIL))
                             <form action="{{ route('demandas.reenviar-email', $demanda) }}" method="POST" class="w-full" onsubmit="return confirm('Deseja realmente reenviar o email de confirmação para {$demanda->solicitante_email}?')">
                                 @csrf
                                 <x-demandas::button type="submit" variant="info" class="w-full">
-                                    <x-demandas::icon name="envelope" class="w-4 h-4 mr-2" />
+                                    <x-icon name="envelope" class="w-4 h-4 mr-2" />
                                     Reenviar Email
                                     <span class="text-xs opacity-75 block">Para: {{ $demanda->solicitante_email }}</span>
                                 </x-demandas::button>
@@ -399,7 +399,7 @@
                                 <input type="hidden" name="descricao" value="{{ $demanda->descricao }}">
                                 <input type="hidden" name="observacoes" value="{{ $demanda->observacoes }}">
                                 <x-demandas::button type="submit" variant="warning" class="w-full">
-                                    <x-demandas::icon name="x-circle" class="w-4 h-4 mr-2" />
+                                    <x-icon name="circle-xmark" class="w-4 h-4 mr-2" />
                                     Cancelar
                                 </x-demandas::button>
                             </form>
@@ -408,7 +408,7 @@
                                 @csrf
                                 @method('DELETE')
                                 <x-demandas::button type="submit" variant="danger" class="w-full">
-                                    <x-demandas::icon name="trash" class="w-4 h-4 mr-2" />
+                                    <x-icon name="trash" class="w-4 h-4 mr-2" />
                                     Deletar
                                 </x-demandas::button>
                             </form>
@@ -420,7 +420,7 @@
                         <x-slot name="header">
                             <div class="flex items-center gap-3">
                                 <div class="p-2 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg">
-                                    <x-demandas::icon name="information-circle" class="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+                                    <x-icon name="circle-info" class="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
                                 </div>
                                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
                                     Informações
@@ -500,7 +500,7 @@
                                         </div>
                                         @if($interessado->notificar)
                                             <span class="text-emerald-500" title="Receberá notificações">
-                                                <x-demandas::icon name="bell" class="w-5 h-5" />
+                                                <x-icon name="bell" class="w-5 h-5" />
                                             </span>
                                         @endif
                                     </div>
@@ -516,7 +516,7 @@
                             </div>
                         @else
                             <div class="text-center py-6">
-                                <x-demandas::icon name="users-slash" class="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-3" />
+                                <x-icon name="users-slash" class="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-3" />
                                 <p class="text-gray-500 dark:text-gray-400">Nenhum interessado vinculado ainda</p>
                             </div>
                         @endif
@@ -528,7 +528,7 @@
                         <x-slot name="header">
                             <div class="flex items-center gap-3">
                                 <div class="p-2 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg">
-                                    <x-demandas::icon name="document-text" class="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+                                    <x-icon name="file-lines" class="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
                                 </div>
                                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
                                     Ordem de Serviço
@@ -551,7 +551,7 @@
                         <x-slot name="header">
                             <div class="flex items-center gap-3">
                                 <div class="p-2 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg">
-                                    <x-demandas::icon name="map-pin" class="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+                                    <x-icon name="location-dot" class="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
                                 </div>
                                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
                                     Localidade
@@ -578,7 +578,7 @@
                                 @endif
                                 <x-demandas::button href="{{ route('localidades.show', $demanda->localidade->id) }}" variant="outline" class="w-full">
                                     Ver Localidade
-                                    <x-demandas::icon name="arrow-right" class="w-4 h-4 ml-1" />
+                                    <x-icon name="arrow-right" class="w-4 h-4 ml-1" />
                                 </x-demandas::button>
                             @else
                                 <p class="text-gray-500 dark:text-gray-400">Nenhuma localidade vinculada</p>
@@ -600,7 +600,7 @@
                     <x-slot name="header">
                         <div class="flex items-center gap-3">
                             <div class="p-2 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg">
-                                <x-demandas::icon name="clock" class="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+                                <x-icon name="clock" class="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
                             </div>
                             <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
                                 Histórico
@@ -613,10 +613,10 @@
                                 <div class="flex-shrink-0">
                                     @php
                                         $actionIcons = [
-                                            'created' => ['name' => 'plus-circle', 'color' => 'text-emerald-500'],
+                                            'created' => ['name' => 'circle-plus', 'color' => 'text-emerald-500'],
                                             'updated' => ['name' => 'pencil', 'color' => 'text-indigo-500'],
                                             'deleted' => ['name' => 'trash', 'color' => 'text-red-500'],
-                                            'restored' => ['name' => 'arrow-path', 'color' => 'text-blue-500'],
+                                            'restored' => ['name' => 'rotate', 'color' => 'text-blue-500'],
                                         ];
                                         $actionLabels = [
                                             'created' => 'Criado',
@@ -628,11 +628,11 @@
                                             'cancelled' => 'Cancelado',
                                             'status_changed' => 'Status Alterado',
                                         ];
-                                        $icon = $actionIcons[$entry->action] ?? ['name' => 'information-circle', 'color' => 'text-gray-500'];
+                                        $icon = $actionIcons[$entry->action] ?? ['name' => 'circle-info', 'color' => 'text-gray-500'];
                                         $label = $actionLabels[$entry->action] ?? ucfirst(str_replace('_', ' ', $entry->action));
                                     @endphp
                                     <div class="p-2 bg-gray-100 dark:bg-gray-700 rounded-lg">
-                                        <x-demandas::icon :name="$icon['name']" class="w-5 h-5 {{ $icon['color'] }}" />
+                                        <x-icon :name="$icon['name']" class="w-5 h-5 {{ $icon['color'] }}" />
                                     </div>
                                 </div>
                                 <div class="flex-1">
@@ -656,7 +656,7 @@
                 <x-demandas::card class="rounded-xl shadow-lg">
                     <div class="p-12 text-center">
                         <div class="p-6 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900 rounded-2xl mb-6 shadow-lg inline-block">
-                            <x-demandas::icon name="clock" class="w-16 h-16 text-gray-400 dark:text-gray-500" />
+                            <x-icon name="clock" class="w-16 h-16 text-gray-400 dark:text-gray-500" />
                         </div>
                         <p class="text-gray-500 dark:text-gray-400">Nenhum histórico disponível</p>
                     </div>
