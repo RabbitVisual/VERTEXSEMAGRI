@@ -61,7 +61,6 @@
         <div class="absolute bottom-8 left-0 right-0 flex justify-center space-x-3 z-10">
             @foreach($featuredPosts as $index => $post)
             <button @click="activeSlide = {{ $index }}"
-            <button @click="activeSlide = {{ $index }}"
                     :class="{ 'bg-emerald-500 w-8': activeSlide === {{ $index }}, 'bg-white/50 w-3': activeSlide !== {{ $index }} }"
                     class="h-3 rounded-full transition-all duration-300 focus:outline-none"></button>
             @endforeach

@@ -23,6 +23,11 @@ class Localidade extends Model
         'longitude',
     ];
 
+    protected static function newFactory()
+    {
+        return \Modules\Localidades\Database\Factories\LocalidadeFactory::new();
+    }
+
     // Relacionamentos
     public function pessoas()
     {
