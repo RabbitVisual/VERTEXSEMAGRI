@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Modules\Funcionarios\App\Models\Funcionario;
 use Modules\Funcionarios\App\Services\FuncionarioStatusService;
+use Illuminate\Support\Facades\DB;
 
 class FuncionarioStatusAdminController extends Controller
 {
@@ -23,9 +24,17 @@ class FuncionarioStatusAdminController extends Controller
     {
         $estatisticas = $this->statusService->getEstatisticas();
 
+        $orderBy = "CASE status_campo
+            WHEN 'em_atendimento' THEN 1
+            WHEN 'disponivel' THEN 2
+            WHEN 'pausado' THEN 3
+            WHEN 'offline' THEN 4
+            ELSE 5
+        END";
+
         $funcionarios = Funcionario::where('ativo', true)
             ->with(['ordemServicoAtual.demanda.localidade', 'equipes'])
-            ->orderByRaw("FIELD(status_campo, 'em_atendimento', 'disponivel', 'pausado', 'offline')")
+            ->orderByRaw($orderBy)
             ->orderBy('nome')
             ->get();
 
@@ -47,9 +56,17 @@ class FuncionarioStatusAdminController extends Controller
         $estatisticas = $this->statusService->getEstatisticas();
         $funcionariosEmAtendimento = $this->statusService->getFuncionariosEmAtendimento();
 
+        $orderBy = "CASE status_campo
+            WHEN 'em_atendimento' THEN 1
+            WHEN 'disponivel' THEN 2
+            WHEN 'pausado' THEN 3
+            WHEN 'offline' THEN 4
+            ELSE 5
+        END";
+
         $funcionarios = Funcionario::where('ativo', true)
             ->with(['ordemServicoAtual.demanda.localidade'])
-            ->orderByRaw("FIELD(status_campo, 'em_atendimento', 'disponivel', 'pausado', 'offline')")
+            ->orderByRaw($orderBy)
             ->orderBy('nome')
             ->get()
             ->map(function($f) {
@@ -159,4 +176,3 @@ class FuncionarioStatusAdminController extends Controller
         ]);
     }
 }
-

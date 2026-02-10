@@ -1,48 +1,56 @@
 @extends('Co-Admin.layouts.app')
 
-@section('title', \App\Helpers\TranslationHelper::translateLabel('Pessoas'))
+@section('title', 'Pessoas')
 
 @section('content')
-@php
-    use App\Helpers\TranslationHelper;
-@endphp
 <div class="space-y-6">
-    <!-- Page Header -->
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 border-b border-gray-200 dark:border-gray-700">
         <div>
             <h1 class="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
                 <x-icon module="pessoas" class="w-6 h-6" />
-                {{ TranslationHelper::translateLabel('Pessoas') }}
+                Pessoas
             </h1>
-            <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">{{ TranslationHelper::translateLabel('Gerenciamento de pessoas - Alguns dados são migrados do Cadastro Único e outros são manuais') }}</p>
+            <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Gerenciamento de pessoas</p>
         </div>
-            <x-pessoas::button href="{{ route('pessoas.create') }}" variant="primary">
-                <x-icon name="eye" class="w-5 h-5" />
-                            </a>
-                            <a href="{{ route('pessoas.edit', $pessoa->id) }}"
-                               class="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300"
-                               title="Editar">
-                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
-                                </svg>
-                            </a>
-                        </div>
-                    @else
-                        <span class="text-gray-400 dark:text-gray-500">-</span>
-                    @endif
-                </td>
-            </tr>
-        @empty
-            <tr>
-                <td colspan="9" class="px-6 py-12 text-center">
-                    <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
-                    </svg>
-                    <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-white">{{ TranslationHelper::translateLabel('Nenhuma pessoa encontrada') }}</h3>
-                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">{{ TranslationHelper::translateLabel('Tente ajustar os filtros de busca.') }}</p>
-                </td>
-            </tr>
-        @endforelse
-        </x-pessoas::data-table>
+        <a href="{{ route('pessoas.create') }}" class="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700">
+            Nova Pessoa
+        </a>
     </div>
+
+    <div class="bg-white dark:bg-gray-800 rounded shadow overflow-hidden">
+        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+            <thead class="bg-gray-50 dark:bg-gray-700">
+                <tr>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Nome</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">CPF</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Localidade</th>
+                    <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Ativo</th>
+                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Ações</th>
+                </tr>
+            </thead>
+            <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                @forelse($pessoas as $pessoa)
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap text-gray-900 dark:text-white">{{ $pessoa->nom_pessoa }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-gray-500 dark:text-gray-400">{{ $pessoa->num_cpf_pessoa }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-gray-500 dark:text-gray-400">{{ $pessoa->localidade->nome ?? '-' }}</td>
+                        <td class="px-6 py-4 text-center">
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $pessoa->ativo ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                                {{ $pessoa->ativo ? 'Sim' : 'Não' }}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 text-right whitespace-nowrap">
+                            <a href="{{ route('pessoas.edit', $pessoa->id) }}" class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300">Editar</a>
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="5" class="px-6 py-4 text-center text-gray-500">Nenhuma pessoa encontrada.</td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
+        <div class="px-6 py-4 dark:text-gray-300">{{ $pessoas->links() }}</div>
+    </div>
+</div>
 @endsection
