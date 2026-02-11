@@ -18,7 +18,7 @@ class EventosAdminController extends Controller
     public function index(Request $request)
     {
         $filters = $request->only(['search', 'tipo', 'status', 'publico', 'data_inicio', 'data_fim']);
-        
+
         $query = Evento::with(['localidade'])
             ->withCount('inscricoes');
 
@@ -59,7 +59,7 @@ class EventosAdminController extends Controller
             'em_andamento' => Evento::where('status', 'em_andamento')->count(),
             'concluidos' => Evento::where('status', 'concluido')->count(),
             'publicos' => Evento::where('publico', true)->count(),
-            'com_inscricoes' => Evento::whereColumn('vagas_preenchidas', '>', 0)->count(),
+            'com_inscricoes' => Evento::where('vagas_preenchidas', '>', 0)->count(),
         ];
 
         return view('programasagricultura::admin.eventos.index', compact('eventos', 'estatisticas', 'filters'));
@@ -107,12 +107,12 @@ class EventosAdminController extends Controller
             DB::beginTransaction();
 
             $evento = new Evento($validated);
-            $evento->codigo = Evento::gerarCodigo();
+            $evento->codigo = Evento::generateCode('EVT');
             $evento->vagas_preenchidas = 0;
             $evento->publico = $request->has('publico');
             $evento->inscricao_aberta = $request->has('inscricao_aberta');
             $evento->user_id_criador = auth()->id();
-            
+
             // Converter hora_inicio e hora_fim para datetime
             if ($request->filled('hora_inicio')) {
                 $evento->hora_inicio = $request->data_inicio . ' ' . $request->hora_inicio . ':00';
@@ -120,19 +120,19 @@ class EventosAdminController extends Controller
             if ($request->filled('hora_fim')) {
                 $evento->hora_fim = $request->data_fim ?? $request->data_inicio . ' ' . $request->hora_fim . ':00';
             }
-            
+
             $evento->save();
 
             DB::commit();
 
             Log::info('Evento criado', ['evento_id' => $evento->id, 'user_id' => auth()->id()]);
 
-            return redirect()->route('admin.eventos.index')
+            return redirect()->route('admin.programas-agricultura.eventos.index')
                 ->with('success', 'Evento criado com sucesso!');
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Erro ao criar evento', ['error' => $e->getMessage()]);
-            
+
             return redirect()->back()
                 ->withInput()
                 ->with('error', 'Erro ao criar evento: ' . $e->getMessage());
@@ -203,7 +203,7 @@ class EventosAdminController extends Controller
             $evento->fill($validated);
             $evento->publico = $request->has('publico');
             $evento->inscricao_aberta = $request->has('inscricao_aberta');
-            
+
             // Converter hora_inicio e hora_fim para datetime
             if ($request->filled('hora_inicio')) {
                 $evento->hora_inicio = $request->data_inicio . ' ' . $request->hora_inicio . ':00';
@@ -211,19 +211,19 @@ class EventosAdminController extends Controller
             if ($request->filled('hora_fim')) {
                 $evento->hora_fim = ($request->data_fim ?? $request->data_inicio) . ' ' . $request->hora_fim . ':00';
             }
-            
+
             $evento->save();
 
             DB::commit();
 
             Log::info('Evento atualizado', ['evento_id' => $evento->id, 'user_id' => auth()->id()]);
 
-            return redirect()->route('admin.eventos.show', $evento->id)
+            return redirect()->route('admin.programas-agricultura.eventos.show', $evento->id)
                 ->with('success', 'Evento atualizado com sucesso!');
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Erro ao atualizar evento', ['error' => $e->getMessage()]);
-            
+
             return redirect()->back()
                 ->withInput()
                 ->with('error', 'Erro ao atualizar evento: ' . $e->getMessage());
@@ -252,15 +252,14 @@ class EventosAdminController extends Controller
 
             Log::info('Evento excluído', ['evento_id' => $id, 'user_id' => auth()->id()]);
 
-            return redirect()->route('admin.eventos.index')
+            return redirect()->route('admin.programas-agricultura.eventos.index')
                 ->with('success', 'Evento excluído com sucesso!');
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Erro ao excluir evento', ['error' => $e->getMessage()]);
-            
+
             return redirect()->back()
                 ->with('error', 'Erro ao excluir evento: ' . $e->getMessage());
         }
     }
 }
-

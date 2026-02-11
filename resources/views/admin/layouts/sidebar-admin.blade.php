@@ -282,39 +282,48 @@
                 </h3>
             </div>
             <div class="space-y-1">
-                @if(\Nwidart\Modules\Facades\Module::isEnabled('ProgramasAgricultura') && Route::has('admin.programas.index'))
-                <a href="{{ route('admin.programas.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 {{ request()->routeIs('admin.programas.*') ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-slate-700' }}">
-                    <div class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center {{ request()->routeIs('admin.programas.*') ? 'bg-green-500 dark:bg-green-600' : 'bg-gray-100 dark:bg-slate-700' }}">
-                        <x-module-icon module="ProgramasAgricultura" class="w-5 h-5 {{ request()->routeIs('admin.programas.*') ? 'text-white' : 'text-gray-600 dark:text-gray-400' }}" style="duotone" />
+                @if(\Nwidart\Modules\Facades\Module::isEnabled('ProgramasAgricultura') && Route::has('admin.programas-agricultura.programas.index'))
+                <a href="{{ route('admin.programas-agricultura.programas.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 {{ request()->routeIs('admin.programas-agricultura.programas.*') ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-slate-700' }}">
+                    <div class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center {{ request()->routeIs('admin.programas-agricultura.programas.*') ? 'bg-green-500 dark:bg-green-600' : 'bg-gray-100 dark:bg-slate-700' }}">
+                        <x-module-icon module="ProgramasAgricultura" class="w-5 h-5 {{ request()->routeIs('admin.programas-agricultura.programas.*') ? 'text-white' : 'text-gray-600 dark:text-gray-400' }}" style="duotone" />
                     </div>
                     <span class="flex-1">Programas</span>
                 </a>
                 @endif
 
-                @if(\Nwidart\Modules\Facades\Module::isEnabled('ProgramasAgricultura') && Route::has('admin.eventos.index'))
-                <a href="{{ route('admin.eventos.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 {{ request()->routeIs('admin.eventos.*') ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-slate-700' }}">
-                    <div class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center {{ request()->routeIs('admin.eventos.*') ? 'bg-green-500 dark:bg-green-600' : 'bg-gray-100 dark:bg-slate-700' }}">
-                        <x-icon name="calendar" class="w-5 h-5 {{ request()->routeIs('admin.eventos.*') ? 'text-white' : 'text-gray-600 dark:text-gray-400' }}" style="duotone" />
+                @if(\Nwidart\Modules\Facades\Module::isEnabled('ProgramasAgricultura') && Route::has('admin.programas-agricultura.eventos.index'))
+                <a href="{{ route('admin.programas-agricultura.eventos.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 {{ request()->routeIs('admin.programas-agricultura.eventos.*') ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-slate-700' }}">
+                    <div class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center {{ request()->routeIs('admin.programas-agricultura.eventos.*') ? 'bg-green-500 dark:bg-green-600' : 'bg-gray-100 dark:bg-slate-700' }}">
+                        <x-icon name="calendar" class="w-5 h-5 {{ request()->routeIs('admin.programas-agricultura.eventos.*') ? 'text-white' : 'text-gray-600 dark:text-gray-400' }}" style="duotone" />
                     </div>
                     <span class="flex-1">Eventos</span>
                 </a>
                 @endif
 
-                @if(\Nwidart\Modules\Facades\Module::isEnabled('ProgramasAgricultura') && Route::has('admin.beneficiarios.index'))
-                <a href="{{ route('admin.beneficiarios.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 {{ request()->routeIs('admin.beneficiarios.*') ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-slate-700' }}">
-                    <div class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center {{ request()->routeIs('admin.beneficiarios.*') ? 'bg-green-500 dark:bg-green-600' : 'bg-gray-100 dark:bg-slate-700' }}">
-                        <x-icon name="users" class="w-5 h-5 {{ request()->routeIs('admin.beneficiarios.*') ? 'text-white' : 'text-gray-600 dark:text-gray-400' }}" style="duotone" />
+                @if(\Nwidart\Modules\Facades\Module::isEnabled('ProgramasAgricultura') && Route::has('admin.programas-agricultura.beneficiarios.index'))
+                <a href="{{ route('admin.programas-agricultura.beneficiarios.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 {{ request()->routeIs('admin.programas-agricultura.beneficiarios.*') ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-slate-700' }}">
+                    <div class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center {{ request()->routeIs('admin.programas-agricultura.beneficiarios.*') ? 'bg-green-500 dark:bg-green-600' : 'bg-gray-100 dark:bg-slate-700' }}">
+                        <x-icon name="users" class="w-5 h-5 {{ request()->routeIs('admin.programas-agricultura.beneficiarios.*') ? 'text-white' : 'text-gray-600 dark:text-gray-400' }}" style="duotone" />
                     </div>
                     <span class="flex-1">Beneficiários</span>
                 </a>
                 @endif
 
-                @if(\Nwidart\Modules\Facades\Module::isEnabled('ProgramasAgricultura') && Route::has('admin.inscricoes.index'))
-                <a href="{{ route('admin.inscricoes.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 {{ request()->routeIs('admin.inscricoes.*') ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-slate-700' }}">
-                    <div class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center {{ request()->routeIs('admin.inscricoes.*') ? 'bg-green-500 dark:bg-green-600' : 'bg-gray-100 dark:bg-slate-700' }}">
-                        <x-icon name="clipboard-check" class="w-5 h-5 {{ request()->routeIs('admin.inscricoes.*') ? 'text-white' : 'text-gray-600 dark:text-gray-400' }}" style="duotone" />
+                @if(\Nwidart\Modules\Facades\Module::isEnabled('ProgramasAgricultura') && Route::has('admin.programas-agricultura.inscricoes.index'))
+                <a href="{{ route('admin.programas-agricultura.inscricoes.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 {{ request()->routeIs('admin.programas-agricultura.inscricoes.*') ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-slate-700' }}">
+                    <div class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center {{ request()->routeIs('admin.programas-agricultura.inscricoes.*') ? 'bg-green-500 dark:bg-green-600' : 'bg-gray-100 dark:bg-slate-700' }}">
+                        <x-icon name="clipboard-check" class="w-5 h-5 {{ request()->routeIs('admin.programas-agricultura.inscricoes.*') ? 'text-white' : 'text-gray-600 dark:text-gray-400' }}" style="duotone" />
                     </div>
                     <span class="flex-1">Inscrições</span>
+                </a>
+                @endif
+
+                @if(\Nwidart\Modules\Facades\Module::isEnabled('ProgramasAgricultura') && Route::has('admin.programas-agricultura.permissao.index'))
+                <a href="{{ route('admin.programas-agricultura.permissao.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 {{ request()->routeIs('admin.programas-agricultura.permissao.*') ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-slate-700' }}">
+                    <div class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center {{ request()->routeIs('admin.programas-agricultura.permissao.*') ? 'bg-green-500 dark:bg-green-600' : 'bg-gray-100 dark:bg-slate-700' }}">
+                        <x-icon name="user-shield" class="w-5 h-5 {{ request()->routeIs('admin.programas-agricultura.permissao.*') ? 'text-white' : 'text-gray-600 dark:text-gray-400' }}" style="duotone" />
+                    </div>
+                    <span class="flex-1">Permissões de Programas</span>
                 </a>
                 @endif
 

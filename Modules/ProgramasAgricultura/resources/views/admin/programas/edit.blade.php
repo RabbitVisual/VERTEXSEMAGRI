@@ -1,36 +1,63 @@
 @extends('admin.layouts.admin')
 
-@section('title', 'Editar Programa - Admin')
+@section('title', 'Editar Programa - Agricultura')
 
 @section('content')
-<div class="mb-8 pb-4 border-b border-gray-200 dark:border-slate-700">
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+<div class="space-y-6 md:space-y-8 animate-fade-in pb-12 font-sans italic">
+    <!-- Page Header -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 md:pb-6 border-b border-gray-200 dark:border-slate-700 font-sans italic">
         <div>
-            <h1 class="text-3xl font-bold text-gray-900 dark:text-white flex items-center gap-3 mb-2">
-                <x-icon name="pencil" class="w-8 h-8 text-amber-600 dark:text-amber-500" />
-                Editar Programa
+            <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white flex items-center gap-3 mb-2 font-sans italic tracking-tighter uppercase">
+                <div class="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg font-sans italic">
+                    <x-icon name="pencil-square" class="w-6 h-6 md:w-7 md:h-7 text-white font-sans italic" style="duotone" />
+                </div>
+                <span>Ajustar Programa</span>
             </h1>
-            <nav aria-label="breadcrumb" class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
-                <a href="{{ route('admin.dashboard') }}" class="hover:text-amber-600 dark:hover:text-amber-400">Admin</a>
-                <x-icon name="chevron-right" class="w-4 h-4" />
-                <a href="{{ route('admin.programas.index') }}" class="hover:text-amber-600 dark:hover:text-amber-400">Programas</a>
-                <x-icon name="chevron-right" class="w-4 h-4" />
-                <span class="text-gray-900 dark:text-white">Editar</span>
+            <nav aria-label="breadcrumb" class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 font-sans italic text-xs uppercase">
+                <a href="{{ route('admin.dashboard') }}" class="hover:text-amber-600 font-sans italic">Admin</a>
+                <x-icon name="chevron-right" class="w-3 h-3 text-slate-400 font-sans italic" style="duotone" />
+                <a href="{{ route('admin.programas-agricultura.programas.index') }}" class="hover:text-amber-600 font-sans italic">Programas</a>
+                <x-icon name="chevron-right" class="w-3 h-3 text-slate-400 font-sans italic" style="duotone" />
+                <span class="text-gray-900 dark:text-white font-medium uppercase tracking-widest text-[10px] font-sans italic">Edição Técnica</span>
             </nav>
         </div>
-        <a href="{{ route('admin.programas.show', $programa->id) }}" class="inline-flex items-center gap-2 px-4 py-2 border-2 border-gray-300 dark:border-slate-600 text-gray-700 dark:text-slate-300 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors">
-            <x-icon name="arrow-left" class="w-5 h-5" />
-            Voltar
-        </a>
+        <div class="flex gap-2 font-sans italic">
+            <a href="{{ route('admin.programas-agricultura.programas.show', $programa->id) }}" class="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 dark:bg-slate-700 dark:text-gray-300 dark:border-slate-600 transition-colors font-sans italic uppercase text-xs">
+                <x-icon name="eye" class="w-4 h-4 font-sans italic" style="duotone" />
+                Visualizar
+            </a>
+            <a href="{{ route('admin.programas-agricultura.programas.index') }}" class="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 dark:bg-slate-700 dark:text-gray-300 dark:border-slate-600 transition-colors font-sans italic uppercase text-xs">
+                <x-icon name="arrow-left" class="w-4 h-4 font-sans italic" style="duotone" />
+                Voltar
+            </a>
+        </div>
     </div>
-</div>
 
-<x-admin.card title="Editar Programa">
-    <form action="{{ route('admin.programas.update', $programa->id) }}" method="POST">
+    @if($errors->any())
+    <div class="p-4 bg-red-50 border border-red-100 text-red-800 rounded-2xl flex items-start gap-3 shadow-sm animate-shake font-sans italic">
+        <x-icon name="circle-exclamation" class="w-5 h-5 text-red-500 mt-1 font-sans italic" style="duotone" />
+        <div class="font-sans italic uppercase text-[10px]">
+            <p class="font-black tracking-widest mb-1 italic">Consistir Dados:</p>
+            <ul class="list-disc list-inside text-[11px] font-bold italic tracking-tight font-sans italic">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    </div>
+    @endif
+
+    <form action="{{ route('admin.programas-agricultura.programas.update', $programa->id) }}" method="POST" class="font-sans italic">
         @csrf
         @method('PUT')
         @include('programasagricultura::admin.programas._form', ['programa' => $programa])
-    </form>
-</x-admin.card>
-@endsection
 
+        <div class="mt-8 flex justify-end font-sans italic">
+            <button type="submit" class="inline-flex items-center gap-3 px-8 py-4 bg-slate-900 dark:bg-blue-600 text-white rounded-2xl hover:bg-slate-800 dark:hover:bg-blue-700 transition-all shadow-xl active:scale-95 font-black uppercase tracking-widest text-xs italic font-sans italic">
+                <x-icon name="floppy-disk" class="w-5 h-5 font-sans italic" style="duotone" />
+                Atualizar Estrutura
+            </button>
+        </div>
+    </form>
+</div>
+@endsection

@@ -255,17 +255,38 @@ Route::prefix('co-admin')->name('co-admin.')->middleware(['auth', 'co-admin-or-a
     if (Module::isEnabled('ProgramasAgricultura')) {
         Route::prefix('programas')->name('programas.')->group(function () {
             Route::get('/', [\Modules\ProgramasAgricultura\App\Http\Controllers\ProgramasAgriculturaController::class, 'index'])->name('index');
+            Route::get('/create', [\Modules\ProgramasAgricultura\App\Http\Controllers\ProgramasAgriculturaController::class, 'create'])->name('create');
+            Route::post('/', [\Modules\ProgramasAgricultura\App\Http\Controllers\ProgramasAgriculturaController::class, 'store'])->name('store');
             Route::get('/{id}', [\Modules\ProgramasAgricultura\App\Http\Controllers\ProgramasAgriculturaController::class, 'show'])->name('show');
+            Route::get('/{id}/edit', [\Modules\ProgramasAgricultura\App\Http\Controllers\ProgramasAgriculturaController::class, 'edit'])->name('edit');
+            Route::put('/{id}', [\Modules\ProgramasAgricultura\App\Http\Controllers\ProgramasAgriculturaController::class, 'update'])->name('update');
+            Route::delete('/{id}', [\Modules\ProgramasAgricultura\App\Http\Controllers\ProgramasAgriculturaController::class, 'destroy'])->name('destroy');
         });
 
         Route::prefix('eventos')->name('eventos.')->group(function () {
             Route::get('/', [\Modules\ProgramasAgricultura\App\Http\Controllers\EventosController::class, 'index'])->name('index');
+            Route::get('/create', [\Modules\ProgramasAgricultura\App\Http\Controllers\EventosController::class, 'create'])->name('create');
+            Route::post('/', [\Modules\ProgramasAgricultura\App\Http\Controllers\EventosController::class, 'store'])->name('store');
             Route::get('/{id}', [\Modules\ProgramasAgricultura\App\Http\Controllers\EventosController::class, 'show'])->name('show');
+            Route::get('/{id}/edit', [\Modules\ProgramasAgricultura\App\Http\Controllers\EventosController::class, 'edit'])->name('edit');
+            Route::put('/{id}', [\Modules\ProgramasAgricultura\App\Http\Controllers\EventosController::class, 'update'])->name('update');
+            Route::delete('/{id}', [\Modules\ProgramasAgricultura\App\Http\Controllers\EventosController::class, 'destroy'])->name('destroy');
         });
 
         Route::prefix('beneficiarios')->name('beneficiarios.')->group(function () {
             Route::get('/', [\Modules\ProgramasAgricultura\App\Http\Controllers\BeneficiariosController::class, 'index'])->name('index');
+            Route::get('/create', [\Modules\ProgramasAgricultura\App\Http\Controllers\BeneficiariosController::class, 'create'])->name('create');
+            Route::post('/', [\Modules\ProgramasAgricultura\App\Http\Controllers\BeneficiariosController::class, 'store'])->name('store');
             Route::get('/{id}', [\Modules\ProgramasAgricultura\App\Http\Controllers\BeneficiariosController::class, 'show'])->name('show');
+            Route::delete('/{id}', [\Modules\ProgramasAgricultura\App\Http\Controllers\BeneficiariosController::class, 'destroy'])->name('destroy');
+        });
+
+        Route::prefix('inscricoes')->name('inscricoes.')->group(function () {
+            Route::get('/', [\Modules\ProgramasAgricultura\App\Http\Controllers\InscricoesController::class, 'index'])->name('index');
+            Route::get('/create', [\Modules\ProgramasAgricultura\App\Http\Controllers\InscricoesController::class, 'create'])->name('create');
+            Route::post('/', [\Modules\ProgramasAgricultura\App\Http\Controllers\InscricoesController::class, 'store'])->name('store');
+            Route::get('/{id}', [\Modules\ProgramasAgricultura\App\Http\Controllers\InscricoesController::class, 'show'])->name('show');
+            Route::delete('/{id}', [\Modules\ProgramasAgricultura\App\Http\Controllers\InscricoesController::class, 'destroy'])->name('destroy');
         });
     }
 

@@ -1,126 +1,134 @@
-@extends('admin.layouts.admin')
+@extends('Co-Admin.layouts.app')
 
-@section('title', 'Inscrição - Admin')
+@section('title', 'Detalhes da Inscrição - Agricultura')
 
 @section('content')
-<div class="space-y-6 md:space-y-8">
-    <!-- Page Header -->
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 md:pb-6 border-b border-gray-200 dark:border-slate-700">
+<!-- Page Header -->
+<div class="mb-8 pb-4 border-b border-gray-200 dark:border-slate-700">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-            <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white flex items-center gap-3 mb-2">
-                <div class="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg">
-                    <x-icon name="chevron-right" class="w-4 h-4" />
-                <a href="{{ route('admin.inscricoes.index') }}" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Inscrições</a>
+            <h1 class="text-3xl font-bold text-gray-900 dark:text-white flex items-center gap-3 mb-2">
+                <x-icon name="clipboard-check" class="w-8 h-8 text-indigo-600 dark:text-indigo-400" />
+                Inscrição de {{ $inscricao->pessoa->nom_pessoa }}
+            </h1>
+            <nav aria-label="breadcrumb" class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+                <a href="{{ route('co-admin.dashboard') }}" class="hover:text-indigo-600 dark:hover:text-indigo-400">Dashboard</a>
                 <x-icon name="chevron-right" class="w-4 h-4" />
-                <span class="text-gray-900 dark:text-white font-medium">Detalhes</span>
+                <a href="{{ route('co-admin.inscricoes.index') }}" class="hover:text-indigo-600 dark:hover:text-indigo-400">Inscrições</a>
+                <x-icon name="chevron-right" class="w-4 h-4" />
+                <span class="text-gray-900 dark:text-white">Detalhes da Inscrição</span>
             </nav>
         </div>
-        <a href="{{ route('admin.inscricoes.index') }}" class="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:ring-4 focus:ring-gray-200 dark:bg-slate-700 dark:text-gray-300 dark:border-slate-600 dark:hover:bg-slate-600 dark:focus:ring-slate-700 transition-colors">
-            <x-icon name="arrow-left" class="w-5 h-5" />
-            Voltar
-        </a>
-    </div>
-
-    <!-- Flash Messages -->
-    @if(session('success'))
-    <div class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
-        <div class="flex items-center">
-            <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
-            </svg>
-            <span>{{ session('success') }}</span>
+        <div class="flex gap-2">
+            <a href="{{ route('co-admin.inscricoes.index') }}" class="inline-flex items-center gap-2 px-4 py-2 border-2 border-gray-300 dark:border-slate-600 text-gray-700 dark:text-slate-300 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors font-semibold">
+                <x-icon name="arrow-left" class="w-5 h-5" />
+                Voltar
+            </a>
+            <button onclick="window.print()" class="inline-flex items-center gap-2 px-4 py-2 bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-slate-200 rounded-lg hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors font-bold">
+                <x-icon name="print" class="w-5 h-5" />
+                Imprimir Comprovante
+            </button>
         </div>
     </div>
-    @endif
+</div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <!-- Informações da Inscrição -->
-        <div class="lg:col-span-2 space-y-6">
-            <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700">
-                <div class="px-6 py-4 border-b border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-900/50">
-                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Informações da Inscrição</h3>
-                </div>
-                <div class="p-6">
-                    <dl class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <dt class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">CPF</dt>
-                            <dd class="text-sm text-gray-900 dark:text-white font-medium">{{ substr($inscricao->cpf, 0, 3) }}.***.***-**</dd>
-                        </div>
-                        <div>
-                            <dt class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Status</dt>
-                            <dd class="text-sm">
-                                @php
-                                    $statusColors = [
-                                        'confirmada' => 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-300',
-                                        'presente' => 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-300',
-                                        'ausente' => 'bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-300',
-                                        'cancelada' => 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300'
-                                    ];
-                                    $statusClass = $statusColors[$inscricao->status] ?? 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300';
-                                @endphp
-                                <span class="px-2.5 py-0.5 text-xs font-medium rounded-full {{ $statusClass }}">{{ ucfirst($inscricao->status) }}</span>
-                            </dd>
-                        </div>
-                        @if($inscricao->pessoa)
-                        <div>
-                            <dt class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Nome</dt>
-                            <dd class="text-sm text-gray-900 dark:text-white">{{ $inscricao->pessoa->nom_pessoa }}</dd>
-                        </div>
-                        @endif
-                        <div>
-                            <dt class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Evento</dt>
-                            <dd class="text-sm text-gray-900 dark:text-white">{{ $inscricao->evento->titulo ?? '-' }}</dd>
-                        </div>
-                        @if($inscricao->localidade)
-                        <div>
-                            <dt class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Localidade</dt>
-                            <dd class="text-sm text-gray-900 dark:text-white">{{ $inscricao->localidade->nome }}</dd>
-                        </div>
-                        @endif
-                        <div>
-                            <dt class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Data de Inscrição</dt>
-                            <dd class="text-sm text-gray-900 dark:text-white">{{ $inscricao->data_inscricao->format('d/m/Y H:i') }}</dd>
-                        </div>
-                    </dl>
-                    @if($inscricao->observacoes)
-                    <div class="mt-4 pt-4 border-t border-gray-200 dark:border-slate-700">
-                        <dt class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Observações</dt>
-                        <dd class="text-sm text-gray-900 dark:text-white whitespace-pre-line">{{ $inscricao->observacoes }}</dd>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <!-- Coluna de Informações do Participante -->
+    <div class="lg:col-span-1 space-y-6">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-gray-200 dark:border-slate-700 overflow-hidden">
+            <div class="p-6 border-b border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-900/50">
+                <h3 class="font-bold text-gray-900 dark:text-white flex items-center gap-2 uppercase tracking-wider text-xs">
+                    <x-icon name="user" class="w-4 h-4 text-indigo-500" />
+                    Participante
+                </h3>
+            </div>
+            <div class="p-6">
+                <h2 class="text-lg font-bold text-gray-900 dark:text-white mb-1">{{ $inscricao->pessoa->nom_pessoa }}</h2>
+                <p class="text-sm font-medium text-gray-500 mb-4">{{ $inscricao->pessoa->num_cpf_pessoa }}</p>
+
+                <div class="space-y-3 pt-4 border-t border-gray-50 dark:border-slate-700">
+                    <div>
+                        <p class="text-xs font-bold text-gray-400 uppercase mb-1">Localidade de Origem</p>
+                        <p class="text-sm text-gray-900 dark:text-white font-semibold italic">{{ $inscricao->localidade->nome ?? 'Não informada' }}</p>
                     </div>
-                    @endif
                 </div>
             </div>
         </div>
 
-        <!-- Alterar Status -->
-        <div class="space-y-6">
-            <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700">
-                <div class="px-6 py-4 border-b border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-900/50">
-                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Alterar Status</h3>
-                </div>
-                <form action="{{ route('admin.inscricoes.update-status', $inscricao->id) }}" method="POST" class="p-6">
-                    @csrf
-                    <div class="space-y-4">
-                        <div>
-                            <label for="status" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Novo Status</label>
-                            <select id="status" name="status" required class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                <option value="confirmada" {{ $inscricao->status == 'confirmada' ? 'selected' : '' }}>Confirmada</option>
-                                <option value="presente" {{ $inscricao->status == 'presente' ? 'selected' : '' }}>Presente</option>
-                                <option value="ausente" {{ $inscricao->status == 'ausente' ? 'selected' : '' }}>Ausente</option>
-                                <option value="cancelada" {{ $inscricao->status == 'cancelada' ? 'selected' : '' }}>Cancelada</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label for="observacoes" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Observações</label>
-                            <textarea id="observacoes" name="observacoes" rows="3" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{ $inscricao->observacoes }}</textarea>
-                        </div>
-                        <button type="submit" class="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 transition-colors">
-                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                            </svg>
-                            Atualizar Status
-                        </button>
+        <!-- Status Card -->
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-gray-200 dark:border-slate-700 p-6">
+            <p class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">Status da Inscrição</p>
+            @php
+                $statusColors = [
+                    'confirmada' => 'bg-emerald-100 text-emerald-800',
+                    'presente' => 'bg-blue-100 text-blue-800',
+                    'ausente' => 'bg-amber-100 text-amber-800',
+                    'cancelada' => 'bg-red-100 text-red-800',
+                ];
+            @endphp
+            <div class="px-4 py-2 rounded-lg text-center font-bold uppercase tracking-widest text-lg {{ $statusColors[$inscricao->status] ?? 'bg-gray-100 text-gray-800' }}">
+                {{ $inscricao->status }}
+            </div>
+            <p class="mt-4 text-xs text-gray-500 italic text-center">
+                Inscrito em: {{ $inscricao->data_inscricao ? $inscricao->data_inscricao->format('d/m/Y H:i') : '-' }}
+            </p>
+        </div>
+    </div>
+
+    <!-- Coluna de Detalhes do Evento -->
+    <div class="lg:col-span-2 space-y-6">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-gray-200 dark:border-slate-700 overflow-hidden">
+            <div class="p-6 border-b border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-900/50">
+                <h3 class="font-bold text-gray-900 dark:text-white flex items-center gap-2 uppercase tracking-wider text-xs">
+                    <x-icon name="calendar-days" class="w-4 h-4 text-indigo-500" />
+                    Evento / Curso
+                </h3>
+            </div>
+            <div class="p-6">
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">{{ $inscricao->evento->titulo }}</h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <p class="text-xs font-bold text-gray-400 uppercase mb-1">Data e Hora</p>
+                        <p class="text-base text-gray-900 dark:text-white font-semibold">
+                            {{ $inscricao->evento->data_inicio->format('d/m/Y \à\s H:i') }}
+                        </p>
                     </div>
+                    <div>
+                        <p class="text-xs font-bold text-gray-400 uppercase mb-1">Local</p>
+                        <p class="text-base text-gray-900 dark:text-white font-semibold">
+                            {{ $inscricao->evento->localidade->nome ?? 'Não definido' }}
+                        </p>
+                    </div>
+                    <div class="md:col-span-2">
+                        <p class="text-xs font-bold text-gray-400 uppercase mb-1">Endereço</p>
+                        <p class="text-base text-gray-900 dark:text-white font-semibold italic">
+                            {{ $inscricao->evento->endereco ?: 'Não informado' }}
+                        </p>
+                    </div>
+                </div>
+
+                <div class="mt-8 pt-6 border-t border-gray-100 dark:border-slate-700">
+                    <p class="text-xs font-bold text-gray-400 uppercase mb-2">Observações da Inscrição</p>
+                    <div class="p-4 bg-gray-50 dark:bg-slate-900/50 rounded-lg border border-gray-100 dark:border-slate-700 text-sm text-gray-700 dark:text-slate-300 italic">
+                        {{ $inscricao->observacoes ?: 'Nenhuma observação registrada.' }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ações do Co-Admin -->
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-gray-200 dark:border-slate-700 p-6 flex flex-col sm:flex-row gap-4 items-center justify-between">
+            <div class="text-sm text-gray-500 font-medium italic">
+                Operador resp.: {{ $inscricao->evento->user_id_criador ? 'Admin/Co-Admin' : 'Sistema' }}
+            </div>
+            <div class="flex gap-3 w-full sm:w-auto">
+                <form action="{{ route('co-admin.inscricoes.destroy', $inscricao->id) }}" method="POST" onsubmit="return confirm('Deseja realmente cancelar esta inscrição?')">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="w-full sm:w-auto px-6 py-2 bg-red-50 text-red-600 border border-red-200 rounded-lg hover:bg-red-100 transition-colors font-bold uppercase tracking-wider text-xs">
+                        Cancelar Inscrição
+                    </button>
                 </form>
             </div>
         </div>

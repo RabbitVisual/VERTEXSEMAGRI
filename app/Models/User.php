@@ -75,6 +75,14 @@ class User extends Authenticatable
     }
 
     /**
+     * Programas de Agricultura que este usuário é responsável (Co-Admin)
+     */
+    public function programasResponsaveis()
+    {
+        return $this->belongsToMany(\Modules\ProgramasAgricultura\App\Models\Programa::class, 'programas_responsaveis', 'user_id', 'programa_id');
+    }
+
+    /**
      * Send the password reset notification.
      *
      * @param  string  $token

@@ -266,24 +266,30 @@
                 </h3>
             </div>
             <div class="space-y-1">
-                @if(\Nwidart\Modules\Facades\Module::isEnabled('ProgramasAgricultura') && Route::has('co-admin.programas.index'))
-                <a href="{{ route('co-admin.programas.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 {{ request()->routeIs('co-admin.programas.*') ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-slate-700' }}">
-                    <div class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center {{ request()->routeIs('co-admin.programas.*') ? 'bg-green-500 dark:bg-green-600' : 'bg-gray-100 dark:bg-slate-700' }}">
+                @if(\Nwidart\Modules\Facades\Module::isEnabled('ProgramasAgricultura'))
+                <a href="{{ route('co-admin.programas.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 {{ request()->routeIs('co-admin.programas.*') ? 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-400' : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-slate-700' }}">
+                    <div class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center {{ request()->routeIs('co-admin.programas.*') ? 'bg-indigo-500 dark:bg-indigo-600' : 'bg-gray-100 dark:bg-slate-700' }}">
                         <x-module-icon module="ProgramasAgricultura" class="w-5 h-5 {{ request()->routeIs('co-admin.programas.*') ? 'text-white' : 'text-gray-600 dark:text-gray-400' }}" style="duotone" />
                     </div>
                     <span class="flex-1">Programas</span>
                 </a>
-                <a href="{{ route('co-admin.eventos.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 {{ request()->routeIs('co-admin.eventos.*') ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-slate-700' }}">
-                    <div class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center {{ request()->routeIs('co-admin.eventos.*') ? 'bg-green-500 dark:bg-green-600' : 'bg-gray-100 dark:bg-slate-700' }}">
-                        <x-icon name="calendar" class="w-5 h-5 {{ request()->routeIs('co-admin.eventos.*') ? 'text-white' : 'text-gray-600 dark:text-gray-400' }}" style="duotone" />
+                <a href="{{ route('co-admin.eventos.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 {{ request()->routeIs('co-admin.eventos.*') ? 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-400' : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-slate-700' }}">
+                    <div class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center {{ request()->routeIs('co-admin.eventos.*') ? 'bg-indigo-500 dark:bg-indigo-600' : 'bg-gray-100 dark:bg-slate-700' }}">
+                        <x-icon name="calendar-days" class="w-5 h-5 {{ request()->routeIs('co-admin.eventos.*') ? 'text-white' : 'text-gray-600 dark:text-gray-400' }}" style="duotone" />
                     </div>
-                    <span class="flex-1">Eventos</span>
+                    <span class="flex-1">Eventos e Cursos</span>
                 </a>
-                <a href="{{ route('co-admin.beneficiarios.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 {{ request()->routeIs('co-admin.beneficiarios.*') ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-slate-700' }}">
-                    <div class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center {{ request()->routeIs('co-admin.beneficiarios.*') ? 'bg-green-500 dark:bg-green-600' : 'bg-gray-100 dark:bg-slate-700' }}">
-                        <x-icon name="users" class="w-5 h-5 {{ request()->routeIs('co-admin.beneficiarios.*') ? 'text-white' : 'text-gray-600 dark:text-gray-400' }}" style="duotone" />
+                <a href="{{ route('co-admin.beneficiarios.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 {{ request()->routeIs('co-admin.beneficiarios.*') ? 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-400' : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-slate-700' }}">
+                    <div class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center {{ request()->routeIs('co-admin.beneficiarios.*') ? 'bg-indigo-500 dark:bg-indigo-600' : 'bg-gray-100 dark:bg-slate-700' }}">
+                        <x-icon name="user-group" class="w-5 h-5 {{ request()->routeIs('co-admin.beneficiarios.*') ? 'text-white' : 'text-gray-600 dark:text-gray-400' }}" style="duotone" />
                     </div>
                     <span class="flex-1">Beneficiários</span>
+                </a>
+                <a href="{{ route('co-admin.inscricoes.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 {{ request()->routeIs('co-admin.inscricoes.*') ? 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-400' : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-slate-700' }}">
+                    <div class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center {{ request()->routeIs('co-admin.inscricoes.*') ? 'bg-indigo-500 dark:bg-indigo-600' : 'bg-gray-100 dark:bg-slate-700' }}">
+                        <x-icon name="clipboard-check" class="w-5 h-5 {{ request()->routeIs('co-admin.inscricoes.*') ? 'text-white' : 'text-gray-600 dark:text-gray-400' }}" style="duotone" />
+                    </div>
+                    <span class="flex-1">Inscrições</span>
                 </a>
                 @endif
             </div>

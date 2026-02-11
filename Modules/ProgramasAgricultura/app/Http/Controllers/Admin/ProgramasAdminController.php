@@ -25,7 +25,7 @@ class ProgramasAdminController extends Controller
     public function index(Request $request)
     {
         $filters = $request->only(['search', 'tipo', 'status', 'publico']);
-        
+
         $query = Programa::withCount('beneficiarios');
 
         if ($request->filled('search')) {
@@ -78,11 +78,12 @@ class ProgramasAdminController extends Controller
         $validated = $request->validate([
             'nome' => 'required|string|max:255',
             'descricao' => 'nullable|string',
-            'tipo' => 'required|in:governo_federal,governo_estadual,governo_municipal,parceria,outro',
+            'tipo' => 'required|in:seguro_safra,pronaf,distribuicao_sementes,distribuicao_insumos,assistencia_tecnica,credito_rural,feira_agricola,capacitacao,outro',
             'status' => 'required|in:ativo,suspenso,encerrado',
             'data_inicio' => 'nullable|date',
             'data_fim' => 'nullable|date|after_or_equal:data_inicio',
             'vagas_disponiveis' => 'nullable|integer|min:0',
+            'vagas_preenchidas' => 'nullable|integer|min:0',
             'requisitos' => 'nullable|string',
             'documentos_necessarios' => 'nullable|string',
             'beneficios' => 'nullable|string',
@@ -95,7 +96,7 @@ class ProgramasAdminController extends Controller
             DB::beginTransaction();
 
             $programa = new Programa($validated);
-            $programa->codigo = Programa::gerarCodigo();
+            $programa->codigo = Programa::generateCode('PRG');
             $programa->vagas_preenchidas = 0;
             $programa->publico = $request->has('publico');
             $programa->save();
@@ -104,12 +105,12 @@ class ProgramasAdminController extends Controller
 
             Log::info('Programa criado', ['programa_id' => $programa->id, 'user_id' => auth()->id()]);
 
-            return redirect()->route('admin.programas.index')
+            return redirect()->route('admin.programas-agricultura.programas.index')
                 ->with('success', 'Programa criado com sucesso!');
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Erro ao criar programa', ['error' => $e->getMessage()]);
-            
+
             return redirect()->back()
                 ->withInput()
                 ->with('error', 'Erro ao criar programa: ' . $e->getMessage());
@@ -167,7 +168,7 @@ class ProgramasAdminController extends Controller
         $validated = $request->validate([
             'nome' => 'required|string|max:255',
             'descricao' => 'nullable|string',
-            'tipo' => 'required|in:governo_federal,governo_estadual,governo_municipal,parceria,outro',
+            'tipo' => 'required|in:seguro_safra,pronaf,distribuicao_sementes,distribuicao_insumos,assistencia_tecnica,credito_rural,feira_agricola,capacitacao,outro',
             'status' => 'required|in:ativo,suspenso,encerrado',
             'data_inicio' => 'nullable|date',
             'data_fim' => 'nullable|date|after_or_equal:data_inicio',
@@ -191,12 +192,12 @@ class ProgramasAdminController extends Controller
 
             Log::info('Programa atualizado', ['programa_id' => $programa->id, 'user_id' => auth()->id()]);
 
-            return redirect()->route('admin.programas.show', $programa->id)
+            return redirect()->route('admin.programas-agricultura.programas.show', $programa->id)
                 ->with('success', 'Programa atualizado com sucesso!');
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Erro ao atualizar programa', ['error' => $e->getMessage()]);
-            
+
             return redirect()->back()
                 ->withInput()
                 ->with('error', 'Erro ao atualizar programa: ' . $e->getMessage());
@@ -225,15 +226,14 @@ class ProgramasAdminController extends Controller
 
             Log::info('Programa excluído', ['programa_id' => $id, 'user_id' => auth()->id()]);
 
-            return redirect()->route('admin.programas.index')
+            return redirect()->route('admin.programas-agricultura.programas.index')
                 ->with('success', 'Programa excluído com sucesso!');
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Erro ao excluir programa', ['error' => $e->getMessage()]);
-            
+
             return redirect()->back()
                 ->with('error', 'Erro ao excluir programa: ' . $e->getMessage());
         }
     }
 }
-

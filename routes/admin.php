@@ -322,6 +322,10 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
             Route::post('beneficiarios/{id}/status', [\Modules\ProgramasAgricultura\App\Http\Controllers\Admin\BeneficiariosAdminController::class, 'updateStatus'])->name('beneficiarios.update-status');
             Route::resource('inscricoes', \Modules\ProgramasAgricultura\App\Http\Controllers\Admin\InscricoesEventosAdminController::class)->only(['index', 'show', 'destroy']);
             Route::post('inscricoes/{id}/status', [\Modules\ProgramasAgricultura\App\Http\Controllers\Admin\InscricoesEventosAdminController::class, 'updateStatus'])->name('inscricoes.update-status');
+
+            // Gestão de Permissões (quem opera qual programa)
+            Route::get('permissao', [\Modules\ProgramasAgricultura\App\Http\Controllers\Admin\PermissoesAdminController::class, 'index'])->name('permissao.index');
+            Route::post('permissao', [\Modules\ProgramasAgricultura\App\Http\Controllers\Admin\PermissoesAdminController::class, 'store'])->name('permissao.store');
         });
     }
 

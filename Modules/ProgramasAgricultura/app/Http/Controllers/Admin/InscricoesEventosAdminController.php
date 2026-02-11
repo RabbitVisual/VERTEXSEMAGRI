@@ -18,7 +18,7 @@ class InscricoesEventosAdminController extends Controller
     public function index(Request $request)
     {
         $filters = $request->only(['search', 'evento_id', 'status', 'localidade_id']);
-        
+
         $query = InscricaoEvento::with(['evento', 'pessoa', 'localidade']);
 
         if ($request->filled('search')) {
@@ -51,7 +51,7 @@ class InscricoesEventosAdminController extends Controller
         // Estatísticas
         $estatisticas = [
             'total' => InscricaoEvento::count(),
-            'confirmadas' => InscricaoEvento::where('status', 'confirmada')->count(),
+            'confirmadas' => InscricaoEvento::where('status', 'confirmado')->count(),
             'presentes' => InscricaoEvento::where('status', 'presente')->count(),
             'ausentes' => InscricaoEvento::where('status', 'ausente')->count(),
             'canceladas' => InscricaoEvento::where('status', 'cancelada')->count(),
@@ -77,7 +77,7 @@ class InscricoesEventosAdminController extends Controller
         $inscricao = InscricaoEvento::findOrFail($id);
 
         $validated = $request->validate([
-            'status' => 'required|in:confirmada,presente,ausente,cancelada',
+            'status' => 'required|in:confirmado,presente,ausente,cancelada',
             'observacoes' => 'nullable|string',
         ]);
 
@@ -112,7 +112,7 @@ class InscricoesEventosAdminController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Erro ao atualizar status da inscrição', ['error' => $e->getMessage()]);
-            
+
             return redirect()->back()
                 ->with('error', 'Erro ao atualizar status: ' . $e->getMessage());
         }
@@ -148,10 +148,9 @@ class InscricoesEventosAdminController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Erro ao excluir inscrição', ['error' => $e->getMessage()]);
-            
+
             return redirect()->back()
                 ->with('error', 'Erro ao excluir inscrição: ' . $e->getMessage());
         }
     }
 }
-

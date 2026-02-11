@@ -1,86 +1,133 @@
-@extends('admin.layouts.admin')
+@extends('Co-Admin.layouts.app')
 
-@section('title', 'Inscrições em Eventos - Admin')
+@section('title', 'Inscrições em Eventos')
 
 @section('content')
-<div class="space-y-6 md:space-y-8">
-    <!-- Page Header -->
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 md:pb-6 border-b border-gray-200 dark:border-slate-700">
+<!-- Page Header -->
+<div class="mb-8 pb-4 border-b border-gray-200 dark:border-slate-700">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-            <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white flex items-center gap-3 mb-2">
-                <div class="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg">
-                    <x-icon name="magnifying-glass" class="w-5 h-5" />
-                    Filtrar
-                </button>
-                <a href="{{ route('admin.inscricoes.index') }}" class="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:ring-4 focus:ring-gray-200 dark:bg-slate-700 dark:text-gray-300 dark:border-slate-600 dark:hover:bg-slate-600 dark:focus:ring-slate-700 transition-colors">
-                    <x-icon name="rotate-right" class="w-5 h-5" />
-                    Limpar
-                </a>
-            </div>
-        </form>
-    </div>
-
-    <!-- Tabela de Inscrições - Flowbite Card -->
-    <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 overflow-hidden">
-        <div class="px-6 py-4 border-b border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-900/50">
-            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Lista de Inscrições</h3>
+            <h1 class="text-3xl font-bold text-gray-900 dark:text-white flex items-center gap-3 mb-2">
+                <x-icon name="document-text" class="w-8 h-8 text-indigo-600 dark:text-indigo-400" />
+                Inscrições em Eventos
+            </h1>
+            <nav aria-label="breadcrumb" class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+                <a href="{{ route('co-admin.dashboard') }}" class="hover:text-indigo-600 dark:hover:text-indigo-400">Dashboard</a>
+                <x-icon name="chevron-right" class="w-4 h-4" />
+                <span class="text-gray-900 dark:text-white">Inscrições</span>
+            </nav>
         </div>
-        <div class="overflow-x-auto">
-            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-slate-700 dark:text-gray-400">
-                    <tr>
-                        <th scope="col" class="px-6 py-3">CPF</th>
-                        <th scope="col" class="px-6 py-3">Nome</th>
-                        <th scope="col" class="px-6 py-3">Evento</th>
-                        <th scope="col" class="px-6 py-3">Localidade</th>
-                        <th scope="col" class="px-6 py-3">Status</th>
-                        <th scope="col" class="px-6 py-3">Data Inscrição</th>
-                        <th scope="col" class="px-6 py-3 text-right">Ações</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse($inscricoes as $inscricao)
-                    <tr class="bg-white border-b dark:bg-slate-800 dark:border-slate-700 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors">
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">{{ substr($inscricao->cpf, 0, 3) }}.***.***-**</td>
-                        <td class="px-6 py-4 text-sm text-gray-900 dark:text-white">{{ $inscricao->pessoa->nom_pessoa ?? 'N/A' }}</td>
-                        <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">{{ $inscricao->evento->titulo ?? '-' }}</td>
-                        <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">{{ $inscricao->localidade->nome ?? '-' }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            @php
-                                $statusColors = [
-                                    'confirmada' => 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-300',
-                                    'presente' => 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-300',
-                                    'ausente' => 'bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-300',
-                                    'cancelada' => 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300'
-                                ];
-                                $statusClass = $statusColors[$inscricao->status] ?? 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300';
-                            @endphp
-                            <span class="px-2.5 py-0.5 text-xs font-medium rounded-full {{ $statusClass }}">{{ ucfirst($inscricao->status) }}</span>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400">{{ $inscricao->data_inscricao->format('d/m/Y') }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-right">
-                            <a href="{{ route('admin.inscricoes.show', $inscricao->id) }}" class="inline-flex items-center text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 transition-colors" title="Ver detalhes">
+        <div class="flex gap-2">
+            <a href="{{ route('co-admin.dashboard') }}" class="inline-flex items-center gap-2 px-4 py-2 border-2 border-gray-300 dark:border-slate-600 text-gray-700 dark:text-slate-300 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors">
+                <x-icon name="arrow-left" class="w-5 h-5" />
+                Voltar
+            </a>
+            <a href="{{ route('co-admin.inscricoes.create') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors shadow-lg shadow-indigo-200 dark:shadow-none">
+                <x-icon name="plus" class="w-5 h-5" />
+                Nova Inscrição
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Filtros -->
+<div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-gray-200 dark:border-slate-700 p-6 mb-6">
+    <form method="GET" action="{{ route('co-admin.inscricoes.index') }}" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div class="md:col-span-2">
+            <label for="search" class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">Buscar</label>
+            <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <x-icon name="magnifying-glass" class="h-5 w-5 text-gray-400" />
+                </div>
+                <input type="text" name="search" id="search" value="{{ request('search') }}"
+                       class="block w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-900 text-gray-900 dark:text-white focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                       placeholder="Nome ou CPF do participante...">
+            </div>
+        </div>
+        <div>
+            <label for="evento_id" class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">Evento</label>
+            <select name="evento_id" id="evento_id" class="block w-full py-2 pl-3 pr-10 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-900 text-gray-900 dark:text-white focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                <option value="">Todos os Eventos</option>
+                @foreach($eventos as $ev)
+                    <option value="{{ $ev->id }}" {{ request('evento_id') == $ev->id ? 'selected' : '' }}>{{ $ev->titulo }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="flex items-end">
+            <button type="submit" class="w-full inline-flex items-center justify-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
+                Filtrar
+            </button>
+        </div>
+    </form>
+</div>
+
+<!-- Tabela de Inscrições -->
+<div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-gray-200 dark:border-slate-700 overflow-hidden">
+    <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200 dark:divide-slate-700">
+            <thead class="bg-gray-50 dark:bg-slate-900/50">
+                <tr>
+                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-wider">Participante</th>
+                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-wider">Evento</th>
+                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-wider">Status</th>
+                    <th class="px-6 py-3 text-right text-xs font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-wider">Ações</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200 dark:divide-slate-700">
+                @forelse($inscricoes as $inscricao)
+                <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50 transition-colors">
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm font-semibold text-gray-900 dark:text-white">{{ $inscricao->pessoa->nom_pessoa }}</div>
+                        <div class="text-xs text-gray-500 dark:text-slate-400">{{ $inscricao->pessoa->num_cpf_pessoa }}</div>
+                    </td>
+                    <td class="px-6 py-4">
+                        <div class="text-sm text-gray-900 dark:text-white font-medium">{{ $inscricao->evento->titulo ?? 'N/A' }}</div>
+                        <div class="text-xs text-gray-500">{{ $inscricao->evento->data_inicio->format('d/m/Y') }}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        @php
+                            $statusMap = [
+                                'confirmada' => ['label' => 'Confirmada', 'class' => 'bg-emerald-100 text-emerald-800'],
+                                'presente' => ['label' => 'Presente', 'class' => 'bg-indigo-100 text-indigo-800'],
+                                'ausente' => ['label' => 'Ausente', 'class' => 'bg-amber-100 text-amber-800'],
+                                'cancelada' => ['label' => 'Cancelada', 'class' => 'bg-red-100 text-red-800'],
+                            ];
+                            $status = $statusMap[$inscricao->status] ?? ['label' => $inscricao->status, 'class' => 'bg-gray-100 text-gray-800'];
+                        @endphp
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $status['class'] }}">
+                            {{ $status['label'] }}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <div class="flex items-center justify-end gap-3">
+                            <a href="{{ route('co-admin.inscricoes.show', $inscricao->id) }}" class="text-indigo-600 hover:text-indigo-900 transition-colors" title="Ver detalhes">
                                 <x-icon name="eye" class="w-5 h-5" />
                             </a>
-                        </td>
-                    </tr>
-                    @empty
-                    <tr>
-                        <td colspan="7" class="px-6 py-8 text-center text-sm text-gray-500 dark:text-gray-400">
-                            Nenhuma inscrição encontrada.
-                        </td>
-                    </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
-
-        <!-- Paginação -->
-        @if($inscricoes->hasPages())
-        <div class="px-6 py-4 border-t border-gray-200 dark:border-slate-700">
-            {{ $inscricoes->links() }}
-        </div>
-        @endif
+                            <form action="{{ route('co-admin.inscricoes.destroy', $inscricao->id) }}" method="POST" class="inline" onsubmit="return confirm('Remover esta inscrição?')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="text-red-600 hover:text-red-900 transition-colors" title="Remover">
+                                    <x-icon name="trash" class="w-5 h-5" />
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="4" class="px-6 py-12 text-center text-gray-500">
+                        Nenhuma inscrição encontrada.
+                    </td>
+                </tr>
+                @endforelse
+            </tbody>
+        </table>
     </div>
+
+    @if($inscricoes->hasPages())
+    <div class="px-6 py-4 border-t border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-900/30">
+        {{ $inscricoes->links() }}
+    </div>
+    @endif
 </div>
 @endsection

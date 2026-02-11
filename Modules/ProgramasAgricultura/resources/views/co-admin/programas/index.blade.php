@@ -1,6 +1,6 @@
-@extends('admin.layouts.admin')
+@extends('Co-Admin.layouts.app')
 
-@section('title', 'Programas - Admin')
+@section('title', 'Programas - Agricultura')
 
 @section('content')
 <!-- Page Header -->
@@ -8,21 +8,21 @@
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
             <h1 class="text-3xl font-bold text-gray-900 dark:text-white flex items-center gap-3 mb-2">
-                <x-icon name="leaf" class="w-8 h-8 text-amber-600 dark:text-amber-500" />
-                Programas do Agricultor
+                <x-icon name="leaf" class="w-8 h-8 text-indigo-600 dark:text-indigo-400" />
+                Meus Programas
             </h1>
             <nav aria-label="breadcrumb" class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
-                <a href="{{ route('admin.dashboard') }}" class="hover:text-amber-600 dark:hover:text-amber-400">Admin</a>
+                <a href="{{ route('co-admin.dashboard') }}" class="hover:text-indigo-600 dark:hover:text-indigo-400">Dashboard</a>
                 <x-icon name="chevron-right" class="w-4 h-4" />
                 <span class="text-gray-900 dark:text-white">Programas</span>
             </nav>
         </div>
         <div class="flex gap-2">
-            <a href="{{ route('admin.dashboard') }}" class="inline-flex items-center gap-2 px-4 py-2 border-2 border-gray-300 dark:border-slate-600 text-gray-700 dark:text-slate-300 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors">
+            <a href="{{ route('co-admin.dashboard') }}" class="inline-flex items-center gap-2 px-4 py-2 border-2 border-gray-300 dark:border-slate-600 text-gray-700 dark:text-slate-300 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors">
                 <x-icon name="arrow-left" class="w-5 h-5" />
                 Voltar
             </a>
-            <a href="{{ route('admin.programas.create') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors">
+            <a href="{{ route('co-admin.programas.create') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors shadow-lg shadow-indigo-200 dark:shadow-none">
                 <x-icon name="plus" class="w-5 h-5" />
                 Novo Programa
             </a>
@@ -30,91 +30,98 @@
     </div>
 </div>
 
-<!-- Estatísticas -->
-<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-6 mb-8">
-    <x-admin.stat-card label="Total" :value="$estatisticas['total']" icon="clipboard-document-check" color="primary" />
-    <x-admin.stat-card label="Ativos" :value="$estatisticas['ativos']" icon="check-circle" color="success" />
-    <x-admin.stat-card label="Suspensos" :value="$estatisticas['suspensos']" icon="pause-circle" color="warning" />
-    <x-admin.stat-card label="Públicos" :value="$estatisticas['publicos']" icon="globe-alt" color="info" />
-    <x-admin.stat-card label="Com Vagas" :value="$estatisticas['com_vagas']" icon="user-group" color="secondary" />
-</div>
-
 <!-- Filtros -->
-<x-admin.card title="Filtros" class="mb-6">
-    <form method="GET" action="{{ route('admin.programas.index') }}" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <x-admin.input name="search" label="Buscar" placeholder="Nome, código..." value="{{ $filters['search'] ?? '' }}" />
-
-        <x-admin.select name="tipo" label="Tipo" :options="['' => 'Todos', 'governo_federal' => 'Governo Federal', 'governo_estadual' => 'Governo Estadual', 'governo_municipal' => 'Governo Municipal', 'parceria' => 'Parceria', 'outro' => 'Outro']" :selected="$filters['tipo'] ?? ''" />
-
-        <x-admin.select name="status" label="Status" :options="['' => 'Todos', 'ativo' => 'Ativo', 'suspenso' => 'Suspenso', 'encerrado' => 'Encerrado']" :selected="$filters['status'] ?? ''" />
-
-        <x-admin.select name="publico" label="Visibilidade" :options="['' => 'Todos', '1' => 'Público', '0' => 'Privado']" :selected="$filters['publico'] ?? ''" />
-
-        <div class="md:col-span-2 lg:col-span-4 flex gap-2">
-            <x-admin.button type="submit" variant="primary" icon="magnifying-glass">Filtrar</x-admin.button>
-            <a href="{{ route('admin.programas.index') }}" class="inline-flex items-center justify-center px-4 py-2 border border-gray-300 dark:border-slate-600 text-sm font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-slate-700 hover:bg-gray-50 dark:hover:bg-slate-600">
-                <x-icon name="arrow-clockwise" class="w-4 h-4 mr-2" />
-                Limpar
-            </a>
+<div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-gray-200 dark:border-slate-700 p-6 mb-6">
+    <form method="GET" action="{{ route('co-admin.programas.index') }}" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div class="md:col-span-3">
+            <label for="search" class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">Buscar</label>
+            <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <x-icon name="magnifying-glass" class="h-5 w-5 text-gray-400" />
+                </div>
+                <input type="text" name="search" id="search" value="{{ request('search') }}"
+                       class="block w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-900 text-gray-900 dark:text-white focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                       placeholder="Nome ou código do programa...">
+            </div>
+        </div>
+        <div class="flex items-end">
+            <button type="submit" class="w-full inline-flex items-center justify-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
+                Filtrar
+            </button>
         </div>
     </form>
-</x-admin.card>
+</div>
 
 <!-- Tabela de Programas -->
-<x-admin.card title="Lista de Programas">
+<div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-gray-200 dark:border-slate-700 overflow-hidden">
     <div class="overflow-x-auto">
         <table class="min-w-full divide-y divide-gray-200 dark:divide-slate-700">
-            <thead class="bg-gray-50 dark:bg-slate-800">
+            <thead class="bg-gray-50 dark:bg-slate-900/50">
                 <tr>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Código</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Nome</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Tipo</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Status</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Vagas</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Beneficiários</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Público</th>
-                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Ações</th>
+                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-wider">Código</th>
+                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-wider">Programa</th>
+                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-wider">Vagas</th>
+                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-wider">Status</th>
+                    <th class="px-6 py-3 text-right text-xs font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-wider">Ações</th>
                 </tr>
             </thead>
-            <tbody class="bg-white dark:bg-slate-800 divide-y divide-gray-200 dark:divide-slate-700">
+            <tbody class="divide-y divide-gray-200 dark:divide-slate-700">
                 @forelse($programas as $programa)
-                <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
-                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">{{ $programa->codigo }}</td>
-                    <td class="px-6 py-4 text-sm text-gray-900 dark:text-white">{{ $programa->nome }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400">{{ $programa->tipo_texto }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50 transition-colors">
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-slate-700 dark:text-slate-300">
+                            {{ $programa->codigo }}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4">
+                        <div class="text-sm font-semibold text-gray-900 dark:text-white">{{ $programa->nome }}</div>
+                        <div class="text-xs text-gray-500 dark:text-slate-400 truncate max-w-xs">{{ $programa->tipo_texto }}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="flex items-center gap-2">
+                            <div class="w-16 bg-gray-200 dark:bg-slate-700 rounded-full h-2 overflow-hidden">
+                                @php
+                                    $percent = $programa->vagas_disponiveis > 0
+                                        ? ($programa->vagas_preenchidas / $programa->vagas_disponiveis) * 100
+                                        : 0;
+                                    $percent = min(100, $percent);
+                                @endphp
+                                <div class="bg-indigo-600 h-full" style="width: {{ $percent }}%"></div>
+                            </div>
+                            <span class="text-xs font-medium text-gray-700 dark:text-slate-300">
+                                @if($programa->vagas_disponiveis)
+                                    {{ $programa->vagas_preenchidas }}/{{ $programa->vagas_disponiveis }}
+                                @else
+                                    Ilimitado
+                                @endif
+                            </span>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
                         @php
-                            $statusColors = ['ativo' => 'success', 'suspenso' => 'warning', 'encerrado' => 'danger'];
+                            $statusMap = [
+                                'ativo' => ['label' => 'Ativo', 'class' => 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400'],
+                                'suspenso' => ['label' => 'Suspenso', 'class' => 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400'],
+                                'encerrado' => ['label' => 'Encerrado', 'class' => 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400'],
+                            ];
+                            $status = $statusMap[$programa->status] ?? ['label' => $programa->status, 'class' => 'bg-gray-100 text-gray-800'];
                         @endphp
-                        <x-admin.badge :type="$statusColors[$programa->status] ?? 'info'">{{ $programa->status_texto }}</x-admin.badge>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400">
-                        @if($programa->vagas_disponiveis)
-                            {{ $programa->vagas_preenchidas }}/{{ $programa->vagas_disponiveis }}
-                        @else
-                            Ilimitado
-                        @endif
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400">{{ $programa->beneficiarios_count }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm">
-                        @if($programa->publico)
-                            <x-admin.badge type="success">Sim</x-admin.badge>
-                        @else
-                            <x-admin.badge type="secondary">Não</x-admin.badge>
-                        @endif
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $status['class'] }}">
+                            {{ $status['label'] }}
+                        </span>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <div class="flex items-center justify-end gap-2">
-                            <a href="{{ route('admin.programas.show', $programa->id) }}" class="text-amber-600 hover:text-amber-900 dark:text-amber-400 dark:hover:text-amber-300" title="Ver detalhes">
+                        <div class="flex items-center justify-end gap-3">
+                            <a href="{{ route('co-admin.programas.show', $id ?? $programa->id) }}" class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300 transition-colors" title="Ver detalhes">
                                 <x-icon name="eye" class="w-5 h-5" />
                             </a>
-                            <a href="{{ route('admin.programas.edit', $programa->id) }}" class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300" title="Editar">
+                            <a href="{{ route('co-admin.programas.edit', $id ?? $programa->id) }}" class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300 transition-colors" title="Editar">
                                 <x-icon name="pencil" class="w-5 h-5" />
                             </a>
-                            <form action="{{ route('admin.programas.destroy', $programa->id) }}" method="POST" class="inline" onsubmit="return confirm('Tem certeza que deseja excluir este programa?')">
+                            <form action="{{ route('co-admin.programas.destroy', $id ?? $programa->id) }}" method="POST" class="inline" onsubmit="return confirm('Tem certeza que deseja excluir este programa?')">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300" title="Excluir">
+                                <button type="submit" class="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300 transition-colors" title="Excluir">
                                     <x-icon name="trash" class="w-5 h-5" />
                                 </button>
                             </form>
@@ -123,8 +130,12 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="8" class="px-6 py-4 text-center text-sm text-gray-500 dark:text-gray-400">
-                        Nenhum programa encontrado.
+                    <td colspan="5" class="px-6 py-12 text-center">
+                        <div class="w-16 h-16 bg-gray-100 dark:bg-slate-700 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <x-icon name="leaf" class="w-8 h-8 text-gray-400" />
+                        </div>
+                        <p class="text-gray-900 dark:text-white font-semibold">Nenhum programa encontrado</p>
+                        <p class="text-gray-500 dark:text-slate-400 text-sm">Você ainda não gerencia nenhum programa ou a busca não retornou resultados.</p>
                     </td>
                 </tr>
                 @endforelse
@@ -132,12 +143,10 @@
         </table>
     </div>
 
-    <!-- Paginação -->
     @if($programas->hasPages())
-    <div class="px-6 py-4 border-t border-gray-200 dark:border-slate-700">
+    <div class="px-6 py-4 border-t border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-900/30">
         {{ $programas->links() }}
     </div>
     @endif
-</x-admin.card>
+</div>
 @endsection
-

@@ -51,6 +51,14 @@ class Programa extends Model
     }
 
     /**
+     * Usuários (Co-Admins) responsáveis por este programa
+     */
+    public function usuariosResponsaveis()
+    {
+        return $this->belongsToMany(\App\Models\User::class, 'programas_responsaveis', 'programa_id', 'user_id');
+    }
+
+    /**
      * Relacionamento com cadastros CAF através dos beneficiários
      */
     public function cadastrosCaf()
@@ -153,7 +161,7 @@ class Programa extends Model
     public function scopeDisponiveis($query)
     {
         $hoje = now()->startOfDay();
-        
+
         return $query->where('status', 'ativo')
             ->where('publico', true)
             ->where(function($q) use ($hoje) {
@@ -166,4 +174,3 @@ class Programa extends Model
             });
     }
 }
-

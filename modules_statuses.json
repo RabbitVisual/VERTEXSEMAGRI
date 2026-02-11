@@ -15,7 +15,7 @@
     "ProgramasAgricultura": true,
     "CAF": true,
     "Homepage": true,
-    "Chat": false,
+    "Chat": true,
     "Avisos": true,
     "Blog": true
 }

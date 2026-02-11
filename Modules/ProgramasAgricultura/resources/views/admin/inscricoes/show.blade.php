@@ -1,127 +1,123 @@
 @extends('admin.layouts.admin')
 
-@section('title', 'Inscrição - Admin')
+@section('title', 'Detalhes da Inscrição - ' . ($inscricao->pessoa->nom_pessoa ?? $inscricao->nome))
 
 @section('content')
-<div class="space-y-6 md:space-y-8">
+<div class="space-y-6 md:space-y-8 animate-fade-in pb-12 font-sans italic">
     <!-- Page Header -->
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 md:pb-6 border-b border-gray-200 dark:border-slate-700">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 md:pb-6 border-b border-gray-200 dark:border-slate-700 font-sans italic text-xs uppercase">
         <div>
-            <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white flex items-center gap-3 mb-2">
-                <div class="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg">
-                    <x-icon name="chevron-right" class="w-4 h-4" />
-                <a href="{{ route('admin.inscricoes.index') }}" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Inscrições</a>
-                <x-icon name="chevron-right" class="w-4 h-4" />
-                <span class="text-gray-900 dark:text-white font-medium">Detalhes</span>
+            <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white flex items-center gap-3 mb-2 font-sans italic tracking-tighter uppercase uppercase">
+                <div class="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg font-sans italic text-xs uppercase">
+                    <x-icon name="address-card" class="w-6 h-6 md:w-7 md:h-7 text-white font-sans italic text-xs uppercase" style="duotone" />
+                </div>
+                <span>Detalhes da Inscrição</span>
+            </h1>
+            <nav aria-label="breadcrumb" class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 font-sans italic text-xs uppercase">
+                <a href="{{ route('admin.dashboard') }}" class="hover:text-amber-600 font-sans italic text-xs uppercase">Admin</a>
+                <x-icon name="chevron-right" class="w-3 h-3 text-slate-400 font-sans italic text-xs uppercase" />
+                <a href="{{ route('admin.programas-agricultura.inscricoes.index') }}" class="hover:text-amber-600 font-sans italic text-xs uppercase font-sans">Inscrições</a>
+                <x-icon name="chevron-right" class="w-3 h-3 text-slate-400 font-sans italic text-xs uppercase" />
+                <span class="text-gray-900 dark:text-white font-medium uppercase tracking-widest text-[10px] font-sans italic text-xs uppercase">{{ $inscricao->cpf_formatado }}</span>
             </nav>
         </div>
-        <a href="{{ route('admin.inscricoes.index') }}" class="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:ring-4 focus:ring-gray-200 dark:bg-slate-700 dark:text-gray-300 dark:border-slate-600 dark:hover:bg-slate-600 dark:focus:ring-slate-700 transition-colors">
-            <x-icon name="arrow-left" class="w-5 h-5" />
-            Voltar
-        </a>
-    </div>
-
-    <!-- Flash Messages -->
-    @if(session('success'))
-    <div class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
-        <div class="flex items-center">
-            <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
-            </svg>
-            <span>{{ session('success') }}</span>
+        <div class="flex gap-2 font-sans italic text-xs uppercase">
+            <a href="{{ route('admin.programas-agricultura.inscricoes.index') }}" class="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 dark:bg-slate-700 dark:text-gray-300 dark:border-slate-600 transition-colors font-sans italic text-xs uppercase">
+                <x-icon name="arrow-left" class="w-4 h-4 font-sans italic text-xs uppercase" style="duotone" />
+                Voltar
+            </a>
         </div>
     </div>
-    @endif
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <!-- Informações da Inscrição -->
-        <div class="lg:col-span-2 space-y-6">
-            <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700">
-                <div class="px-6 py-4 border-b border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-900/50">
-                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Informações da Inscrição</h3>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 font-sans italic text-xs uppercase font-sans italic tracking-tighter uppercase font-black text-[10px]">
+        <!-- Ficha do Inscrito -->
+        <div class="space-y-6 font-sans italic text-xs uppercase">
+            <div class="bg-white dark:bg-slate-800 rounded-3xl p-6 shadow-sm border border-gray-200 dark:border-slate-700/50 text-center font-sans italic text-xs uppercase">
+                 <div class="w-20 h-20 bg-purple-50 dark:bg-slate-900 rounded-2xl mx-auto flex items-center justify-center text-purple-600 text-2xl font-black italic shadow-inner border-2 border-purple-100 dark:border-slate-800 mb-4 font-sans italic text-xs uppercase">
+                    {{ substr($inscricao->pessoa->nom_pessoa ?? $inscricao->nome, 0, 1) }}
                 </div>
-                <div class="p-6">
-                    <dl class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <dt class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">CPF</dt>
-                            <dd class="text-sm text-gray-900 dark:text-white font-medium">{{ substr($inscricao->cpf, 0, 3) }}.***.***-**</dd>
-                        </div>
-                        <div>
-                            <dt class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Status</dt>
-                            <dd class="text-sm">
-                                @php
-                                    $statusColors = [
-                                        'confirmada' => 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-300',
-                                        'presente' => 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-300',
-                                        'ausente' => 'bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-300',
-                                        'cancelada' => 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300'
-                                    ];
-                                    $statusClass = $statusColors[$inscricao->status] ?? 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300';
-                                @endphp
-                                <span class="px-2.5 py-0.5 text-xs font-medium rounded-full {{ $statusClass }}">{{ ucfirst($inscricao->status) }}</span>
-                            </dd>
-                        </div>
-                        @if($inscricao->pessoa)
-                        <div>
-                            <dt class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Nome</dt>
-                            <dd class="text-sm text-gray-900 dark:text-white">{{ $inscricao->pessoa->nom_pessoa }}</dd>
-                        </div>
-                        @endif
-                        <div>
-                            <dt class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Evento</dt>
-                            <dd class="text-sm text-gray-900 dark:text-white">{{ $inscricao->evento->titulo ?? '-' }}</dd>
-                        </div>
-                        @if($inscricao->localidade)
-                        <div>
-                            <dt class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Localidade</dt>
-                            <dd class="text-sm text-gray-900 dark:text-white">{{ $inscricao->localidade->nome }}</dd>
-                        </div>
-                        @endif
-                        <div>
-                            <dt class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Data de Inscrição</dt>
-                            <dd class="text-sm text-gray-900 dark:text-white">{{ $inscricao->data_inscricao->format('d/m/Y H:i') }}</dd>
-                        </div>
-                    </dl>
-                    @if($inscricao->observacoes)
-                    <div class="mt-4 pt-4 border-t border-gray-200 dark:border-slate-700">
-                        <dt class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Observações</dt>
-                        <dd class="text-sm text-gray-900 dark:text-white whitespace-pre-line">{{ $inscricao->observacoes }}</dd>
+                <h2 class="text-base font-black text-gray-900 dark:text-white uppercase tracking-tight font-sans italic text-xs uppercase">{{ $inscricao->pessoa->nom_pessoa ?? $inscricao->nome }}</h2>
+                <p class="text-[10px] text-gray-500 font-bold italic font-sans italic text-xs uppercase">{{ $inscricao->cpf_formatado }}</p>
+
+                <div class="mt-6 pt-6 border-t border-gray-100 dark:border-slate-700 font-sans italic text-xs uppercase">
+                    <span class="px-4 py-1.5 rounded-full bg-slate-900 text-white text-[10px] font-black uppercase tracking-tighter italic font-sans italic text-xs uppercase">
+                        {{ $inscricao->status_texto }}
+                    </span>
+                </div>
+            </div>
+
+            <div class="bg-slate-900 rounded-3xl p-6 text-white font-sans italic text-xs uppercase">
+                 <h3 class="text-[10px] font-black text-purple-400 uppercase tracking-widest mb-6 italic font-sans italic text-xs uppercase font-sans">Vínculo com Evento</h3>
+                 <div class="space-y-4 font-sans italic text-xs uppercase">
+                    <div class="font-sans italic text-xs uppercase font-black text-[10px]">
+                        <p class="text-[9px] text-slate-400 font-sans italic text-xs uppercase">EVENTO ALVO</p>
+                        <p class="font-bold tracking-tight italic text-amber-500 font-sans italic text-xs uppercase uppercase">{{ $inscricao->evento->titulo ?? 'N/A' }}</p>
                     </div>
-                    @endif
-                </div>
+                    <div class="font-sans italic text-xs uppercase font-black text-[10px]">
+                        <p class="text-[9px] text-slate-400 font-sans italic text-xs uppercase">DATA DA INSCRIÇÃO</p>
+                        <p class="font-bold tracking-tight italic font-sans italic text-xs uppercase">{{ optional($inscricao->data_inscricao)->format('d/m/Y') ?: '--/--/----' }}</p>
+                    </div>
+                    <div class="font-sans italic text-xs uppercase font-black text-[10px]">
+                        <p class="text-[9px] text-slate-400 font-sans italic text-xs uppercase">CÓDIGO PROTOCOLO</p>
+                        <p class="font-bold tracking-tight italic font-sans italic text-xs uppercase">#EV-{{ str_pad($inscricao->id, 5, '0', STR_PAD_LEFT) }}</p>
+                    </div>
+                 </div>
             </div>
         </div>
 
-        <!-- Alterar Status -->
-        <div class="space-y-6">
-            <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700">
-                <div class="px-6 py-4 border-b border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-900/50">
-                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Alterar Status</h3>
-                </div>
-                <form action="{{ route('admin.inscricoes.update-status', $inscricao->id) }}" method="POST" class="p-6">
+        <!-- Coluna de Gestão de Presença -->
+        <div class="lg:col-span-2 space-y-6 font-sans italic text-xs uppercase">
+            <div class="bg-white dark:bg-slate-800 rounded-3xl p-8 shadow-sm border border-gray-200 dark:border-slate-700/50 font-sans italic text-xs uppercase">
+                <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-8 flex items-center gap-2 italic font-sans italic text-xs uppercase font-sans">
+                    <x-icon name="clipboard-user" class="w-4 h-4 font-sans italic text-xs uppercase font-sans" style="duotone" />
+                    Validação de Presença e Status
+                </h3>
+
+                <form action="{{ route('admin.programas-agricultura.inscricoes.update-status', $inscricao->id) }}" method="POST" class="space-y-6 font-sans italic text-xs uppercase">
                     @csrf
-                    <div class="space-y-4">
-                        <div>
-                            <label for="status" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Novo Status</label>
-                            <select id="status" name="status" required class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                <option value="confirmada" {{ $inscricao->status == 'confirmada' ? 'selected' : '' }}>Confirmada</option>
-                                <option value="presente" {{ $inscricao->status == 'presente' ? 'selected' : '' }}>Presente</option>
-                                <option value="ausente" {{ $inscricao->status == 'ausente' ? 'selected' : '' }}>Ausente</option>
-                                <option value="cancelada" {{ $inscricao->status == 'cancelada' ? 'selected' : '' }}>Cancelada</option>
-                            </select>
+                    @method('PATCH')
+
+                    <div>
+                        <label class="block mb-2 text-[10px] font-black text-gray-400 uppercase tracking-widest italic font-sans italic text-xs uppercase text-xs uppercase">Estado da Participação</label>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 font-sans italic text-xs uppercase">
+                            @foreach(['inscrito', 'confirmado', 'presente', 'ausente', 'cancelado'] as $st)
+                            <label class="relative font-sans italic text-xs uppercase">
+                                <input type="radio" name="status" value="{{ $st }}" class="sr-only peer" {{ $inscricao->status == $st ? 'checked' : '' }}>
+                                <div class="w-full py-4 text-center rounded-2xl border-2 border-gray-100 dark:border-slate-700 peer-checked:border-purple-500 peer-checked:bg-purple-50 dark:peer-checked:bg-purple-900/20 transition-all cursor-pointer font-sans italic text-xs uppercase">
+                                    <span class="text-[9px] font-black uppercase italic text-gray-400 peer-checked:text-purple-700 dark:peer-checked:text-purple-400 font-sans italic text-xs uppercase">{{ $st }}</span>
+                                </div>
+                            </label>
+                            @endforeach
                         </div>
-                        <div>
-                            <label for="observacoes" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Observações</label>
-                            <textarea id="observacoes" name="observacoes" rows="3" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{ $inscricao->observacoes }}</textarea>
-                        </div>
-                        <button type="submit" class="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 transition-colors">
-                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                            </svg>
-                            Atualizar Status
+                    </div>
+
+                    <div>
+                        <label for="observacoes" class="block mb-2 text-[10px] font-black text-gray-400 uppercase tracking-widest italic font-sans italic text-xs uppercase text-xs uppercase">Notas Extras / Justificativa</label>
+                        <textarea name="observacoes" id="observacoes" rows="4" placeholder="Ex: Justificativa de ausência ou notas sobre a participação..." class="block w-full px-4 py-3 bg-gray-50 border border-gray-200 text-sm rounded-2xl focus:ring-purple-500 focus:border-purple-500 dark:bg-slate-900/50 dark:border-slate-700 dark:text-white transition-all italic font-sans italic text-xs uppercase">{{ old('observacoes', $inscricao->observacoes) }}</textarea>
+                    </div>
+
+                    <div class="flex justify-end font-sans italic text-xs uppercase">
+                        <button type="submit" class="inline-flex items-center gap-2 px-8 py-4 bg-slate-900 text-white rounded-2xl hover:bg-slate-800 transition-all shadow-xl font-black uppercase tracking-widest text-[10px] italic font-sans italic text-xs uppercase">
+                            <x-icon name="check-to-slot" class="w-4 h-4 font-sans italic text-xs uppercase" style="duotone" />
+                            Validar Status
                         </button>
                     </div>
                 </form>
+            </div>
+
+            <div class="bg-blue-50 dark:bg-slate-900/50 rounded-3xl p-6 border border-blue-100 dark:border-slate-800 font-sans italic text-xs uppercase">
+                <div class="flex items-start gap-4 font-sans italic text-xs uppercase">
+                    <div class="p-3 bg-blue-100 dark:bg-blue-900/20 rounded-xl font-sans italic text-xs uppercase">
+                        <x-icon name="circle-info" class="w-5 h-5 text-blue-600 dark:text-blue-400 font-sans italic text-xs uppercase" style="duotone" />
+                    </div>
+                    <div class="font-sans italic text-xs uppercase">
+                        <p class="text-xs font-black text-blue-900 dark:text-blue-200 uppercase mb-1 italic font-sans italic text-xs uppercase">Contatos do Participante</p>
+                        <div class="space-y-1 font-sans italic text-xs uppercase">
+                             <p class="text-[11px] font-bold text-blue-700 dark:text-blue-300 italic font-sans italic text-xs uppercase"><span class="opacity-50 font-black">TLF:</span> {{ $inscricao->telefone ?: ($inscricao->pessoa->num_tel_pessoa ?? 'N/I') }}</p>
+                             <p class="text-[11px] font-bold text-blue-700 dark:text-blue-300 italic font-sans italic text-xs uppercase"><span class="opacity-50 font-black">EML:</span> {{ $inscricao->email ?: ($inscricao->pessoa->des_email_pessoa ?? 'N/I') }}</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
