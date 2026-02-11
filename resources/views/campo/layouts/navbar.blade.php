@@ -42,7 +42,7 @@
                     <span class="text-xs font-black text-slate-700 dark:text-slate-200 uppercase tracking-tighter leading-none">{{ explode(' ', Auth::user()->name)[0] }}</span>
                     <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest mt-1">Nível Campo</span>
                 </div>
-                <x-icon name="chevron-down" class="hidden md:block w-3 h-3 text-slate-400 group-hover:text-emerald-500 transition-all" :class="open ? 'rotate-180' : ''" />
+                <x-icon name="chevron-down" class="hidden md:block w-3 h-3 text-slate-400 group-hover:text-emerald-500 transition-all" x-bind:class="open ? 'rotate-180' : ''" />
             </button>
 
             <!-- Premium Dropdown Menu -->

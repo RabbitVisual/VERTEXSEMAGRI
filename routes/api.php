@@ -31,7 +31,7 @@ Route::prefix('v1')->group(function () {
         return redirect()->route('api.documentation');
     })->name('api.docs');
 
-    // Informações da API
+    // Informações da API e Monitoramento
     Route::get('/info', function () {
         return response()->json([
             'name' => 'VERTEXSEMAGRI API',
@@ -41,6 +41,9 @@ Route::prefix('v1')->group(function () {
             'documentation' => route('api.documentation'),
         ]);
     });
+
+    Route::get('/health', [\App\Http\Controllers\Api\SystemApiController::class, 'health'])->name('api.health');
+    Route::post('/log-error', [\App\Http\Controllers\Api\SystemApiController::class, 'logError'])->name('api.log-error');
 
     // ============================================
     // AUTENTICAÇÃO
@@ -55,7 +58,7 @@ Route::prefix('v1')->group(function () {
     // ============================================
     // ROTAS PÚBLICAS (Apenas leitura)
     // ============================================
-    
+
     // Localidades (público - apenas leitura)
     Route::prefix('localidades')->group(function () {
         Route::get('/', [LocalidadesApiController::class, 'index'])->name('api.localidades.index');
@@ -66,7 +69,7 @@ Route::prefix('v1')->group(function () {
     // ROTAS PROTEGIDAS (Requer autenticação)
     // ============================================
     Route::middleware('auth:sanctum')->group(function () {
-        
+
         // Demandas
         Route::prefix('demandas')->group(function () {
             Route::get('/', [DemandasApiController::class, 'index'])->name('api.demandas.index');

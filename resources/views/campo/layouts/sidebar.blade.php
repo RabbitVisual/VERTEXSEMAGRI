@@ -27,6 +27,7 @@
                 <span class="text-[11px] font-black uppercase tracking-widest">Dash Intelligence</span>
             </a>
 
+            @if(\Nwidart\Modules\Facades\Module::isEnabled('Ordens'))
             <a href="{{ route('campo.ordens.index') }}" class="group flex items-center gap-4 px-6 py-4 rounded-2xl transition-all duration-300 {{ request()->routeIs('campo.ordens.*') ? 'bg-emerald-600 text-white shadow-xl shadow-emerald-600/20' : 'text-slate-500 hover:bg-emerald-50 dark:hover:bg-emerald-900/10 hover:text-emerald-600' }}">
                 <x-icon name="list-check" style="{{ request()->routeIs('campo.ordens.*') ? 'solid' : 'duotone' }}" class="w-5 h-5 group-hover:scale-110 transition-transform" />
                 <span class="text-[11px] font-black uppercase tracking-widest">Ordens Táticas</span>
@@ -36,6 +37,7 @@
                 </span>
                 @endif
             </a>
+            @endif
         </div>
 
         <!-- Logistics -->
@@ -45,15 +47,19 @@
                 Logística / Materiais
             </h3>
 
+            @if(\Nwidart\Modules\Facades\Module::isEnabled('Materiais'))
             <a href="{{ route('campo.materiais.solicitacoes.index') }}" class="group flex items-center gap-4 px-6 py-4 rounded-2xl transition-all duration-300 {{ request()->routeIs('campo.materiais.*') ? 'bg-amber-500 text-white shadow-xl shadow-amber-500/20' : 'text-slate-500 hover:bg-amber-50 dark:hover:bg-amber-900/10 hover:text-amber-600' }}">
                 <x-icon name="box-open" style="{{ request()->routeIs('campo.materiais.*') ? 'solid' : 'duotone' }}" class="w-5 h-5 group-hover:scale-110 transition-transform" />
                 <span class="text-[11px] font-black uppercase tracking-widest">Suprimentos</span>
             </a>
+            @endif
 
+            @if(\Nwidart\Modules\Facades\Module::isEnabled('Chat'))
             <a href="{{ route('campo.chat.page') }}" class="group flex items-center gap-4 px-6 py-4 rounded-2xl transition-all duration-300 {{ request()->routeIs('campo.chat.*') ? 'bg-blue-600 text-white shadow-xl shadow-blue-600/20' : 'text-slate-500 hover:bg-blue-50 dark:hover:bg-blue-900/10 hover:text-blue-600' }}">
                 <x-icon name="messages" style="{{ request()->routeIs('campo.chat.*') ? 'solid' : 'duotone' }}" class="w-5 h-5 group-hover:scale-110 transition-transform" />
                 <span class="text-[11px] font-black uppercase tracking-widest">Comunicação</span>
             </a>
+            @endif
         </div>
 
         <!-- Configs -->

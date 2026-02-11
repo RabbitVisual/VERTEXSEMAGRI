@@ -21,6 +21,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'module.enabled' => \App\Http\Middleware\EnsureModuleEnabled::class,
             'co-admin-or-admin' => \App\Http\Middleware\EnsureUserIsCoAdminOrAdmin::class,
             'morador.poco' => \App\Http\Middleware\EnsureMoradorPocoAuthenticated::class,
+            'secure-impersonation' => \App\Http\Middleware\SecureImpersonation::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

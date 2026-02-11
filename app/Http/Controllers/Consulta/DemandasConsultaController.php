@@ -10,41 +10,13 @@ use Illuminate\Support\Facades\Schema;
 
 class DemandasConsultaController extends Controller
 {
+    use \App\Traits\DemandasSearchable;
+
     public function index(Request $request)
     {
         $filters = $request->only(['status', 'tipo', 'prioridade', 'localidade_id', 'search']);
-        $query = Demanda::with(['localidade', 'pessoa', 'usuario', 'ordemServico']);
-
-        // Busca
-        if (!empty($filters['search'])) {
-            $search = $filters['search'];
-            $query->where(function($q) use ($search) {
-                $q->where('solicitante_nome', 'like', "%{$search}%")
-                  ->orWhere('codigo', 'like', "%{$search}%")
-                  ->orWhere('motivo', 'like', "%{$search}%")
-                  ->orWhere('descricao', 'like', "%{$search}%")
-                  ->orWhereHas('pessoa', function($q) use ($search) {
-                      $q->where('nom_pessoa', 'like', "%{$search}%")
-                        ->orWhere('num_cpf_pessoa', 'like', "%{$search}%");
-                  });
-            });
-        }
-
-        if (!empty($filters['status'])) {
-            $query->where('status', $filters['status']);
-        }
-
-        if (!empty($filters['tipo'])) {
-            $query->where('tipo', $filters['tipo']);
-        }
-
-        if (!empty($filters['prioridade'])) {
-            $query->where('prioridade', $filters['prioridade']);
-        }
-
-        if (!empty($filters['localidade_id'])) {
-            $query->where('localidade_id', $filters['localidade_id']);
-        }
+        $query = Demanda::with($this->getDemandasDefaultRelations());
+        $query = $this->applyDemandasFilters($query, $filters);
 
         $demandas = $query->orderBy('created_at', 'desc')->paginate(20);
 
@@ -95,4 +67,3 @@ class DemandasConsultaController extends Controller
         return view('consulta.demandas.show', compact('demanda', 'estatisticas'));
     }
 }
-

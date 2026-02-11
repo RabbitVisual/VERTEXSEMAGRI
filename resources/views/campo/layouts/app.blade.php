@@ -143,16 +143,20 @@
                         <x-icon name="grid-2-plus" style="{{ request()->routeIs('campo.dashboard') ? 'solid' : 'duotone' }}" class="w-5 h-5" />
                     </div>
                 </a>
+                @if(\Nwidart\Modules\Facades\Module::isEnabled('Ordens'))
                 <a href="{{ route('campo.ordens.index') }}" class="flex flex-col items-center gap-1 group">
                     <div class="w-10 h-10 rounded-xl flex items-center justify-center {{ request()->routeIs('campo.ordens.*') ? 'bg-emerald-500 text-white shadow-lg' : 'text-slate-400' }}">
                         <x-icon name="list-check" style="{{ request()->routeIs('campo.ordens.*') ? 'solid' : 'duotone' }}" class="w-5 h-5" />
                     </div>
                 </a>
+                @endif
+                @if(\Nwidart\Modules\Facades\Module::isEnabled('Chat'))
                 <a href="{{ route('campo.chat.page') }}" class="flex flex-col items-center gap-1 group">
                     <div class="w-10 h-10 rounded-xl flex items-center justify-center {{ request()->routeIs('campo.chat.*') ? 'bg-emerald-500 text-white shadow-lg' : 'text-slate-400' }}">
                         <x-icon name="messages" style="{{ request()->routeIs('campo.chat.*') ? 'solid' : 'duotone' }}" class="w-5 h-5" />
                     </div>
                 </a>
+                @endif
                 <a href="{{ route('campo.profile.index') }}" class="flex flex-col items-center gap-1 group">
                     <div class="w-10 h-10 rounded-xl flex items-center justify-center {{ request()->routeIs('campo.profile.*') ? 'bg-emerald-500 text-white shadow-lg' : 'text-slate-400' }}">
                         <x-icon name="user-gear" style="{{ request()->routeIs('campo.profile.*') ? 'solid' : 'duotone' }}" class="w-5 h-5" />

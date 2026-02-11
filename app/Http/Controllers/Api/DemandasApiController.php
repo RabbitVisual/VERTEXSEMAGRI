@@ -8,39 +8,16 @@ use Illuminate\Http\Request;
 
 class DemandasApiController extends BaseApiController
 {
+    use \App\Traits\DemandasSearchable;
+
     /**
      * Lista todas as demandas
      */
     public function index(Request $request)
     {
         try {
-            $query = Demanda::with(['localidade', 'pessoa', 'usuario', 'ordemServico']);
-
-            // Filtros
-            if ($request->has('status')) {
-                $query->where('status', $request->status);
-            }
-
-            if ($request->has('tipo')) {
-                $query->where('tipo', $request->tipo);
-            }
-
-            if ($request->has('prioridade')) {
-                $query->where('prioridade', $request->prioridade);
-            }
-
-            if ($request->has('localidade_id')) {
-                $query->where('localidade_id', $request->localidade_id);
-            }
-
-            if ($request->has('search')) {
-                $search = $request->search;
-                $query->where(function($q) use ($search) {
-                    $q->where('codigo', 'like', "%{$search}%")
-                      ->orWhere('solicitante_nome', 'like', "%{$search}%")
-                      ->orWhere('motivo', 'like', "%{$search}%");
-                });
-            }
+            $query = Demanda::with($this->getDemandasDefaultRelations());
+            $query = $this->applyDemandasFilters($query, $request->all());
 
             $perPage = $request->get('per_page', 20);
             $demandas = $query->orderBy('created_at', 'desc')->paginate($perPage);
@@ -182,4 +159,3 @@ class DemandasApiController extends BaseApiController
         }
     }
 }
-

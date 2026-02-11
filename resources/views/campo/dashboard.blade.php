@@ -94,7 +94,7 @@
     </div>
 
     <!-- Alertas de Pendências -->
-    @if($estatisticas['total_pendentes'] > 0)
+    @if(\Nwidart\Modules\Facades\Module::isEnabled('Ordens') && $estatisticas['total_pendentes'] > 0)
     <div id="ordens-alerta" class="premium-card bg-gradient-to-r from-amber-500/5 to-orange-500/5 border-amber-500/30 p-8 flex flex-col md:flex-row items-center justify-between gap-8 group animate-scale-in">
         <div class="flex items-center gap-6">
             <div class="w-16 h-16 bg-amber-500 rounded-2xl flex items-center justify-center text-white shadow-xl shadow-amber-500/20 transform group-hover:scale-110 transition-transform">
@@ -127,6 +127,7 @@
                 ['label' => 'PRODUTIVIDADE SEMANA', 'value' => $estatisticas['total_concluidas_semana'], 'icon' => 'chart-line', 'color' => 'indigo', 'route' => 'concluida'],
             ];
         @endphp
+        @if(\Nwidart\Modules\Facades\Module::isEnabled('Ordens'))
         @foreach($dash_stats as $stat)
         <a href="{{ route('campo.ordens.index', ['status' => $stat['route']]) }}" class="premium-card p-6 flex flex-col justify-between group hover:border-{{ $stat['color'] }}-500 transition-all duration-500 overflow-hidden relative">
             <div class="absolute -right-4 -bottom-4 opacity-5 pointer-events-none group-hover:scale-125 transition-transform duration-700">
@@ -143,6 +144,7 @@
             </div>
         </a>
         @endforeach
+        @endif
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -190,6 +192,7 @@
             </div>
             @endif
 
+            @if(\Nwidart\Modules\Facades\Module::isEnabled('Ordens'))
             <!-- Lista de Pendências Táticas -->
             <div class="premium-card overflow-hidden">
                 <div class="px-8 py-5 border-b border-gray-100 dark:border-slate-800 bg-gray-50/50 dark:bg-slate-900/50 flex items-center justify-between">
@@ -232,6 +235,7 @@
                     @endif
                 </div>
             </div>
+            @endif
 
             <!-- Avisos e Localidades -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -349,14 +353,19 @@
                         <x-icon name="shield-virus" class="w-6 h-6 mb-2" />
                         <span class="text-[8px] font-black uppercase tracking-widest">Incidente</span>
                     </button>
+                    @if(\Nwidart\Modules\Facades\Module::isEnabled('Materiais'))
                     <a href="{{ route('campo.materiais.solicitacoes.index') }}" class="flex flex-col items-center justify-center p-4 bg-slate-100 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 hover:bg-amber-600 hover:text-white transition-all group active:scale-95">
                         <x-icon name="box-open" class="w-6 h-6 mb-2" />
                         <span class="text-[8px] font-black uppercase tracking-widest">Materiais</span>
                     </a>
+                    @endif
+
+                    @if(\Nwidart\Modules\Facades\Module::isEnabled('Chat'))
                     <a href="{{ route('campo.chat.page') }}" class="flex flex-col items-center justify-center p-4 bg-slate-100 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 hover:bg-blue-600 hover:text-white transition-all group active:scale-95">
                         <x-icon name="comments" class="w-6 h-6 mb-2" />
                         <span class="text-[8px] font-black uppercase tracking-widest">Chat Central</span>
                     </a>
+                    @endif
                 </div>
             </div>
         </div>
