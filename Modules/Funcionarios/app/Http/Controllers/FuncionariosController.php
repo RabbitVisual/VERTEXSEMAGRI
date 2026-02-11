@@ -172,7 +172,21 @@ class FuncionariosController extends Controller
 
         $validated['ativo'] = $request->has('ativo') ? true : false;
 
+    \Illuminate\Support\Facades\Log::info('🔄 TENTANDO ATUALIZAR FUNCIONÁRIO', [
+        'id' => $funcionario->id,
+        'dados' => $validated,
+    ]);
+
+    try {
         $funcionario->update($validated);
+        \Illuminate\Support\Facades\Log::info('✅ FUNCIONÁRIO ATUALIZADO');
+    } catch (\Exception $e) {
+        \Illuminate\Support\Facades\Log::error('❌ ERRO AO ATUALIZAR FUNCIONÁRIO', [
+            'mensagem' => $e->getMessage(),
+            'trace' => substr($e->getTraceAsString(), 0, 1000)
+        ]);
+        throw $e;
+    }
 
         return redirect()->route('funcionarios.show', $funcionario)
             ->with('success', 'Funcionário atualizado com sucesso');

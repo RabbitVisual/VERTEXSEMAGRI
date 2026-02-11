@@ -18,14 +18,14 @@ return new class extends Migration
             $table->string('email')->nullable();
             $table->foreignId('localidade_id')->nullable()->constrained('localidades')->onDelete('set null');
             $table->enum('status', ['inscrito', 'aprovado', 'beneficiado', 'cancelado', 'inativo'])->default('inscrito');
-            $table->date('data_inscricao')->useCurrent();
+            $table->date('data_inscricao')->default(Illuminate\Support\Facades\DB::raw('(CURDATE())'));
             $table->date('data_aprovacao')->nullable();
             $table->date('data_beneficio')->nullable();
             $table->text('observacoes')->nullable();
             $table->foreignId('user_id_inscricao')->nullable()->constrained('users')->onDelete('set null');
             $table->timestamps();
             $table->softDeletes();
-            
+
             $table->index('programa_id');
             $table->index('pessoa_id');
             $table->index('cpf');
@@ -39,4 +39,3 @@ return new class extends Migration
         Schema::dropIfExists('beneficiarios');
     }
 };
-

@@ -99,7 +99,9 @@ class Notificacao extends Model
             'action_url' => $actionUrl,
             'module_source' => $moduleSource,
             'entity_type' => $entityType,
+            'entity_type' => $entityType,
             'entity_id' => $entityId,
+            'is_read' => false,
         ]);
 
         // Disparar evento de broadcasting para tempo real

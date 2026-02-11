@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('num_nis_pessoa_atual', 11)->nullable()->unique(); // NIS
             $table->string('nom_apelido_pessoa', 34)->nullable(); // Apelido/Nome Social
             $table->tinyInteger('cod_sexo_pessoa')->nullable(); // Sexo
-            $table->string('dta_nasc_pessoa', 8)->nullable(); // Data nascimento (DDMMAAAA)
+            $table->date('dta_nasc_pessoa')->nullable(); // Data nascimento (DATE)
             $table->tinyInteger('cod_parentesco_rf_pessoa')->nullable(); // Parentesco
             $table->tinyInteger('cod_raca_cor_pessoa')->nullable(); // Raça/Cor
             $table->string('nom_completo_mae_pessoa', 70)->nullable(); // Nome da mãe
@@ -146,14 +146,14 @@ return new class extends Migration
             $table->tinyInteger('ind_atend_nenhum_memb')->nullable(); // Não foi atendido
             $table->integer('ref_cad')->nullable()->index(); // Referência Cadastro Único
             $table->integer('ref_pbf')->nullable()->index(); // Referência Bolsa Família
-            
+
             // Campos adicionais para integração com o sistema
             $table->foreignId('localidade_id')->nullable()->constrained('localidades')->onDelete('set null');
             $table->text('observacoes')->nullable();
             $table->boolean('ativo')->default(true);
             $table->timestamps();
             $table->softDeletes();
-            
+
             // Índices adicionais
         });
     }
@@ -163,4 +163,3 @@ return new class extends Migration
         Schema::dropIfExists('pessoas_cad');
     }
 };
-

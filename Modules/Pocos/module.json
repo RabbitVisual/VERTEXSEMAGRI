@@ -18,5 +18,8 @@
     ],
     "aliases": {},
     "files": [],
-    "requires": []
+    "requires": [
+        "Localidades",
+        "Pessoas"
+    ]
 }

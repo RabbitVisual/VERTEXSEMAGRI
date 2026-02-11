@@ -18,12 +18,12 @@ return new class extends Migration
             $table->string('email')->nullable();
             $table->foreignId('localidade_id')->nullable()->constrained('localidades')->onDelete('set null');
             $table->enum('status', ['inscrito', 'confirmado', 'presente', 'ausente', 'cancelado'])->default('inscrito');
-            $table->date('data_inscricao')->useCurrent();
+            $table->date('data_inscricao')->default(Illuminate\Support\Facades\DB::raw('(CURDATE())'));
             $table->date('data_confirmacao')->nullable();
             $table->text('observacoes')->nullable();
             $table->timestamps();
             $table->softDeletes();
-            
+
             $table->index('evento_id');
             $table->index('pessoa_id');
             $table->index('cpf');
@@ -37,4 +37,3 @@ return new class extends Migration
         Schema::dropIfExists('inscricoes_eventos');
     }
 };
-

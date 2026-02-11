@@ -11,15 +11,15 @@ return new class extends Migration
         if (Schema::hasTable('redes_agua')) {
             return;
         }
-        
+
         Schema::create('redes_agua', function (Blueprint $table) {
             $table->id();
             $table->string('codigo')->unique();
             $table->foreignId('localidade_id')->constrained('localidades')->onDelete('cascade');
             $table->enum('tipo_rede', ['principal', 'secundaria', 'ramal']);
-            $table->string('diametro'); // em polegadas ou mm
-            $table->string('material'); // PVC, ferro, polietileno
-            $table->decimal('extensao_metros', 10, 2);
+            $table->string('diametro')->nullable(); // em polegadas ou mm
+            $table->string('material')->nullable(); // PVC, ferro, polietileno
+            $table->decimal('extensao_metros', 10, 2)->nullable();
             $table->date('data_instalacao')->nullable();
             $table->enum('status', ['funcionando', 'com_vazamento', 'interrompida'])->default('funcionando');
             $table->text('observacoes')->nullable();
@@ -53,4 +53,3 @@ return new class extends Migration
         Schema::dropIfExists('redes_agua');
     }
 };
-
