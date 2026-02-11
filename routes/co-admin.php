@@ -70,8 +70,6 @@ Route::prefix('co-admin')->name('co-admin.')->middleware(['auth', 'co-admin-or-a
             // CRUD Manual
             Route::get('/', [\Modules\Ordens\App\Http\Controllers\OrdensController::class, 'index'])->name('index');
             Route::get('/create', [\Modules\Ordens\App\Http\Controllers\OrdensController::class, 'create'])->name('create');
-            Route::post('/', [\Modules\Ordens\App\Http\Controllers\OrdensersController::class, 'store'])->name('store'); // Fixed typo from user's manual fix if any, but wait, Demandasers? User had Ordensers in manual? No, let me check.
-            // Correcting user's manual typo in path: \Modules\Ordens\App\Http\Controllers\OrdensersController::class -> \Modules\Ordens\App\Http\Controllers\OrdensController::class
             Route::post('/', [\Modules\Ordens\App\Http\Controllers\OrdensController::class, 'store'])->name('store');
             Route::get('/{id}', [\Modules\Ordens\App\Http\Controllers\OrdensController::class, 'show'])->name('show');
             Route::get('/{id}/edit', [\Modules\Ordens\App\Http\Controllers\OrdensController::class, 'edit'])->name('edit');
@@ -256,8 +254,8 @@ Route::prefix('co-admin')->name('co-admin.')->middleware(['auth', 'co-admin-or-a
     // 15. Programas de Agricultura
     if (Module::isEnabled('ProgramasAgricultura')) {
         Route::prefix('programas')->name('programas.')->group(function () {
-            Route::get('/', [\Modules\ProgramasAgricultura\App\Http\Controllers\ProgramasController::class, 'index'])->name('index');
-            Route::get('/{id}', [\Modules\ProgramasAgricultura\App\Http\Controllers\ProgramasController::class, 'show'])->name('show');
+            Route::get('/', [\Modules\ProgramasAgricultura\App\Http\Controllers\ProgramasAgriculturaController::class, 'index'])->name('index');
+            Route::get('/{id}', [\Modules\ProgramasAgricultura\App\Http\Controllers\ProgramasAgriculturaController::class, 'show'])->name('show');
         });
 
         Route::prefix('eventos')->name('eventos.')->group(function () {
@@ -268,6 +266,14 @@ Route::prefix('co-admin')->name('co-admin.')->middleware(['auth', 'co-admin-or-a
         Route::prefix('beneficiarios')->name('beneficiarios.')->group(function () {
             Route::get('/', [\Modules\ProgramasAgricultura\App\Http\Controllers\BeneficiariosController::class, 'index'])->name('index');
             Route::get('/{id}', [\Modules\ProgramasAgricultura\App\Http\Controllers\BeneficiariosController::class, 'show'])->name('show');
+        });
+    }
+
+    // 16. CAF (Controle de Aptidão)
+    if (Module::isEnabled('CAF')) {
+        Route::prefix('caf')->name('caf.')->group(function () {
+            Route::get('/', [\Modules\CAF\App\Http\Controllers\AdminCAFController::class, 'index'])->name('index');
+            Route::get('/{cadastro}', [\Modules\CAF\App\Http\Controllers\AdminCAFController::class, 'show'])->name('show');
         });
     }
 });
