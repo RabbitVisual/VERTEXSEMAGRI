@@ -4,63 +4,72 @@
 
 @section('content')
 <div x-data="offlineManager" @click.capture="handleLinkClick($event)">
-        <div class="mb-4 flex flex-col sm:flex-row justify-between items-center bg-white dark:bg-gray-800 p-4 rounded-lg shadow gap-4">
-        <div class="flex items-center gap-3">
-            <div :class="online ? 'bg-green-500' : 'bg-orange-500'" class="w-3 h-3 rounded-full"></div>
+    <!-- Status Bar (Offline Mode Support) -->
+    <div class="mb-6 flex flex-col sm:flex-row justify-between items-center bg-white/80 dark:bg-slate-800/80 backdrop-blur-md px-6 py-4 rounded-3xl border border-slate-200 dark:border-slate-700/50 shadow-sm gap-4">
+        <div class="flex items-center gap-4">
+            <div class="relative flex h-3 w-3">
+                <span :class="online ? 'bg-emerald-400' : 'bg-amber-400'" class="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75"></span>
+                <span :class="online ? 'bg-emerald-500' : 'bg-amber-500'" class="relative inline-flex rounded-full h-3 w-3"></span>
+            </div>
             <div class="flex flex-col">
-                <span x-text="online ? 'Online' : 'Offline Mode'" class="font-semibold text-gray-700 dark:text-gray-200"></span>
-                <span x-show="lastSync" class="text-xs" :class="{
-                    'text-green-600': syncColor === 'green',
-                    'text-amber-600': syncColor === 'amber',
-                    'text-red-600': syncColor === 'red',
-                    'text-gray-500': syncColor === 'gray'
-                }" x-text="'Último Sync: ' + lastSync"></span>
+                <span x-text="online ? 'Conectado' : 'Modo Offline'" class="text-sm font-bold text-slate-700 dark:text-slate-200 uppercase tracking-wider"></span>
+                <span x-show="lastSync" class="text-[10px] font-medium text-slate-500 dark:text-slate-400 uppercase tracking-tight" x-text="'Sincronizado: ' + lastSync"></span>
             </div>
         </div>
         <div class="flex gap-2 w-full sm:w-auto">
-            <button @click="$dispatch('open-outbox')" class="flex-1 sm:flex-none px-4 py-2 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 rounded transition flex items-center justify-center gap-2 relative">
-                <x-icon name="paper-airplane" class="w-4 h-4" />
-                <span>Pendências</span>
-                <span x-show="queueCount > 0" x-text="queueCount" class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center"></span>
+            <button @click="$dispatch('open-outbox')" class="flex-1 sm:flex-none px-5 py-2.5 bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 rounded-2xl transition-all duration-300 flex items-center justify-center gap-2 relative group">
+                <x-icon name="paper-airplane" class="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                <span class="text-sm font-bold">Pendências</span>
+                <span x-show="queueCount > 0" x-text="queueCount" class="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] font-bold h-5 min-w-[20px] px-1.5 rounded-full flex items-center justify-center border-2 border-white dark:border-slate-800"></span>
             </button>
-            <button @click="sync()" :disabled="syncing || !online" class="flex-1 sm:flex-none px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded transition disabled:opacity-50 flex items-center justify-center gap-2">
+            <button @click="sync()" :disabled="syncing || !online" class="flex-1 sm:flex-none px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl transition-all duration-300 disabled:opacity-50 flex items-center justify-center gap-2 group">
                 <x-icon name="rotate" class="w-4 h-4" ::class="{'animate-spin': syncing}" />
-                <span x-text="syncStatus"></span>
+                <span x-text="syncStatus" class="text-sm font-bold"></span>
             </button>
         </div>
     </div>
 
-    <div x-show="online">
-<div class="space-y-8">
-    <!-- Page Header -->
-    <div class="bg-gradient-to-r from-indigo-600 via-indigo-700 to-indigo-800 dark:from-indigo-800 dark:via-indigo-900 dark:to-indigo-950 rounded-2xl shadow-2xl p-6 md:p-8 text-white relative overflow-hidden">
-        <div class="absolute inset-0 bg-grid-white/10 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.6))]"></div>
-        <div class="relative z-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <div class="flex items-center gap-4">
-                <div class="p-4 bg-white/20 rounded-2xl backdrop-blur-sm shadow-lg">
-                    <x-icon module="demandas" class="w-10 h-10 text-white" />
+    <div x-show="online" class="space-y-8">
+        <!-- Premium Header Area -->
+        <div class="relative overflow-hidden bg-slate-900 rounded-3xl border border-slate-800 shadow-2xl mb-8">
+            <!-- Decorative Elements -->
+            <div class="absolute top-0 right-0 -mt-20 -mr-20 w-80 h-80 bg-indigo-500/10 rounded-full blur-[100px]"></div>
+            <div class="absolute bottom-0 left-0 -mb-20 -ml-20 w-80 h-80 bg-blue-500/10 rounded-full blur-[100px]"></div>
+
+            <div class="relative px-8 py-10">
+                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
+                    <div class="flex items-center gap-6">
+                        <div class="relative group">
+                            <div class="absolute -inset-1 bg-gradient-to-r from-indigo-500 to-blue-500 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
+                            <div class="relative p-5 bg-slate-800/50 backdrop-blur-xl rounded-2xl border border-white/10 shadow-2xl">
+                                <x-icon module="demandas" class="w-10 h-10 text-white" />
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="px-3 py-1 text-[10px] font-black uppercase tracking-[0.2em] bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 rounded-full">Gestão</span>
+                                <span class="w-1 h-1 rounded-full bg-slate-700"></span>
+                                <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Módulo de Demandas</span>
+                            </div>
+                            <h1 class="text-3xl md:text-4xl font-black text-white tracking-tight">
+                                Central de <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-blue-400">Demandas</span>
+                            </h1>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap gap-3">
+                        <x-demandas::button href="{{ route('demandas.relatorio.abertas.pdf') }}" target="_blank" variant="secondary" size="lg" class="shadow-xl">
+                            <x-icon name="file-arrow-down" class="w-5 h-5 mr-2" />
+                            Relatório PDF
+                        </x-demandas::button>
+                        <x-demandas::button href="{{ route('demandas.create') }}" variant="primary" size="lg" class="shadow-xl border-b-4 border-indigo-700 active:border-b-0 active:translate-y-1 transition-all">
+                            <x-icon name="circle-plus" class="w-5 h-5 mr-2" />
+                            Nova Demanda
+                        </x-demandas::button>
+                    </div>
                 </div>
-                <div>
-                    <h1 class="text-3xl md:text-4xl font-bold flex items-center gap-2">
-                        Gestão de Demandas
-                    </h1>
-                    <p class="text-indigo-100 dark:text-indigo-200 mt-2 text-sm md:text-base">
-                        Controle completo das demandas da população
-                    </p>
-                </div>
-            </div>
-            <div class="flex flex-wrap gap-2">
-                <x-demandas::button href="{{ route('demandas.relatorio.abertas.pdf') }}" target="_blank" variant="outline-primary" class="!bg-white !text-indigo-600 hover:!bg-indigo-50 !border-indigo-600 shadow-xl hover:shadow-2xl transition-all transform hover:scale-105">
-                    <x-icon name="file-arrow-down" class="w-5 h-5 mr-2" />
-                    Relatório PDF
-                </x-demandas::button>
-                <x-demandas::button href="{{ route('demandas.create') }}" variant="outline-primary" class="!bg-white !text-indigo-600 hover:!bg-indigo-50 !border-indigo-600 shadow-xl hover:shadow-2xl transition-all transform hover:scale-105">
-                    <x-icon name="circle-plus" class="w-5 h-5 mr-2" />
-                    Nova Demanda
-                </x-demandas::button>
             </div>
         </div>
-    </div>
 
     <!-- Alertas -->
     @if(session('warning'))
@@ -81,50 +90,49 @@
         </x-demandas::alert>
     @endif
 
-    <!-- Estatísticas -->
-    @if(isset($estatisticas))
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 items-stretch">
+    <!-- Quick Stats Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6">
         <x-demandas::stat-card
-            title="Total"
+            title="Total Geral"
             :value="$estatisticas['total'] ?? 0"
-            icon="clipboard-check"
+            icon="clipboard-list"
             color="primary"
-            subtitle="Todas as demandas"
+            subtitle="Acumulado"
         />
         <x-demandas::stat-card
             title="Abertas"
             :value="$estatisticas['abertas'] ?? 0"
             icon="folder-open"
             color="info"
-            subtitle="Aguardando atendimento"
+            subtitle="Pendentes"
         />
         <x-demandas::stat-card
-            title="Em Andamento"
+            title="Em Curso"
             :value="$estatisticas['em_andamento'] ?? 0"
-            icon="clock-history"
+            icon="clock-rotate-left"
             color="warning"
-            subtitle="Sendo atendidas"
+            subtitle="Execução"
         />
         <x-demandas::stat-card
             title="Concluídas"
             :value="$estatisticas['concluidas'] ?? 0"
-            icon="check-circle"
+            icon="circle-check"
             color="success"
             subtitle="Finalizadas"
         />
         <x-demandas::stat-card
-            title="Urgentes"
+            title="Críticas"
             :value="$estatisticas['urgentes'] ?? 0"
-            icon="exclamation-triangle"
+            icon="fire"
             color="danger"
-            subtitle="Prioridade máxima"
+            subtitle="Urgentes"
         />
         <x-demandas::stat-card
             title="Sem OS"
             :value="$estatisticas['sem_os'] ?? 0"
-            icon="document-x"
-            color="secondary"
-            subtitle="Sem ordem de serviço"
+            icon="file-circle-exclamation"
+            color="slate"
+            subtitle="Aguardando"
         />
     </div>
 
@@ -234,231 +242,143 @@
     </div>
     @endif
 
-    <!-- Tabela de Demandas -->
-    <x-demandas::data-table
-        :headers="['Código', 'Solicitante', 'Localidade', 'Tipo', 'Prioridade', 'Status', 'Afetados', 'Data Abertura', 'OS']"
-        :data="$demandas"
-        export-route="{{ route('demandas.index') }}"
-    >
-        @forelse($demandas as $demanda)
-            @php
-                $isHighSimilarity = ($demanda->score_similaridade_max ?? 0) > 80;
-                $rowClass = $isHighSimilarity ? 'bg-amber-50 dark:bg-amber-900/10 hover:bg-amber-100 dark:hover:bg-amber-900/20' : 'hover:bg-gray-50 dark:hover:bg-gray-800/50';
-            @endphp
-            <tr class="{{ $rowClass }} transition-all duration-200">
-                <td class="px-6 py-4 whitespace-nowrap">
-                    <div class="flex items-center gap-2">
-                        <div class="p-2 bg-gradient-to-br from-indigo-100 to-indigo-200 dark:from-indigo-900/30 dark:to-indigo-800/30 rounded-xl shadow-sm">
-                            <x-icon module="demandas" class="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
-                        </div>
-                        <div class="flex flex-col">
-                            <span class="font-semibold text-indigo-600 dark:text-indigo-400">{{ $demanda->codigo ?? 'N/A' }}</span>
+    <!-- Main Data Table Container -->
+    <x-demandas::card class="mb-8">
+        <x-demandas::data-table
+            :headers="['Identificação', 'Solicitante', 'Localidade', 'Tipo/Prioridade', 'Status', 'Atendimento', 'Ações']"
+            :data="$demandas"
+        >
+            @forelse($demandas as $demanda)
+                @php
+                    $isHighSimilarity = ($demanda->score_similaridade_max ?? 0) > 80;
+                    $rowClass = $isHighSimilarity ? 'bg-amber-50/30 dark:bg-amber-900/10' : '';
+                @endphp
+                <tr class="group {{ $rowClass }} hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-all duration-200">
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="flex items-center gap-3">
+                            <div class="flex flex-col">
+                                <span class="text-sm font-black text-slate-900 dark:text-white uppercase tracking-wider">{{ $demanda->codigo ?? 'N/A' }}</span>
+                                <span class="text-[10px] font-bold text-slate-500 uppercase">{{ $demanda->created_at->format('d/m/Y') }}</span>
+                            </div>
                             @if($isHighSimilarity)
-                                <div class="flex items-center gap-1 mt-1 text-xs text-amber-600 dark:text-amber-400" title="Geographic Similarity: {{ $demanda->score_similaridade_max }}% - Nearby Demand detected">
-                                    <x-icon name="triangle-exclamation" class="w-3 h-3" />
-                                    <span>Duplicata Provável</span>
+                                <div class="px-2 py-0.5 bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300 text-[10px] font-black uppercase rounded-full border border-amber-200 dark:border-amber-800 animate-pulse">
+                                    Duplicata
                                 </div>
                             @endif
                         </div>
-                    </div>
-                </td>
-                <td class="px-6 py-4">
-                    <div class="flex items-center gap-3">
-                        <div class="p-2.5 bg-gradient-to-br from-emerald-100 to-emerald-200 dark:from-emerald-900/30 dark:to-emerald-800/30 rounded-xl shadow-sm">
-                            <x-icon name="clipboard-check" class="w-8 h-8 text-emerald-600 dark:text-emerald-400" />
-                        </div>
-                        <div class="flex-1 min-w-0">
-                            <div class="text-sm font-semibold text-gray-900 dark:text-white truncate">
-                                {{ $demanda->solicitante_nome }}
-                                @if($demanda->solicitante_apelido)
-                                    <span class="text-indigo-600 dark:text-indigo-400 font-normal text-xs">({{ $demanda->solicitante_apelido }})</span>
-                                @endif
-                            </div>
+                    </td>
+                    <td class="px-6 py-4">
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-800 dark:text-slate-200 line-clamp-1">{{ $demanda->solicitante_nome }}</span>
                             @if($demanda->solicitante_telefone)
-                                <div class="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-1 mt-1">
-                                    <x-icon name="phone" class="w-4 h-4" />
+                                <span class="text-xs text-slate-500 font-medium flex items-center gap-1">
+                                    <x-icon name="phone" class="w-3 h-3" />
                                     {{ $demanda->solicitante_telefone }}
-                                </div>
+                                </span>
                             @endif
                         </div>
-                    </div>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                    @if($demanda->localidade)
-                        <a href="{{ route('localidades.show', $demanda->localidade->id) }}" class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 flex items-center gap-1">
-                            <x-icon name="location-dot" class="w-4 h-4" />
-                            {{ $demanda->localidade->nome }}
-                        </a>
-                    @else
-                        <span class="text-gray-500 dark:text-gray-400">N/A</span>
-                    @endif
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                    @php
-                        $tipoModules = [
-                            'agua' => 'Agua',
-                            'luz' => 'Iluminacao',
-                            'estrada' => 'Estradas',
-                            'poco' => 'Pocos'
-                        ];
-                        $tipoModule = $tipoModules[$demanda->tipo] ?? 'Demandas';
-                    @endphp
-                    <div class="flex items-center gap-2">
-                        <x-icon module="{{ $tipoModule }}" class="w-5 h-5 text-gray-600 dark:text-gray-400" />
-                        <span class="text-gray-900 dark:text-white">{{ $demanda->tipo_texto }}</span>
-                    </div>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                    @php
-                        $prioridadeVariants = ['baixa' => 'secondary', 'media' => 'info', 'alta' => 'warning', 'urgente' => 'danger'];
-                        $prioridadeVariant = $prioridadeVariants[$demanda->prioridade] ?? 'default';
-                    @endphp
-                    <x-demandas::badge :variant="$prioridadeVariant">
-                        {{ $demanda->prioridade_texto }}
-                    </x-demandas::badge>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                    @php
-                        $statusVariants = ['aberta' => 'info', 'em_andamento' => 'warning', 'concluida' => 'success', 'cancelada' => 'danger'];
-                        $statusVariant = $statusVariants[$demanda->status] ?? 'default';
-                    @endphp
-                    <x-demandas::badge :variant="$statusVariant">
-                        {{ $demanda->status_texto }}
-                    </x-demandas::badge>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap text-center">
-                    @php
-                        $totalInteressados = $demanda->total_interessados ?? 1;
-                        $badgeColor = $totalInteressados >= 10 ? 'danger' : ($totalInteressados >= 5 ? 'warning' : ($totalInteressados >= 2 ? 'info' : 'secondary'));
-                    @endphp
-                    @if($totalInteressados > 1)
-                        <a href="{{ route('demandas.interessados', $demanda->id) }}" class="inline-flex items-center gap-1 group" title="Ver pessoas afetadas">
-                            <x-demandas::badge :variant="$badgeColor" class="group-hover:scale-110 transition-transform">
-                                <x-icon name="users" class="w-3.5 h-3.5 mr-1" />
-                                {{ $totalInteressados }}
-                            </x-demandas::badge>
-                        </a>
-                    @else
-                        <span class="text-gray-400 dark:text-gray-500 text-sm">1</span>
-                    @endif
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                    @if($demanda->data_abertura)
-                        <div class="flex items-center gap-1">
-                            <x-icon name="calendar" class="w-4 h-4" />
-                            {{ $demanda->data_abertura->format('d/m/Y') }}
-                        </div>
-                        <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">{{ $demanda->data_abertura->format('H:i') }}</div>
-                        @if($demanda->diasAberta() !== null)
-                            <div class="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1 mt-1">
-                                <x-icon name="clock" class="w-3 h-3" />
-                                {{ $demanda->diasAberta() }} dias
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="flex items-center gap-2">
+                            <div class="p-1.5 bg-slate-100 dark:bg-slate-800 rounded-lg">
+                                <x-icon name="location-dot" class="w-3.5 h-3.5 text-slate-500" />
                             </div>
-                        @endif
-                    @else
-                        <span class="text-gray-500 dark:text-gray-400">N/A</span>
-                    @endif
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                    @if($demanda->ordemServico)
-                        <a href="{{ route('ordens.show', $demanda->ordemServico->id) }}" class="inline-flex">
-                            <x-demandas::badge variant="success">
-                                {{ $demanda->ordemServico->numero }}
+                            <span class="text-sm font-bold text-slate-600 dark:text-slate-300">
+                                {{ $demanda->localidade ? $demanda->localidade->nome : 'Não informado' }}
+                            </span>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="flex flex-col gap-1.5">
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs font-bold text-slate-700 dark:text-slate-200 uppercase tracking-tight">{{ $demanda->tipo_texto }}</span>
+                            </div>
+                            @php
+                                $prioridadeVariants = ['baixa' => 'secondary', 'media' => 'info', 'alta' => 'warning', 'urgente' => 'danger'];
+                                $prioridadeVariant = $prioridadeVariants[$demanda->prioridade] ?? 'default';
+                            @endphp
+                            <x-demandas::badge :variant="$prioridadeVariant" size="sm" class="w-fit">
+                                {{ $demanda->prioridade_texto }}
                             </x-demandas::badge>
-                        </a>
-                    @else
-                        <x-demandas::badge variant="secondary">
-                            Sem OS
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        @php
+                            $statusVariants = ['aberta' => 'info', 'em_andamento' => 'warning', 'concluida' => 'success', 'cancelada' => 'danger'];
+                            $statusVariant = $statusVariants[$demanda->status] ?? 'default';
+                        @endphp
+                        <x-demandas::badge :variant="$statusVariant" size="lg">
+                            {{ $demanda->status_texto }}
                         </x-demandas::badge>
-                    @endif
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    <div class="flex items-center justify-end gap-1">
-                        <a href="{{ route('demandas.show', $demanda) }}"
-                           class="p-2.5 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 rounded-lg transition-all hover:scale-110"
-                           title="Ver detalhes">
-                            <x-icon name="eye" class="w-5 h-5" />
-                        </a>
-                        @if($demanda->solicitante_email)
-                            <form action="{{ route('demandas.reenviar-email', $demanda) }}"
-                                  method="POST"
-                                  class="inline"
-                                  onsubmit="return confirm('Deseja reenviar o email de confirmação para {{ $demanda->solicitante_email }}?')">
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        @if($demanda->ordemServico)
+                            <div class="flex flex-col gap-1">
+                                <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">OS Vinculada</span>
+                                <x-demandas::badge variant="success" size="sm" class="w-fit">
+                                    {{ $demanda->ordemServico->numero }}
+                                </x-demandas::badge>
+                            </div>
+                        @else
+                            <span class="text-xs font-bold text-slate-400 uppercase tracking-widest italic">Sem OS</span>
+                        @endif
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-right">
+                        <!-- Action Buttons - Revealed on Hover -->
+                        <div class="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-2 group-hover:translate-x-0">
+                            <a href="{{ route('demandas.show', $demanda) }}"
+                               class="p-2 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 rounded-xl transition-all"
+                               title="Visualizar">
+                                <x-icon name="eye" class="w-5 h-5" />
+                            </a>
+                            <a href="{{ route('demandas.edit', $demanda) }}"
+                               class="p-2 text-slate-400 hover:text-amber-600 hover:bg-amber-50 dark:hover:bg-amber-900/30 rounded-xl transition-all"
+                               title="Editar">
+                                <x-icon name="pencil" class="w-5 h-5" />
+                            </a>
+                            <a href="{{ route('demandas.print', $demanda) }}" target="_blank"
+                               class="p-2 text-slate-400 hover:text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 rounded-xl transition-all"
+                               title="Imprimir">
+                                <x-icon name="print" class="w-5 h-5" />
+                            </a>
+
+                            <div class="w-px h-6 bg-slate-200 dark:bg-slate-700 mx-1"></div>
+
+                            <form action="{{ route('demandas.destroy', $demanda) }}" method="POST" class="inline" onsubmit="return confirm('Excluir permanentemente?')">
                                 @csrf
-                                <button type="submit"
-                                        class="p-2.5 text-purple-600 dark:text-purple-400 hover:bg-purple-50 dark:hover:bg-purple-900/30 rounded-lg transition-all hover:scale-110"
-                                        title="Reenviar Email">
-                                    <x-icon name="envelope" class="w-5 h-5" />
+                                @method('DELETE')
+                                <button type="submit" class="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-xl transition-all">
+                                    <x-icon name="trash" class="w-5 h-5" />
                                 </button>
                             </form>
-                        @endif
-                        @if($demanda->podeCriarOS() && Route::has('ordens.create'))
-                            <a href="{{ route('ordens.create', ['demanda_id' => $demanda->id]) }}"
-                               class="p-2.5 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-lg transition-all hover:scale-110"
-                               title="Criar OS">
-                                <x-icon name="file-circle-plus" class="w-5 h-5" />
-                            </a>
-                        @endif
-                        <a href="{{ route('demandas.edit', $demanda) }}"
-                           class="p-2.5 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-all hover:scale-110"
-                           title="Editar">
-                            <x-icon name="pencil" class="w-5 h-5" />
-                        </a>
-                        <a href="{{ route('demandas.print', $demanda) }}" target="_blank"
-                           class="p-2.5 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 rounded-lg transition-all hover:scale-110"
-                           title="Imprimir">
-                            <x-icon name="print" class="w-5 h-5" />
-                        </a>
-                        <form action="{{ route('demandas.destroy', $demanda) }}"
-                              method="POST"
-                              class="inline"
-                              onsubmit="return confirm('Tem certeza que deseja deletar esta demanda? Esta ação não pode ser desfeita.')">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit"
-                                    class="p-2.5 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg transition-all hover:scale-110"
-                                    title="Deletar">
-                                <x-icon name="trash" class="w-5 h-5" />
-                            </button>
-                        </form>
-                    </div>
-                </td>
-            </tr>
-        @empty
-            <tr>
-                <td colspan="10" class="px-6 py-20 text-center">
-                    <div class="flex flex-col items-center justify-center max-w-md mx-auto">
-                        <div class="p-6 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900 rounded-2xl mb-6 shadow-lg">
-                            <x-icon module="demandas" class="w-16 h-16 text-gray-400 dark:text-gray-500" />
                         </div>
-                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">
-                            Nenhuma demanda encontrada
-                        </h3>
-                        <p class="text-gray-500 dark:text-gray-400 mb-8 text-center leading-relaxed">
-                            @if(request()->hasAny(['search', 'status', 'tipo', 'prioridade', 'localidade_id']))
-                                Não encontramos demandas com os filtros aplicados. Tente ajustar os filtros ou limpar a busca para ver todas as demandas disponíveis.
-                            @else
-                                Comece cadastrando sua primeira demanda no sistema para gerenciar as solicitações da população de forma eficiente.
-                            @endif
-                        </p>
-                        <div class="flex flex-col sm:flex-row gap-3">
-                            @if(request()->hasAny(['search', 'status', 'tipo', 'prioridade', 'localidade_id']))
-                                <x-demandas::button href="{{ route('demandas.index') }}" variant="outline" class="border-2">
-                                    <x-icon name="rotate" class="w-4 h-4 mr-2" />
-                                    Limpar Filtros
-                                </x-demandas::button>
-                            @endif
-                            <x-demandas::button href="{{ route('demandas.create') }}" variant="primary" class="shadow-lg hover:shadow-xl transition-all">
-                                <x-icon name="circle-plus" class="w-4 h-4 mr-2" />
-                                <span class="hidden sm:inline">Criar Primeira Demanda</span>
-                                <span class="sm:hidden">Novo</span>
+                    </td>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="7" class="px-6 py-24 text-center">
+                        <div class="flex flex-col items-center justify-center max-w-sm mx-auto">
+                            <div class="p-6 bg-slate-100 dark:bg-slate-800 rounded-3xl mb-6">
+                                <x-icon module="demandas" class="w-12 h-12 text-slate-300 dark:text-slate-600" />
+                            </div>
+                            <h3 class="text-xl font-black text-slate-900 dark:text-white mb-2 uppercase tracking-tight">Nenhuma Demanda</h3>
+                            <p class="text-slate-500 dark:text-slate-400 mb-8 text-sm font-medium leading-relaxed">
+                                @if(request()->hasAny(['search', 'status', 'tipo', 'prioridade', 'localidade_id']))
+                                    Não encontramos registros com os filtros aplicados. Tente ajustar sua busca.
+                                @else
+                                    Ainda não existem demandas cadastradas. Deseja iniciar um novo registro?
+                                @endif
+                            </p>
+                            <x-demandas::button href="{{ route('demandas.create') }}" variant="primary" size="lg" class="shadow-xl">
+                                <x-icon name="plus" class="w-4 h-4 mr-2" />
+                                Abrir Nova Demanda
                             </x-demandas::button>
                         </div>
-                    </div>
-                </td>
-            </tr>
-        @endforelse
-    </x-demandas::data-table>
+                    </td>
+                </tr>
+            @endforelse
+        </x-demandas::data-table>
+    </x-demandas::card>
 </div>
 
     <!-- Outbox Modal -->

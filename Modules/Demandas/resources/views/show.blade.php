@@ -4,36 +4,47 @@
 
 @section('content')
 <div class="space-y-8">
-    <!-- Page Header -->
-    <div class="bg-gradient-to-r from-indigo-600 via-indigo-700 to-indigo-800 dark:from-indigo-800 dark:via-indigo-900 dark:to-indigo-950 rounded-2xl shadow-2xl p-6 md:p-8 text-white relative overflow-hidden">
-        <div class="absolute inset-0 bg-grid-white/10 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.6))]"></div>
-        <div class="relative z-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <div class="flex items-center gap-4">
-                <div class="p-4 bg-white/20 rounded-2xl backdrop-blur-sm shadow-lg">
-                    <x-icon module="demandas" class="w-10 h-10 text-white" />
+    <!-- Premium Header Area -->
+    <div class="relative overflow-hidden bg-slate-900 rounded-3xl border border-slate-800 shadow-2xl mb-8">
+        <!-- Decorative Elements -->
+        <div class="absolute top-0 right-0 -mt-20 -mr-20 w-80 h-80 bg-indigo-500/10 rounded-full blur-[100px]"></div>
+        <div class="absolute bottom-0 left-0 -mb-20 -ml-20 w-80 h-80 bg-blue-500/10 rounded-full blur-[100px]"></div>
+
+        <div class="relative px-8 py-10">
+            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
+                <div class="flex items-center gap-6">
+                    <div class="relative group">
+                        <div class="absolute -inset-1 bg-gradient-to-r from-indigo-500 to-blue-500 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
+                        <div class="relative p-5 bg-slate-800/50 backdrop-blur-xl rounded-2xl border border-white/10 shadow-2xl">
+                            <x-icon module="demandas" class="w-10 h-10 text-white" />
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-3 mb-2">
+                            <span class="px-3 py-1 text-[10px] font-black uppercase tracking-[0.2em] bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 rounded-full">Detalhes</span>
+                            <span class="w-1 h-1 rounded-full bg-slate-700"></span>
+                            <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Protocolo: {{ $demanda->codigo ?? '#' . $demanda->id }}</span>
+                        </div>
+                        <h1 class="text-3xl md:text-4xl font-black text-white tracking-tight">
+                            Visualizar <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-blue-400">Demanda</span>
+                        </h1>
+                    </div>
                 </div>
-                <div>
-                    <h1 class="text-3xl md:text-4xl font-bold flex items-center gap-3">
-                        Demanda: <span class="text-indigo-100 dark:text-indigo-200">{{ $demanda->codigo ?? '#' . $demanda->id }}</span>
-                    </h1>
-                    <p class="text-indigo-100 dark:text-indigo-200 mt-2 text-sm md:text-base">
-                        Detalhes completos da demanda
-                    </p>
+
+                <div class="flex flex-wrap gap-3">
+                    <x-demandas::button href="{{ route('demandas.print', $demanda) }}" target="_blank" variant="secondary" size="lg" class="shadow-xl">
+                        <x-icon name="print" class="w-5 h-5 mr-2" />
+                        Imprimir
+                    </x-demandas::button>
+                    <x-demandas::button href="{{ route('demandas.edit', $demanda) }}" variant="primary" size="lg" class="shadow-xl bg-indigo-600 hover:bg-indigo-700 border-b-4 border-indigo-800 active:border-b-0 active:translate-y-1">
+                        <x-icon name="pencil" class="w-5 h-5 mr-2" />
+                        Editar Registro
+                    </x-demandas::button>
+                    <x-demandas::button href="{{ route('demandas.index') }}" variant="secondary" size="lg" class="shadow-xl">
+                        <x-icon name="arrow-left" class="w-5 h-5 mr-2" />
+                        Voltar
+                    </x-demandas::button>
                 </div>
-            </div>
-            <div class="flex flex-wrap gap-2">
-                <x-demandas::button href="{{ route('demandas.print', $demanda) }}" target="_blank" variant="outline-primary" class="!bg-white !text-indigo-600 hover:!bg-indigo-50 !border-indigo-600 shadow-xl hover:shadow-2xl transition-all transform hover:scale-105">
-                    <x-icon name="print" class="w-5 h-5 mr-2" />
-                    Imprimir
-                </x-demandas::button>
-                <x-demandas::button href="{{ route('demandas.edit', $demanda) }}" variant="outline-primary" class="!bg-white !text-indigo-600 hover:!bg-indigo-50 !border-indigo-600 shadow-xl hover:shadow-2xl transition-all transform hover:scale-105">
-                    <x-icon name="pencil" class="w-5 h-5 mr-2" />
-                    Editar
-                </x-demandas::button>
-                <x-demandas::button href="{{ route('demandas.index') }}" variant="outline" class="bg-white/10 text-white border-white/30 hover:bg-white/20">
-                    <x-icon name="arrow-left" class="w-5 h-5 mr-2" />
-                    Voltar
-                </x-demandas::button>
             </div>
         </div>
     </div>
@@ -67,24 +78,24 @@
     @endif
 
     <!-- Tabs Navigation -->
-    <x-demandas::card class="rounded-xl shadow-lg p-0">
-        <nav class="flex space-x-1 p-1 bg-gray-50 dark:bg-gray-900/50" aria-label="Tabs">
-            <button data-tab-target="detalhes" class="flex-1 border-b-2 border-indigo-500 text-indigo-600 dark:text-indigo-400 whitespace-nowrap py-3 px-4 text-sm font-semibold bg-white dark:bg-gray-800 rounded-t-lg transition-colors">
+    <div class="bg-white dark:bg-slate-800 rounded-3xl p-1 shadow-sm border border-slate-200 dark:border-slate-700/50 mb-8 inline-flex w-full sm:w-auto">
+        <nav class="flex flex-wrap gap-1 w-full sm:w-auto" aria-label="Tabs">
+            <button data-tab-target="detalhes" class="flex-1 sm:flex-none px-6 py-3 text-sm font-black uppercase tracking-wider rounded-2xl transition-all duration-300 bg-indigo-600 text-white shadow-lg active-tab">
                 <x-icon name="circle-info" class="w-4 h-4 inline mr-2" />
                 Detalhes
             </button>
-            <button data-tab-target="relacionamentos" class="flex-1 border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300 whitespace-nowrap py-3 px-4 text-sm font-medium hover:bg-white dark:hover:bg-gray-800 rounded-t-lg transition-colors">
+            <button data-tab-target="relacionamentos" class="flex-1 sm:flex-none px-6 py-3 text-sm font-bold uppercase tracking-wider rounded-2xl transition-all duration-300 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-700">
                 <x-icon name="link" class="w-4 h-4 inline mr-2" />
                 Relacionamentos
             </button>
             @if(method_exists($demanda, 'getHistory'))
-            <button data-tab-target="historico" class="flex-1 border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300 whitespace-nowrap py-3 px-4 text-sm font-medium hover:bg-white dark:hover:bg-gray-800 rounded-t-lg transition-colors">
+            <button data-tab-target="historico" class="flex-1 sm:flex-none px-6 py-3 text-sm font-bold uppercase tracking-wider rounded-2xl transition-all duration-300 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-700">
                 <x-icon name="clock" class="w-4 h-4 inline mr-2" />
                 Histórico
             </button>
-            @endif
+			@endif
         </nav>
-    </x-demandas::card>
+    </div>
 
     <!-- Tabs Content -->
     <div>
@@ -93,15 +104,14 @@
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <!-- Informações Principais -->
                 <div class="lg:col-span-2 space-y-6">
-                    <!-- Informações da Demanda -->
-                    <x-demandas::card class="rounded-xl shadow-lg">
+                    <x-demandas::card class="mb-6 overflow-hidden">
                         <x-slot name="header">
                             <div class="flex items-center gap-3">
-                                <div class="p-2 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg">
+                                <div class="p-2 bg-indigo-500/10 rounded-xl">
                                     <x-icon name="circle-info" class="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
                                 </div>
-                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                                    Informações da Demanda
+                                <h3 class="text-sm font-black text-slate-900 dark:text-white uppercase tracking-wider">
+                                    Conteúdo da Demanda
                                 </h3>
                             </div>
                         </x-slot>
@@ -305,14 +315,14 @@
                 <div class="space-y-6">
                     <!-- Card de Estatísticas -->
                     @if(isset($estatisticas))
-                    <x-demandas::card class="rounded-xl shadow-lg">
+                    <x-demandas::card class="mb-6 overflow-hidden">
                         <x-slot name="header">
                             <div class="flex items-center gap-3">
-                                <div class="p-2 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg">
+                                <div class="p-2 bg-indigo-500/10 rounded-xl">
                                     <x-icon name="chart-simple" class="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
                                 </div>
-                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                                    Estatísticas
+                                <h3 class="text-sm font-black text-slate-900 dark:text-white uppercase tracking-wider">
+                                    Indicadores
                                 </h3>
                             </div>
                         </x-slot>
@@ -676,8 +686,8 @@ document.addEventListener('DOMContentLoaded', function() {
     function showTab(targetId) {
         tabPanels.forEach(panel => panel.classList.add('hidden'));
         tabButtons.forEach(button => {
-            button.classList.remove('border-indigo-500', 'text-indigo-600', 'dark:text-indigo-400', 'font-semibold');
-            button.classList.add('border-transparent', 'text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300', 'dark:text-gray-400', 'dark:hover:text-gray-300', 'font-medium');
+            button.classList.remove('bg-indigo-600', 'text-white', 'shadow-lg', 'active-tab');
+            button.classList.add('text-slate-500', 'hover:bg-slate-100', 'dark:hover:bg-slate-700');
         });
 
         const targetPanel = document.querySelector(`[data-tab-panel="${targetId}"]`);
@@ -687,8 +697,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const targetButton = document.querySelector(`[data-tab-target="${targetId}"]`);
         if (targetButton) {
-            targetButton.classList.remove('border-transparent', 'text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300', 'dark:text-gray-400', 'dark:hover:text-gray-300', 'font-medium');
-            targetButton.classList.add('border-indigo-500', 'text-indigo-600', 'dark:text-indigo-400', 'font-semibold');
+            targetButton.classList.remove('text-slate-500', 'hover:bg-slate-100', 'dark:hover:bg-slate-700');
+            targetButton.classList.add('bg-indigo-600', 'text-white', 'shadow-lg', 'active-tab');
         }
     }
 

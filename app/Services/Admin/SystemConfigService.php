@@ -2,8 +2,8 @@
 
 namespace App\Services\Admin;
 
-use App\Models\SystemConfig;
 use App\Models\AuditLog;
+use App\Models\SystemConfig;
 
 class SystemConfigService
 {
@@ -16,7 +16,7 @@ class SystemConfigService
         $grouped = [];
 
         foreach ($configs as $config) {
-            if (!isset($grouped[$config->group])) {
+            if (! isset($grouped[$config->group])) {
                 $grouped[$config->group] = [];
             }
 
@@ -50,7 +50,7 @@ class SystemConfigService
             $config->description = $description;
         }
 
-        $config->value = match($config->type) {
+        $config->value = match ($config->type) {
             'json' => json_encode($value),
             'boolean' => $value ? '1' : '0',
             'integer' => (string) $value,
@@ -138,123 +138,123 @@ class SystemConfigService
             ],
             // Configurações PIX
             'pix.base_url' => [
-                'value' => env('PIX_BASE_URL', 'https://api-pix.gerencianet.com.br'),
+                'value' => config('vertex.pix.base_url', 'https://api-pix.gerencianet.com.br'),
                 'type' => 'string',
                 'group' => 'pix',
                 'description' => 'URL base da API do PSP',
             ],
             'pix.client_id' => [
-                'value' => env('PIX_CLIENT_ID', ''),
+                'value' => config('vertex.pix.client_id', ''),
                 'type' => 'password',
                 'group' => 'pix',
                 'description' => 'Client ID OAuth2 do PSP',
             ],
             'pix.client_secret' => [
-                'value' => env('PIX_CLIENT_SECRET', ''),
+                'value' => config('vertex.pix.client_secret', ''),
                 'type' => 'password',
                 'group' => 'pix',
                 'description' => 'Client Secret OAuth2 do PSP',
             ],
             'pix.certificate_path' => [
-                'value' => env('PIX_CERTIFICATE_PATH', ''),
+                'value' => config('vertex.pix.certificate_path', ''),
                 'type' => 'string',
                 'group' => 'pix',
                 'description' => 'Caminho para o certificado SSL (opcional)',
             ],
             'pix.webhook_secret' => [
-                'value' => env('PIX_WEBHOOK_SECRET', ''),
+                'value' => config('vertex.pix.webhook_secret', ''),
                 'type' => 'password',
                 'group' => 'pix',
                 'description' => 'Secret para validação de webhook',
             ],
             'pix.webhook_url' => [
-                'value' => env('PIX_WEBHOOK_URL', env('APP_URL') . '/api/webhook/pix'),
+                'value' => config('vertex.pix.webhook_url', config('app.url').'/api/webhook/pix'),
                 'type' => 'string',
                 'group' => 'pix',
                 'description' => 'URL do webhook (configurada automaticamente)',
             ],
             'pix.psp_name' => [
-                'value' => env('PIX_PSP_NAME', 'gerencianet'),
+                'value' => config('vertex.pix.psp_name', 'gerencianet'),
                 'type' => 'string',
                 'group' => 'pix',
                 'description' => 'Nome do PSP (gerencianet, mercadopago, pagseguro, etc)',
             ],
             'pix.environment' => [
-                'value' => env('PIX_ENVIRONMENT', 'sandbox'),
+                'value' => config('vertex.pix.environment', 'sandbox'),
                 'type' => 'string',
                 'group' => 'pix',
                 'description' => 'Ambiente: sandbox ou production',
             ],
             'pix.qrcode_expiration' => [
-                'value' => env('PIX_QRCODE_EXPIRATION', '3600'),
+                'value' => config('vertex.pix.qrcode_expiration', '3600'),
                 'type' => 'integer',
                 'group' => 'pix',
                 'description' => 'Tempo de expiração do QR Code em segundos',
             ],
             'pix.debug' => [
-                'value' => env('PIX_DEBUG', '0'),
+                'value' => config('vertex.pix.debug', '0'),
                 'type' => 'boolean',
                 'group' => 'pix',
                 'description' => 'Habilitar logs detalhados do PIX',
             ],
             'pix.timeout' => [
-                'value' => env('PIX_TIMEOUT', '30'),
+                'value' => config('vertex.pix.timeout', '30'),
                 'type' => 'integer',
                 'group' => 'pix',
                 'description' => 'Timeout para requisições à API PIX em segundos',
             ],
             'pix.chave_plataforma' => [
-                'value' => env('PIX_CHAVE_PLATAFORMA', ''),
+                'value' => config('vertex.pix.chave_plataforma', ''),
                 'type' => 'string',
                 'group' => 'pix',
                 'description' => 'Chave PIX da Plataforma (Centralizadora)',
             ],
             'pix.taxa_plataforma' => [
-                'value' => env('PIX_TAXA_PLATAFORMA', '0'),
+                'value' => config('vertex.pix.taxa_plataforma', '0'),
                 'type' => 'text', // Usando text para permitir decimais como "2.5"
                 'group' => 'pix',
                 'description' => 'Taxa da Plataforma em % (ex: 5.00)',
             ],
             'pix.tarifa_fixa' => [
-                'value' => env('PIX_TARIFA_FIXA', '0.00'),
+                'value' => config('vertex.pix.tarifa_fixa', '0.00'),
                 'type' => 'text',
                 'group' => 'pix',
                 'description' => 'Tarifa Fixa por transação (ex: 0.99)',
             ],
             'pix.split_ativo' => [
-                'value' => env('PIX_SPLIT_ATIVO', '0'),
+                'value' => config('vertex.pix.split_ativo', '0'),
                 'type' => 'boolean',
                 'group' => 'pix',
                 'description' => 'Ativar divisão automática de pagamentos',
             ],
             // Configurações reCAPTCHA v3
             'recaptcha.enabled' => [
-                'value' => env('RECAPTCHA_ENABLED', '0'),
+                'value' => config('vertex.recaptcha.enabled', '0'),
                 'type' => 'boolean',
                 'group' => 'recaptcha',
                 'description' => 'Habilitar Google reCAPTCHA v3',
             ],
             'recaptcha.site_key' => [
-                'value' => env('RECAPTCHA_SITE_KEY', ''),
+                'value' => config('vertex.recaptcha.site_key', ''),
                 'type' => 'string',
                 'group' => 'recaptcha',
                 'description' => 'Site Key do Google reCAPTCHA v3',
             ],
             'recaptcha.secret_key' => [
-                'value' => env('RECAPTCHA_SECRET_KEY', ''),
+                'value' => config('vertex.recaptcha.secret_key', ''),
                 'type' => 'password',
                 'group' => 'recaptcha',
                 'description' => 'Secret Key do Google reCAPTCHA v3',
             ],
             'recaptcha.min_score' => [
-                'value' => env('RECAPTCHA_MIN_SCORE', '0.5'),
+                'value' => config('vertex.recaptcha.min_score', '0.5'),
                 'type' => 'string',
                 'group' => 'recaptcha',
                 'description' => 'Score mínimo aceito (0.0 a 1.0). Recomendado: 0.5',
             ],
             // Configurações Google Maps
             'google_maps.api_key' => [
-                'value' => env('GOOGLE_MAPS_API_KEY', ''),
+                'value' => config('vertex.google_maps.api_key', ''),
                 'type' => 'password',
                 'group' => 'integrations',
                 'description' => 'Chave de API do Google Maps (Javascript API)',
@@ -288,28 +288,28 @@ class SystemConfigService
     public function ensurePixConfigs(): void
     {
         $pixConfigs = [
-            'pix.base_url' => env('PIX_BASE_URL', 'https://api-pix.gerencianet.com.br'),
-            'pix.client_id' => env('PIX_CLIENT_ID', ''),
-            'pix.client_secret' => env('PIX_CLIENT_SECRET', ''),
-            'pix.certificate_path' => env('PIX_CERTIFICATE_PATH', ''),
-            'pix.webhook_secret' => env('PIX_WEBHOOK_SECRET', ''),
-            'pix.webhook_url' => env('PIX_WEBHOOK_URL', env('APP_URL') . '/api/webhook/pix'),
-            'pix.psp_name' => env('PIX_PSP_NAME', 'gerencianet'),
-            'pix.environment' => env('PIX_ENVIRONMENT', 'sandbox'),
-            'pix.qrcode_expiration' => env('PIX_QRCODE_EXPIRATION', '3600'),
-            'pix.debug' => env('PIX_DEBUG', '0'),
-            'pix.timeout' => env('PIX_TIMEOUT', '30'),
-            'pix.chave_plataforma' => env('PIX_CHAVE_PLATAFORMA', ''),
-            'pix.taxa_plataforma' => env('PIX_TAXA_PLATAFORMA', '0'),
-            'pix.tarifa_fixa' => env('PIX_TARIFA_FIXA', '0.00'),
-            'pix.split_ativo' => env('PIX_SPLIT_ATIVO', '0'),
+            'pix.base_url' => config('vertex.pix.base_url', 'https://api-pix.gerencianet.com.br'),
+            'pix.client_id' => config('vertex.pix.client_id', ''),
+            'pix.client_secret' => config('vertex.pix.client_secret', ''),
+            'pix.certificate_path' => config('vertex.pix.certificate_path', ''),
+            'pix.webhook_secret' => config('vertex.pix.webhook_secret', ''),
+            'pix.webhook_url' => config('vertex.pix.webhook_url', config('app.url').'/api/webhook/pix'),
+            'pix.psp_name' => config('vertex.pix.psp_name', 'gerencianet'),
+            'pix.environment' => config('vertex.pix.environment', 'sandbox'),
+            'pix.qrcode_expiration' => config('vertex.pix.qrcode_expiration', '3600'),
+            'pix.debug' => config('vertex.pix.debug') ? '1' : '0',
+            'pix.timeout' => config('vertex.pix.timeout', '30'),
+            'pix.chave_plataforma' => config('vertex.pix.chave_plataforma', ''),
+            'pix.taxa_plataforma' => config('vertex.pix.taxa_plataforma', '0'),
+            'pix.tarifa_fixa' => config('vertex.pix.tarifa_fixa', '0.00'),
+            'pix.split_ativo' => config('vertex.pix.split_ativo') ? '1' : '0',
         ];
 
         foreach ($pixConfigs as $key => $envValue) {
             $config = SystemConfig::where('key', $key)->first();
             $defaultConfig = $this->getDefaultConfigs()[$key] ?? null;
 
-            if (!$config) {
+            if (! $config) {
                 SystemConfig::create([
                     'key' => $key,
                     'value' => $envValue,
@@ -317,7 +317,7 @@ class SystemConfigService
                     'group' => 'pix',
                     'description' => $defaultConfig['description'] ?? '',
                 ]);
-            } elseif ($config->value !== $envValue && !empty($envValue)) {
+            } elseif ($config->value !== $envValue && ! empty($envValue)) {
                 // Sincronizar com .env se o valor do .env não estiver vazio
                 $config->value = $envValue;
                 $config->save();
@@ -331,17 +331,17 @@ class SystemConfigService
     public function ensureRecaptchaConfigs(): void
     {
         $recaptchaConfigs = [
-            'recaptcha.enabled' => env('RECAPTCHA_ENABLED', '0'),
-            'recaptcha.site_key' => env('RECAPTCHA_SITE_KEY', ''),
-            'recaptcha.secret_key' => env('RECAPTCHA_SECRET_KEY', ''),
-            'recaptcha.min_score' => env('RECAPTCHA_MIN_SCORE', '0.5'),
+            'recaptcha.enabled' => config('vertex.recaptcha.enabled') ? '1' : '0',
+            'recaptcha.site_key' => config('vertex.recaptcha.site_key', ''),
+            'recaptcha.secret_key' => config('vertex.recaptcha.secret_key', ''),
+            'recaptcha.min_score' => config('vertex.recaptcha.min_score', '0.5'),
         ];
 
         foreach ($recaptchaConfigs as $key => $envValue) {
             $config = SystemConfig::where('key', $key)->first();
             $defaultConfig = $this->getDefaultConfigs()[$key] ?? null;
 
-            if (!$config) {
+            if (! $config) {
                 SystemConfig::create([
                     'key' => $key,
                     'value' => $envValue,
@@ -349,7 +349,7 @@ class SystemConfigService
                     'group' => 'recaptcha',
                     'description' => $defaultConfig['description'] ?? '',
                 ]);
-            } elseif ($config->value !== $envValue && !empty($envValue)) {
+            } elseif ($config->value !== $envValue && ! empty($envValue)) {
                 // Sincronizar com .env se o valor do .env não estiver vazio
                 $config->value = $envValue;
                 $config->save();
@@ -363,14 +363,14 @@ class SystemConfigService
     public function ensureGoogleMapsConfigs(): void
     {
         $mapsConfigs = [
-            'google_maps.api_key' => env('GOOGLE_MAPS_API_KEY', ''),
+            'google_maps.api_key' => config('vertex.google_maps.api_key', ''),
         ];
 
         foreach ($mapsConfigs as $key => $envValue) {
             $config = SystemConfig::where('key', $key)->first();
             $defaultConfig = $this->getDefaultConfigs()[$key] ?? null;
 
-            if (!$config) {
+            if (! $config) {
                 SystemConfig::create([
                     'key' => $key,
                     'value' => $envValue,
@@ -378,7 +378,7 @@ class SystemConfigService
                     'group' => 'integrations',
                     'description' => $defaultConfig['description'] ?? '',
                 ]);
-            } elseif ($config->value !== $envValue && !empty($envValue)) {
+            } elseif ($config->value !== $envValue && ! empty($envValue)) {
                 // Sincronizar com .env se o valor do .env não estiver vazio
                 $config->value = $envValue;
                 $config->save();
@@ -393,7 +393,7 @@ class SystemConfigService
     {
         $config = $this->updateConfig($key, $value, $type, $description);
 
-        if (!$deferSync) {
+        if (! $deferSync) {
             $this->syncOneToEnv($key, $config->value);
         }
 
@@ -433,7 +433,7 @@ class SystemConfigService
             }
         }
 
-        if (!empty($envUpdates)) {
+        if (! empty($envUpdates)) {
             $this->syncBatchToEnv($envUpdates);
         }
     }
@@ -459,7 +459,7 @@ class SystemConfigService
     {
         $envPath = base_path('.env');
 
-        if (!file_exists($envPath)) {
+        if (! file_exists($envPath)) {
             return;
         }
 
@@ -474,8 +474,8 @@ class SystemConfigService
 
                 // Se o valor contém espaços ou caracteres especiais, usar aspas
                 $formattedValue = $value;
-                if (preg_match('/[\s#=]/', (string)$value)) {
-                    $formattedValue = '"' . addslashes((string)$value) . '"';
+                if (preg_match('/[\s#=]/', (string) $value)) {
+                    $formattedValue = '"'.addslashes((string) $value).'"';
                 }
 
                 if (preg_match($pattern, $envContent)) {
@@ -491,7 +491,7 @@ class SystemConfigService
                 file_put_contents($envPath, $envContent);
             }
         } catch (\Exception $e) {
-            \Log::warning("Erro ao sincronizar lote de configurações com .env: " . $e->getMessage());
+            \Log::warning('Erro ao sincronizar lote de configurações com .env: '.$e->getMessage());
         }
     }
 }

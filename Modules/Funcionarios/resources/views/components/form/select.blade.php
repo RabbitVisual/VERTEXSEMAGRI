@@ -24,7 +24,7 @@
         <select id="{{ $name }}"
                 name="{{ $name }}"
                 @if($required) required @endif
-                {{ $attributes->merge(['class' => "w-full py-4 bg-white dark:bg-slate-950 rounded-2xl text-[11px] font-black uppercase tracking-widest dark:text-white transition-all appearance-none cursor-pointer " . ($icon ? 'pl-14 pr-12' : 'px-8') . " " . $errorClass]) }}>
+                {{ $attributes->merge(['class' => "w-full py-4 bg-white dark:bg-slate-950 rounded-2xl text-[11px] font-black uppercase tracking-widest dark:text-white transition-all appearance-none bg-none cursor-pointer " . ($icon ? 'pl-14 pr-12' : 'px-8') . " " . $errorClass]) }}>
             {{ $slot }}
             @foreach($options as $val => $txt)
                 <option value="{{ $val }}" {{ old($name) == $val ? 'selected' : '' }}>{{ strtoupper($txt) }}</option>

@@ -10,12 +10,17 @@ use App\Models\User;
 use App\Traits\GeneratesCode;
 use App\Traits\HasHistory;
 
+/**
+ * @property float $total
+ * @property string $data
+ * @property-read \Modules\Demandas\App\Models\Demanda $demanda
+ */
 class OrdemServico extends Model
 {
     use HasFactory, SoftDeletes, GeneratesCode, HasHistory;
 
     protected $table = 'ordens_servico';
-    
+
     /**
      * Campo usado para código gerado (a tabela usa 'numero', não 'codigo')
      */
@@ -205,12 +210,12 @@ class OrdemServico extends Model
             }
             return null;
         }
-        
+
         // Garantir valor positivo
         $tempoMinutos = abs($this->tempo_execucao);
         $horas = floor($tempoMinutos / 60);
         $minutos = $tempoMinutos % 60;
-        
+
         if ($horas > 0) {
             return "{$horas}h {$minutos}min";
         }
@@ -286,7 +291,7 @@ class OrdemServico extends Model
             if (!empty($equipeIds)) {
                 $q->whereIn('equipe_id', $equipeIds);
             }
-            
+
             // OU ordens atribuídas diretamente ao usuário (user_id_atribuido)
             if ($userId) {
                 if (!empty($equipeIds)) {
@@ -295,7 +300,7 @@ class OrdemServico extends Model
                     $q->where('user_id_atribuido', $userId);
                 }
             }
-            
+
             // OU ordens atribuídas ao funcionário do usuário (funcionario_id)
             if ($funcionarioId) {
                 if (!empty($equipeIds) || $userId) {

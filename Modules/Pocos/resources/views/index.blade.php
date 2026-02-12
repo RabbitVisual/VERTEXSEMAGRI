@@ -4,101 +4,66 @@
 
 @section('content')
 <div class="space-y-6 md:space-y-8 animate-fade-in pb-12">
-    <!-- Page Header -->
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 md:pb-6 border-b border-gray-200 dark:border-slate-800">
-        <div>
-            <h1 class="text-2xl sm:text-3xl md:text-4xl font-black text-gray-900 dark:text-white flex items-center gap-3 mb-2 uppercase tracking-tight">
-                <div class="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-2xl flex items-center justify-center shadow-lg text-white">
-                    <x-icon name="faucet-drip" style="duotone" class="w-6 h-6 md:w-7 md:h-7" />
+    <!-- Premium Header Section -->
+    <div class="relative overflow-hidden bg-slate-900 rounded-3xl border border-slate-800 shadow-2xl mb-8">
+        <!-- Background Decorations -->
+        <div class="absolute top-0 right-0 -mt-12 -mr-12 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-0 left-0 -mb-12 -ml-12 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl"></div>
+
+        <div class="relative px-8 py-10 md:px-12 md:py-16">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-8">
+                <div class="space-y-4">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-[10px] font-black uppercase tracking-widest">
+                        <span class="relative flex h-2 w-2">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+                        </span>
+                        Gestão de Ativos Hídricos
+                    </div>
+
+                    <div class="space-y-2">
+                        <h1 class="text-4xl md:text-5xl font-black text-white uppercase tracking-tight">
+                            Poços <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400 font-light">Artesianos</span>
+                        </h1>
+                        <p class="text-slate-400 text-sm font-bold uppercase tracking-widest leading-relaxed max-w-xl">
+                            Monitoramento técnico e gestão operacional da rede de poços do município.
+                        </p>
+                    </div>
                 </div>
-                <span>Poços Artesianos</span>
-            </h1>
-            <nav class="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-400">
-                <a href="{{ route('admin.dashboard') }}" class="hover:text-blue-600 transition-colors">Dashboard</a>
-                <x-icon name="chevron-right" class="w-2.5 h-2.5" />
-                <span class="text-blue-600">Patrimônio Hídrico</span>
-            </nav>
-        </div>
-        <div class="flex flex-wrap gap-3">
-             <a href="{{ route('pocos.create') }}" class="group inline-flex items-center justify-center gap-2 px-8 py-3.5 text-xs font-black text-white bg-blue-600 rounded-2xl hover:bg-blue-700 shadow-xl shadow-blue-500/20 active:scale-95 transition-all uppercase tracking-widest">
-                <x-icon name="plus" class="w-4 h-4 group-hover:rotate-90 transition-transform" />
-                Cadastrar Poço
-            </a>
+
+                <div class="flex flex-wrap items-center gap-4">
+                    <a href="{{ route('pocos.create') }}" class="group relative px-8 py-4 bg-white text-slate-900 rounded-2xl font-black text-xs uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-xl shadow-white/10">
+                        <div class="flex items-center gap-3">
+                            <x-icon name="plus" class="w-4 h-4 group-hover:rotate-90 transition-transform duration-300" />
+                            Cadastrar Poço
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Header Quick Stats -->
+            @if(isset($estatisticas))
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-12">
+                <div class="p-4 rounded-2xl bg-white/5 border border-white/5 backdrop-blur-sm">
+                    <p class="text-[9px] font-black text-slate-500 uppercase tracking-widest mb-1">Total Mapeado</p>
+                    <p class="text-xl font-black text-white">{{ number_format($estatisticas['total'] ?? 0, 0, ',', '.') }}</p>
+                </div>
+                <div class="p-4 rounded-2xl bg-white/5 border border-white/5 backdrop-blur-sm">
+                    <p class="text-[9px] font-black text-slate-500 uppercase tracking-widest mb-1">Em Operação</p>
+                    <p class="text-xl font-black text-emerald-400">{{ number_format($estatisticas['ativos'] ?? 0, 0, ',', '.') }}</p>
+                </div>
+                <div class="p-4 rounded-2xl bg-white/5 border border-white/5 backdrop-blur-sm">
+                    <p class="text-[9px] font-black text-slate-500 uppercase tracking-widest mb-1">Em Manutenção</p>
+                    <p class="text-xl font-black text-amber-400">{{ number_format($estatisticas['em_manutencao'] ?? 0, 0, ',', '.') }}</p>
+                </div>
+                <div class="p-4 rounded-2xl bg-white/5 border border-white/5 backdrop-blur-sm">
+                    <p class="text-[9px] font-black text-slate-500 uppercase tracking-widest mb-1">Com Problemas</p>
+                    <p class="text-xl font-black text-rose-400">{{ number_format($estatisticas['com_problemas'] ?? 0, 0, ',', '.') }}</p>
+                </div>
+            </div>
+            @endif
         </div>
     </div>
-
-    <!-- Painel de Performance Operacional -->
-    @if(isset($estatisticas))
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <!-- Card 1: Total -->
-        <div class="premium-card p-6 flex flex-col justify-between group">
-            <div class="flex items-center justify-between mb-4">
-                <div class="p-4 bg-blue-50 dark:bg-blue-900/10 rounded-2xl text-blue-600 dark:text-blue-400 group-hover:rotate-6 transition-all border border-blue-50 dark:border-blue-900/20">
-                    <x-icon name="faucet" style="duotone" class="w-6 h-6" />
-                </div>
-                <div class="text-right">
-                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Ativos Mapeados</p>
-                    <p class="text-3xl font-black text-gray-900 dark:text-white tracking-tighter">{{ number_format($estatisticas['total'] ?? 0, 0, ',', '.') }}</p>
-                </div>
-            </div>
-            <div class="flex items-center gap-2 text-[9px] font-bold text-emerald-500 uppercase tracking-widest">
-                <x-icon name="arrow-up-right" class="w-3 h-3" />
-                <span>Base Patrimonial</span>
-            </div>
-        </div>
-
-        <!-- Card 2: Ativos -->
-        <div class="premium-card p-6 flex flex-col justify-between group">
-            <div class="flex items-center justify-between mb-4">
-                <div class="p-4 bg-emerald-50 dark:bg-emerald-900/10 rounded-2xl text-emerald-600 dark:text-emerald-400 group-hover:rotate-6 transition-all border border-emerald-50 dark:border-emerald-900/20">
-                    <x-icon name="circle-check" style="duotone" class="w-6 h-6" />
-                </div>
-                <div class="text-right">
-                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Operação 100%</p>
-                    <p class="text-3xl font-black text-emerald-600 dark:text-emerald-400 tracking-tighter">{{ number_format($estatisticas['ativos'] ?? 0, 0, ',', '.') }}</p>
-                </div>
-            </div>
-            <div class="flex items-center gap-2 text-[9px] font-bold text-emerald-500 uppercase tracking-widest">
-                <x-icon name="check" class="w-3 h-3" />
-                <span>Sem Ocorrências</span>
-            </div>
-        </div>
-
-        <!-- Card 3: Manutenção -->
-        <div class="premium-card p-6 flex flex-col justify-between group">
-            <div class="flex items-center justify-between mb-4">
-                <div class="p-4 bg-amber-50 dark:bg-amber-900/10 rounded-2xl text-amber-600 dark:text-amber-400 group-hover:rotate-6 transition-all border border-amber-50 dark:border-amber-900/20">
-                    <x-icon name="wrench-screwdriver" style="duotone" class="w-6 h-6" />
-                </div>
-                <div class="text-right">
-                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Intervenção</p>
-                    <p class="text-3xl font-black text-amber-600 dark:text-amber-400 tracking-tighter">{{ number_format($estatisticas['em_manutencao'] ?? 0, 0, ',', '.') }}</p>
-                </div>
-            </div>
-            <div class="flex items-center gap-2 text-[9px] font-bold text-amber-500 uppercase tracking-widest">
-                <x-icon name="clock" class="w-3 h-3" />
-                <span>Em Manutenção</span>
-            </div>
-        </div>
-
-        <!-- Card 4: Críticos -->
-        <div class="premium-card p-6 flex flex-col justify-between group">
-            <div class="flex items-center justify-between mb-4">
-                <div class="p-4 bg-rose-50 dark:bg-rose-900/10 rounded-2xl text-rose-600 dark:text-rose-400 group-hover:rotate-6 transition-all border border-rose-50 dark:border-rose-900/20">
-                    <x-icon name="circle-exclamation" style="duotone" class="w-6 h-6" />
-                </div>
-                <div class="text-right">
-                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Bomba/Pane</p>
-                    <p class="text-3xl font-black text-rose-600 dark:text-rose-400 tracking-tighter">{{ number_format($estatisticas['com_problemas'] ?? 0, 0, ',', '.') }}</p>
-                </div>
-            </div>
-            <div class="flex items-center gap-2 text-[9px] font-bold text-rose-500 uppercase tracking-widest animate-pulse">
-                <x-icon name="triangle-exclamation" class="w-3 h-3" />
-                <span>Atenção Crítica</span>
-            </div>
-        </div>
-    </div>
-    @endif
 
     <!-- Filtros de Inteligência -->
     <div class="premium-card p-8">
@@ -145,26 +110,26 @@
     <div class="premium-card overflow-hidden">
         <div class="overflow-x-auto">
             <table class="w-full text-sm text-left">
-                <thead class="text-[9px] text-slate-400 uppercase tracking-[0.2em] bg-gray-50/50 dark:bg-slate-800/50 border-b border-gray-100 dark:border-slate-800">
+                <thead class="bg-slate-50 dark:bg-slate-900/50 border-b border-gray-100 dark:border-slate-800">
                     <tr>
-                        <th scope="col" class="px-8 py-5 font-black">Identificação do Poço</th>
-                        <th scope="col" class="px-8 py-5 font-black">Geolocalização</th>
-                        <th scope="col" class="px-8 py-5 font-black">Especificações</th>
-                        <th scope="col" class="px-8 py-5 font-black text-center">Status Operacional</th>
-                        <th scope="col" class="px-8 py-5 font-black text-right">Ações</th>
+                        <th scope="col" class="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest">Identificação do Poço</th>
+                        <th scope="col" class="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest">Geolocalização</th>
+                        <th scope="col" class="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest">Especificações</th>
+                        <th scope="col" class="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest text-center">Status Operacional</th>
+                        <th scope="col" class="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest text-right whitespace-nowrap">Ações</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-gray-100 dark:divide-slate-800 font-bold">
+                <tbody class="divide-y divide-gray-100 dark:divide-slate-800">
                     @forelse($pocos as $poco)
-                    <tr class="hover:bg-gray-50/30 dark:hover:bg-slate-800/30 transition-colors group">
+                    <tr class="group hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-all duration-300">
                         <td class="px-8 py-6">
                             <div class="flex items-center gap-4">
-                                <div class="w-12 h-12 rounded-2xl bg-blue-50 dark:bg-blue-900/10 flex items-center justify-center text-blue-600 border border-blue-100 dark:border-blue-800/20 group-hover:scale-110 transition-transform">
-                                    <x-icon name="faucet-drip" style="duotone" class="w-6 h-6" />
+                                <div class="w-12 h-12 rounded-2xl bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center text-blue-600 border border-blue-100 dark:border-blue-800/30 group-hover:scale-110 transition-all duration-500">
+                                    <x-icon name="faucet-drip" class="w-6 h-6" />
                                 </div>
                                 <div>
-                                    <div class="text-gray-900 dark:text-white font-black uppercase tracking-tight text-base mb-0.5">{{ $poco->codigo ?? 'SEM CÓDIGO' }}</div>
-                                    <div class="flex items-center gap-2 text-[10px] text-slate-400 uppercase tracking-widest">
+                                    <div class="text-slate-900 dark:text-white font-black uppercase tracking-tight text-sm mb-0.5 group-hover:text-blue-600 transition-colors">{{ $poco->codigo ?? 'SEM CÓDIGO' }}</div>
+                                    <div class="flex items-center gap-2 text-[10px] text-slate-400 font-bold uppercase tracking-widest">
                                         <x-icon name="location-dot" class="w-3 h-3 text-blue-500" />
                                         {{ $poco->localidade->nome ?? 'S/L' }}
                                     </div>
@@ -172,62 +137,63 @@
                             </div>
                         </td>
                         <td class="px-8 py-6">
-                            <div class="space-y-1">
-                                <div class="text-[11px] font-black text-gray-700 dark:text-slate-300 uppercase tracking-tighter line-clamp-1">{{ $poco->endereco }}</div>
-                                <div class="flex items-center gap-3">
-                                    <span class="text-[9px] bg-gray-100 dark:bg-slate-800 px-2 py-0.5 rounded-md text-slate-500 font-mono">{{ $poco->latitude }}</span>
-                                    <span class="text-[9px] bg-gray-100 dark:bg-slate-800 px-2 py-0.5 rounded-md text-slate-500 font-mono">{{ $poco->longitude }}</span>
+                            <div class="space-y-1.5">
+                                <div class="text-[11px] font-black text-slate-700 dark:text-slate-300 uppercase tracking-tighter line-clamp-1 leading-tight">{{ $poco->endereco }}</div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-[9px] bg-slate-100 dark:bg-slate-800 px-2.5 py-0.5 rounded-full text-slate-500 font-black tracking-widest border border-gray-200 dark:border-slate-700">{{ $poco->latitude }}</span>
+                                    <span class="text-[9px] bg-slate-100 dark:bg-slate-800 px-2.5 py-0.5 rounded-full text-slate-500 font-black tracking-widest border border-gray-200 dark:border-slate-700">{{ $poco->longitude }}</span>
                                 </div>
                             </div>
                         </td>
                         <td class="px-8 py-6">
-                            <div class="grid grid-cols-2 gap-x-4 gap-y-1">
-                                <div class="flex items-center gap-1.5 min-w-max">
+                            <div class="grid grid-cols-2 gap-x-6 gap-y-2">
+                                <div class="flex items-center gap-2">
                                     <x-icon name="ruler-vertical" class="w-3.5 h-3.5 text-slate-300" />
-                                    <span class="text-[11px] uppercase tracking-tighter">{{ $poco->profundidade_metros }}m prof.</span>
+                                    <span class="text-[10px] font-black text-slate-600 dark:text-slate-400 uppercase tracking-tighter">{{ number_format($poco->profundidade_metros, 1) }}m</span>
                                 </div>
-                                <div class="flex items-center gap-1.5 min-w-max">
+                                <div class="flex items-center gap-2">
                                     <x-icon name="droplet" class="w-3.5 h-3.5 text-blue-400" />
-                                    <span class="text-[11px] uppercase tracking-tighter">{{ $poco->vazao_litros_hora }}L/h</span>
+                                    <span class="text-[10px] font-black text-slate-600 dark:text-slate-400 uppercase tracking-tighter">{{ number_format($poco->vazao_litros_hora, 0, ',', '.') }}L/h</span>
                                 </div>
-                                <div class="flex items-center gap-1.5 min-w-max col-span-2">
+                                <div class="flex items-center gap-2 col-span-2">
                                     <x-icon name="bolt" class="w-3.5 h-3.5 text-amber-500" />
-                                    <span class="text-[10px] uppercase tracking-tighter opacity-70">{{ $poco->tipo_bomba ?? 'BOMBA N/D' }}</span>
+                                    <span class="text-[9px] font-black text-slate-500 uppercase tracking-widest opacity-70 truncate">{{ $poco->tipo_bomba ?? 'BOMBA N/D' }}</span>
                                 </div>
                             </div>
                         </td>
                         <td class="px-8 py-6 text-center">
                             @php
-                                $statusStyles = [
-                                    'ativo' => 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400',
-                                    'inativo' => 'bg-slate-100 text-slate-700 dark:bg-slate-900/30 dark:text-slate-400',
-                                    'manutencao' => 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400',
-                                    'bomba_queimada' => 'bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-400 animate-pulse',
+                                $statusMap = [
+                                    'ativo' => ['label' => 'Operante', 'variant' => 'success'],
+                                    'inativo' => ['label' => 'Inativo', 'variant' => 'secondary'],
+                                    'manutencao' => ['label' => 'Manutenção', 'variant' => 'warning'],
+                                    'bomba_queimada' => ['label' => 'Falha Crítica', 'variant' => 'danger'],
                                 ];
-                                $style = $statusStyles[$poco->status] ?? 'bg-gray-100 text-gray-700';
-                                $statusLabels = [
-                                    'ativo' => 'Operante',
-                                    'inativo' => 'Inativo',
-                                    'manutencao' => 'Manutenção',
-                                    'bomba_queimada' => 'Pane Elétrica',
-                                ];
-                                $label = $statusLabels[$poco->status] ?? $poco->status;
+                                $st = $statusMap[$poco->status] ?? ['label' => $poco->status, 'variant' => 'info'];
                             @endphp
-                            <span class="inline-flex items-center px-4 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-[0.15em] {{ $style }}">
-                                {{ $label }}
-                            </span>
+                            <x-pocos::badge :variant="$st['variant']" class="text-[9px] px-3 py-1 font-black uppercase tracking-[0.15em] border-none shadow-sm">
+                                <span class="relative flex h-1.5 w-1.5 mr-1.5">
+                                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-current opacity-75"></span>
+                                    <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-current"></span>
+                                </span>
+                                {{ $st['label'] }}
+                            </x-pocos::badge>
                         </td>
-                        <td class="px-8 py-6 text-right">
-                            <div class="flex justify-end gap-2 shrink-0">
-                                <a href="{{ route('pocos.show', $poco) }}" class="p-2.5 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-xl transition-all" title="Visualizar Detalhes">
-                                    <x-icon name="eye" style="duotone" class="w-5 h-5" />
-                                </a>
-                                <a href="{{ route('pocos.edit', $poco) }}" class="p-2.5 text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 rounded-xl transition-all" title="Editar Ativo">
-                                    <x-icon name="pen-to-square" style="duotone" class="w-5 h-5" />
-                                </a>
-                                <button type="button" class="p-2.5 text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-900/20 rounded-xl transition-all" title="Arquivar">
-                                    <x-icon name="trash-can" style="duotone" class="w-5 h-5" />
-                                </button>
+                        <td class="px-8 py-6">
+                            <div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-4 group-hover:translate-x-0">
+                                <x-pocos::button href="{{ route('pocos.show', $poco->id) }}" variant="secondary" size="sm" class="hover:bg-blue-600 hover:text-white border-none shadow-none">
+                                    <x-icon name="eye" class="w-4 h-4" />
+                                </x-pocos::button>
+                                <x-pocos::button href="{{ route('pocos.edit', $poco->id) }}" variant="secondary" size="sm" class="hover:bg-amber-500 hover:text-white border-none shadow-none">
+                                    <x-icon name="pencil" class="w-4 h-4" />
+                                </x-pocos::button>
+                                <form action="{{ route('pocos.destroy', $poco->id) }}" method="POST" class="inline" onsubmit="return confirm('Confirmar arquivamento?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <x-pocos::button type="submit" variant="secondary" size="sm" class="hover:bg-red-500 hover:text-white border-none shadow-none">
+                                        <x-icon name="trash-can" class="w-4 h-4" />
+                                    </x-pocos::button>
+                                </form>
                             </div>
                         </td>
                     </tr>
@@ -235,13 +201,16 @@
                     <tr>
                         <td colspan="5" class="px-8 py-24 text-center">
                             <div class="max-w-md mx-auto flex flex-col items-center gap-6">
-                                <div class="w-24 h-24 bg-gray-50 dark:bg-slate-900/50 rounded-full flex items-center justify-center text-gray-200 dark:text-slate-800 scale-125">
-                                    <x-icon name="magnifying-glass" style="duotone" class="w-10 h-10" />
+                                <div class="w-20 h-20 bg-slate-50 dark:bg-slate-900/50 rounded-full flex items-center justify-center text-slate-200 dark:text-slate-800 border border-dashed border-slate-200 dark:border-slate-700">
+                                    <x-icon name="magnifying-glass" class="w-10 h-10" />
                                 </div>
                                 <div>
-                                    <h3 class="text-lg font-black text-gray-900 dark:text-white uppercase tracking-tight">Nenhum poço encontrado</h3>
-                                    <p class="text-[11px] text-slate-400 font-bold uppercase tracking-widest mt-1">Tente ajustar seus filtros ou cadastre um novo ativo hídrico.</p>
+                                    <h3 class="text-base font-black text-slate-900 dark:text-white uppercase tracking-tight">Nenhum poço encontrado</h3>
+                                    <p class="text-[10px] text-slate-400 font-black uppercase tracking-[0.2em] mt-2">Ajuste os filtros de busca ou cadastre um novo ativo.</p>
                                 </div>
+                                <x-pocos::button href="{{ route('pocos.create') }}" variant="primary" size="sm" class="mt-4 !bg-blue-600">
+                                    Cadastrar Novo Poço
+                                </x-pocos::button>
                             </div>
                         </td>
                     </tr>

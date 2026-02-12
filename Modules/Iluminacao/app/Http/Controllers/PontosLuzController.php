@@ -3,16 +3,16 @@
 namespace Modules\Iluminacao\App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Traits\ExportsData;
 use App\Traits\ChecksModuleEnabled;
-use Modules\Iluminacao\App\Models\PontoLuz;
-use Modules\Localidades\App\Models\Localidade;
+use App\Traits\ExportsData;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
+use Modules\Iluminacao\App\Models\PontoLuz;
+use Modules\Localidades\App\Models\Localidade;
 
-class IluminacaoController extends Controller
+class PontosLuzController extends Controller
 {
-    use ExportsData, ChecksModuleEnabled;
+    use ChecksModuleEnabled, ExportsData;
 
     public function __construct()
     {
@@ -30,21 +30,21 @@ class IluminacaoController extends Controller
         $query = PontoLuz::with('localidade');
 
         // Busca
-        if (!empty($filters['search'])) {
+        if (! empty($filters['search'])) {
             $search = $filters['search'];
-            $query->where(function($q) use ($search) {
+            $query->where(function ($q) use ($search) {
                 $q->where('codigo', 'like', "%{$search}%")
-                  ->orWhere('endereco', 'like', "%{$search}%");
+                    ->orWhere('endereco', 'like', "%{$search}%");
             });
         }
 
-        if (!empty($filters['status'])) {
+        if (! empty($filters['status'])) {
             $query->where('status', $filters['status']);
         }
-        if (!empty($filters['tipo_lampada'])) {
+        if (! empty($filters['tipo_lampada'])) {
             $query->where('tipo_lampada', $filters['tipo_lampada']);
         }
-        if (!empty($filters['localidade_id'])) {
+        if (! empty($filters['localidade_id'])) {
             $query->where('localidade_id', $filters['localidade_id']);
         }
 
@@ -61,10 +61,10 @@ class IluminacaoController extends Controller
                 'funcionando' => PontoLuz::where('status', 'funcionando')->count(),
                 'com_defeito' => PontoLuz::where('status', 'com_defeito')->count(),
                 'desligado' => PontoLuz::where('status', 'desligado')->count(),
-            ]
+            ],
         ];
 
-        return view('iluminacao::index', compact('pontos', 'localidades', 'filters', 'estatisticas'));
+        return view('iluminacao::pontos.index', compact('pontos', 'localidades', 'filters', 'estatisticas'));
     }
 
     public function export(Request $request)
@@ -73,13 +73,13 @@ class IluminacaoController extends Controller
         $query = PontoLuz::with('localidade');
 
         // Aplicar mesmos filtros
-        if (!empty($filters['search'])) {
+        if (! empty($filters['search'])) {
             $search = $filters['search'];
-            $query->where(function($q) use ($search) {
+            $query->where(function ($q) use ($search) {
                 $q->where('codigo', 'like', "%{$search}%");
             });
         }
-        if (!empty($filters['status'])) {
+        if (! empty($filters['status'])) {
             $query->where('status', $filters['status']);
         }
 
@@ -95,7 +95,7 @@ class IluminacaoController extends Controller
         ];
 
         $format = $request->get('format', 'csv');
-        $filename = 'pontos_luz_' . date('Ymd_His');
+        $filename = 'pontos_luz_'.date('Ymd_His');
 
         if ($format === 'excel') {
             return $this->exportExcel($pontos, $columns, $filename);
@@ -117,12 +117,12 @@ class IluminacaoController extends Controller
         }
 
         // Se não há localidades, mostrar alerta
-        if (!$hasLocalidades) {
+        if (! $hasLocalidades) {
             return redirect()->route('iluminacao.index')
-                ->with('warning', 'É necessário cadastrar pelo menos uma localidade antes de criar um ponto de luz. <a href="' . route('localidades.create') . '" class="alert-link">Cadastrar localidade</a>');
+                ->with('warning', 'É necessário cadastrar pelo menos uma localidade antes de criar um ponto de luz. <a href="'.route('localidades.create').'" class="alert-link">Cadastrar localidade</a>');
         }
 
-        return view('iluminacao::create', compact('localidades', 'hasLocalidades'));
+        return view('iluminacao::pontos.create', compact('localidades', 'hasLocalidades'));
     }
 
     public function store(Request $request)
@@ -156,7 +156,8 @@ class IluminacaoController extends Controller
     public function show($id)
     {
         $ponto = PontoLuz::with(['localidade'])->findOrFail($id);
-        return view('iluminacao::show', compact('ponto'));
+
+        return view('iluminacao::pontos.show', compact('ponto'));
     }
 
     public function edit($id)
@@ -166,7 +167,8 @@ class IluminacaoController extends Controller
         if (Schema::hasTable('localidades')) {
             $localidades = Localidade::select('id', 'nome')->get();
         }
-        return view('iluminacao::edit', compact('ponto', 'localidades'));
+
+        return view('iluminacao::pontos.edit', compact('ponto', 'localidades'));
     }
 
     public function update(Request $request, $id)

@@ -4,19 +4,45 @@
 
 @section('content')
 <div class="space-y-6">
-    <!-- Page Header -->
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 border-b border-gray-200 dark:border-gray-700">
-        <div>
-            <h1 class="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
-                <x-icon module="estradas" class="w-6 h-6" />
-                Editar Trecho
-            </h1>
-            <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">{{ $trecho->nome }}</p>
+    <!-- Premium Header Area -->
+    <div class="relative overflow-hidden bg-slate-900 rounded-3xl border border-slate-800 shadow-2xl mb-8">
+        <!-- Decorative Elements -->
+        <div class="absolute top-0 right-0 -mt-20 -mr-20 w-80 h-80 bg-indigo-500/10 rounded-full blur-[100px]"></div>
+        <div class="absolute bottom-0 left-0 -mb-20 -ml-20 w-80 h-80 bg-blue-500/10 rounded-full blur-[100px]"></div>
+
+        <div class="relative px-8 py-10">
+            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
+                <div class="flex items-center gap-6">
+                    <div class="relative group">
+                        <div class="absolute -inset-1 bg-gradient-to-r from-indigo-500 to-blue-500 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
+                        <div class="relative p-5 bg-slate-800/50 backdrop-blur-xl rounded-2xl border border-white/10 shadow-2xl">
+                            <x-icon module="estradas" class="w-10 h-10 text-white" />
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-3 mb-2">
+                            <span class="px-3 py-1 text-[10px] font-black uppercase tracking-[0.2em] bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 rounded-full">Edição</span>
+                            <span class="w-1 h-1 rounded-full bg-slate-700"></span>
+                            <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Infraestrutura</span>
+                        </div>
+                        <h1 class="text-3xl md:text-4xl font-black text-white tracking-tight">
+                            Editar <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-blue-400">Trecho</span>
+                        </h1>
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap gap-3">
+                    <x-estradas::button href="{{ route('estradas.show', $trecho) }}" variant="secondary" size="lg" class="shadow-xl">
+                        <x-icon name="eye" class="w-5 h-5 mr-2" />
+                        Ver Detalhes
+                    </x-estradas::button>
+                    <x-estradas::button href="{{ route('estradas.index') }}" variant="secondary" size="lg" class="shadow-xl">
+                        <x-icon name="arrow-left" class="w-5 h-5 mr-2" />
+                        Voltar
+                    </x-estradas::button>
+                </div>
+            </div>
         </div>
-        <x-estradas::button href="{{ route('estradas.show', $trecho) }}" variant="outline">
-            <x-estradas::icon name="arrow-left" class="w-4 h-4 mr-2" />
-            Voltar
-        </x-estradas::button>
     </div>
 
     <!-- Alertas -->
@@ -39,24 +65,25 @@
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <!-- Formulário Principal -->
         <div class="lg:col-span-2">
-            <x-estradas::card>
-                <x-slot name="header">
-                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
-                        <x-estradas::icon name="information-circle" class="w-5 h-5" />
-                        Informações do Trecho
-                    </h3>
-                </x-slot>
-
-                <form action="{{ route('estradas.update', $trecho) }}" method="POST" class="space-y-6">
+            <div class="bg-white dark:bg-slate-800 rounded-3xl border border-gray-200 dark:border-slate-700 shadow-sm overflow-hidden mb-8">
+                <form action="{{ route('estradas.update', $trecho) }}" method="POST">
                     @csrf
                     @method('PUT')
 
-                    <!-- Informações Básicas -->
-                    <div class="space-y-4">
-                        <h4 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3 flex items-center gap-2">
-                            <x-estradas::icon name="information-circle" class="w-4 h-4" />
-                            Informações Básicas
-                        </h4>
+                    <!-- Seção 1: Informações Básicas -->
+                    <div class="p-8 border-b border-gray-100 dark:border-slate-700/50">
+                        <div class="flex items-center gap-4 mb-1">
+                            <div class="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-900/30 flex items-center justify-center border border-indigo-100 dark:border-indigo-800">
+                                <x-icon name="circle-info" class="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-black text-slate-900 dark:text-white uppercase tracking-tight">Informações do Trecho</h3>
+                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">Dados principais de identificação</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-8 space-y-8">
 
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                             <div class="md:col-span-2">
@@ -142,12 +169,20 @@
                         </div>
                     </div>
 
-                    <!-- Características Físicas -->
-                    <div class="space-y-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-                        <h4 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3 flex items-center gap-2">
-                            <x-estradas::icon name="ruler" class="w-4 h-4" />
-                            Características Físicas
-                        </h4>
+                    <!-- Seção 2: Características Físicas -->
+                    <div class="p-8 border-t border-b border-gray-100 dark:border-slate-700/50">
+                        <div class="flex items-center gap-4 mb-1">
+                            <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center border border-blue-100 dark:border-blue-800">
+                                <x-icon name="ruler-combined" class="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-black text-slate-900 dark:text-white uppercase tracking-tight">Dimensões e Pavimentação</h3>
+                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">Especificações físicas da via</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-8 space-y-8">
 
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                             <x-estradas::form.input
@@ -176,12 +211,20 @@
                         </div>
                     </div>
 
-                    <!-- Condição e Manutenção -->
-                    <div class="space-y-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-                        <h4 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3 flex items-center gap-2">
-                            <x-estradas::icon name="wrench-screwdriver" class="w-4 h-4" />
-                            Condição e Manutenção
-                        </h4>
+                    <!-- Seção 3: Condição e Manutenção -->
+                    <div class="p-8 border-t border-b border-gray-100 dark:border-slate-700/50">
+                        <div class="flex items-center gap-4 mb-1">
+                            <div class="w-10 h-10 rounded-xl bg-amber-50 dark:bg-amber-900/30 flex items-center justify-center border border-amber-100 dark:border-amber-800">
+                                <x-icon name="screwdriver-wrench" class="w-5 h-5 text-amber-600 dark:text-amber-400" />
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-black text-slate-900 dark:text-white uppercase tracking-tight">Estado de Conservação</h3>
+                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">Situação atual e registros de manutenção</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-8 space-y-8">
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <x-estradas::form.select
@@ -234,12 +277,20 @@
                         </div>
                     </div>
 
-                    <!-- Observações -->
-                    <div class="space-y-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-                        <h4 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3 flex items-center gap-2">
-                            <x-estradas::icon name="document-text" class="w-4 h-4" />
-                            Observações
-                        </h4>
+                    <!-- Seção 4: Observações -->
+                    <div class="p-8 border-t border-b border-gray-100 dark:border-slate-700/50">
+                        <div class="flex items-center gap-4 mb-1">
+                            <div class="w-10 h-10 rounded-xl bg-slate-50 dark:bg-slate-900/30 flex items-center justify-center border border-slate-100 dark:border-slate-800">
+                                <x-icon name="file-lines" class="w-5 h-5 text-slate-600 dark:text-slate-400" />
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-black text-slate-900 dark:text-white uppercase tracking-tight">Notas Adicionais</h3>
+                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">Observações e detalhes complementares</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-8">
 
                         <x-estradas::form.textarea
                             label="Observações"
@@ -249,18 +300,18 @@
                         />
                     </div>
 
-                    <!-- Botões de Ação -->
-                    <div class="flex items-center justify-end gap-3 pt-4 border-t border-gray-200 dark:border-gray-700">
-                        <x-estradas::button href="{{ route('estradas.show', $trecho) }}" variant="outline">
+                    <!-- Footer Buttons -->
+                    <div class="bg-slate-50 dark:bg-slate-900/50 px-8 py-6 border-t border-gray-200 dark:border-slate-700 flex flex-col sm:flex-row items-center justify-end gap-4">
+                        <x-estradas::button href="{{ route('estradas.index') }}" variant="secondary" size="lg" class="w-full sm:w-auto">
                             Cancelar
                         </x-estradas::button>
-                        <x-estradas::button type="submit" variant="primary">
-                            <x-estradas::icon name="check-circle" class="w-4 h-4 mr-2" />
-                            Atualizar Trecho
+                        <x-estradas::button type="submit" variant="primary" size="lg" class="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-700 border-b-4 border-indigo-800 active:border-b-0 active:translate-y-1 transition-all">
+                            <x-icon name="check" class="w-5 h-5 mr-2" />
+                            Salvar Alterações
                         </x-estradas::button>
                     </div>
                 </form>
-            </x-estradas::card>
+            </div>
         </div>
 
         <!-- Sidebar com Informações -->

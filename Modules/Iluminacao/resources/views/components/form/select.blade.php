@@ -20,7 +20,7 @@
         <select id="{{ $name }}"
                 name="{{ $name }}"
                 @if($required) required @endif
-                {{ $attributes->merge(['class' => 'block w-full ' . ($icon ? 'pl-10' : 'px-4') . ' py-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 dark:text-white sm:text-sm transition-all duration-200 appearance-none' . ($errors->has($name) ? ' border-red-500 ring-2 ring-red-500/10' : '')]) }}>
+                {{ $attributes->merge(['class' => 'block w-full ' . ($icon ? 'pl-10' : 'px-4') . ' pr-10 py-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 dark:text-white sm:text-sm transition-all duration-200 appearance-none bg-none' . ($errors->has($name) ? ' border-red-500 ring-2 ring-red-500/10' : '')]) }}>
             {{ $slot }}
             @foreach($options as $val => $lbl)
                 <option value="{{ $val }}" {{ old($name, $value) == $val ? 'selected' : '' }}>{{ $lbl }}</option>

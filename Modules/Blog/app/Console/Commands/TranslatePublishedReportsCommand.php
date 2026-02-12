@@ -3,7 +3,7 @@
 namespace Modules\Blog\App\Console\Commands;
 
 use Illuminate\Console\Command;
-use Modules\Blog\Entities\BlogPost;
+use Modules\Blog\App\Models\BlogPost;
 
 class TranslatePublishedReportsCommand extends Command
 {
@@ -58,5 +58,3 @@ class TranslatePublishedReportsCommand extends Command
         return 0;
     }
 }
-
-

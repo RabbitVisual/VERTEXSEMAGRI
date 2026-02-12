@@ -3,15 +3,14 @@
 namespace Modules\Iluminacao\App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Modules\Iluminacao\App\Models\PontoLuz;
-use Modules\Localidades\App\Models\Localidade;
-use Modules\Demandas\App\Models\Demanda;
-use Modules\Ordens\App\Models\OrdemServico;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Facades\DB;
-use Modules\Iluminacao\App\Services\NeoenergiaService;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Schema;
+use Modules\Demandas\App\Models\Demanda;
+use Modules\Iluminacao\App\Models\PontoLuz;
+use Modules\Iluminacao\App\Services\NeoenergiaService;
+use Modules\Localidades\App\Models\Localidade;
+use Modules\Ordens\App\Models\OrdemServico;
 
 class IluminacaoAdminController extends Controller
 {
@@ -21,30 +20,31 @@ class IluminacaoAdminController extends Controller
     {
         $this->neoenergiaService = $neoenergiaService;
     }
+
     public function index(Request $request)
     {
         $filters = $request->only(['status', 'tipo_lampada', 'localidade_id', 'search']);
         $query = PontoLuz::with('localidade');
 
         // Busca
-        if (!empty($filters['search'])) {
+        if (! empty($filters['search'])) {
             $search = $filters['search'];
-            $query->where(function($q) use ($search) {
+            $query->where(function ($q) use ($search) {
                 $q->where('codigo', 'like', "%{$search}%")
-                  ->orWhere('endereco', 'like', "%{$search}%")
-                  ->orWhereHas('localidade', function($q) use ($search) {
-                      $q->where('nome', 'like', "%{$search}%");
-                  });
+                    ->orWhere('endereco', 'like', "%{$search}%")
+                    ->orWhereHas('localidade', function ($q) use ($search) {
+                        $q->where('nome', 'like', "%{$search}%");
+                    });
             });
         }
 
-        if (!empty($filters['status'])) {
+        if (! empty($filters['status'])) {
             $query->where('status', $filters['status']);
         }
-        if (!empty($filters['tipo_lampada'])) {
+        if (! empty($filters['tipo_lampada'])) {
             $query->where('tipo_lampada', $filters['tipo_lampada']);
         }
-        if (!empty($filters['localidade_id'])) {
+        if (! empty($filters['localidade_id'])) {
             $query->where('localidade_id', $filters['localidade_id']);
         }
 
@@ -65,12 +65,12 @@ class IluminacaoAdminController extends Controller
     {
         $ponto = PontoLuz::with([
             'localidade',
-            'demandas' => function($query) {
+            'demandas' => function ($query) {
                 $query->with(['pessoa', 'usuario', 'ordemServico'])->orderBy('created_at', 'desc');
             },
-            'ordensServico' => function($query) {
+            'ordensServico' => function ($query) {
                 $query->with(['equipe', 'demanda', 'materiais'])->orderBy('created_at', 'desc');
-            }
+            },
         ])->findOrFail($id);
 
         // Estatísticas do ponto específico
@@ -85,10 +85,10 @@ class IluminacaoAdminController extends Controller
             ->get();
 
         // Ordens relacionadas
-        $ordensRelacionadas = OrdemServico::whereHas('demanda', function($q) use ($ponto) {
-                $q->where('localidade_id', $ponto->localidade_id)
-                  ->where('tipo', 'luz');
-            })
+        $ordensRelacionadas = OrdemServico::whereHas('demanda', function ($q) use ($ponto) {
+            $q->where('localidade_id', $ponto->localidade_id)
+                ->where('tipo', 'luz');
+        })
             ->with(['demanda', 'equipe', 'materiais'])
             ->orderBy('created_at', 'desc')
             ->limit(10)
@@ -100,16 +100,16 @@ class IluminacaoAdminController extends Controller
     public function export()
     {
         $pontos = PontoLuz::all();
-        $csvFileName = 'audit_iluminacao_' . date('Ymd_His') . '.csv';
+        $csvFileName = 'audit_iluminacao_'.date('Ymd_His').'.csv';
         $headers = [
-            "Content-type" => "text/csv; charset=utf-8",
-            "Content-Disposition" => "attachment; filename=$csvFileName",
-            "Pragma" => "no-cache",
-            "Cache-Control" => "must-revalidate, post-check=0, pre-check=0",
-            "Expires" => "0"
+            'Content-type' => 'text/csv; charset=utf-8',
+            'Content-Disposition' => "attachment; filename=$csvFileName",
+            'Pragma' => 'no-cache',
+            'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
+            'Expires' => '0',
         ];
 
-        $callback = function() use ($pontos) {
+        $callback = function () use ($pontos) {
             $file = fopen('php://output', 'w');
             fprintf($file, chr(0xEF).chr(0xBB).chr(0xBF)); // BOM for UTF-8 Excel compatibility
 
@@ -130,11 +130,11 @@ class IluminacaoAdminController extends Controller
                     $ponto->latitude,
                     $ponto->longitude,
                     $this->neoenergiaService->translateToNeoenergia($ponto->tipo_lampada),
-                    $ponto->potencia . 'W',
+                    $ponto->potencia.'W',
                     $ponto->endereco,
                     $ponto->barramento ? 'Sim' : 'Não',
                     $ponto->trafo,
-                    $ponto->status
+                    $ponto->status,
                 ], ';');
             }
             fclose($file);
@@ -174,19 +174,19 @@ class IluminacaoAdminController extends Controller
             $ordensConcluidas = 0;
 
             if (Schema::hasTable('ordens_servico') && Schema::hasTable('demandas')) {
-                $totalOrdens = OrdemServico::whereHas('demanda', function($q) {
+                $totalOrdens = OrdemServico::whereHas('demanda', function ($q) {
                     $q->where('tipo', 'luz');
                 })->count();
 
-                $ordensPendentes = OrdemServico::whereHas('demanda', function($q) {
+                $ordensPendentes = OrdemServico::whereHas('demanda', function ($q) {
                     $q->where('tipo', 'luz');
                 })->where('status', 'pendente')->count();
 
-                $ordensEmExecucao = OrdemServico::whereHas('demanda', function($q) {
+                $ordensEmExecucao = OrdemServico::whereHas('demanda', function ($q) {
                     $q->where('tipo', 'luz');
                 })->where('status', 'em_execucao')->count();
 
-                $ordensConcluidas = OrdemServico::whereHas('demanda', function($q) {
+                $ordensConcluidas = OrdemServico::whereHas('demanda', function ($q) {
                     $q->where('tipo', 'luz');
                 })->where('status', 'concluida')->count();
             }

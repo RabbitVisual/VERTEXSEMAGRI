@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Carbon\Carbon;
 
+/**
+ * @property int $created_by
+ * @property int $updated_by
+ */
 class PessoaCad extends Model
 {
     use HasFactory, SoftDeletes;

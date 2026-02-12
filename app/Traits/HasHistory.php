@@ -6,6 +6,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
+/**
+ * @var \Illuminate\Database\Eloquent\Model $this
+ */
 trait HasHistory
 {
     /**
@@ -64,7 +67,7 @@ trait HasHistory
 
         foreach ($newData as $key => $newValue) {
             $oldValue = $oldData[$key] ?? null;
-            
+
             if ($oldValue !== $newValue) {
                 $changes[$key] = [
                     'old' => $oldValue,
@@ -82,13 +85,13 @@ trait HasHistory
      */
     protected static function bootHasHistory(): void
     {
-        static::created(function ($model) {
+        static::created(function (\Illuminate\Database\Eloquent\Model $model) {
             if (method_exists($model, 'recordChange')) {
                 $model->recordChange('created', null, $model->getAttributes());
             }
         });
 
-        static::updated(function ($model) {
+        static::updated(function (\Illuminate\Database\Eloquent\Model $model) {
             if (method_exists($model, 'recordChange')) {
                 $oldData = $model->getOriginal();
                 $newData = $model->getChanges();
@@ -96,11 +99,10 @@ trait HasHistory
             }
         });
 
-        static::deleted(function ($model) {
+        static::deleted(function (\Illuminate\Database\Eloquent\Model $model) {
             if (method_exists($model, 'recordChange')) {
                 $model->recordChange('deleted', $model->getAttributes(), null);
             }
         });
     }
 }
-

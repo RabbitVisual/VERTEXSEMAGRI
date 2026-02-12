@@ -2,64 +2,56 @@
 
 @php
     $colorClasses = [
-        'primary' => 'bg-indigo-600 dark:bg-indigo-500',
-        'success' => 'bg-emerald-600 dark:bg-emerald-500',
-        'warning' => 'bg-amber-500 dark:bg-amber-500',
-        'danger' => 'bg-red-600 dark:bg-red-500',
-        'info' => 'bg-blue-600 dark:bg-blue-500',
-        'secondary' => 'bg-violet-600 dark:bg-violet-500',
+        'primary' => 'bg-indigo-500 dark:bg-indigo-600',
+        'success' => 'bg-emerald-500 dark:bg-emerald-600',
+        'warning' => 'bg-amber-400 dark:bg-amber-500',
+        'danger' => 'bg-red-500 dark:bg-red-600',
+        'info' => 'bg-blue-500 dark:bg-blue-600',
+        'secondary' => 'bg-violet-500 dark:bg-violet-600',
     ];
-    
-    $textClasses = [
-        'primary' => 'text-indigo-50',
-        'success' => 'text-emerald-50',
-        'warning' => 'text-amber-50',
-        'danger' => 'text-red-50',
-        'info' => 'text-blue-50',
-        'secondary' => 'text-violet-50',
+
+    $bgClasses = [
+        'primary' => 'bg-indigo-50/50 dark:bg-indigo-900/10',
+        'success' => 'bg-emerald-50/50 dark:bg-emerald-900/10',
+        'warning' => 'bg-amber-50/50 dark:bg-amber-900/10',
+        'danger' => 'bg-red-50/50 dark:bg-red-900/10',
+        'info' => 'bg-blue-50/50 dark:bg-blue-900/10',
+        'secondary' => 'bg-violet-50/50 dark:bg-violet-900/10',
     ];
-    
-    $iconMap = [
-        'clipboard-check' => '<path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />',
-        'folder-open' => '<path stroke-linecap="round" stroke-linejoin="round" d="M3.75 9.776c.112-.017.227-.026.344-.026h15.812c.117 0 .232.009.344.026m-16.5 0a2.25 2.25 0 00-1.883 2.542l.857 6a2.25 2.25 0 002.227 1.932H19.05a2.25 2.25 0 002.227-1.932l.857-6a2.25 2.25 0 00-1.883-2.542m-16.5 0V6A2.25 2.25 0 016 3.75h3.879a1.5 1.5 0 011.06.44l2.122 2.12a1.5 1.5 0 001.06.44H18A2.25 2.25 0 0120.25 9v.776" />',
-        'clock-history' => '<path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />',
-        'check-circle' => '<path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />',
-        'exclamation-triangle' => '<path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />',
-        'document-x' => '<path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m6.75 12H9m1.5-12H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />',
+
+    $textColorClasses = [
+        'primary' => 'text-indigo-600 dark:text-indigo-400',
+        'success' => 'text-emerald-600 dark:text-emerald-400',
+        'warning' => 'text-amber-600 dark:text-amber-400',
+        'danger' => 'text-red-600 dark:text-red-400',
+        'info' => 'text-blue-600 dark:text-blue-400',
+        'secondary' => 'text-violet-600 dark:text-violet-400',
     ];
-    
+
     $colorClass = $colorClasses[$color] ?? $colorClasses['primary'];
-    $textClass = $textClasses[$color] ?? $textClasses['primary'];
-    $iconPath = $icon ? ($iconMap[$icon] ?? '') : '';
+    $bgClass = $bgClasses[$color] ?? $bgClasses['primary'];
+    $textColorClass = $textColorClasses[$color] ?? $textColorClasses['primary'];
 @endphp
 
-<!-- Preline UI Card Component -->
-<div class="relative flex flex-col bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 dark:bg-gray-800 dark:border-gray-700 {{ $link ? 'cursor-pointer' : '' }}">
-    <div class="{{ $colorClass }} {{ $textClass }} p-6 rounded-t-xl relative overflow-hidden">
-        <!-- Efeito de brilho sutil -->
-        <div class="absolute top-0 right-0 w-32 h-32 opacity-10">
-            <div class="w-full h-full rounded-full blur-3xl" style="background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);"></div>
-        </div>
-        
-        <div class="flex items-center justify-between relative z-10">
-            <div class="flex-1 min-w-0">
-                <p class="text-sm font-medium opacity-90 mb-2">{{ $title }}</p>
-                <p class="text-3xl font-bold leading-tight">{{ number_format((float)$value, 0, ',', '.') }}</p>
+<div class="relative group p-6 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/50 rounded-2xl shadow-sm hover:shadow-xl hover:scale-[1.02] transition-all duration-300 {{ $link ? 'cursor-pointer' : '' }}">
+    <div class="flex items-center gap-4">
+        @if($icon)
+            <div class="w-12 h-12 rounded-xl {{ $colorClass }} flex items-center justify-center text-white shadow-lg shadow-current/20 group-hover:scale-110 transition-transform duration-300">
+                <x-icon :name="$icon" class="w-6 h-6" />
             </div>
-            @if($icon && $iconPath)
-                <div class="ml-4 flex-shrink-0 opacity-75">
-                    <svg class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                        {!! $iconPath !!}
-                    </svg>
-                </div>
-            @endif
+        @endif
+
+        <div class="flex-1">
+            <p class="text-sm font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">{{ $title }}</p>
+            <div class="flex items-baseline gap-2">
+                <h3 class="text-2xl font-bold text-slate-900 dark:text-white">{{ is_numeric($value) ? number_format((float)$value, 0, ',', '.') : $value }}</h3>
+                @if($subtitle)
+                    <span class="text-xs {{ $textColorClass }} font-medium">{{ $subtitle }}</span>
+                @endif
+            </div>
         </div>
     </div>
-    @if($subtitle)
-        <div class="px-6 py-3 bg-gray-50 dark:bg-gray-900/50 rounded-b-xl border-t border-gray-200 dark:border-gray-700">
-            <p class="text-xs text-gray-600 dark:text-gray-400">{{ $subtitle }}</p>
-        </div>
-    @endif
+
     @if($link)
         <a href="{{ $link }}" class="absolute inset-0 z-10" aria-label="{{ $title }}"></a>
     @endif

@@ -30,7 +30,7 @@
                     class="w-full px-4 py-3 pl-12 pr-4 text-gray-900 dark:text-gray-100 bg-white dark:bg-slate-700 border border-gray-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
                     placeholder="Buscar no blog...">
                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <x-icon name="search" class="w-5 h-5 text-gray-400" />
+                    <x-icon name="magnifying-glass" class="w-5 h-5 text-gray-400" />
                 </div>
             </div>
         </form>
@@ -102,7 +102,7 @@
         <!-- Nenhum resultado encontrado -->
         <div class="text-center py-12">
             <div class="w-24 h-24 bg-gray-100 dark:bg-slate-700 rounded-full flex items-center justify-center mx-auto mb-6">
-                <x-icon name="search" class="w-12 h-12 text-gray-400" />
+                <x-icon name="magnifying-glass" class="w-12 h-12 text-gray-400" />
             </div>
             <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Nenhum resultado encontrado</h3>
             <p class="text-gray-600 dark:text-gray-400 mb-6">

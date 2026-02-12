@@ -34,10 +34,10 @@
             </div>
 
             <div class="flex flex-wrap items-center gap-3">
-                <x-iluminacao::button href="{{ route('iluminacao.edit', $ponto) }}" variant="secondary" icon="pen-to-square">
+                <x-iluminacao::button href="{{ route('co-admin.iluminacao.edit', $ponto) }}" variant="secondary" icon="pen-to-square">
                     Editar Dados
                 </x-iluminacao::button>
-                <x-iluminacao::button href="{{ route('iluminacao.index') }}" variant="outline" icon="arrow-left">
+                <x-iluminacao::button href="{{ route('co-admin.iluminacao.index') }}" variant="outline" icon="arrow-left">
                     Voltar para Lista
                 </x-iluminacao::button>
             </div>

@@ -131,9 +131,7 @@
                         <div class="absolute bottom-4 left-4 right-4">
                             <div class="flex items-center justify-between text-white">
                                 <span class="text-sm font-medium">Imagem {{ $index + 1 }}</span>
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                                </svg>
+                                <x-icon name="magnifying-glass-plus" class="w-5 h-5" />
                             </div>
                         </div>
                     </div>
@@ -150,9 +148,7 @@
                 <!-- Close Button -->
                 <button id="close-gallery-modal"
                         class="absolute -top-12 right-0 text-white hover:text-gray-300 transition-colors z-60 bg-black bg-opacity-50 hover:bg-opacity-70 rounded-full p-2">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                    </svg>
+                    <x-icon name="xmark" class="w-6 h-6" />
                 </button>
 
                 <!-- Image Counter -->
@@ -175,15 +171,11 @@
                 @if(count($post->gallery_images) > 1)
                 <button id="modal-prev"
                         class="absolute left-4 top-1/2 transform -translate-y-1/2 text-white hover:text-gray-300 bg-black bg-opacity-50 hover:bg-opacity-70 rounded-full p-3 transition-all duration-200 hover:scale-110">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-                    </svg>
+                    <x-icon name="chevron-left" class="w-6 h-6" />
                 </button>
                 <button id="modal-next"
                         class="absolute right-4 top-1/2 transform -translate-y-1/2 text-white hover:text-gray-300 bg-black bg-opacity-50 hover:bg-opacity-70 rounded-full p-3 transition-all duration-200 hover:scale-110">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                    </svg>
+                    <x-icon name="chevron-right" class="w-6 h-6" />
                 </button>
 
                 <!-- Thumbnail Navigation -->

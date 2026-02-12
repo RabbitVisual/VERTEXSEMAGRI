@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CoAdmin\CoAdminDashboardController;
 use App\Http\Controllers\CoAdmin\CoAdminProfileController;
+use Illuminate\Support\Facades\Route;
 use Nwidart\Modules\Facades\Module;
 
 /*
@@ -153,14 +153,26 @@ Route::prefix('co-admin')->name('co-admin.')->middleware(['auth', 'co-admin-or-a
     // 8. Iluminação
     if (Module::isEnabled('Iluminacao')) {
         Route::prefix('iluminacao')->name('iluminacao.')->group(function () {
-            Route::get('/', [\Modules\Iluminacao\App\Http\Controllers\IluminacaoController::class, 'index'])->name('index');
-            Route::get('/export-neoenergia', [\Modules\Iluminacao\App\Http\Controllers\IluminacaoController::class, 'exportNeoenergia'])->name('export-neoenergia');
-            Route::post('/import-neoenergia', [\Modules\Iluminacao\App\Http\Controllers\IluminacaoController::class, 'importNeoenergia'])->name('import-neoenergia');
-            Route::get('/create', [\Modules\Iluminacao\App\Http\Controllers\IluminacaoController::class, 'create'])->name('create');
-            Route::post('/', [\Modules\Iluminacao\App\Http\Controllers\IluminacaoController::class, 'store'])->name('store');
-            Route::get('/{id}', [\Modules\Iluminacao\App\Http\Controllers\IluminacaoController::class, 'show'])->name('show');
-            Route::get('/{id}/edit', [\Modules\Iluminacao\App\Http\Controllers\IluminacaoController::class, 'edit'])->name('edit');
-            Route::put('/{id}', [\Modules\Iluminacao\App\Http\Controllers\IluminacaoController::class, 'update'])->name('update');
+            Route::get('/', [\Modules\Iluminacao\App\Http\Controllers\PontosLuzController::class, 'index'])->name('index');
+            Route::get('/export-neoenergia', [\Modules\Iluminacao\App\Http\Controllers\PontosLuzController::class, 'exportNeoenergia'])->name('export-neoenergia');
+            Route::post('/import-neoenergia', [\Modules\Iluminacao\App\Http\Controllers\PontosLuzController::class, 'importNeoenergia'])->name('import-neoenergia');
+            Route::get('/create', [\Modules\Iluminacao\App\Http\Controllers\PontosLuzController::class, 'create'])->name('create');
+            Route::post('/', [\Modules\Iluminacao\App\Http\Controllers\PontosLuzController::class, 'store'])->name('store');
+            // Inventário de Postes
+            Route::prefix('postes')->name('postes.')->group(function () {
+                Route::get('/', [\Modules\Iluminacao\App\Http\Controllers\PostesController::class, 'index'])->name('index');
+                Route::get('/create', [\Modules\Iluminacao\App\Http\Controllers\PostesController::class, 'create'])->name('create');
+                Route::post('/', [\Modules\Iluminacao\App\Http\Controllers\PostesController::class, 'store'])->name('store');
+                Route::get('/{id}', [\Modules\Iluminacao\App\Http\Controllers\PostesController::class, 'show'])->name('show');
+                Route::get('/{id}/edit', [\Modules\Iluminacao\App\Http\Controllers\PostesController::class, 'edit'])->name('edit');
+                Route::put('/{id}', [\Modules\Iluminacao\App\Http\Controllers\PostesController::class, 'update'])->name('update');
+                Route::delete('/{id}', [\Modules\Iluminacao\App\Http\Controllers\PostesController::class, 'destroy'])->name('destroy');
+            });
+
+            Route::get('/{id}', [\Modules\Iluminacao\App\Http\Controllers\PontosLuzController::class, 'show'])->name('show');
+            Route::get('/{id}/edit', [\Modules\Iluminacao\App\Http\Controllers\PontosLuzController::class, 'edit'])->name('edit');
+            Route::put('/{id}', [\Modules\Iluminacao\App\Http\Controllers\PontosLuzController::class, 'update'])->name('update');
+            Route::delete('/{id}', [\Modules\Iluminacao\App\Http\Controllers\PontosLuzController::class, 'destroy'])->name('destroy');
         });
     }
 
@@ -215,6 +227,16 @@ Route::prefix('co-admin')->name('co-admin.')->middleware(['auth', 'co-admin-or-a
             Route::get('/notificacoes', [\Modules\Relatorios\App\Http\Controllers\RelatoriosController::class, 'relatorioNotificacoes'])->name('notificacoes');
             Route::get('/solicitacoes-materiais', [\Modules\Relatorios\App\Http\Controllers\RelatoriosController::class, 'relatorioSolicitacoesMateriais'])->name('solicitacoes_materiais');
             Route::get('/movimentacoes-materiais', [\Modules\Relatorios\App\Http\Controllers\RelatoriosController::class, 'relatorioMovimentacoesMateriais'])->name('movimentacoes_materiais');
+
+            // Novos relatórios e análises (Co-Admin)
+            Route::get('/pessoas', [\Modules\Relatorios\App\Http\Controllers\RelatoriosController::class, 'relatorioPessoas'])->name('pessoas');
+            Route::get('/localidades', [\Modules\Relatorios\App\Http\Controllers\RelatoriosController::class, 'relatorioLocalidades'])->name('localidades');
+            Route::get('/usuarios', [\Modules\Relatorios\App\Http\Controllers\RelatoriosController::class, 'relatorioUsuarios'])->name('usuarios');
+            Route::get('/auditoria', [\Modules\Relatorios\App\Http\Controllers\RelatoriosController::class, 'relatorioAuditoria'])->name('auditoria');
+            Route::get('/analise/temporal', [\Modules\Relatorios\App\Http\Controllers\RelatoriosController::class, 'analiseTemporal'])->name('analise.temporal');
+            Route::get('/analise/geografica', [\Modules\Relatorios\App\Http\Controllers\RelatoriosController::class, 'analiseGeografica'])->name('analise.geografica');
+            Route::get('/analise/performance', [\Modules\Relatorios\App\Http\Controllers\RelatoriosController::class, 'analisePerformance'])->name('analise.performance');
+            Route::get('/analise/tendencias', [\Modules\Relatorios\App\Http\Controllers\RelatoriosController::class, 'analiseTendencias'])->name('analise.tendencias');
         });
     }
 

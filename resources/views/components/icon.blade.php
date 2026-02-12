@@ -10,9 +10,15 @@
     'flip' => null,
     'spin' => false,
     'pulse' => false,
+    'brand' => false,
+    'brands' => false,
 ])
 
 @php
+    // 0. Resolve Style from Brand Props
+    if ($brand || $brands) {
+        $style = 'brands';
+    }
     // 1. Resolve Name from Module (if applicable)
     if ($module && empty($name)) {
         // Try exact match first, then lowercase, then studly

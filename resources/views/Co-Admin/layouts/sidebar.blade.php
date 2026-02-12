@@ -143,12 +143,25 @@
             </div>
             <div class="space-y-1">
                 @if(\Nwidart\Modules\Facades\Module::isEnabled('Iluminacao') && Route::has('co-admin.iluminacao.index'))
-                <a href="{{ route('co-admin.iluminacao.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 {{ request()->routeIs('co-admin.iluminacao.*') ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-slate-700' }}">
-                    <div class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center {{ request()->routeIs('co-admin.iluminacao.*') ? 'bg-yellow-500 dark:bg-yellow-600' : 'bg-gray-100 dark:bg-slate-700' }}">
-                        <x-module-icon module="Iluminacao" class="w-5 h-5 {{ request()->routeIs('co-admin.iluminacao.*') ? 'text-white' : 'text-gray-600 dark:text-gray-400' }}" style="duotone" />
+                <div x-data="{ open: {{ request()->routeIs('co-admin.iluminacao.*') ? 'true' : 'false' }} }" class="space-y-1">
+                    <button @click="open = !open" class="w-full flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 {{ request()->routeIs('co-admin.iluminacao.*') ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-slate-700' }}">
+                        <div class="flex items-center gap-3">
+                            <div class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center {{ request()->routeIs('co-admin.iluminacao.*') ? 'bg-yellow-500 dark:bg-yellow-600' : 'bg-gray-100 dark:bg-slate-700' }}">
+                                <x-module-icon module="Iluminacao" class="w-5 h-5 {{ request()->routeIs('co-admin.iluminacao.*') ? 'text-white' : 'text-gray-600 dark:text-gray-400' }}" style="duotone" />
+                            </div>
+                            <span class="flex-1 text-left">Iluminação</span>
+                        </div>
+                        <x-icon name="chevron-down" class="w-4 h-4 transition-transform" x-bind:class="{ 'rotate-180': open }" style="duotone" />
+                    </button>
+                    <div x-show="open" x-collapse class="pl-14 space-y-1">
+                        <a href="{{ route('co-admin.iluminacao.index') }}" class="block px-3 py-2 rounded-lg text-sm {{ request()->routeIs('co-admin.iluminacao.index') ? 'text-yellow-700 dark:text-yellow-400 font-medium' : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white' }}">
+                             Pontos de Luz
+                        </a>
+                        <a href="{{ route('co-admin.iluminacao.postes.index') }}" class="block px-3 py-2 rounded-lg text-sm {{ request()->routeIs('co-admin.iluminacao.postes.*') ? 'text-yellow-700 dark:text-yellow-400 font-medium' : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white' }}">
+                             Inventário de Postes
+                        </a>
                     </div>
-                    <span class="flex-1">Iluminação</span>
-                </a>
+                </div>
                 @endif
 
                 @if(\Nwidart\Modules\Facades\Module::isEnabled('Agua') && Route::has('co-admin.agua.index'))

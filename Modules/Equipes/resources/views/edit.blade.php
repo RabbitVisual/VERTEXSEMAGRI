@@ -4,26 +4,44 @@
 
 @section('content')
 <div class="space-y-6">
-    <!-- Page Header -->
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 border-b border-gray-200 dark:border-slate-700">
-        <div>
-            <h1 class="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-3">
-                <div class="p-2 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg text-emerald-600 dark:text-emerald-400">
-                    <x-icon module="equipes" class="w-6 h-6" />
+    <!-- Premium Header Area -->
+    <div class="relative overflow-hidden bg-slate-900 rounded-3xl border border-slate-800 shadow-2xl mb-8">
+        <!-- Decorative Elements -->
+        <div class="absolute top-0 right-0 -mt-20 -mr-20 w-80 h-80 bg-indigo-500/10 rounded-full blur-[100px]"></div>
+        <div class="absolute bottom-0 left-0 -mb-20 -ml-20 w-80 h-80 bg-blue-500/10 rounded-full blur-[100px]"></div>
+
+        <div class="relative px-8 py-10">
+            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
+                <div class="flex items-center gap-6">
+                    <div class="relative group">
+                        <div class="absolute -inset-1 bg-gradient-to-r from-indigo-500 to-blue-500 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
+                        <div class="relative p-5 bg-slate-800/50 backdrop-blur-xl rounded-2xl border border-white/10 shadow-2xl">
+                            <x-icon module="equipes" class="w-10 h-10 text-white" />
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-3 mb-2">
+                            <span class="px-3 py-1 text-[10px] font-black uppercase tracking-[0.2em] bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 rounded-full">Edição</span>
+                            <span class="w-1 h-1 rounded-full bg-slate-700"></span>
+                            <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Recursos Humanos</span>
+                        </div>
+                        <h1 class="text-3xl md:text-4xl font-black text-white tracking-tight">
+                            Editar <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-blue-400">Equipe</span>
+                        </h1>
+                    </div>
                 </div>
-                Editar Equipe
-            </h1>
-            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Atualize as informações da equipe {{ $equipe->nome }}.</p>
-        </div>
-        <div class="flex items-center gap-3">
-            <a href="{{ route('admin.equipes.show', $equipe) }}" class="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-600 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors shadow-sm">
-                <x-icon name="eye" class="w-4 h-4 mr-2" />
-                Ver Detalhes
-            </a>
-            <a href="{{ route('admin.equipes.index') }}" class="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-600 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors shadow-sm">
-                <x-icon name="arrow-left" class="w-4 h-4 mr-2" />
-                Voltar
-            </a>
+
+                <div class="flex flex-wrap gap-3">
+                    <x-equipes::button href="{{ route('equipes.show', $equipe) }}" variant="secondary" size="lg" class="shadow-xl">
+                        <x-icon name="eye" class="w-5 h-5 mr-2" />
+                        Ver Detalhes
+                    </x-equipes::button>
+                    <x-equipes::button href="{{ route('equipes.index') }}" variant="secondary" size="lg" class="shadow-xl">
+                        <x-icon name="arrow-left" class="w-5 h-5 mr-2" />
+                        Voltar
+                    </x-equipes::button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -48,13 +66,21 @@
         @csrf
         @method('PUT')
 
-        <div class="bg-white dark:bg-slate-800 rounded-2xl border border-gray-200 dark:border-slate-700 shadow-sm overflow-hidden">
+        <div class="bg-white dark:bg-slate-800 rounded-3xl border border-gray-200 dark:border-slate-700 shadow-sm overflow-hidden mb-6">
             <!-- Seção 1: Informações Básicas -->
-            <div class="p-6 space-y-6">
-                <div class="flex items-center gap-2 mb-2">
-                    <span class="flex items-center justify-center w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-xs font-bold ring-4 ring-white dark:ring-slate-800">1</span>
-                    <h3 class="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wider">Dados Principais</h3>
+            <div class="p-8 border-b border-gray-100 dark:border-slate-700/50">
+                <div class="flex items-center gap-4 mb-1">
+                    <div class="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-900/30 flex items-center justify-center border border-indigo-100 dark:border-indigo-800">
+                        <x-icon name="identification" class="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-black text-slate-900 dark:text-white uppercase tracking-tight">Dados Principais</h3>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">Identificação e configurações básicas</p>
+                    </div>
                 </div>
+            </div>
+
+            <div class="p-8 space-y-8">
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pl-8">
                     <div class="md:col-span-2">
@@ -103,11 +129,19 @@
             <div class="border-t border-gray-200 dark:border-slate-700"></div>
 
             <!-- Seção 2: Membros -->
-            <div class="p-6 space-y-6">
-                 <div class="flex items-center gap-2 mb-2">
-                    <span class="flex items-center justify-center w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-xs font-bold ring-4 ring-white dark:ring-slate-800">2</span>
-                    <h3 class="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wider">Membros da Equipe</h3>
+            <div class="p-8 border-t border-b border-gray-100 dark:border-slate-700/50">
+                <div class="flex items-center gap-4 mb-1">
+                    <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center border border-blue-100 dark:border-blue-800">
+                        <x-icon name="user-group" class="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-black text-slate-900 dark:text-white uppercase tracking-tight">Membros da Equipe</h3>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">Seleção de funcionários vinculados</p>
+                    </div>
                 </div>
+            </div>
+
+            <div class="p-8">
 
                 <div class="pl-8">
                     <label for="funcionarios" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Selecione os Funcionários</label>
@@ -128,19 +162,22 @@
             </div>
 
             <!-- Footer Buttons -->
-            <div class="bg-gray-50 dark:bg-slate-700/50 px-6 py-4 border-t border-gray-200 dark:border-slate-700 flex items-center justify-between">
-                <div class="flex items-center gap-2">
-                    <input type="checkbox" id="ativo" name="ativo" value="1" {{ old('ativo', $equipe->ativo) ? 'checked' : '' }} class="w-4 h-4 text-emerald-600 rounded border-gray-300 focus:ring-emerald-500 dark:bg-slate-700 dark:border-slate-600">
-                    <label for="ativo" class="text-sm font-medium text-gray-700 dark:text-gray-300">Equipe Ativa</label>
-                </div>
+            <div class="bg-slate-50 dark:bg-slate-900/50 px-8 py-6 border-t border-gray-200 dark:border-slate-700 flex flex-col sm:flex-row items-center justify-between gap-4">
                 <div class="flex items-center gap-3">
-                    <a href="{{ route('admin.equipes.index') }}" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 dark:bg-slate-800 dark:text-gray-300 dark:border-slate-600 dark:hover:bg-slate-700 transition-colors">
+                    <div class="relative inline-flex items-center cursor-pointer group">
+                        <input type="checkbox" id="ativo" name="ativo" value="1" {{ old('ativo', $equipe->ativo) ? 'checked' : '' }} class="sr-only peer">
+                        <div class="w-11 h-6 bg-slate-200 dark:bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
+                        <label for="ativo" class="ml-3 text-sm font-black text-slate-700 dark:text-slate-300 uppercase tracking-tight cursor-pointer">Equipe Ativa</label>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3 w-full sm:w-auto">
+                    <x-equipes::button href="{{ route('equipes.index') }}" variant="secondary" size="lg" class="w-full sm:w-auto">
                         Cancelar
-                    </a>
-                    <button type="submit" class="inline-flex items-center gap-2 px-6 py-2 text-sm font-bold text-white bg-emerald-600 rounded-lg hover:bg-emerald-700 focus:ring-4 focus:ring-emerald-300 dark:focus:ring-emerald-800 transition-all shadow-md hover:shadow-lg">
-                        <x-icon name="check" class="w-4 h-4" />
+                    </x-equipes::button>
+                    <x-equipes::button type="submit" variant="primary" size="lg" class="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-700 border-b-4 border-indigo-800 active:border-b-0 active:translate-y-1 transition-all">
+                        <x-icon name="check" class="w-5 h-5 mr-2" />
                         Salvar Alterações
-                    </button>
+                    </x-equipes::button>
                 </div>
             </div>
         </div>

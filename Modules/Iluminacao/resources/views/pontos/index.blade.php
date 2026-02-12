@@ -30,7 +30,7 @@
 
             <div class="flex flex-wrap items-center gap-3">
                 <div class="flex items-center gap-2 p-1 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-200 dark:border-slate-700">
-                    <a href="{{ route('iluminacao.export-neoenergia') }}"
+                    <a href="{{ route('co-admin.iluminacao.export-neoenergia') }}"
                        @click="loading = true; setTimeout(() => loading = false, 3000)"
                        class="inline-flex items-center px-4 py-2 text-sm font-semibold text-slate-700 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-800 rounded-lg transition-all duration-200">
                         <x-icon name="arrow-down-tray" class="w-4 h-4 mr-2 text-indigo-500" />
@@ -39,7 +39,7 @@
 
                     <div class="w-px h-6 bg-slate-200 dark:border-slate-700"></div>
 
-                    <form action="{{ route('iluminacao.import-neoenergia') }}" method="POST" enctype="multipart/form-data" @submit="loading = true">
+                    <form action="{{ route('co-admin.iluminacao.import-neoenergia') }}" method="POST" enctype="multipart/form-data" @submit="loading = true">
                         @csrf
                         <label class="cursor-pointer inline-flex items-center px-4 py-2 text-sm font-semibold text-slate-700 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-800 rounded-lg transition-all duration-200">
                             <x-icon name="file-import" class="w-4 h-4 mr-2 text-emerald-500" />
@@ -49,7 +49,7 @@
                     </form>
                 </div>
 
-                <x-iluminacao::button href="{{ route('iluminacao.create') }}" variant="primary" size="lg" icon="plus" class="shadow-xl">
+                <x-iluminacao::button href="{{ route('co-admin.iluminacao.create') }}" variant="primary" size="lg" icon="plus" class="shadow-xl">
                     Novo Ponto
                 </x-iluminacao::button>
             </div>
@@ -116,7 +116,7 @@
         <!-- Intelligent Filter Bar -->
         <div class="p-6 border-b border-slate-200 dark:border-slate-700/50 bg-slate-50/50 dark:bg-slate-900/20">
             <x-iluminacao::filter-bar
-                action="{{ route('iluminacao.index') }}"
+                action="{{ route('co-admin.iluminacao.index') }}"
                 :filters="[
                     [
                         'name' => 'status',
@@ -219,19 +219,19 @@
                                         {{ $labelMapping[$ponto->status] ?? ucfirst($ponto->status) }}
                                     </x-iluminacao::badge>
                                 </td>
-                                <td class="px-6 py-5 text-right">
+                                <td class="px-1 py-5 text-right">
                                     <div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                                        <a href="{{ route('iluminacao.show', $ponto) }}"
+                                        <a href="{{ route('co-admin.iluminacao.show', $ponto) }}"
                                            class="p-2 rounded-lg bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-100 dark:hover:bg-indigo-900/50 transition-colors"
                                            title="Ver Detalhes">
                                             <x-icon name="eye" class="w-5 h-5" />
                                         </a>
-                                        <a href="{{ route('iluminacao.edit', $ponto) }}"
+                                        <a href="{{ route('co-admin.iluminacao.edit', $ponto) }}"
                                            class="p-2 rounded-lg bg-amber-50 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 hover:bg-amber-100 dark:hover:bg-amber-900/50 transition-colors"
                                            title="Editar Registro">
                                             <x-icon name="pen-to-square" class="w-5 h-5" />
                                         </a>
-                                        <form action="{{ route('iluminacao.destroy', $ponto) }}" method="POST" class="inline" onsubmit="return confirm('Tem certeza que deseja remover este registro permanentemente?');">
+                                        <form action="{{ route('co-admin.iluminacao.destroy', $ponto) }}" method="POST" class="inline" onsubmit="return confirm('Tem certeza que deseja remover este registro permanentemente?');">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="p-2 rounded-lg bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/50 transition-colors" title="Excluir">
@@ -254,7 +254,7 @@
                     <p class="text-slate-500 dark:text-slate-400 text-center max-w-sm mb-8">
                         Não existem registros para os filtros selecionados. Tente ajustar sua busca ou cadastre um novo ponto de luz.
                     </p>
-                    <x-iluminacao::button href="{{ route('iluminacao.create') }}" variant="primary" icon="plus">
+                    <x-iluminacao::button href="{{ route('co-admin.iluminacao.create') }}" variant="primary" icon="plus">
                         Adicionar Primeiro Ponto
                     </x-iluminacao::button>
                 </div>

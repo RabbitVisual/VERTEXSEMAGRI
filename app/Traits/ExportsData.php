@@ -2,6 +2,9 @@
 
 namespace App\Traits;
 
+use DateTime;
+use Carbon\Carbon;
+
 use Illuminate\Http\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -41,20 +44,20 @@ trait ExportsData
 
         $callback = function () use ($data, $columns, $title) {
             $file = fopen('php://output', 'w');
-            
+
             // BOM para UTF-8
             fprintf($file, chr(0xEF).chr(0xBB).chr(0xBF));
-            
+
             // ============================================
             // CABEÇALHO INSTITUCIONAL
             // ============================================
             fputcsv($file, ['VERTEXSEMAGRI - Sistema Municipal de Gestão'], ';');
             fputcsv($file, [''], ';'); // Linha em branco
-            
+
             // Título do Relatório
             fputcsv($file, [$title], ';');
             fputcsv($file, [''], ';'); // Linha em branco
-            
+
             // Informações de geração
             $dataGeracao = now()->format('d/m/Y H:i:s');
             $usuario = 'Sistema';
@@ -71,12 +74,12 @@ trait ExportsData
             fputcsv($file, [''], ';'); // Linha em branco
             fputcsv($file, ['=' . str_repeat('=', 80)], ';'); // Separador
             fputcsv($file, [''], ';'); // Linha em branco
-            
+
             // ============================================
             // CABEÇALHOS DAS COLUNAS
             // ============================================
             fputcsv($file, array_values($columns), ';');
-            
+
             // ============================================
             // DADOS
             // ============================================
@@ -88,7 +91,7 @@ trait ExportsData
                 }
                 fputcsv($file, $csvRow, ';');
             }
-            
+
             // ============================================
             // RODAPÉ INSTITUCIONAL
             // ============================================
@@ -99,7 +102,7 @@ trait ExportsData
             fputcsv($file, ['Para mais informações, entre em contato com a administração do sistema.'], ';');
             fputcsv($file, [''], ';'); // Linha em branco
             fputcsv($file, ['© ' . date('Y') . ' - VERTEXSEMAGRI - Todos os direitos reservados.'], ';');
-            
+
             fclose($file);
         };
 
@@ -118,7 +121,7 @@ trait ExportsData
 
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
-        
+
         // Estilo do cabeçalho
         $headerStyle = [
             'font' => ['bold' => true, 'color' => ['rgb' => 'FFFFFF']],
@@ -180,7 +183,7 @@ trait ExportsData
                 'columns' => $columns,
                 'data' => $data,
             ]);
-            
+
             return $pdf->download("{$filename}.pdf");
         } catch (\Exception $e) {
             // Fallback: retornar HTML se PDF não estiver disponível
@@ -200,19 +203,19 @@ trait ExportsData
         if (is_null($value)) {
             return '-';
         }
-        
+
         if (is_bool($value)) {
             return $value ? 'Sim' : 'Não';
         }
-        
+
         if (is_array($value) || is_object($value)) {
             return json_encode($value, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
         }
-        
-        if ($value instanceof \DateTime || $value instanceof \Carbon\Carbon) {
+
+        if ($value instanceof DateTime || $value instanceof Carbon) {
             return $value->format('d/m/Y H:i:s');
         }
-        
+
         // Formatação de números decimais
         if (is_numeric($value) && strpos((string)$value, '.') !== false) {
             $num = (float)$value;
@@ -223,12 +226,12 @@ trait ExportsData
             // Números maiores com separador de milhar
             return number_format($num, 2, ',', '.');
         }
-        
+
         // Formatação de números inteiros com separador de milhar
         if (is_numeric($value) && (int)$value == $value) {
             return number_format((int)$value, 0, ',', '.');
         }
-        
+
         return (string) $value;
     }
 
@@ -240,20 +243,19 @@ trait ExportsData
         if (is_null($value)) {
             return '';
         }
-        
+
         if (is_bool($value)) {
             return $value ? 'Sim' : 'Não';
         }
-        
+
         if (is_array($value) || is_object($value)) {
             return json_encode($value);
         }
-        
-        if ($value instanceof \DateTime || $value instanceof \Carbon\Carbon) {
+
+        if ($value instanceof DateTime || $value instanceof Carbon) {
             return $value->format('d/m/Y H:i:s');
         }
-        
+
         return $value;
     }
 }
-

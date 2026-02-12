@@ -4,24 +4,40 @@
 
 @section('content')
 <div class="space-y-8">
-    <!-- Page Header -->
-    <div class="bg-gradient-to-r from-indigo-600 to-indigo-700 dark:from-indigo-800 dark:to-indigo-900 rounded-2xl shadow-xl p-6 md:p-8 text-white">
-        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <div class="flex items-center gap-4">
-                <div class="p-3 bg-white/20 rounded-xl backdrop-blur-sm">
-                    <x-icon module="demandas" class="w-8 h-8 text-white" />
+    <!-- Premium Header Area -->
+    <div class="relative overflow-hidden bg-slate-900 rounded-3xl border border-slate-800 shadow-2xl mb-8">
+        <!-- Decorative Elements -->
+        <div class="absolute top-0 right-0 -mt-20 -mr-20 w-80 h-80 bg-indigo-500/10 rounded-full blur-[100px]"></div>
+        <div class="absolute bottom-0 left-0 -mb-20 -ml-20 w-80 h-80 bg-blue-500/10 rounded-full blur-[100px]"></div>
+
+        <div class="relative px-8 py-10">
+            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
+                <div class="flex items-center gap-6">
+                    <div class="relative group">
+                        <div class="absolute -inset-1 bg-gradient-to-r from-indigo-500 to-blue-500 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
+                        <div class="relative p-5 bg-slate-800/50 backdrop-blur-xl rounded-2xl border border-white/10 shadow-2xl">
+                            <x-icon module="demandas" class="w-10 h-10 text-white" />
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-3 mb-2">
+                            <span class="px-3 py-1 text-[10px] font-black uppercase tracking-[0.2em] bg-amber-500/10 text-amber-400 border border-amber-500/20 rounded-full">Edição</span>
+                            <span class="w-1 h-1 rounded-full bg-slate-700"></span>
+                            <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Protocolo: {{ $demanda->codigo ?? '#' . $demanda->id }}</span>
+                        </div>
+                        <h1 class="text-3xl md:text-4xl font-black text-white tracking-tight">
+                            Editar <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-blue-400">Demanda</span>
+                        </h1>
+                    </div>
                 </div>
-                <div>
-                    <h1 class="text-3xl font-bold">Editar Demanda</h1>
-                    <p class="text-indigo-100 dark:text-indigo-200 mt-2 text-sm md:text-base">
-                        {{ $demanda->codigo ?? '#' . $demanda->id }}
-                    </p>
+
+                <div class="flex flex-wrap gap-3">
+                    <x-demandas::button href="{{ route('demandas.show', $demanda) }}" variant="secondary" size="lg" class="shadow-xl">
+                        <x-icon name="arrow-left" class="w-5 h-5 mr-2" />
+                        Visualizar Detalhes
+                    </x-demandas::button>
                 </div>
             </div>
-            <x-demandas::button href="{{ route('demandas.show', $demanda) }}" variant="outline" class="bg-white/10 text-white border-white/30 hover:bg-white/20">
-                <x-icon name="arrow-left" class="w-5 h-5 mr-2" />
-                Voltar
-            </x-demandas::button>
         </div>
     </div>
 
@@ -54,13 +70,13 @@
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <!-- Formulário Principal -->
         <div class="lg:col-span-2 space-y-6">
-            <x-demandas::card class="rounded-xl shadow-lg">
+            <x-demandas::card class="mb-6 overflow-hidden">
                 <x-slot name="header">
                     <div class="flex items-center gap-3">
-                        <div class="p-2 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg">
+                        <div class="p-2 bg-indigo-500/10 rounded-xl">
                             <x-icon name="circle-info" class="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
                         </div>
-                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+                        <h3 class="text-sm font-black text-slate-900 dark:text-white uppercase tracking-wider">
                             Informações da Demanda
                         </h3>
                     </div>
@@ -326,15 +342,15 @@
                         </div>
                     </div>
 
-                    <!-- Botões de Ação -->
-                    <div class="flex items-center justify-end gap-3 pt-6 border-t-2 border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50 -mx-6 -mb-6 px-6 py-4 rounded-b-xl">
-                        <x-demandas::button href="{{ route('demandas.show', $demanda) }}" variant="outline" class="border-2">
+                    <!-- Action Buttons -->
+                    <div class="flex items-center justify-end gap-3 pt-6 border-t border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 -mx-6 -mb-6 px-6 py-5">
+                        <x-demandas::button href="{{ route('demandas.show', $demanda) }}" variant="secondary" size="lg">
                             <x-icon name="xmark" class="w-4 h-4 mr-2" />
                             Cancelar
                         </x-demandas::button>
-                        <x-demandas::button type="submit" variant="primary" class="shadow-lg hover:shadow-xl transition-shadow">
+                        <x-demandas::button type="submit" variant="primary" size="lg" class="shadow-xl border-b-4 border-indigo-700 active:border-b-0 active:translate-y-1 transition-all">
                             <x-icon name="circle-check" class="w-4 h-4 mr-2" />
-                            Atualizar Demanda
+                            Salvar Alterações
                         </x-demandas::button>
                     </div>
                 </form>
@@ -343,14 +359,14 @@
 
         <!-- Sidebar com Informações -->
         <div class="lg:col-span-1 space-y-6">
-            <x-demandas::card class="rounded-xl shadow-lg">
+            <x-demandas::card class="overflow-hidden">
                 <x-slot name="header">
                     <div class="flex items-center gap-3">
-                        <div class="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
+                        <div class="p-2 bg-blue-500/10 rounded-xl">
                             <x-icon name="circle-info" class="w-5 h-5 text-blue-600 dark:text-blue-400" />
                         </div>
-                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                            Informações do Sistema
+                        <h3 class="text-sm font-black text-slate-900 dark:text-white uppercase tracking-wider">
+                            Metadados
                         </h3>
                     </div>
                 </x-slot>
@@ -392,6 +408,22 @@
 @push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    // Máscara de telefone
+    const telefoneInput = document.getElementById('solicitante_telefone');
+    if (telefoneInput) {
+        telefoneInput.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length <= 11) {
+                if (value.length <= 10) {
+                    value = value.replace(/^(\d{2})(\d{4})(\d{0,4}).*/, '($1) $2-$3');
+                } else {
+                    value = value.replace(/^(\d{2})(\d{5})(\d{0,4}).*/, '($1) $2-$3');
+                }
+                e.target.value = value;
+            }
+        });
+    }
+
     const statusSelect = document.getElementById('status');
     const form = document.querySelector('form');
 

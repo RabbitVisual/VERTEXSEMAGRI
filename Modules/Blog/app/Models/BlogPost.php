@@ -7,6 +7,20 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Str;
 use App\Models\User;
 
+/**
+ * @property string $title
+ * @property string $slug
+ * @property string $content
+ * @property string $status
+ * @property \Carbon\Carbon|null $published_at
+ * @property int $category_id
+ * @property int $author_id
+ * @property int $views_count
+ * @property int $likes_count
+ * @property int $shares_count
+ * @property-read \Modules\Blog\App\Models\BlogCategory $category
+ * @property-read \App\Models\User $author
+ */
 class BlogPost extends Model
 {
     use HasFactory;

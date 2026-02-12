@@ -4,27 +4,69 @@
 
 @section('content')
 <div class="space-y-6 md:space-y-8">
-    <!-- Page Header -->
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 md:pb-6 border-b border-gray-200 dark:border-slate-700">
-        <div>
-            <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white flex items-center gap-3 mb-2">
-                <div class="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg">
-                    <x-icon module="equipes" class="w-6 h-6 md:w-7 md:h-7 text-white" />
+    <!-- Premium Header Area -->
+    <div class="relative overflow-hidden bg-slate-900 rounded-3xl border border-slate-800 shadow-2xl mb-8">
+        <!-- Decorative Elements -->
+        <div class="absolute top-0 right-0 -mt-20 -mr-20 w-80 h-80 bg-indigo-500/10 rounded-full blur-[100px]"></div>
+        <div class="absolute bottom-0 left-0 -mb-20 -ml-20 w-80 h-80 bg-blue-500/10 rounded-full blur-[100px]"></div>
+
+        <div class="relative px-8 py-10">
+            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
+                <div class="flex items-center gap-6">
+                    <div class="relative group">
+                        <div class="absolute -inset-1 bg-gradient-to-r from-indigo-500 to-blue-500 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
+                        <div class="relative p-5 bg-slate-800/50 backdrop-blur-xl rounded-2xl border border-white/10 shadow-2xl">
+                            <x-icon module="equipes" class="w-10 h-10 text-white" />
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-3 mb-2">
+                            <span class="px-3 py-1 text-[10px] font-black uppercase tracking-[0.2em] bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 rounded-full">Gestão</span>
+                            <span class="w-1 h-1 rounded-full bg-slate-700"></span>
+                            <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Recursos Humanos</span>
+                        </div>
+                        <h1 class="text-3xl md:text-4xl font-black text-white tracking-tight">
+                            Controle de <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-blue-400">Equipes</span>
+                        </h1>
+                    </div>
                 </div>
-                <span>Equipes</span>
-            </h1>
-            <nav aria-label="breadcrumb" class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
-                <a href="{{ route('dashboard') }}" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Dashboard</a>
-                <x-icon name="chevron-right" class="w-3 h-3 text-gray-400" />
-                <span class="text-gray-900 dark:text-white font-medium">Equipes</span>
-            </nav>
+
+                <div class="flex flex-wrap gap-3">
+                    <x-equipes::button href="{{ route('equipes.create') }}" variant="primary" size="lg" class="shadow-xl bg-indigo-600 hover:bg-indigo-700 border-b-4 border-indigo-800 active:border-b-0 active:translate-y-1 transition-all">
+                        <x-icon name="plus" class="w-5 h-5 mr-2" />
+                        Nova Equipe
+                    </x-equipes::button>
+                </div>
+            </div>
         </div>
-        <div class="flex items-center gap-3">
-             <a href="{{ route('equipes.create') }}" class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-300 dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800 transition-colors shadow-sm">
-                <x-icon name="plus-circle" class="w-5 h-5" />
-                Nova Equipe
-            </a>
-        </div>
+    </div>
+
+    <!-- Stats Overview -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <x-equipes::stat-card
+            title="Total de Equipes"
+            value="{{ $stats['total'] }}"
+            icon="users"
+            variant="indigo"
+        />
+        <x-equipes::stat-card
+            title="Equipes Ativas"
+            value="{{ $stats['ativas'] }}"
+            icon="circle-check"
+            variant="success"
+        />
+        <x-equipes::stat-card
+            title="Com Membros"
+            value="{{ $stats['com_funcionarios'] }}"
+            icon="user-group"
+            variant="blue"
+        />
+        <x-equipes::stat-card
+            title="Aguardando Membros"
+            value="{{ $stats['sem_funcionarios'] }}"
+            icon="user-minus"
+            variant="amber"
+        />
     </div>
 
     <!-- Filters & Search -->
@@ -64,85 +106,94 @@
     <div class="bg-white dark:bg-slate-800 rounded-2xl border border-gray-200 dark:border-slate-700 shadow-sm overflow-hidden">
         <div class="overflow-x-auto">
             <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-slate-700 dark:text-gray-400">
+                <thead class="bg-slate-50 dark:bg-slate-900/50 border-b border-slate-200 dark:border-slate-700">
                     <tr>
-                        <th scope="col" class="px-6 py-4">Equipe</th>
-                        <th scope="col" class="px-6 py-4">Líder</th>
-                        <th scope="col" class="px-6 py-4 text-center">Membros</th>
-                        <th scope="col" class="px-6 py-4 text-center">Status</th>
-                        <th scope="col" class="px-6 py-4 text-right">Ações</th>
+                        <th class="px-6 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Identificação da Equipe</th>
+                        <th class="px-6 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Líder Responsável</th>
+                        <th class="px-6 py-4 text-center text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Membros</th>
+                        <th class="px-6 py-4 text-center text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Status Operacional</th>
+                        <th class="px-6 py-4 text-right text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Ações</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-200 dark:divide-slate-700">
                     @forelse($equipes as $equipe)
-                    <tr class="bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-700/50 transition-colors">
+                    <tr class="group hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-all duration-300">
                         <td class="px-6 py-4">
-                            <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-lg bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center text-indigo-600 dark:text-indigo-400 font-bold text-xs shadow-sm">
-                                    {{ substr($equipe->codigo ?? 'N/A', 0, 3) }}
+                            <div class="flex items-center gap-4">
+                                <div class="relative">
+                                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-500/10 to-blue-500/10 flex items-center justify-center border border-indigo-500/20 group-hover:scale-110 transition-transform duration-500">
+                                        <x-icon module="equipes" class="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
+                                    </div>
+                                    @if($equipe->ativo)
+                                    <div class="absolute -top-1 -right-1 w-4 h-4 bg-emerald-500 rounded-full border-2 border-white dark:border-slate-800 shadow-sm"></div>
+                                    @endif
                                 </div>
                                 <div>
-                                    <div class="text-sm font-semibold text-gray-900 dark:text-white">{{ $equipe->nome }}</div>
-                                    <div class="text-xs text-gray-500 dark:text-gray-400">{{ ucfirst($equipe->tipo) }}</div>
+                                    <div class="text-sm font-black text-slate-900 dark:text-white uppercase tracking-tight">{{ $equipe->nome }}</div>
+                                    <div class="flex items-center gap-2 mt-1">
+                                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{{ $equipe->codigo ?? 'SEM CÓDIGO' }}</span>
+                                        <span class="w-1 h-1 rounded-full bg-slate-300"></span>
+                                        <span class="text-[10px] font-bold text-indigo-500 uppercase tracking-widest">{{ ucfirst($equipe->tipo) }}</span>
+                                    </div>
                                 </div>
                             </div>
                         </td>
                         <td class="px-6 py-4">
                             @if($equipe->lider)
-                                <div class="flex items-center gap-2">
-                                    <div class="w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center text-blue-700 dark:text-blue-300 text-xs font-bold">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 rounded-xl bg-slate-100 dark:bg-slate-700 flex items-center justify-center text-slate-700 dark:text-slate-200 text-xs font-black border border-slate-200 dark:border-slate-600">
                                         {{ substr($equipe->lider->name, 0, 1) }}
                                     </div>
-                                    <span class="text-gray-900 dark:text-white text-sm">{{ $equipe->lider->name }}</span>
+                                    <span class="text-xs font-bold text-slate-700 dark:text-slate-200">{{ $equipe->lider->name }}</span>
                                 </div>
                             @else
-                                <span class="text-gray-400 dark:text-gray-500">-</span>
+                                <div class="flex items-center gap-2 text-slate-400">
+                                    <x-icon name="circle-minus" class="w-4 h-4" />
+                                    <span class="text-[10px] font-bold uppercase">Não Definido</span>
+                                </div>
                             @endif
                         </td>
                         <td class="px-6 py-4 text-center">
-                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300">
-                                {{ $equipe->funcionarios->count() }}
-                            </span>
+                            <div class="inline-flex items-center px-2.5 py-1 rounded-lg text-[10px] font-black bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 uppercase tracking-wider">
+                                {{ $equipe->funcionarios->count() }} Membros
+                            </div>
                         </td>
                         <td class="px-6 py-4 text-center">
                             @if($equipe->ativo)
-                                <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800 dark:bg-emerald-900/50 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                                    Ativa
-                                </span>
+                                <x-equipes::badge variant="success" class="shadow-sm">Ativa</x-equipes::badge>
                             @else
-                                <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-600">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-gray-400"></span>
-                                    Inativa
-                                </span>
+                                <x-equipes::badge variant="secondary">Inativa</x-equipes::badge>
                             @endif
                         </td>
                         <td class="px-6 py-4 text-right">
-                            <div class="flex items-center justify-end gap-2">
-                                <a href="{{ route('equipes.show', $equipe->id) }}" class="p-2 text-gray-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg dark:text-gray-400 dark:hover:text-indigo-400 dark:hover:bg-indigo-900/20 transition-all" title="Ver Detalhes">
-                                    <x-icon name="eye" class="w-5 h-5" />
-                                </a>
-                                <a href="{{ route('equipes.edit', $equipe->id) }}" class="p-2 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg dark:text-gray-400 dark:hover:text-blue-400 dark:hover:bg-blue-900/20 transition-all" title="Editar">
-                                    <x-icon name="pencil" class="w-5 h-5" />
-                                </a>
+                            <div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-4 group-hover:translate-x-0">
+                                <x-equipes::button href="{{ route('equipes.show', $equipe->id) }}" variant="secondary" size="sm" class="hover:bg-indigo-600 hover:text-white border-none shadow-none">
+                                    <x-icon name="eye" class="w-4 h-4" />
+                                </x-equipes::button>
+                                <x-equipes::button href="{{ route('equipes.edit', $equipe->id) }}" variant="secondary" size="sm" class="hover:bg-amber-500 hover:text-white border-none shadow-none">
+                                    <x-icon name="pencil" class="w-4 h-4" />
+                                </x-equipes::button>
                             </div>
                         </td>
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="5" class="px-6 py-12 text-center">
-                            <div class="flex flex-col items-center justify-center">
-                                <div class="w-16 h-16 bg-gray-100 dark:bg-slate-700 rounded-full flex items-center justify-center mb-4">
-                                    <x-icon name="magnifying-glass" class="w-8 h-8 text-gray-400 dark:text-gray-500" />
+                        <td colspan="5" class="px-6 py-20 text-center">
+                            <div class="flex flex-col items-center justify-center max-w-sm mx-auto">
+                                <div class="relative mb-6">
+                                    <div class="absolute inset-0 bg-indigo-500/20 rounded-full blur-2xl animate-pulse"></div>
+                                    <div class="relative w-20 h-20 bg-slate-100 dark:bg-slate-800 rounded-3xl flex items-center justify-center border border-slate-200 dark:border-slate-700 shadow-xl">
+                                        <x-icon module="equipes" class="w-10 h-10 text-slate-400 dark:text-slate-500" />
+                                    </div>
                                 </div>
-                                <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-1">Nenhuma equipe encontrada</h3>
-                                <p class="text-gray-500 dark:text-gray-400 max-w-sm mx-auto">
-                                    Não encontramos equipes com os filtros atuais. Tente limpar os filtros ou criar uma nova equipe.
+                                <h3 class="text-xl font-black text-slate-900 dark:text-white uppercase tracking-tight mb-2">Nenhuma Equipe Encontrada</h3>
+                                <p class="text-sm text-slate-500 dark:text-slate-400 mb-8">
+                                    Não existem registros que correspondam aos seus critérios de busca ou ainda não foram cadastradas equipes.
                                 </p>
-                                <a href="{{ route('equipes.create') }}" class="mt-4 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors text-sm font-medium inline-flex items-center gap-2">
-                                    <x-icon name="plus" class="w-4 h-4" />
-                                    Criar Equipe
-                                </a>
+                                <x-equipes::button href="{{ route('equipes.create') }}" variant="primary" size="lg">
+                                    <x-icon name="plus" class="w-4 h-4 mr-2" />
+                                    Cadastrar Primeira Equipe
+                                </x-equipes::button>
                             </div>
                         </td>
                     </tr>

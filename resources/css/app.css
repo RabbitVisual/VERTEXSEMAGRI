@@ -321,4 +321,12 @@ html {
         transform: scale(0.98);
         transition: transform 0.1s ease;
     }
+
+    /* Fix para setas duplicadas em selects com appearance-none */
+    select.appearance-none {
+        background-image: none !important;
+        appearance: none !important;
+        -webkit-appearance: none !important;
+        -moz-appearance: none !important;
+    }
 }
