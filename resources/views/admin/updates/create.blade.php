@@ -3,198 +3,198 @@
 @section('title', 'Enviar Atualização')
 
 @section('content')
-<div class="space-y-6 md:space-y-8">
+<div class="space-y-6 md:space-y-8 animate-fade-in pb-12 font-sans">
     <!-- Page Header -->
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 md:pb-6 border-b border-gray-200 dark:border-slate-700">
         <div>
             <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white flex items-center gap-3 mb-2">
-                <div class="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg">
-                    <x-icon name="arrow-left" class="w-5 h-5" />
+                <div class="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-indigo-500 to-cyan-600 rounded-xl flex items-center justify-center shadow-lg">
+                    <x-icon name="cloud-arrow-up" class="w-6 h-6 md:w-7 md:h-7 text-white" style="duotone" />
+                </div>
+                <span>Nova <span class="text-indigo-600 dark:text-indigo-400">Atualização</span></span>
+            </h1>
+            <nav aria-label="breadcrumb" class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                <a href="{{ route('admin.dashboard') }}" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Admin</a>
+                <x-icon name="chevron-right" class="w-3 h-3 text-slate-400" />
+                <a href="{{ route('admin.updates.index') }}" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Atualizações</a>
+                <x-icon name="chevron-right" class="w-3 h-3 text-slate-400" />
+                <span class="text-gray-900 dark:text-white font-medium">Upload</span>
+            </nav>
+        </div>
+        <a href="{{ route('admin.updates.index') }}" class="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-bold text-gray-700 dark:text-gray-200 bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-600 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-700 focus:ring-4 focus:ring-gray-100 dark:focus:ring-slate-700 transition-all shadow-sm">
+            <x-icon name="arrow-left" class="w-5 h-5" />
             Voltar
         </a>
     </div>
 
-    <!-- Flash Messages - Flowbite Alerts -->
-    @if(session('success'))
-        <div id="alert-success" class="flex items-center p-4 mb-4 text-emerald-800 border border-emerald-300 rounded-lg bg-emerald-50 dark:bg-emerald-900/20 dark:text-emerald-400 dark:border-emerald-800" role="alert">
-            <svg class="flex-shrink-0 w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd"/>
-            </svg>
-            <div class="ml-3 text-sm font-medium">{{ session('success') }}</div>
-            <button type="button" class="ml-auto -mx-1.5 -my-1.5 bg-emerald-50 text-emerald-500 rounded-lg focus:ring-2 focus:ring-emerald-400 p-1.5 hover:bg-emerald-200 inline-flex h-8 w-8 dark:bg-emerald-900/20 dark:text-emerald-400 dark:hover:bg-emerald-900/30" data-dismiss-target="#alert-success" aria-label="Close" onclick="this.parentElement.remove()">
-                <svg class="w-3 h-3" fill="none" viewBox="0 0 14 14" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                </svg>
-            </button>
-        </div>
-    @endif
+    <!-- Flash Messages (Uses existing logic but styled consistently if not global already) -->
+    <!-- Usually handled by global layout or components, but kept here for specific context if needed -->
 
-    @if(session('error'))
-        <div id="alert-error" class="flex items-center p-4 mb-4 text-red-800 border border-red-300 rounded-lg bg-red-50 dark:bg-red-900/20 dark:text-red-400 dark:border-red-800" role="alert">
-            <svg class="flex-shrink-0 w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clip-rule="evenodd"/>
-            </svg>
-            <div class="ml-3 text-sm font-medium">{{ session('error') }}</div>
-            <button type="button" class="ml-auto -mx-1.5 -my-1.5 bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex h-8 w-8 dark:bg-red-900/20 dark:text-red-400 dark:hover:bg-red-900/30" data-dismiss-target="#alert-error" aria-label="Close" onclick="this.parentElement.remove()">
-                <svg class="w-3 h-3" fill="none" viewBox="0 0 14 14" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                </svg>
-            </button>
-        </div>
-    @endif
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Main Form -->
+        <div class="lg:col-span-2 space-y-8">
+            <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-gray-100 dark:border-slate-700 overflow-hidden">
+                <div class="px-6 py-5 border-b border-gray-100 dark:border-slate-700 flex items-center justify-between bg-gray-50/50 dark:bg-slate-900/50">
+                    <h2 class="text-sm font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider flex items-center gap-2">
+                        <x-icon name="upload" style="duotone" class="w-5 h-5 text-indigo-500" />
+                        Pacote de Atualização
+                    </h2>
+                </div>
+                <div class="p-6 md:p-8">
+                    <form action="{{ route('admin.updates.upload') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+                        @csrf
 
-    @if($errors->any())
-        <div id="alert-errors" class="flex items-start p-4 mb-4 text-red-800 border border-red-300 rounded-lg bg-red-50 dark:bg-red-900/20 dark:text-red-400 dark:border-red-800" role="alert">
-            <svg class="flex-shrink-0 w-5 h-5 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clip-rule="evenodd"/>
-            </svg>
-            <div class="ml-3 flex-1">
-                <h3 class="text-sm font-semibold mb-2">Erros encontrados:</h3>
-                <ul class="space-y-1 text-sm">
-                    @foreach($errors->all() as $error)
-                        <li class="flex items-start gap-2">
-                            <span class="text-red-500 mt-0.5">•</span>
-                            <span>{{ $error }}</span>
-                        </li>
-                    @endforeach
-                </ul>
-            </div>
-            <button type="button" class="ml-auto -mx-1.5 -my-1.5 bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex h-8 w-8 dark:bg-red-900/20 dark:text-red-400 dark:hover:bg-red-900/30" data-dismiss-target="#alert-errors" aria-label="Close" onclick="this.parentElement.remove()">
-                <svg class="w-3 h-3" fill="none" viewBox="0 0 14 14" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                </svg>
-            </button>
-        </div>
-    @endif
-
-    <!-- Upload Form - Flowbite Card -->
-    <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700">
-        <div class="px-6 py-4 border-b border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-900/50">
-            <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Enviar Atualização</h2>
-        </div>
-        <div class="p-6 md:p-8">
-        <form action="{{ route('admin.updates.upload') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
-            @csrf
-
-            <!-- File Upload -->
-            <div>
-                <label for="update_file" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Arquivo ZIP de Atualização <span class="text-red-500">*</span>
-                </label>
-                <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 dark:border-gray-600 border-dashed rounded-xl hover:border-indigo-400 dark:hover:border-indigo-500 transition-colors">
-                    <div class="space-y-1 text-center w-full">
-                        <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
-                            <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                        </svg>
-                        <div class="flex text-sm text-gray-600 dark:text-gray-400">
-                            <label for="update_file" class="relative cursor-pointer bg-white dark:bg-gray-800 rounded-md font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 dark:hover:text-indigo-300 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
-                                <span>Selecione um arquivo</span>
-                                <input id="update_file" name="update_file" type="file" accept=".zip" required class="sr-only" onchange="updateFileName(this)">
+                        <!-- File Upload Zone -->
+                        <div>
+                            <label class="block mb-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                                Arquivo ZIP (.zip) <span class="text-red-500">*</span>
                             </label>
-                            <p class="pl-1">ou arraste e solte</p>
+                            <div class="mt-1 flex justify-center px-6 pt-10 pb-10 border-2 border-slate-200 dark:border-slate-600 border-dashed rounded-2xl hover:border-indigo-400 dark:hover:border-indigo-500 hover:bg-indigo-50/30 dark:hover:bg-indigo-900/10 transition-all group cursor-pointer relative">
+                                <input id="update_file" name="update_file" type="file" accept=".zip" required class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" onchange="updateFileName(this)">
+                                <div class="space-y-2 text-center pointer-events-none">
+                                    <div class="w-16 h-16 bg-indigo-50 dark:bg-indigo-900/20 text-indigo-500 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+                                        <x-icon name="cloud-arrow-up" style="duotone" class="w-8 h-8" />
+                                    </div>
+                                    <div class="flex flex-col items-center text-sm text-gray-600 dark:text-gray-400">
+                                        <span class="font-bold text-indigo-600 dark:text-indigo-400 text-lg">Clique para upload</span>
+                                        <span class="text-slate-500">ou arraste e solte o arquivo aqui</span>
+                                    </div>
+                                    <p class="text-xs text-slate-400 pt-2" id="file-name">Nenhum arquivo selecionado</p>
+                                    <p class="text-[10px] text-slate-400 uppercase tracking-wide">Tamanho máximo: 100MB</p>
+                                </div>
+                            </div>
+                            @error('update_file')
+                                <p class="mt-2 text-sm text-red-600 dark:text-red-400 font-medium flex items-center gap-1">
+                                    <x-icon name="circle-exclamation" class="w-4 h-4" />
+                                    {{ $message }}
+                                </p>
+                            @enderror
                         </div>
-                        <p class="text-xs text-gray-500 dark:text-gray-400" id="file-name">Nenhum arquivo selecionado</p>
-                        <p class="text-xs text-gray-500 dark:text-gray-400">Tamanho máximo: 100MB</p>
-                    </div>
-                </div>
-                @error('update_file')
-                    <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-                @enderror
-            </div>
 
-            <!-- Options -->
-            <div class="space-y-4">
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Opções de Atualização</h3>
-                
-                <div class="flex items-start gap-3 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl border border-gray-200 dark:border-gray-600">
-                    <input type="checkbox" name="create_backup" id="create_backup" value="1" checked class="mt-1 w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600" onchange="updateBackupStatus(this)">
-                    <div class="flex-1">
-                        <label for="create_backup" class="text-sm font-medium text-gray-900 dark:text-white cursor-pointer">
-                            Criar backup antes de aplicar
-                        </label>
-                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1" id="backup-description">
-                            <span class="font-semibold text-emerald-600 dark:text-emerald-400">✓ Ativo:</span> Um backup completo do sistema será criado antes de aplicar a atualização. Isso permite reverter mudanças se necessário.
-                        </p>
-                    </div>
-                </div>
+                        <!-- Options -->
+                        <div class="space-y-4 pt-4">
+                            <h3 class="text-sm font-bold text-gray-900 dark:text-white uppercase tracking-wider mb-4 border-b border-gray-100 dark:border-slate-700 pb-2">Opções de Instalação</h3>
 
-                <div class="flex items-start gap-3 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl border border-gray-200 dark:border-gray-600">
-                    <input type="checkbox" name="auto_apply" id="auto_apply" value="1" class="mt-1 w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600" onchange="updateAutoApplyStatus(this)">
-                    <div class="flex-1">
-                        <label for="auto_apply" class="text-sm font-medium text-gray-900 dark:text-white cursor-pointer">
-                            Aplicar automaticamente após upload
-                        </label>
-                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1" id="auto-apply-description">
-                            <span class="font-semibold text-gray-600 dark:text-gray-400">ℹ️ Inativo:</span> A atualização será enviada e você precisará aplicar manualmente na página de detalhes.
-                        </p>
-                    </div>
-                </div>
-            </div>
+                            <!-- Backup Option -->
+                            <label class="relative flex items-start gap-4 p-4 rounded-xl border border-gray-200 dark:border-slate-700 bg-gray-50/50 dark:bg-slate-900/30 cursor-pointer hover:border-indigo-300 dark:hover:border-indigo-700 transition-colors">
+                                <div class="flex h-6 items-center">
+                                    <input type="checkbox" name="create_backup" id="create_backup" value="1" checked class="w-5 h-5 text-indigo-600 border-gray-300 rounded focus:ring-indigo-600 dark:bg-slate-700 dark:border-slate-600" onchange="updateBackupStatus(this)">
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-sm font-bold text-gray-900 dark:text-white">Criar Backup de Segurança</span>
+                                        <span id="backup-badge" class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400">Recomendado</span>
+                                    </div>
+                                    <p class="text-xs text-slate-500 mt-1" id="backup-description">
+                                        Cria um ponto de restauração completo antes de aplicar as mudanças.
+                                    </p>
+                                </div>
+                            </label>
 
-            <!-- Info Box -->
-            <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-4">
-                <div class="flex items-start gap-3">
-                    <svg class="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
-                    </svg>
-                    <div class="flex-1">
-                        <h4 class="text-sm font-semibold text-blue-900 dark:text-blue-200 mb-1">Informações Importantes</h4>
-                        <ul class="text-xs text-blue-800 dark:text-blue-300 space-y-1 list-disc list-inside">
-                            <li>O arquivo ZIP deve conter apenas arquivos de atualização (views, controllers, etc.)</li>
-                            <li>Arquivos perigosos como .env, composer.json, package.json são bloqueados automaticamente</li>
-                            <li>Recomendamos criar um backup antes de aplicar atualizações em produção</li>
-                            <li>Após o upload, você pode revisar os detalhes antes de aplicar</li>
-                        </ul>
-                    </div>
+                            <!-- Auto Apply Option -->
+                            <label class="relative flex items-start gap-4 p-4 rounded-xl border border-gray-200 dark:border-slate-700 bg-gray-50/50 dark:bg-slate-900/30 cursor-pointer hover:border-indigo-300 dark:hover:border-indigo-700 transition-colors">
+                                <div class="flex h-6 items-center">
+                                    <input type="checkbox" name="auto_apply" id="auto_apply" value="1" class="w-5 h-5 text-indigo-600 border-gray-300 rounded focus:ring-indigo-600 dark:bg-slate-700 dark:border-slate-600" onchange="updateAutoApplyStatus(this)">
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-sm font-bold text-gray-900 dark:text-white">Instalação Automática</span>
+                                        <span id="auto-apply-badge" class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-slate-100 text-slate-500 dark:bg-slate-700 dark:text-slate-400">Manual</span>
+                                    </div>
+                                    <p class="text-xs text-slate-500 mt-1" id="auto-apply-description">
+                                        Se marcado, a atualização será aplicada imediatamente após o upload.
+                                    </p>
+                                </div>
+                            </label>
+                        </div>
+
+                        <div class="pt-6 border-t border-gray-100 dark:border-slate-700 flex items-center gap-3">
+                             <a href="{{ route('admin.updates.index') }}" class="px-6 py-3.5 text-sm font-bold uppercase tracking-wider text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white transition-colors">
+                                Cancelar
+                            </a>
+                            <button type="submit" class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-8 py-3.5 text-sm font-bold uppercase tracking-wider text-white bg-indigo-600 rounded-xl hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-500/30 active:scale-95 group">
+                                <x-icon name="cloud-arrow-up" class="w-5 h-5 group-hover:-translate-y-1 transition-transform" />
+                                Iniciar Upload
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
+        </div>
 
-            <!-- Submit Buttons -->
-            <div class="flex flex-col sm:flex-row gap-3 pt-4 border-t border-gray-200 dark:border-slate-700">
-                <button type="submit" class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-6 py-2.5 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-300 dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800 transition-colors">
-                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
-                    </svg>
-                    Enviar Atualização
-                </button>
-                <a href="{{ route('admin.updates.index') }}" class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-6 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 dark:bg-slate-700 dark:text-gray-300 dark:border-slate-600 dark:hover:bg-slate-600 dark:focus:ring-slate-700 transition-colors">
-                    Cancelar
-                </a>
+        <!-- Sidebar Info -->
+        <div class="lg:col-span-1 space-y-6">
+            <div class="bg-indigo-50 dark:bg-indigo-900/20 rounded-3xl p-6 border border-indigo-100 dark:border-indigo-900/30">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="p-2 bg-indigo-100 dark:bg-indigo-900/40 rounded-lg text-indigo-600 dark:text-indigo-400">
+                        <x-icon name="circle-info" class="w-5 h-5" />
+                    </div>
+                    <h3 class="font-bold text-indigo-900 dark:text-indigo-200">Recomendações</h3>
+                </div>
+                <div class="space-y-4">
+                    <div class="flex gap-3">
+                        <div class="w-6 h-6 rounded-full bg-white dark:bg-slate-800 flex items-center justify-center text-xs font-bold text-indigo-600 border border-indigo-100 dark:border-indigo-900 shrink-0">1</div>
+                        <p class="text-sm text-indigo-800 dark:text-indigo-300">Verifique se o arquivo possui a extensão <strong>.zip</strong> oficial.</p>
+                    </div>
+                     <div class="flex gap-3">
+                        <div class="w-6 h-6 rounded-full bg-white dark:bg-slate-800 flex items-center justify-center text-xs font-bold text-indigo-600 border border-indigo-100 dark:border-indigo-900 shrink-0">2</div>
+                        <p class="text-sm text-indigo-800 dark:text-indigo-300">Sempre mantenha a opção de <strong>Backup</strong> ativada para segurança.</p>
+                    </div>
+                     <div class="flex gap-3">
+                        <div class="w-6 h-6 rounded-full bg-white dark:bg-slate-800 flex items-center justify-center text-xs font-bold text-indigo-600 border border-indigo-100 dark:border-indigo-900 shrink-0">3</div>
+                        <p class="text-sm text-indigo-800 dark:text-indigo-300">Evite realizar atualizações durante horários de pico de uso.</p>
+                    </div>
+                </div>
             </div>
-        </form>
+
+             <div class="bg-white dark:bg-slate-800 rounded-3xl p-6 border border-gray-100 dark:border-slate-700 shadow-sm">
+                 <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">Versão Atual</h3>
+                 <p class="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                    App v{{ config('app.version', '1.0.0') }}
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                 </p>
+            </div>
         </div>
     </div>
 </div>
 
+@push('scripts')
 <script>
 function updateFileName(input) {
     const fileName = input.files[0]?.name || 'Nenhum arquivo selecionado';
     document.getElementById('file-name').textContent = fileName;
-    
-    // Adicionar classe visual quando arquivo selecionado
-    const dropZone = input.closest('.border-dashed').parentElement;
-    if (input.files[0]) {
-        dropZone.querySelector('.border-dashed').classList.add('border-indigo-400', 'bg-indigo-50', 'dark:bg-indigo-900/10');
-    }
+    document.getElementById('file-name').classList.add('text-indigo-600', 'font-medium');
 }
 
 function updateBackupStatus(checkbox) {
     const description = document.getElementById('backup-description');
+    const badge = document.getElementById('backup-badge');
+
     if (checkbox.checked) {
-        description.innerHTML = '<span class="font-semibold text-emerald-600 dark:text-emerald-400">✓ Ativo:</span> Um backup completo do sistema será criado antes de aplicar a atualização. Isso permite reverter mudanças se necessário.';
+        description.textContent = 'Cria um ponto de restauração completo antes de aplicar as mudanças.';
+        badge.className = 'inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400';
+        badge.textContent = 'Recomendado';
     } else {
-        description.innerHTML = '<span class="font-semibold text-amber-600 dark:text-amber-400">⚠️ Desativado:</span> Nenhum backup será criado. Você não poderá reverter esta atualização se algo der errado.';
+        description.textContent = 'Atenção: Você não poderá reverter as alterações automaticamente.';
+        badge.className = 'inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400';
+        badge.textContent = 'Não Recomendado';
     }
 }
 
 function updateAutoApplyStatus(checkbox) {
     const description = document.getElementById('auto-apply-description');
+    const badge = document.getElementById('auto-apply-badge');
+
     if (checkbox.checked) {
-        description.innerHTML = '<span class="font-semibold text-indigo-600 dark:text-indigo-400">✓ Ativo:</span> A atualização será aplicada imediatamente após o upload. Certifique-se de que o arquivo está correto antes de enviar.';
+        description.textContent = 'O sistema aplicará as mudanças imediatamente. Certifique-se da integridade do arquivo.';
+        badge.className = 'inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-indigo-100 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-400';
+        badge.textContent = 'Automático';
     } else {
-        description.innerHTML = '<span class="font-semibold text-gray-600 dark:text-gray-400">ℹ️ Inativo:</span> A atualização será enviada e você precisará aplicar manualmente na página de detalhes.';
+        description.textContent = 'Se marcado, a atualização será aplicada imediatamente após o upload.';
+        badge.className = 'inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-slate-100 text-slate-500 dark:bg-slate-700 dark:text-slate-400';
+        badge.textContent = 'Manual';
     }
 }
 </script>
+@endpush
 @endsection
-

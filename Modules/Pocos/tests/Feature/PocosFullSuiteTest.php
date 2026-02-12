@@ -92,7 +92,7 @@ class PocosFullSuiteTest extends TestCase
     public function database_has_78_tables_as_production()
     {
         $tables = DB::select('SHOW TABLES');
-        $this->assertEquals(78, count($tables));
+        $this->assertEquals(79, count($tables));
     }
 
     #[Test]

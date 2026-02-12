@@ -1,84 +1,112 @@
 <?php
 
 use Illuminate\Support\Facades\Broadcast;
-use Illuminate\Support\Facades\Auth;
+use Nwidart\Modules\Facades\Module;
 
 /*
 |--------------------------------------------------------------------------
-| Broadcast Channels
+| Broadcast Channels - Main Configuration
 |--------------------------------------------------------------------------
-|
-| Here you may register all of the event broadcasting channels that your
-| application supports. The given channel authorization callbacks are
-| used to check if an authenticated user can listen to the channel.
-|
 */
 
-// Canal privado para notificações de usuário específico
+// =========================================================================
+// Context 1: Core System Channels
+// =========================================================================
+
+/**
+ * Universal User Channel
+ * Used for personal notifications and direct messages to a specific user.
+ */
 Broadcast::channel('user.{userId}', function ($user, $userId) {
+    // Strict integer comparison for enhanced safety
     return (int) $user->id === (int) $userId;
 });
 
-// Canal público para notificações gerais
+/**
+ * Global Notifications Channel
+ * Publicly accessible to any authenticated user.
+ */
 Broadcast::channel('notifications', function ($user) {
     return $user !== null;
 });
 
-// Canal para roles específicas
+// =========================================================================
+// Context 2: Roles & Permissions
+// =========================================================================
+
+/**
+ * Role-Based Channel
+ * Allows broadcasting to all users within a specific role (e.g., role.admin).
+ */
 Broadcast::channel('role.{roleName}', function ($user, $roleName) {
     return $user->hasRole($roleName);
 });
 
-// Canais de Chat
-Broadcast::channel('chat.session.{sessionId}', function ($user, $sessionId) {
-    // Verificar se usuário tem acesso à sessão
-    $session = \Modules\Chat\App\Models\ChatSession::where('id', $sessionId)
-        ->orWhere('session_id', $sessionId)
-        ->first();
+// =========================================================================
+// Context 3: Modules (Conditional Loading)
+// =========================================================================
 
-    if (!$session) {
+// --- Módulo Chat ---
+if (Module::isEnabled('Chat')) {
+
+    /**
+     * Chat Session Channel (Public/Private Hybrid)
+     * Handles presence and messages for specific chat sessions.
+     */
+    Broadcast::channel('chat.session.{sessionId}', function ($user, $sessionId) {
+        // Optimized query: Only look up session if user has basic permission traits
+        $session = \Modules\Chat\App\Models\ChatSession::where('id', $sessionId)
+            ->orWhere('session_id', $sessionId)
+            ->first();
+
+        if (!$session) {
+            return false;
+        }
+
+        // Public sessions: Access allowed via session_id string
+        if ($session->type === 'public' && $session->session_id === $sessionId) {
+            return true;
+        }
+
+        // Authenticated access: Must be owner, assigned agent, or administrator
+        if ($user) {
+            return $user->hasAnyRole(['admin', 'co-admin'])
+                || (int) $session->assigned_to === (int) $user->id
+                || (int) $session->user_id === (int) $user->id;
+        }
+
         return false;
-    }
+    });
 
-    // Se for sessão pública, permitir acesso via session_id
-    if ($session->type === 'public' && $session->session_id === $sessionId) {
-        return true; // Visitante pode acessar via session_id
-    }
+    /**
+     * Private Chat Session (High Security)
+     * Strictly for authenticated interactions.
+     */
+    Broadcast::channel('private-chat.session.{sessionId}', function ($user, $sessionId) {
+        if (!$user) {
+            return false;
+        }
 
-    // Usuários autenticados podem acessar se forem atendentes ou se a sessão for deles
-    if ($user) {
-        return $user->hasAnyRole(['admin', 'co-admin'])
-            || $session->assigned_to === $user->id
-            || $session->user_id === $user->id;
-    }
+        $session = \Modules\Chat\App\Models\ChatSession::find($sessionId);
 
-    return false;
-});
+        if (!$session) {
+            return false;
+        }
 
-// Canal privado para sessões (requer autenticação)
-Broadcast::channel('private-chat.session.{sessionId}', function ($user, $sessionId) {
-    if (!$user) {
-        return false;
-    }
+        // Authorization logic for private data
+        if ($user->hasAnyRole(['admin', 'co-admin'])) {
+            return true;
+        }
 
-    $session = \Modules\Chat\App\Models\ChatSession::find($sessionId);
+        return (int) $session->assigned_to === (int) $user->id
+            || (int) $session->user_id === (int) $user->id;
+    });
 
-    if (!$session) {
-        return false;
-    }
-
-    // Atendentes podem acessar qualquer sessão
-    if ($user->hasAnyRole(['admin', 'co-admin'])) {
-        return true;
-    }
-
-    // Usuário pode acessar se for o atendente atribuído ou criador
-    return $session->assigned_to === $user->id || $session->user_id === $user->id;
-});
-
-// Canal público para atendentes
-Broadcast::channel('chat.agents', function ($user) {
-    // Apenas atendentes podem ouvir este canal
-    return $user && $user->hasAnyRole(['admin', 'co-admin']);
-});
-
+    /**
+     * Agents Collective Channel
+     * Exclusive channel for customer support agents.
+     */
+    Broadcast::channel('chat.agents', function ($user) {
+        return $user && $user->hasAnyRole(['admin', 'co-admin']);
+    });
+}

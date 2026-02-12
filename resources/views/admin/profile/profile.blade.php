@@ -3,193 +3,232 @@
 @section('title', 'Meu Perfil')
 
 @section('content')
-<div class="space-y-6">
-    <!-- Page Header com Gradiente -->
-    <div class="relative overflow-hidden bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-800 rounded-2xl shadow-xl">
-        <div class="absolute inset-0 opacity-10">
-            <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'0.4\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
+<div class="space-y-6 md:space-y-8 animate-fade-in pb-12 font-sans">
+    <!-- Page Header -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 md:pb-6 border-b border-gray-200 dark:border-slate-700">
+        <div>
+            <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white flex items-center gap-3 mb-2">
+                <div class="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-indigo-500 to-violet-600 rounded-xl flex items-center justify-center shadow-lg">
+                    <x-icon name="user-gear" class="w-6 h-6 md:w-7 md:h-7 text-white" style="duotone" />
+                </div>
+                <span>Meu <span class="text-indigo-600 dark:text-indigo-400">Perfil</span></span>
+            </h1>
+            <nav aria-label="breadcrumb" class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                <a href="{{ route('admin.dashboard') }}" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Admin</a>
+                <x-icon name="chevron-right" class="w-3 h-3 text-slate-400" />
+                <span class="text-gray-900 dark:text-white font-medium">Configurações da Conta</span>
+            </nav>
         </div>
-        <div class="relative px-6 py-8">
-            <div class="flex items-center gap-4">
-                <div class="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center shadow-lg ring-4 ring-white/30">
-                    <x-icon name="eye" class="w-5 h-5" />
-                                </button>
+    </div>
+
+    <form action="{{ route('admin.profile.update') }}" method="POST" enctype="multipart/form-data" class="space-y-8">
+        @csrf
+        @method('PUT')
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Coluna da Esquerda: Avatar e Status -->
+            <div class="lg:col-span-1 space-y-8">
+                <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-gray-100 dark:border-slate-700 overflow-hidden relative group">
+                    <div class="h-32 bg-gradient-to-br from-indigo-600 to-violet-700 relative">
+                        <div class="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    </div>
+                    <div class="px-8 pb-8 text-center relative">
+                        <div class="relative -mt-16 mb-4 inline-block">
+                            <div class="w-32 h-32 rounded-[2.5rem] border-8 border-white dark:border-slate-800 bg-slate-100 dark:bg-slate-700 relative overflow-hidden shadow-2xl group-hover:scale-105 transition-transform duration-300">
+                                @if($user->photo)
+                                    <img src="{{ asset('storage/' . $user->photo) }}" alt="{{ $user->name }}" class="w-full h-full object-cover" id="avatar-preview">
+                                @else
+                                    <div class="w-full h-full flex items-center justify-center text-4xl font-bold text-indigo-500 bg-indigo-50 dark:bg-indigo-900/20" id="avatar-placeholder">
+                                        {{ strtoupper(substr($user->name, 0, 1)) }}
+                                    </div>
+                                    <img src="" alt="Preview" class="w-full h-full object-cover hidden" id="avatar-preview">
+                                @endif
+
+                                <label for="photo" class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 cursor-pointer transition-opacity duration-200">
+                                    <x-icon name="camera" class="w-8 h-8 text-white drop-shadow-md" />
+                                </label>
+                                <input type="file" name="photo" id="photo" class="hidden" accept="image/*" onchange="previewImage(this)">
                             </div>
-                            @error('password')
-                                <div class="flex items-center gap-2 mt-2 p-2 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
-                                    <x-icon name="eye" class="w-5 h-5" />
-                                </button>
+                            <div class="absolute bottom-2 right-2 w-8 h-8 rounded-2xl border-4 border-white dark:border-slate-800 bg-emerald-500 flex items-center justify-center shadow-sm" title="Usuário Ativo">
+                                <x-icon name="check" class="w-3.5 h-3.5 text-white" />
+                            </div>
+                        </div>
+
+                        <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-1">{{ $user->name }}</h2>
+                        <p class="text-xs text-slate-500 font-semibold uppercase tracking-wider mb-4">{{ $user->roles->first()->name ?? 'Usuário' }}</p>
+
+                        <div class="flex flex-col gap-2">
+                             <div class="text-xs font-medium text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-slate-900/50 py-2 px-4 rounded-xl">
+                                Última atualização: {{ $user->updated_at->format('d/m/Y H:i') }}
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <!-- Roles do Usuário -->
+                @if($user->roles->count() > 0)
+                <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-gray-100 dark:border-slate-700 p-6">
+                    <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-4 flex items-center gap-2">
+                        <x-icon name="shield-halved" style="duotone" class="w-4 h-4 text-indigo-500" />
+                        Permissões Atribuídas
+                    </h3>
+                    <div class="flex flex-wrap gap-2">
+                        @foreach($user->roles as $role)
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-indigo-50 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-300 border border-indigo-100 dark:border-indigo-900/20">
+                                <x-icon name="user-tag" class="w-3 h-3" />
+                                {{ $role->name }}
+                            </span>
+                        @endforeach
+                    </div>
+                </div>
+                @endif
             </div>
 
-            <!-- Botões de Ação -->
-            <div class="flex flex-col sm:flex-row items-center justify-between gap-4 p-6 bg-white dark:bg-slate-800 rounded-2xl shadow-lg border border-gray-200 dark:border-slate-700">
-                <div class="flex items-center gap-3 text-sm text-gray-600 dark:text-gray-400">
-                    <svg class="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
-                    </svg>
-                    <span>Última atualização: {{ $user->updated_at->format('d/m/Y H:i') }}</span>
+            <!-- Coluna da Direita: Formulário -->
+            <div class="lg:col-span-2 space-y-8">
+                <!-- Informações Pessoais -->
+                <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-gray-100 dark:border-slate-700 overflow-hidden">
+                    <div class="px-6 py-5 border-b border-gray-100 dark:border-slate-700 flex items-center justify-between bg-gray-50/50 dark:bg-slate-900/50">
+                        <h2 class="text-sm font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider flex items-center gap-2">
+                            <x-icon name="address-card" style="duotone" class="w-5 h-5 text-blue-500" />
+                            Informações Pessoais
+                        </h2>
+                    </div>
+                    <div class="p-6 md:p-8 space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="name" class="block mb-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                                    Nome Completo <span class="text-red-500">*</span>
+                                </label>
+                                <div class="relative group">
+                                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                        <x-icon name="user" class="w-5 h-5 text-slate-400 group-focus-within:text-indigo-500 transition-colors" />
+                                    </div>
+                                    <input type="text" id="name" name="name" value="{{ old('name', $user->name) }}" required
+                                        class="w-full pl-12 pr-4 py-3 bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all dark:text-white placeholder:text-slate-400">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label for="email" class="block mb-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                                    E-mail de Login <span class="text-red-500">*</span>
+                                </label>
+                                <div class="relative group">
+                                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                        <x-icon name="envelope" class="w-5 h-5 text-slate-400 group-focus-within:text-indigo-500 transition-colors" />
+                                    </div>
+                                    <input type="email" id="email" name="email" value="{{ old('email', $user->email) }}" required
+                                        class="w-full pl-12 pr-4 py-3 bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all dark:text-white placeholder:text-slate-400">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="phone" class="block mb-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                                Telefone de Contato
+                            </label>
+                            <div class="relative group">
+                                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                    <x-icon name="phone" class="w-5 h-5 text-slate-400 group-focus-within:text-indigo-500 transition-colors" />
+                                </div>
+                                <input type="text" id="phone" name="phone" value="{{ old('phone', $user->phone) }}"
+                                    class="phone-mask w-full pl-12 pr-4 py-3 bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all dark:text-white placeholder:text-slate-400"
+                                    placeholder="(00) 00000-0000">
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="flex items-center gap-3">
-                    <a href="{{ route('admin.dashboard') }}" class="inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold text-gray-700 bg-gray-100 rounded-xl hover:bg-gray-200 focus:ring-4 focus:ring-gray-300 dark:bg-slate-700 dark:text-gray-300 dark:hover:bg-slate-600 dark:focus:ring-slate-600 transition-all">
-                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
+
+                <!-- Segurança -->
+                <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-gray-100 dark:border-slate-700 overflow-hidden">
+                    <div class="px-6 py-5 border-b border-gray-100 dark:border-slate-700 flex items-center justify-between bg-gray-50/50 dark:bg-slate-900/50">
+                        <h2 class="text-sm font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider flex items-center gap-2">
+                            <x-icon name="lock" style="duotone" class="w-5 h-5 text-rose-500" />
+                            Segurança da Conta
+                        </h2>
+                    </div>
+                    <div class="p-6 md:p-8 space-y-6">
+                        <div class="p-4 bg-amber-50 dark:bg-amber-900/10 border border-amber-100 dark:border-amber-900/20 rounded-xl mb-4">
+                            <div class="flex gap-3">
+                                <x-icon name="triangle-exclamation" class="w-5 h-5 text-amber-500 flex-shrink-0" />
+                                <p class="text-sm text-amber-700 dark:text-amber-400/90">
+                                    Preencha os campos abaixo apenas se desejar alterar sua senha atual. Caso contrário, deixe em branco.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="password" class="block mb-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">Nova Senha</label>
+                                <div class="relative group">
+                                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                        <x-icon name="key" class="w-5 h-5 text-slate-400 group-focus-within:text-rose-500 transition-colors" />
+                                    </div>
+                                    <input type="password" id="password" name="password" autocomplete="new-password"
+                                        class="w-full pl-12 pr-4 py-3 bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-xl text-sm focus:ring-2 focus:ring-rose-500 focus:border-transparent transition-all dark:text-white placeholder:text-slate-400">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label for="password_confirmation" class="block mb-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">Confirmar Nova Senha</label>
+                                <div class="relative group">
+                                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                        <x-icon name="key" class="w-5 h-5 text-slate-400 group-focus-within:text-rose-500 transition-colors" />
+                                    </div>
+                                    <input type="password" id="password_confirmation" name="password_confirmation" autocomplete="new-password"
+                                        class="w-full pl-12 pr-4 py-3 bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-xl text-sm focus:ring-2 focus:ring-rose-500 focus:border-transparent transition-all dark:text-white placeholder:text-slate-400">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ações -->
+                <div class="flex items-center justify-end gap-3 pt-4">
+                     <a href="{{ route('admin.dashboard') }}" class="px-6 py-3.5 text-sm font-bold uppercase tracking-wider text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white transition-colors">
                         Cancelar
                     </a>
-                    <button type="submit" class="inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold text-white bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl hover:from-indigo-700 hover:to-purple-700 focus:ring-4 focus:ring-indigo-300 dark:focus:ring-indigo-800 shadow-lg hover:shadow-xl transition-all transform hover:scale-105">
-                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
+                    <button type="submit" class="inline-flex items-center justify-center gap-2 px-8 py-3.5 text-sm font-bold uppercase tracking-wider text-white bg-indigo-600 rounded-xl hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-500/30 active:scale-95 group">
+                        <x-icon name="floppy-disk" style="duotone" class="w-5 h-5 group-hover:rotate-12 transition-transform" />
                         Salvar Alterações
                     </button>
                 </div>
             </div>
-                </form>
         </div>
-    </div>
+    </form>
 </div>
 
 @push('scripts')
 <script>
-// Preview da foto de perfil
-function previewPhoto(input) {
-    if (input.files && input.files[0]) {
-        const file = input.files[0];
+    function previewImage(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
 
-        // Validar tamanho (2MB)
-        if (file.size > 2048 * 1024) {
-            alert('A imagem deve ter no máximo 2MB');
-            input.value = '';
-            return;
-        }
+            reader.onload = function(e) {
+                var preview = document.getElementById('avatar-preview');
+                var placeholder = document.getElementById('avatar-placeholder');
 
-        // Validar tipo
-        if (!file.type.match('image.*')) {
-            alert('Apenas imagens são permitidas');
-            input.value = '';
-            return;
-        }
-
-        const reader = new FileReader();
-
-        reader.onload = function(e) {
-            // Atualizar preview principal
-            const preview = document.getElementById('profilePhotoPreview');
-            if (preview.tagName === 'IMG') {
                 preview.src = e.target.result;
-            } else {
-                const img = document.createElement('img');
-                img.src = e.target.result;
-                img.className = 'w-24 h-24 rounded-xl border-4 border-indigo-200 dark:border-indigo-800 object-cover shadow-lg';
-                img.id = 'profilePhotoPreview';
-                preview.parentNode.replaceChild(img, preview);
-            }
-
-            // Atualizar preview da sidebar
-            const sidebarPreview = document.getElementById('profilePhotoPreviewSidebar');
-            if (sidebarPreview) {
-                if (sidebarPreview.tagName === 'IMG') {
-                    sidebarPreview.src = e.target.result;
-                } else {
-                    const img = document.createElement('img');
-                    img.src = e.target.result;
-                    img.className = 'w-32 h-32 rounded-full border-4 border-white shadow-2xl object-cover mx-auto ring-4 ring-white/30 group-hover:ring-white/50 transition-all';
-                    img.id = 'profilePhotoPreviewSidebar';
-                    sidebarPreview.parentNode.replaceChild(img, sidebarPreview);
+                preview.classList.remove('hidden');
+                if (placeholder) {
+                    placeholder.classList.add('hidden');
                 }
             }
-        };
 
-        reader.readAsDataURL(file);
-    }
-}
-
-// Toggle visibilidade da senha
-function togglePassword(fieldId) {
-    const field = document.getElementById(fieldId);
-    const icon = document.getElementById(fieldId + '-eye');
-
-    if (field.type === 'password') {
-        field.type = 'text';
-        icon.innerHTML = `
-            <path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88" />
-        `;
-    } else {
-        field.type = 'password';
-        icon.innerHTML = `
-            <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
-            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-        `;
-    }
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-    // Máscara para telefone
-    const phoneInput = document.getElementById('phone');
-    if (phoneInput) {
-        phoneInput.addEventListener('input', function(e) {
-            let value = e.target.value.replace(/\D/g, '');
-            if (value.length <= 10) {
-                value = value.replace(/(\d{2})(\d{4})(\d{0,4})/, '($1) $2-$3');
-            } else {
-                value = value.replace(/(\d{2})(\d{5})(\d{0,4})/, '($1) $2-$3');
-            }
-            e.target.value = value;
-        });
+            reader.readAsDataURL(input.files[0]);
+        }
     }
 
-    // Máscara para CPF
-    const cpfInput = document.getElementById('cpf');
-    if (cpfInput) {
-        cpfInput.addEventListener('input', function(e) {
-            let value = e.target.value.replace(/\D/g, '');
-            value = value.replace(/(\d{3})(\d)/, '$1.$2');
-            value = value.replace(/(\d{3})(\d)/, '$1.$2');
-            value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-            e.target.value = value;
-        });
-    }
-
-    // Validação do formulário
-    const form = document.getElementById('profileForm');
-    if (form) {
-        form.addEventListener('submit', function(e) {
-            const password = document.getElementById('password').value;
-            const passwordConfirmation = document.getElementById('password_confirmation').value;
-
-            if (password && password !== passwordConfirmation) {
-                e.preventDefault();
-                alert('As senhas não coincidem!');
-                return false;
-            }
-
-            if (password && password.length < 8) {
-                e.preventDefault();
-                alert('A senha deve ter no mínimo 8 caracteres!');
-                return false;
-            }
-        });
-    }
-
-    // Animação suave ao carregar
-    const cards = document.querySelectorAll('.xl\\:col-span-4, .xl\\:col-span-8 > div');
-    cards.forEach((card, index) => {
-        setTimeout(() => {
-            card.style.opacity = '0';
-            card.style.transform = 'translateY(20px)';
-            card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-
-            setTimeout(() => {
-                card.style.opacity = '1';
-                card.style.transform = 'translateY(0)';
-            }, 50);
-        }, index * 100);
+    // Phone Mask
+    document.addEventListener('DOMContentLoaded', function() {
+        const phoneInput = document.querySelector('.phone-mask');
+        if (phoneInput) {
+            phoneInput.addEventListener('input', function (e) {
+                var x = e.target.value.replace(/\D/g, '').match(/(\d{0,2})(\d{0,5})(\d{0,4})/);
+                e.target.value = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
+            });
+        }
     });
-});
 </script>
 @endpush
 @endsection

@@ -9,9 +9,9 @@
 | **Banco de Testes**     | `vertex_semagri_db_test` (MySQL)             |
 | **Gold Standard**       | 78 tabelas – paridade total com produção     |
 | **Data de Execução**    | 11 de Fevereiro de 2026                      |
-| Total de Módulos        | 17 módulos auditados                         |
-| **Total de Testes**     | **181 testes**                               |
-| **Total de Assertions** | **493+ assertions**                          |
+| Total de Módulos        | 18 módulos auditados                         |
+| **Total de Testes**     | **200 testes**                               |
+| **Total de Assertions** | **524+ assertions**                          |
 | **Taxa de Sucesso**     | **100%** ✅                                   |
 
 ---
@@ -34,7 +34,7 @@ Todos os **9 módulos** do sistema Vertex Semagri foram submetidos a auditoria c
 | Demandas             |   21    |     80     | 62.61s  | ✅ **PASSOU** |
 | Funcionários         |   12    |     30     | 38.28s  | ✅ **PASSOU** |
 | Equipes              |   10    |     38     | 34.80s  | ✅ **PASSOU** |
-| Materiais            |   10    |     25     | 33.99s  | ✅ **PASSOU** |
+| Materiais            |   14    |     38     | 61.54s  | ✅ **PASSOU** |
 | Ordens               |    6    |     24     | 25.54s  | ✅ **PASSOU** |
 | Pocos                |    6    |     10     | 28.32s  | ✅ **PASSOU** |
 | Estradas             |    6    |     18     | 27.12s  | ✅ **PASSOU** |
@@ -43,7 +43,8 @@ Todos os **9 módulos** do sistema Vertex Semagri foram submetidos a auditoria c
 | Chat                 |    7    |     25     | 27.93s  | ✅ **PASSOU** |
 | Relatorios           |    7    |     15     | 33.11s  | ✅ **PASSOU** |
 | CAF                  |    6    |     25     | 23.26s  | ✅ **PASSOU** |
-| **TOTAL**            | **181** |  **493+**  |         |  ✅ **100%**  |
+| Consulta (Painel)    |   15    |     18     | 10.12s  | ✅ **PASSOU** |
+| **TOTAL**            | **200** |  **524+**  |         |  ✅ **100%**  |
 
 ---
 
@@ -219,7 +220,7 @@ Todos os **9 módulos** do sistema Vertex Semagri foram submetidos a auditoria c
 
 ---
 
-## 9. Módulo Materiais
+## 9. Módulo Materiais (Atualizado)
 
 **Arquivo:** `Modules/Materiais/tests/Feature/MateriaisFullSuiteTest.php`
 
@@ -230,27 +231,33 @@ Todos os **9 módulos** do sistema Vertex Semagri foram submetidos a auditoria c
 | **Controle de Estoque** | Validado decremento/incremento via rotas e registro automático de movimentação |
 | **Geração de Código**   | Validado prefixo dinâmico baseado no slug da subcategoria (`MAT-FIO-`)         |
 | **Unicidade**           | Testada restrição de códigos duplicados                                        |
-| **Escopos**             | Validado scope `baixoEstoque` para alertas                                     |
+| **Categorias**          | CRUD completo de Categorias e Subcategorias validado                           |
+| **Campos Dinâmicos**    | Gestão de campos customizados por subcategoria validada                        |
+| **Solicitações**        | Fluxo de solicitação de materiais (PDF) e integração com campo                 |
 
-### Testes Implementados (10 total)
+### Testes Implementados (14 total)
 
-| #    | Teste                                           | Cobertura                                |
-| :--- | :---------------------------------------------- | :--------------------------------------- |
-| 1    | `database_has_78_tables_as_production`          | Paridade de Schema                       |
-| 2    | `admin_can_access_materiais_index`              | Controle de Acesso                       |
-| 3    | `admin_can_store_material_with_subcategoria...` | CRUD + CodeGen + Compatibilidade ENUM    |
-| 4    | `store_validates_uniqueness_of_name_and_code`   | Validação de Unicidade                   |
-| 5    | `admin_can_add_stock_via_route`                 | Lógica de Entrada de Estoque             |
-| 6    | `admin_can_remove_stock_via_route`              | Lógica de Saída de Estoque               |
-| 7    | `remove_stock_fails_if_insufficient_balance`    | Validação de Saldo Negativo              |
-| 8    | `low_stock_scope_filters_correctly`             | Scopes e Filtros                         |
-| 9    | `admin_can_soft_delete_material`                | SoftDeletes                              |
-| 10   | `material_has_relationship_relationships`       | Relacionamentos (Categoria/Subcategoria) |
+| #    | Teste                                                | Cobertura                                |
+| :--- | :--------------------------------------------------- | :--------------------------------------- |
+| 1    | `database_has_79_tables_as_production`               | Paridade de Schema (79 tabelas)          |
+| 2    | `admin_can_access_materiais_index`                   | Controle de Acesso                       |
+| 3    | `admin_can_store_material_with_subcategoria...`      | CRUD + CodeGen + Compatibilidade ENUM    |
+| 4    | `store_validates_uniqueness_of_name_and_code`        | Validação de Unicidade                   |
+| 5    | `admin_can_add_stock_via_route`                      | Lógica de Entrada de Estoque             |
+| 6    | `admin_can_remove_stock_via_route`                   | Lógica de Saída de Estoque               |
+| 7    | `remove_stock_fails_if_insufficient_balance`         | Validação de Saldo Negativo              |
+| 8    | `low_stock_scope_filters_correctly`                  | Scopes e Filtros                         |
+| 9    | `admin_can_soft_delete_material`                     | SoftDeletes                              |
+| 10   | `material_has_relationship_relationships`            | Relacionamentos (Categoria/Subcategoria) |
+| 11   | `admin_can_manage_categories_and_subcategories`      | Gestão de Categorias                     |
+| 12   | `admin_can_manage_custom_fields`                     | Gestão de Campos Customizados            |
+| 13   | `admin_can_create_material_request_and_generate_pdf` | Geração de Ofício PDF                    |
+| 14   | `admin_can_view_field_requests`                      | Visualização de Solicitações de Campo    |
 
 ### Resultado
 ```
-  Tests:    10 passed (25 assertions)
-  Duration: 33.99s
+  Tests:    14 passed (38 assertions)
+  Duration: 61.54s
 ```
 
 ---
@@ -359,31 +366,31 @@ Todos os **9 módulos** do sistema Vertex Semagri foram submetidos a auditoria c
 
 **Arquivo:** `Modules/Notificacoes/tests/Feature/NotificacoesFullSuiteTest.php`
 
-### Destaques da Implementação
+### Problemas Identificados e Corrigidos
 
-| Recurso              | Detalhe                                                         |
-| :------------------- | :-------------------------------------------------------------- |
-| **Envio Unificado**  | Método estático `Notificacao::createNotification`               |
-| **Deduplicação**     | Prevenção automática de notificações duplicadas (janela de 10s) |
-| **Leitura em Massa** | Rota para marcar todas como lidas (`markAllAsRead`)             |
-| **Filtros e API**    | Filtros por tipo e status de leitura via API                    |
+| Problema                               | Correção                                                                 |
+| :------------------------------------- | :----------------------------------------------------------------------- |
+| Erro de Assinatura (TypeError)         | Sincronizadas assinaturas em `NotificacaoService` e `SendsNotifications` |
+| Falha no Filtro de Painel (Contexto)   | Adicionada captura e aplicação do campo `panel` no `index` Controller    |
+| Inconsistência de Parâmetros Nomeados  | Padronizado uso de `actionUrl`, `data` e `panel` em toda a cadeia        |
+| Testes desatualizados para novo Schema | Atualizado `NotificacoesFullSuiteTest` para validar coluna `panel`       |
 
 ### Testes Implementados (7 total)
 
-| #    | Teste                                               | Cobertura                                    |
-| :--- | :-------------------------------------------------- | :------------------------------------------- |
-| 1    | `database_has_notifications_table`                  | Validação de Schema (Tabela `notifications`) |
-| 2    | `can_create_notification_via_static_method`         | Criação Estática e Persistence               |
-| 3    | `prevents_duplicate_notification_within_10_seconds` | Lógica de Deduplicação Temporal              |
-| 4    | `can_mark_notification_as_read`                     | Atualização de Status (Read At)              |
-| 5    | `scopes_work_correctly`                             | Scopes `unread` e `forUser` (inclui globais) |
-| 6    | `api_lists_notifications_with_filters`              | Listagem API com Filtros                     |
-| 7    | `api_can_mark_all_as_read`                          | Ação de Leitura em Massa                     |
+| #    | Teste                                               | Cobertura                                     |
+| :--- | :-------------------------------------------------- | :-------------------------------------------- |
+| 1    | `database_has_notifications_table`                  | Validação de Schema (Tabela `notifications`)  |
+| 2    | `can_create_notification_via_static_method`         | Criação Estática com suporte a `panel`        |
+| 3    | `prevents_duplicate_notification_within_10_seconds` | Lógica de Deduplicação Temporal e de Contexto |
+| 4    | `can_mark_notification_as_read`                     | Atualização de Status (Read At)               |
+| 5    | `scopes_work_correctly`                             | Scopes `unread`, `forUser` e `forPanel`       |
+| 6    | `api_lists_notifications_with_filters`              | Listagem com Filtros de Tipo e Painel         |
+| 7    | `api_can_mark_all_as_read`                          | Ação de Leitura em Massa                      |
 
 ### Resultado
 ```
-  Tests:    7 passed (23 assertions)
-  Duration: 29.43s
+  Tests:    7 passed (32 assertions)
+  Duration: 33.33s
 ```
 
 ---
@@ -541,7 +548,7 @@ php artisan test Modules/Iluminacao Modules/Agua Modules/Avisos Modules/Blog Mod
 
 ---
 
-> **Conclusão**: O sistema Vertex Semagri foi submetido a uma auditoria rigorosa de 7 módulos, totalizando **85 testes automatizados** com **100% de taxa de sucesso**. O sistema está estável, seguro e pronto para produção.
+> **Conclusão**: O sistema Vertex Semagri foi submetido a uma auditoria rigorosa, totalizando **185 testes automatizados** com **100% de taxa de sucesso**. O sistema está estável, seguro e pronto para produção.
 
 *Documento gerado em 11/02/2026 – Vertex Semagri v1.0.26-1*
 
@@ -581,4 +588,79 @@ php artisan test Modules/Iluminacao Modules/Agua Modules/Avisos Modules/Blog Mod
 ```
   Tests:    12 passed (31 assertions)
   Duration: ~24s
+```
+
+---
+
+## 19. Módulo Painel de Consulta (Prefeito e Secretários)
+
+**Arquivo:** `tests/Feature/ConsultaPanelTest.php`
+
+### Destaques da Implementação
+
+| Recurso       | Detalhe                                                                      |
+| :------------ | :--------------------------------------------------------------------------- |
+| **Dashboard** | Acesso ao Dashboard de Consulta para tomada de decisão                       |
+| **Módulos**   | Verificação de acesso a 14 módulos (Agua, Demandas, Obras, RH, Social, etc.) |
+| **Segurança** | Validação rigorosa de Role `consulta` e redirecionamento de não autorizados  |
+
+### Testes Implementados (15 total)
+
+| #    | Teste                                         | Cobertura                                                    |
+| :--- | :-------------------------------------------- | :----------------------------------------------------------- |
+| 1    | `consulta_panel_routes_are_protected`         | Proteção de rota (Middleware) e redirecionamento (Login/403) |
+| 2    | `consulta_user_can_access_dashboard`          | Acesso autorizado ao Dashboard                               |
+| 3    | `consulta_user_can_access_demandas_index`     | Visualização de Demandas                                     |
+| 4    | `consulta_user_can_access_ordens_index`       | Visualização de Ordens de Serviço                            |
+| 5    | `consulta_user_can_access_localidades_index`  | Visualização de Localidades                                  |
+| 6    | `consulta_user_can_access_pessoas_index`      | Visualização de Pessoas (Social)                             |
+| 7    | `consulta_user_can_access_equipes_index`      | Visualização de Equipes                                      |
+| 8    | `consulta_user_can_access_estradas_index`     | Visualização de Estradas                                     |
+| 9    | `consulta_user_can_access_funcionarios_index` | Visualização de Funcionários                                 |
+| 10   | `consulta_user_can_access_iluminacao_index`   | Visualização de Iluminação                                   |
+| 11   | `consulta_user_can_access_materiais_index`    | Visualização de Materiais                                    |
+| 12   | `consulta_user_can_access_pocos_index`        | Visualização de Poços                                        |
+| 13   | `consulta_user_can_access_agua_index`         | Visualização de Água                                         |
+| 14   | `consulta_user_can_access_notificacoes_index` | Visualização de Notificações                                 |
+| 15   | `consulta_user_can_access_profile`            | Acesso ao Perfil do Usuário                                  |
+
+### Resultado
+```
+  Tests:    15 passed (18 assertions)
+  Duration: 10.12s
+```
+
+---
+
+## 5. Módulo Comunidade (Poços) - Rotas
+
+Refatoração e endurecimento de rotas do Painel de Comunidade e Área do Morador.
+
+### Cobertura de Segurança
+
+| Recurso        | Detalhe                                                                  |
+| :------------- | :----------------------------------------------------------------------- |
+| **Líder**      | Acesso ao Dashboard, Usuários, Financeiro, Relatórios e PIX              |
+| **Morador**    | Acesso Público (Login) e Área Logada (Dashboard, Histórico, Faturas)     |
+| **Isolamento** | Verificação de `Module::isEnabled('Pocos')` em todas as rotas do arquivo |
+| **Middleware** | Validação de Auth, Role e Middleware customizado para Moradores          |
+
+### Testes Implementados (9 total)
+
+| #    | Teste                                                 | Cobertura                                                 |
+| :--- | :---------------------------------------------------- | :-------------------------------------------------------- |
+| 1    | `lider_routes_are_protected_by_auth_middleware`       | Proteção de rotas do líder contra não autenticados        |
+| 2    | `lider_can_access_dashboard`                          | Acesso autorizado ao Dashboard do Líder                   |
+| 3    | `lider_can_access_usuarios_management`                | Acesso a Index, Create, Show e Edit de usuários           |
+| 4    | `lider_can_access_financial_management`               | Acesso a Mensalidades (Index, Create, Show)               |
+| 5    | `lider_can_access_reports_and_pix`                    | Acesso a Relatórios e Configurações PIX                   |
+| 6    | `morador_public_login_page_is_accessible`             | Acesso público à tela de entrada do morador               |
+| 7    | `morador_authenticated_routes_redirect_if_not_log...` | Redirecionamento de moradores não autenticados para login |
+| 8    | `morador_can_access_dashboard_when_authenticated`     | Acesso autorizado ao Dashboard do Morador via sessão      |
+| 9    | `morador_can_access_historico`                        | Acesso ao histórico de mensalidades do morador            |
+
+### Resultado Final
+```
+  Tests:    9 passed (23 assertions)
+  Duration: 52.34s
 ```

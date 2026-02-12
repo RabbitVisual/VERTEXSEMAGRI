@@ -24,19 +24,20 @@ class NotificacaoService
         ?string $moduleSource = null,
         ?string $entityType = null,
         ?int $entityId = null,
-        bool $sendEmail = false
+        bool $sendEmail = false,
+        ?string $panel = null
     ): Notificacao {
         $notificacao = Notificacao::createNotification(
-            $type,
-            $title,
-            $message,
-            $userId,
-            null,
-            $data,
-            $actionUrl,
-            $moduleSource,
-            $entityType,
-            $entityId
+            type: $type,
+            title: $title,
+            message: $message,
+            userId: $userId,
+            data: $data,
+            actionUrl: $actionUrl,
+            moduleSource: $moduleSource,
+            entityType: $entityType,
+            entityId: $entityId,
+            panel: $panel
         );
 
         // Enviar email se solicitado
@@ -59,7 +60,8 @@ class NotificacaoService
         ?array $data = null,
         ?string $moduleSource = null,
         ?string $entityType = null,
-        ?int $entityId = null
+        ?int $entityId = null,
+        ?string $panel = null
     ): Collection {
         $users = User::role($roleName)->get();
         $notifications = collect();
@@ -67,16 +69,16 @@ class NotificacaoService
         foreach ($users as $user) {
             $notifications->push(
                 Notificacao::createNotification(
-                    $type,
-                    $title,
-                    $message,
-                    $user->id,
-                    null,
-                    $data,
-                    $actionUrl,
-                    $moduleSource,
-                    $entityType,
-                    $entityId
+                    type: $type,
+                    title: $title,
+                    message: $message,
+                    userId: $user->id,
+                    data: $data,
+                    actionUrl: $actionUrl,
+                    moduleSource: $moduleSource,
+                    entityType: $entityType,
+                    entityId: $entityId,
+                    panel: $panel
                 )
             );
         }
@@ -95,7 +97,8 @@ class NotificacaoService
         ?array $data = null,
         ?string $moduleSource = null,
         ?string $entityType = null,
-        ?int $entityId = null
+        ?int $entityId = null,
+        ?string $panel = null
     ): Collection {
         $users = User::all();
         $notifications = collect();
@@ -103,16 +106,16 @@ class NotificacaoService
         foreach ($users as $user) {
             $notifications->push(
                 Notificacao::createNotification(
-                    $type,
-                    $title,
-                    $message,
-                    $user->id,
-                    null,
-                    $data,
-                    $actionUrl,
-                    $moduleSource,
-                    $entityType,
-                    $entityId
+                    type: $type,
+                    title: $title,
+                    message: $message,
+                    userId: $user->id,
+                    data: $data,
+                    actionUrl: $actionUrl,
+                    moduleSource: $moduleSource,
+                    entityType: $entityType,
+                    entityId: $entityId,
+                    panel: $panel
                 )
             );
         }
@@ -132,19 +135,21 @@ class NotificacaoService
         ?string $actionUrl = null,
         ?array $data = null,
         ?string $entityType = null,
-        ?int $entityId = null
+        ?int $entityId = null,
+        ?string $panel = null
     ) {
         if ($recipients instanceof User) {
             return $this->sendToUser(
-                $recipients->id,
-                $type,
-                $title,
-                $message,
-                $actionUrl,
-                $data,
-                $moduleName,
-                $entityType,
-                $entityId
+                userId: $recipients->id,
+                type: $type,
+                title: $title,
+                message: $message,
+                actionUrl: $actionUrl,
+                data: $data,
+                moduleSource: $moduleName,
+                entityType: $entityType,
+                entityId: $entityId,
+                panel: $panel
             );
         }
 
@@ -156,15 +161,16 @@ class NotificacaoService
                 if ($user instanceof User) {
                     $notifications->push(
                         $this->sendToUser(
-                            $user->id,
-                            $type,
-                            $title,
-                            $message,
-                            $actionUrl,
-                            $data,
-                            $moduleName,
-                            $entityType,
-                            $entityId
+                            userId: $user->id,
+                            type: $type,
+                            title: $title,
+                            message: $message,
+                            actionUrl: $actionUrl,
+                            data: $data,
+                            moduleSource: $moduleName,
+                            entityType: $entityType,
+                            entityId: $entityId,
+                            panel: $panel
                         )
                     );
                 }
@@ -176,28 +182,30 @@ class NotificacaoService
         if (is_string($recipients)) {
             if ($recipients === 'all') {
                 return $this->sendToAll(
-                    $type,
-                    $title,
-                    $message,
-                    $actionUrl,
-                    $data,
-                    $moduleName,
-                    $entityType,
-                    $entityId
+                    type: $type,
+                    title: $title,
+                    message: $message,
+                    actionUrl: $actionUrl,
+                    data: $data,
+                    moduleSource: $moduleName,
+                    entityType: $entityType,
+                    entityId: $entityId,
+                    panel: $panel
                 );
             }
 
             // Assume it's a role name
             return $this->sendToRole(
-                $recipients,
-                $type,
-                $title,
-                $message,
-                $actionUrl,
-                $data,
-                $moduleName,
-                $entityType,
-                $entityId
+                roleName: $recipients,
+                type: $type,
+                title: $title,
+                message: $message,
+                actionUrl: $actionUrl,
+                data: $data,
+                moduleSource: $moduleName,
+                entityType: $entityType,
+                entityId: $entityId,
+                panel: $panel
             );
         }
 
@@ -236,9 +244,10 @@ class NotificacaoService
     /**
      * Get unread count for a user
      */
-    public function getUnreadCount(int $userId): int
+    public function getUnreadCount(int $userId, ?string $panel = null): int
     {
         return Notificacao::forUser($userId)
+            ->forPanel($panel)
             ->unread()
             ->count();
     }
@@ -249,9 +258,11 @@ class NotificacaoService
     public function getUserNotifications(
         int $userId,
         ?int $limit = null,
-        bool $unreadOnly = false
+        bool $unreadOnly = false,
+        ?string $panel = null
     ): Collection {
         $query = Notificacao::forUser($userId)
+            ->forPanel($panel)
             ->with('user')
             ->orderBy('created_at', 'desc');
 
@@ -320,4 +331,3 @@ class NotificacaoService
         }
     }
 }
-

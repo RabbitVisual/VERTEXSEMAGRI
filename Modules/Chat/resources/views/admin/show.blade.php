@@ -1,52 +1,36 @@
 @extends('admin.layouts.admin')
 
-@section('title', 'Atendimento - ' . ($session->visitor_name ?? 'Sem nome'))
+@section('title', 'Chat - Sessão #' . $session->id)
 
 @section('content')
-<div class="space-y-8 animate__animated animate__fadeIn">
+<div class="space-y-6 md:space-y-8 animate-fade-in pb-12 font-sans h-[calc(100vh-8rem)] flex flex-col">
     <!-- Page Header -->
-    <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 md:pb-6 border-b border-gray-200 dark:border-slate-700 flex-shrink-0">
         <div>
-            <div class="flex items-center gap-3 mb-4">
-                <div class="w-12 h-12 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-500/20 transform hover:rotate-6 transition-transform">
-                    <x-icon module="chat" class="w-7 h-7 text-white" style="duotone" />
+            <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white flex items-center gap-3 mb-2">
+                <div class="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-xl flex items-center justify-center shadow-lg">
+                    <x-icon module="chat" class="w-6 h-6 md:w-7 md:h-7 text-white" style="duotone" />
                 </div>
-                <div>
-                    <h1 class="text-3xl font-black text-slate-900 dark:text-white tracking-tight">{{ $session->visitor_name ?? 'Sessão de Chat' }}</h1>
-                    <div class="flex items-center gap-2 mt-1">
-                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border
-                            {{ $session->status === 'waiting' ? 'bg-amber-50 text-amber-600 border-amber-100 dark:bg-amber-900/20 dark:text-amber-400 dark:border-amber-800/30' : '' }}
-                            {{ $session->status === 'active' ? 'bg-green-50 text-green-600 border-green-100 dark:bg-green-900/20 dark:text-green-400 dark:border-green-800/30' : '' }}
-                            {{ $session->status === 'closed' ? 'bg-slate-50 text-slate-600 border-slate-100 dark:bg-slate-900/20 dark:text-slate-400 dark:border-slate-800/30' : '' }}
-                        ">
-                            <span class="w-1.5 h-1.5 rounded-full {{ $session->status === 'waiting' ? 'bg-amber-500 animate-pulse' : ($session->status === 'active' ? 'bg-green-500' : 'bg-slate-400') }}"></span>
-                            {{ $session->status_texto }}
-                        </span>
-                        <span class="text-slate-300 dark:text-slate-600">•</span>
-                        <span class="text-xs font-bold text-slate-400 dark:text-slate-500 tracking-wider">ID: {{ $session->session_id }}</span>
-                    </div>
-                </div>
-            </div>
-
-            <nav aria-label="breadcrumb" class="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500">
-                <a href="{{ route('admin.dashboard') }}" class="hover:text-blue-600 transition-colors">Admin</a>
-                <x-icon name="chevron-right" class="w-3 h-3" />
-                <a href="{{ route('admin.chat.index') }}" class="hover:text-blue-600 transition-colors">Chat</a>
-                <x-icon name="chevron-right" class="w-3 h-3" />
-                <span class="text-slate-600 dark:text-slate-300">Detalhes</span>
+                <span>{{ $session->visitor_name ?? 'Visitante' }}</span>
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest border ml-2 {{ $session->status === 'waiting' ? 'bg-amber-50 text-amber-600 border-amber-100' : ($session->status === 'active' ? 'bg-green-50 text-green-600 border-green-100' : 'bg-slate-50 text-slate-600 border-slate-100') }}">
+                    <span class="w-1.5 h-1.5 rounded-full {{ $session->status === 'waiting' ? 'bg-amber-500 animate-pulse' : ($session->status === 'active' ? 'bg-green-500' : 'bg-slate-400') }}"></span>
+                    {{ $session->status_texto }}
+                </span>
+            </h1>
+            <nav aria-label="breadcrumb" class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                <a href="{{ route('admin.dashboard') }}" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors italic">Admin</a>
+                <x-icon name="chevron-right" class="w-3 h-3 text-slate-400 font-sans" style="duotone" />
+                <a href="{{ route('admin.chat.index') }}" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors italic">Chat</a>
+                <x-icon name="chevron-right" class="w-3 h-3 text-slate-400 font-sans" style="duotone" />
+                <span class="text-gray-900 dark:text-white font-medium uppercase tracking-widest text-[10px]">Sessão #{{ $session->id }}</span>
             </nav>
         </div>
-
-        <div class="flex items-center gap-3">
-            <a href="{{ route('admin.chat.index') }}" class="inline-flex items-center gap-2 px-5 py-3 text-sm font-bold text-slate-700 bg-white border border-slate-200 rounded-2xl hover:bg-slate-50 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700 dark:hover:bg-slate-700 transition-all shadow-sm active:scale-95">
-                <x-icon name="arrow-left" style="duotone" class="w-4 h-4 text-slate-400" />
-                Voltar
-            </a>
+        <div class="flex gap-2">
             @if($session->status !== 'closed')
-            <form action="{{ route('admin.chat.close', $session->id) }}" method="POST" class="inline" onsubmit="return confirm('Deseja encerrar esta sessão?')">
+            <form action="{{ route('admin.chat.close', $session->id) }}" method="POST" onsubmit="return confirm('Tem certeza que deseja encerrar este atendimento?');">
                 @csrf
-                <button type="submit" class="inline-flex items-center gap-2 px-5 py-3 text-sm font-bold text-white bg-red-600 rounded-2xl hover:bg-red-700 transition-all shadow-xl shadow-red-500/10 active:scale-95 border-b-4 border-red-800">
-                    <x-icon name="power-off" style="duotone" class="w-4 h-4" />
+                <button type="submit" class="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-bold text-white bg-red-600 rounded-lg hover:bg-red-700 focus:ring-4 focus:ring-red-300 dark:focus:ring-red-800 transition-all shadow-lg shadow-red-500/20 uppercase tracking-widest text-[10px]">
+                    <x-icon name="xmark" class="w-5 h-5" style="duotone" />
                     Encerrar
                 </button>
             </form>
@@ -54,205 +38,165 @@
         </div>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+    <div class="flex-1 grid grid-cols-1 lg:grid-cols-4 gap-6 overflow-hidden">
         <!-- Chat Area -->
-        <div class="lg:col-span-8">
-            <div class="bg-white dark:bg-slate-800 rounded-[2.5rem] shadow-sm border border-slate-100 dark:border-slate-700 overflow-hidden flex flex-col h-[750px]">
-                <!-- Chat Header -->
-                <div class="px-8 py-5 border-b border-slate-100 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-900/50 flex items-center justify-between">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center text-white font-black">
-                            {{ strtoupper(substr($session->visitor_name ?? 'V', 0, 1)) }}
-                        </div>
-                        <div>
-                            <div class="text-sm font-black text-slate-900 dark:text-white">{{ $session->visitor_name ?? 'Visitante' }}</div>
-                            <div id="typing-indicator" class="text-[10px] text-blue-500 font-black uppercase tracking-widest hidden">Digitando...</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Messages -->
-                <div id="chat-messages-container" class="flex-1 p-8 overflow-y-auto space-y-6 bg-slate-50/30 dark:bg-slate-900/20" style="background-image: url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%239C92AC\' fill-opacity=\'0.03\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');">
-                    @foreach($session->messages as $message)
-                    <div class="flex {{ $message->sender_type === 'user' || $message->sender_type === 'system' ? 'justify-end' : 'justify-start' }}">
-                        <div class="max-w-[75%] space-y-1">
-                            <div class="flex items-center gap-2 px-1 {{ $message->sender_type === 'user' || $message->sender_type === 'system' ? 'justify-end' : '' }}">
-                                <span class="text-[10px] font-black uppercase tracking-widest {{ $message->sender_type === 'user' || $message->sender_type === 'system' ? 'text-blue-600 dark:text-blue-400' : 'text-slate-400' }}">
-                                    {{ $message->sender_name }}
-                                </span>
-                                <span class="text-[9px] font-bold text-slate-300 dark:text-slate-600">{{ $message->created_at->format('H:i') }}</span>
-                            </div>
-                            <div class="px-5 py-3 rounded-2xl shadow-sm text-sm font-medium leading-relaxed
-                                {{ $message->sender_type === 'user' || $message->sender_type === 'system' ? 'bg-gradient-to-br from-blue-600 to-indigo-700 text-white rounded-tr-md' : 'bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-100 border border-slate-100 dark:border-slate-600 rounded-tl-md' }}
-                            ">
-                                {!! $message->formatted_message !!}
-                            </div>
-                        </div>
-                    </div>
-                    @endforeach
-                </div>
-
-                <!-- Input -->
-                @if($session->status !== 'closed')
-                <div class="p-6 bg-white dark:bg-slate-800 border-t border-slate-100 dark:border-slate-700">
-                    <form id="message-form" class="flex gap-4">
-                        @csrf
-                        <div class="flex-1 relative">
-                            <input type="text" id="message-input" placeholder="Escreva uma mensagem..."
-                                class="w-full px-6 py-4 bg-slate-50 dark:bg-slate-900/50 border-transparent focus:bg-white dark:focus:bg-slate-900 border-slate-100 dark:border-slate-700 rounded-2xl text-sm font-medium focus:ring-2 focus:ring-blue-600 transition-all dark:text-white">
-                        </div>
-                        <button type="submit" class="w-14 h-14 bg-gradient-to-br from-blue-600 to-indigo-700 text-white rounded-2xl flex items-center justify-center shadow-lg shadow-blue-500/20 hover:scale-105 active:scale-95 transition-all">
-                            <x-icon name="paper-plane" style="duotone" class="w-6 h-6" />
-                        </button>
-                    </form>
-                </div>
-                @else
-                <div class="p-6 bg-slate-50/50 dark:bg-slate-900/50 border-t border-slate-100 dark:border-slate-700 text-center">
-                    <p class="text-xs font-black text-slate-400 uppercase tracking-widest flex items-center justify-center gap-2">
-                        <x-icon name="lock" style="duotone" class="w-4 h-4" />
-                        Esta conversa foi encerrada e não permite novas mensagens.
-                    </p>
-                </div>
-                @endif
-            </div>
-        </div>
-
-        <!-- Sidebar -->
-        <div class="lg:col-span-4 space-y-6">
-            <!-- Visitant Info -->
-            <div class="bg-white dark:bg-slate-800 rounded-[2.5rem] shadow-sm border border-slate-100 dark:border-slate-700 overflow-hidden">
-                <div class="px-8 py-5 border-b border-slate-100 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-900/50">
-                    <h3 class="text-xs font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
-                        <x-icon name="user" style="duotone" class="w-4 h-4 text-blue-500" />
-                        Informações do Visitante
-                    </h3>
-                </div>
-                <div class="p-8">
-                    <div class="flex items-center gap-4 mb-8">
-                        <div class="w-16 h-16 rounded-[2rem] bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-2xl font-black shadow-lg shadow-blue-500/20">
-                            {{ strtoupper(substr($session->visitor_name ?? 'V', 0, 1)) }}
-                        </div>
-                        <div>
-                            <div class="text-xl font-black text-slate-900 dark:text-white leading-tight uppercase">{{ $session->visitor_name ?? 'Visitante' }}</div>
-                            <div class="text-xs font-bold text-slate-400 mt-1 uppercase tracking-wider">{{ $session->type === 'public' ? 'Canal Público' : 'Canal Interno' }}</div>
-                        </div>
-                    </div>
-
-                    <div class="space-y-6">
-                        @if($session->visitor_email)
-                        <div class="group">
-                            <label class="block text-[10px] font-black text-slate-300 dark:text-slate-600 uppercase tracking-widest mb-1.5 ml-0.5">E-mail</label>
-                            <div class="flex items-center gap-3 px-4 py-3 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border border-transparent group-hover:border-blue-100 dark:group-hover:border-blue-900/30 transition-all">
-                                <x-icon name="envelope" style="duotone" class="w-4 h-4 text-blue-500" />
-                                <span class="text-sm font-bold text-slate-700 dark:text-slate-300 truncate">{{ $session->visitor_email }}</span>
-                            </div>
-                        </div>
+        <div class="lg:col-span-3 bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-gray-200 dark:border-slate-700 flex flex-col overflow-hidden">
+            <!-- Messages -->
+            <div id="messages-container" class="flex-1 overflow-y-auto p-6 space-y-4 bg-slate-50/50 dark:bg-slate-900/50 scroll-smooth">
+                @foreach($session->messages as $message)
+                <div class="flex {{ $message->user_id ? 'justify-end' : 'justify-start' }} animate-fade-in-up">
+                    <div class="max-w-[80%] {{ $message->user_id ? 'bg-blue-600 text-white rounded-tr-none' : 'bg-white dark:bg-slate-700 text-slate-800 dark:text-gray-100 border border-gray-200 dark:border-slate-600 rounded-tl-none' }} rounded-2xl px-5 py-3 shadow-sm relative group">
+                        @if(!$message->user_id)
+                        <div class="absolute -top-5 left-0 text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">{{ $session->visitor_name }}</div>
+                        @else
+                        <div class="absolute -top-5 right-0 text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1 text-right">{{ $message->user->name }}</div>
                         @endif
 
-                        @if($session->visitor_phone)
-                        <div class="group">
-                            <label class="block text-[10px] font-black text-slate-300 dark:text-slate-600 uppercase tracking-widest mb-1.5 ml-0.5">Telefone</label>
-                            <div class="flex items-center gap-3 px-4 py-3 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border border-transparent group-hover:border-blue-100 dark:group-hover:border-blue-900/30 transition-all">
-                                <x-icon name="phone" style="duotone" class="w-4 h-4 text-green-500" />
-                                <span class="text-sm font-bold text-slate-700 dark:text-slate-300">{{ $session->visitor_phone }}</span>
-                            </div>
-                        </div>
-                        @endif
+                        <p class="text-sm leading-relaxed whitespace-pre-wrap font-sans">{{ $message->message }}</p>
 
-                        @if($session->visitor_cpf)
-                        <div class="group">
-                            <label class="block text-[10px] font-black text-slate-300 dark:text-slate-600 uppercase tracking-widest mb-1.5 ml-0.5">CPF</label>
-                            <div class="flex items-center gap-3 px-4 py-3 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border border-transparent group-hover:border-blue-100 dark:group-hover:border-blue-900/30 transition-all">
-                                <x-icon name="id-card" style="duotone" class="w-4 h-4 text-amber-500" />
-                                <span class="text-sm font-bold text-slate-700 dark:text-slate-300">{{ \Modules\Chat\App\Helpers\CpfHelper::format($session->visitor_cpf) }}</span>
-                            </div>
-                        </div>
-                        @endif
-
-                        <div class="pt-4 grid grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-[10px] font-black text-slate-300 dark:text-slate-600 uppercase tracking-widest mb-1.5 ml-0.5">Iniciada</label>
-                                <div class="text-sm font-black text-slate-700 dark:text-slate-300">{{ $session->created_at->format('d/m/Y') }}</div>
-                                <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{{ $session->created_at->format('H:i') }}</div>
-                            </div>
-                            @if($session->closed_at)
-                            <div>
-                                <label class="block text-[10px] font-black text-slate-300 dark:text-slate-600 uppercase tracking-widest mb-1.5 ml-0.5">Encerrada</label>
-                                <div class="text-sm font-black text-slate-700 dark:text-slate-300">{{ $session->closed_at->format('d/m/Y') }}</div>
-                                <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{{ $session->closed_at->format('H:i') }}</div>
-                            </div>
+                        <div class="flex items-center gap-1 mt-1 {{ $message->user_id ? 'justify-end text-blue-100' : 'justify-start text-slate-400' }}">
+                            <span class="text-[9px] font-bold uppercase tracking-widest">{{ $message->created_at->format('H:i') }}</span>
+                            @if($message->user_id)
+                            <x-icon name="{{ $message->is_read ? 'check-double' : 'check' }}" class="w-3 h-3 {{ $message->is_read ? 'text-blue-200' : 'text-blue-300/70' }}" />
                             @endif
                         </div>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+
+            <!-- Input Area -->
+            @if($session->status !== 'closed')
+            <div class="p-4 bg-white dark:bg-slate-800 border-t border-gray-200 dark:border-slate-700">
+                <form action="{{ route('admin.chat.send', $session->id) }}" method="POST" class="flex items-end gap-3" id="chat-form">
+                    @csrf
+                    <div class="flex-1 relative">
+                        <textarea name="message" rows="1" class="block w-full pl-4 pr-12 py-3 bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-xl text-gray-900 dark:text-white text-sm focus:ring-blue-500 focus:border-blue-500 transition-all resize-none font-sans max-h-32" placeholder="Digite sua mensagem..." required oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px'"></textarea>
+                        <div class="absolute right-3 bottom-2.5 text-slate-400">
+                            <x-icon name="paper-plane-top" class="w-5 h-5 opacity-50" style="duotone" />
+                        </div>
+                    </div>
+                    <button type="submit" class="inline-flex items-center justify-center w-12 h-12 text-white bg-blue-600 rounded-xl hover:bg-blue-700 transition-all shadow-lg shadow-blue-500/20 flex-shrink-0">
+                        <x-icon name="paper-plane-top" class="w-5 h-5" style="duotone" />
+                    </button>
+                </form>
+            </div>
+            @else
+            <div class="p-6 bg-slate-50 dark:bg-slate-900/50 border-t border-gray-200 dark:border-slate-700 text-center">
+                <p class="text-sm font-bold text-slate-500 uppercase tracking-widest">Este atendimento foi encerrado</p>
+            </div>
+            @endif
+        </div>
+
+        <!-- Sidebar Info -->
+        <div class="lg:col-span-1 space-y-6 overflow-y-auto custom-scrollbar pr-1">
+            <!-- Visitor Card -->
+            <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-gray-200 dark:border-slate-700 p-6">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center text-white font-black text-lg shadow-lg">
+                        {{ strtoupper(substr($session->visitor_name ?? 'V', 0, 1)) }}
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-black text-gray-900 dark:text-white uppercase tracking-tight">{{ $session->visitor_name ?? 'Visitante' }}</h3>
+                        <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Visitante</p>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Email</label>
+                        <div class="text-sm font-medium text-slate-700 dark:text-slate-300 break-all">{{ $session->visitor_email ?? '-' }}</div>
+                    </div>
+                    <div>
+                        <label class="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Telefone</label>
+                        <div class="text-sm font-medium text-slate-700 dark:text-slate-300">{{ $session->visitor_phone ?? '-' }}</div>
+                    </div>
+                    <div>
+                        <label class="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">CPF</label>
+                        <div class="text-sm font-medium text-slate-700 dark:text-slate-300">{{ $session->visitor_cpf ? \Modules\Chat\App\Helpers\CpfHelper::format($session->visitor_cpf) : '-' }}</div>
+                    </div>
+                    <div>
+                        <label class="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Iniciado em</label>
+                        <div class="text-sm font-medium text-slate-700 dark:text-slate-300">{{ $session->created_at->format('d/m/Y H:i') }}</div>
+                    </div>
+                    <div>
+                        <label class="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">IP</label>
+                        <div class="text-sm font-medium text-slate-700 dark:text-slate-300">{{ $session->ip_address ?? '-' }}</div>
                     </div>
                 </div>
             </div>
 
             <!-- Agent Assignment -->
-            @if($session->status !== 'closed')
-            <div class="bg-white dark:bg-slate-800 rounded-[2.5rem] shadow-sm border border-slate-100 dark:border-slate-700 overflow-hidden">
-                <div class="px-8 py-5 border-b border-slate-100 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-900/50">
-                    <h3 class="text-xs font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
-                        <x-icon name="headset" style="duotone" class="w-4 h-4 text-blue-500" />
-                        {{ $session->assigned_to ? 'Transferir Atendimento' : 'Atribuir Atendente' }}
-                    </h3>
-                </div>
-                <div class="p-8">
-                    @if($session->assignedTo)
-                    <div class="flex items-center gap-3 mb-6 p-4 bg-blue-50/50 dark:bg-blue-900/20 rounded-2xl border border-blue-100/50 dark:border-blue-900/30">
-                        <div class="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center text-white font-black text-sm">
-                            {{ strtoupper(substr($session->assignedTo->name, 0, 1)) }}
-                        </div>
-                        <div>
-                            <div class="text-xs font-black text-slate-400 uppercase tracking-widest mb-0.5">Atendente Atual</div>
-                            <div class="text-sm font-black text-slate-900 dark:text-white">{{ $session->assignedTo->name }}</div>
-                        </div>
-                    </div>
-                    @endif
+            <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-gray-200 dark:border-slate-700 p-6">
+                <h3 class="text-sm font-black text-gray-900 dark:text-white uppercase tracking-tight mb-4 flex items-center gap-2">
+                    <x-icon name="user-headset" class="w-4 h-4 text-blue-500" style="duotone" />
+                    Atendimento
+                </h3>
 
-                    <form action="{{ route('admin.chat.assign', $session->id) }}" method="POST">
-                        @csrf
-                        <div class="space-y-4">
-                            <select name="assigned_to" class="w-full px-5 py-3.5 bg-slate-50 dark:bg-slate-900/50 border-slate-100 dark:border-slate-700 rounded-2xl text-sm font-bold text-slate-700 dark:text-slate-300 focus:ring-2 focus:ring-blue-600 transition-all">
-                                <option value="">Selecione um atendente</option>
-                                @foreach(\App\Models\User::whereHas('roles', function($q) { $q->whereIn('name', ['admin', 'co-admin']); })->get() as $user)
-                                <option value="{{ $user->id }}" {{ $session->assigned_to == $user->id ? 'selected' : '' }}>{{ $user->name }}</option>
-                                @endforeach
-                            </select>
-                            <button type="submit" class="w-full inline-flex items-center justify-center gap-2 px-6 py-4 text-sm font-black text-white bg-slate-900 dark:bg-blue-600 rounded-2xl hover:bg-black dark:hover:bg-blue-700 transition-all shadow-lg active:scale-95">
-                                <x-icon name="user-plus" style="duotone" class="w-4 h-4" />
-                                {{ $session->assigned_to ? 'Confirmar Transferência' : 'Confirmar Atribuição' }}
-                            </button>
-                        </div>
-                    </form>
+                @if($session->assignedTo)
+                <div class="flex items-center gap-3 mb-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-100 dark:border-blue-800">
+                    <div class="w-8 h-8 rounded-lg bg-blue-200 dark:bg-blue-800 flex items-center justify-center text-xs font-bold text-blue-700 dark:text-blue-200 uppercase">
+                        {{ substr($session->assignedTo->name, 0, 1) }}
+                    </div>
+                    <div>
+                        <div class="text-xs font-black text-blue-900 dark:text-blue-100 uppercase">{{ $session->assignedTo->name }}</div>
+                        <div class="text-[9px] text-blue-500 font-bold uppercase tracking-widest">Responsável</div>
+                    </div>
                 </div>
+                @else
+                <div class="text-xs text-slate-500 mb-4 font-medium italic">Nenhum atendente atribuído.</div>
+                @endif
+
+                @if($session->status !== 'closed')
+                <form action="{{ route('admin.chat.assign', $session->id) }}" method="POST">
+                    @csrf
+                    <label class="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-2">Transferir / Atribuir</label>
+                    <select name="user_id" class="w-full bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-slate-900 dark:border-slate-700 dark:text-white font-sans mb-3">
+                        <option value="">Selecione...</option>
+                        <option value="{{ auth()->id() }}">Atribuir a mim</option>
+                        @foreach($agents as $agent)
+                            @if($agent->id !== auth()->id())
+                            <option value="{{ $agent->id }}">{{ $agent->name }}</option>
+                            @endif
+                        @endforeach
+                    </select>
+                    <button type="submit" class="w-full inline-flex items-center justify-center gap-2 px-4 py-2 text-xs font-bold text-slate-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors uppercase tracking-widest shadow-sm">
+                        <x-icon name="arrow-right-arrow-left" class="w-3 h-3" style="duotone" />
+                        Atribuir
+                    </button>
+                </form>
+                @endif
             </div>
-            @endif
         </div>
     </div>
 </div>
 
-@push('scripts')
-@vite(['resources/js/chat.js'])
 <script>
-window.BROADCAST_DRIVER = '{{ config("broadcasting.default") }}';
-window.currentUserId = {{ auth()->id() ?? 'null' }};
+    document.addEventListener('DOMContentLoaded', function() {
+        const messagesContainer = document.getElementById('messages-container');
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
 
-window.CHAT_ROUTES = {
-    getMessages: '{{ route("admin.chat.api.session.messages", $session->id) }}',
-    sendMessage: '{{ route("admin.chat.api.session.message", $session->id) }}',
-    markAsRead: '{{ route("admin.chat.api.session.read", $session->id) }}',
-    typing: '{{ route("admin.chat.api.session.typing", $session->id) }}',
-};
+        // Auto-refresh logic (Polling) - Simplificado
+        // Em produção ideal usar Websockets / Echo
+        setInterval(() => {
+            if({{ $session->status !== 'closed' ? 'true' : 'false' }}) {
+                fetch(window.location.href)
+                    .then(response => response.text())
+                    .then(html => {
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(html, 'text/html');
+                        const newMessages = doc.getElementById('messages-container').innerHTML;
+                        const currentScroll = messagesContainer.scrollTop + messagesContainer.clientHeight === messagesContainer.scrollHeight;
 
-document.addEventListener('DOMContentLoaded', function() {
-    if (typeof ChatSystem !== 'undefined') {
-        ChatSystem.init(
-            '{{ $session->session_id }}',
-            {{ $session->id }},
-            {{ auth()->id() ?? 'null' }}
-        );
-    }
-});
+                        if (messagesContainer.innerHTML !== newMessages) {
+                            messagesContainer.innerHTML = newMessages;
+                            if (currentScroll) {
+                                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                            }
+                        }
+                    });
+            }
+        }, 5000); // 5 segundos
+    });
 </script>
-@endpush
 @endsection

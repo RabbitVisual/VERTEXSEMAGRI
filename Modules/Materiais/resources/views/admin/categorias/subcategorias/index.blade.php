@@ -105,7 +105,7 @@
                        class="w-12 h-12 flex items-center justify-center text-slate-400 hover:text-emerald-600 bg-slate-50 dark:bg-slate-900 rounded-xl transition-all border border-transparent hover:border-emerald-100 dark:hover:border-emerald-800/50 active:scale-90">
                         <x-icon name="pen-to-square" style="duotone" class="w-5 h-5" />
                     </a>
-                    <a href="{{ route('admin.materiais.categorias.campos.index', [$categoria->id, $sub->id]) }}"
+                    <a href="{{ route('admin.materiais.categorias.subcategorias.campos.index', [$categoria->id, $sub->id]) }}"
                        class="flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 text-sm font-black text-white bg-emerald-600 rounded-xl hover:bg-emerald-700 shadow-md shadow-emerald-500/20 transition-all active:scale-[0.98] border-b-4 border-emerald-800/50">
                         <x-icon name="table-list" style="duotone" class="w-4 h-4" />
                         Definir Propriedades

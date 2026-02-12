@@ -38,6 +38,7 @@ class NotificacoesFullSuiteTest extends TestCase
         $this->assertContains('type', $columns);
         $this->assertContains('is_read', $columns);
         $this->assertContains('module_source', $columns);
+        $this->assertContains('panel', $columns);
     }
 
     #[Test]
@@ -46,20 +47,21 @@ class NotificacoesFullSuiteTest extends TestCase
         $user = User::factory()->create();
 
         $notificacao = Notificacao::createNotification(
-            'info',
-            'Teste Título',
-            'Teste Mensagem',
-            $user->id,
-            null,
-            ['key' => 'value'],
-            'http://example.com'
+            type: 'info',
+            title: 'Teste Título',
+            message: 'Teste Mensagem',
+            userId: $user->id,
+            data: ['key' => 'value'],
+            moduleSource: 'Notificações',
+            panel: 'admin'
         );
 
         $this->assertDatabaseHas('notifications', [
             'type' => 'info',
             'title' => 'Teste Título',
             'user_id' => $user->id,
-            'is_read' => false
+            'is_read' => false,
+            'panel' => 'admin'
         ]);
 
         $this->assertEquals(['key' => 'value'], $notificacao->data);
@@ -141,6 +143,13 @@ class NotificacoesFullSuiteTest extends TestCase
         $n->markAsRead();
 
         $this->assertEquals(1, Notificacao::where('user_id', $user1->id)->unread()->count());
+
+        // Test panel scope
+        Notificacao::createNotification(type: 'info', title: 'Admin Not', message: 'M', userId: $user1->id, panel: 'admin');
+        Notificacao::createNotification(type: 'info', title: 'Co-Admin Not', message: 'M', userId: $user1->id, panel: 'co-admin');
+
+        $this->assertEquals(1, Notificacao::forPanel('admin')->where('title', 'Admin Not')->count());
+        $this->assertEquals(1, Notificacao::forPanel('co-admin')->where('title', 'Co-Admin Not')->count());
     }
 
     #[Test]
@@ -150,12 +159,25 @@ class NotificacoesFullSuiteTest extends TestCase
 
         Notificacao::createNotification('success', 'Success', 'M', $user->id);
         Notificacao::createNotification('error', 'Error', 'M', $user->id);
+        Notificacao::createNotification(type: 'info', title: 'Panel Admin', message: 'M', userId: $user->id, panel: 'admin');
+        Notificacao::createNotification(type: 'info', title: 'Panel Co-Admin', message: 'M', userId: $user->id, panel: 'co-admin');
 
+        // Test type filter
         $response = $this->actingAs($user)->get(route('notificacoes.index', ['type' => 'success']));
-
         $response->assertStatus(200);
         $response->assertSee('Success');
         $response->assertDontSee('Error');
+
+        // Test panel filter
+        $responseAdmin = $this->actingAs($user)->get(route('notificacoes.index', ['panel' => 'admin']));
+        $responseAdmin->assertStatus(200);
+        $responseAdmin->assertSee('Panel Admin');
+        $responseAdmin->assertDontSee('Panel Co-Admin');
+
+        $responseCoAdmin = $this->actingAs($user)->get(route('notificacoes.index', ['panel' => 'co-admin']));
+        $responseCoAdmin->assertStatus(200);
+        $responseCoAdmin->assertSee('Panel Co-Admin');
+        $responseCoAdmin->assertDontSee('Panel Admin');
     }
 
     #[Test]

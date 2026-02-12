@@ -32,7 +32,7 @@
                     <x-icon name="arrow-left" style="duotone" class="w-5 h-5" />
                     Subcategorias
                 </a>
-                <a href="{{ route('admin.materiais.categorias.campos.create', [$categoria->id, $subcategoria->id]) }}" class="inline-flex items-center gap-2 px-6 py-3 text-sm font-black text-white bg-emerald-600 rounded-xl hover:bg-emerald-700 shadow-lg shadow-emerald-500/30 transition-all duration-300 active:scale-95 border-b-4 border-emerald-800">
+                <a href="{{ route('admin.materiais.categorias.subcategorias.campos.create', [$categoria->id, $subcategoria->id]) }}" class="inline-flex items-center gap-2 px-6 py-3 text-sm font-black text-white bg-emerald-600 rounded-xl hover:bg-emerald-700 shadow-lg shadow-emerald-500/30 transition-all duration-300 active:scale-95 border-b-4 border-emerald-800">
                     <x-icon name="plus" style="duotone" class="w-5 h-5" />
                     Novo Atributo
                 </a>
@@ -111,7 +111,7 @@
                 </div>
 
                 <div class="flex gap-3">
-                    <a href="{{ route('admin.materiais.categorias.campos.edit', [$categoria->id, $subcategoria->id, $campo->id]) }}"
+                    <a href="{{ route('admin.materiais.categorias.subcategorias.campos.edit', [$categoria->id, $subcategoria->id, $campo->id]) }}"
                        class="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3.5 text-sm font-black text-white bg-emerald-600 rounded-2xl hover:bg-emerald-700 shadow-xl shadow-emerald-500/20 transition-all active:scale-[0.98] border-b-4 border-emerald-800">
                         <x-icon name="pen-to-square" style="duotone" class="w-4 h-4" />
                         Configurar Atributo
@@ -136,7 +136,7 @@
         </div>
         <h3 class="text-2xl font-black text-gray-900 dark:text-white mb-3">Sem Atributos Dinâmicos</h3>
         <p class="text-gray-500 dark:text-gray-400 mb-10 max-w-sm mx-auto font-medium">Esta subcategoria utiliza apenas os campos básicos. Adicione atributos personalizados para enriquecer os dados técnicos dos itens.</p>
-        <a href="{{ route('admin.materiais.categorias.campos.create', [$categoria->id, $subcategoria->id]) }}" class="inline-flex items-center gap-3 px-10 py-4 text-sm font-black text-white bg-emerald-600 rounded-2xl hover:bg-emerald-700 shadow-xl shadow-emerald-500/40 transition-all active:scale-95 border-b-4 border-emerald-800">
+        <a href="{{ route('admin.materiais.categorias.subcategorias.campos.create', [$categoria->id, $subcategoria->id]) }}" class="inline-flex items-center gap-3 px-10 py-4 text-sm font-black text-white bg-emerald-600 rounded-2xl hover:bg-emerald-700 shadow-xl shadow-emerald-500/40 transition-all active:scale-95 border-b-4 border-emerald-800">
             <x-icon name="plus" style="duotone" class="w-5 h-5" />
             Adicionar Primeiro Campo
         </a>

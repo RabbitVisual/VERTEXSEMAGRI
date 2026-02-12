@@ -44,46 +44,46 @@
     <!-- Estatísticas Gerais -->
     @if(isset($estatisticas))
     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 md:gap-6 mb-8">
-        <div class="p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-slate-800 dark:border-slate-700 hover:shadow-md transition-shadow">
+        <div class="p-6 bg-white border border-gray-200 rounded-3xl shadow-sm dark:bg-slate-800 dark:border-slate-700 hover:shadow-md transition-shadow group">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Total de Demandas</p>
-                    <p class="text-2xl font-bold text-gray-900 dark:text-white mt-1">{{ $estatisticas['total'] ?? 0 }}</p>
+                    <p class="text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Total</p>
+                    <p class="text-3xl font-bold text-gray-900 dark:text-white mt-2">{{ $estatisticas['total'] ?? 0 }}</p>
                 </div>
-                <div class="p-3 bg-indigo-50 dark:bg-indigo-900/20 rounded-xl border border-indigo-100 dark:border-indigo-800/50">
+                <div class="w-12 h-12 bg-indigo-50 dark:bg-indigo-900/20 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                     <x-icon name="clipboard-list" class="w-6 h-6 text-indigo-600 dark:text-indigo-400" style="duotone" />
                 </div>
             </div>
         </div>
-        <div class="p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-slate-800 dark:border-slate-700 hover:shadow-md transition-shadow">
+        <div class="p-6 bg-white border border-gray-200 rounded-3xl shadow-sm dark:bg-slate-800 dark:border-slate-700 hover:shadow-md transition-shadow group">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Abertas</p>
-                    <p class="text-2xl font-bold text-gray-900 dark:text-white mt-1">{{ $estatisticas['abertas'] ?? 0 }}</p>
+                    <p class="text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Abertas</p>
+                    <p class="text-3xl font-bold text-gray-900 dark:text-white mt-2">{{ $estatisticas['abertas'] ?? 0 }}</p>
                 </div>
-                <div class="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-100 dark:border-blue-800/50">
+                <div class="w-12 h-12 bg-blue-50 dark:bg-blue-900/20 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                     <x-icon name="clock" class="w-6 h-6 text-blue-600 dark:text-blue-400" style="duotone" />
                 </div>
             </div>
         </div>
-        <div class="p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-slate-800 dark:border-slate-700 hover:shadow-md transition-shadow">
+        <div class="p-6 bg-white border border-gray-200 rounded-3xl shadow-sm dark:bg-slate-800 dark:border-slate-700 hover:shadow-md transition-shadow group">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Em Andamento</p>
-                    <p class="text-2xl font-bold text-gray-900 dark:text-white mt-1">{{ $estatisticas['em_andamento'] ?? 0 }}</p>
+                    <p class="text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Em Andamento</p>
+                    <p class="text-3xl font-bold text-gray-900 dark:text-white mt-2">{{ $estatisticas['em_andamento'] ?? 0 }}</p>
                 </div>
-                <div class="p-3 bg-amber-50 dark:bg-amber-900/20 rounded-xl border border-amber-100 dark:border-amber-800/50">
+                <div class="w-12 h-12 bg-amber-50 dark:bg-amber-900/20 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                     <x-icon name="arrows-rotate" class="w-6 h-6 text-amber-600 dark:text-amber-400" style="duotone" />
                 </div>
             </div>
         </div>
-        <div class="p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-slate-800 dark:border-slate-700 hover:shadow-md transition-shadow">
+        <div class="p-6 bg-white border border-gray-200 rounded-3xl shadow-sm dark:bg-slate-800 dark:border-slate-700 hover:shadow-md transition-shadow group">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Concluídas</p>
-                    <p class="text-2xl font-bold text-gray-900 dark:text-white mt-1">{{ $estatisticas['concluidas'] ?? 0 }}</p>
+                    <p class="text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Concluídas</p>
+                    <p class="text-3xl font-bold text-gray-900 dark:text-white mt-2">{{ $estatisticas['concluidas'] ?? 0 }}</p>
                 </div>
-                <div class="p-3 bg-emerald-50 dark:bg-emerald-900/20 rounded-xl border border-emerald-100 dark:border-emerald-800/50">
+                <div class="w-12 h-12 bg-emerald-50 dark:bg-emerald-900/20 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                     <x-icon name="circle-check" class="w-6 h-6 text-emerald-600 dark:text-emerald-400" style="duotone" />
                 </div>
             </div>
@@ -91,25 +91,25 @@
     </div>
 
     <!-- Estatísticas Críticas -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-8 border-t border-slate-200 dark:border-slate-700 pt-8">
-        <div class="p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-slate-800 dark:border-slate-700 hover:shadow-md transition-shadow">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-8">
+        <div class="p-6 bg-white border border-gray-200 rounded-3xl shadow-sm dark:bg-slate-800 dark:border-slate-700 hover:shadow-md transition-shadow group">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Urgentes</p>
-                    <p class="text-2xl font-bold text-gray-900 dark:text-white mt-1">{{ $estatisticas['urgentes'] ?? 0 }}</p>
+                    <p class="text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Urgentes</p>
+                    <p class="text-3xl font-bold text-gray-900 dark:text-white mt-2">{{ $estatisticas['urgentes'] ?? 0 }}</p>
                 </div>
-                <div class="p-3 bg-red-50 dark:bg-red-900/20 rounded-xl border border-red-100 dark:border-red-800/50">
+                <div class="w-12 h-12 bg-red-50 dark:bg-red-900/20 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                     <x-icon name="triangle-exclamation" class="w-6 h-6 text-red-600 dark:text-red-400" style="duotone" />
                 </div>
             </div>
         </div>
-        <div class="p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-slate-800 dark:border-slate-700 hover:shadow-md transition-shadow">
+        <div class="p-6 bg-white border border-gray-200 rounded-3xl shadow-sm dark:bg-slate-800 dark:border-slate-700 hover:shadow-md transition-shadow group">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Sem Ordem de Serviço</p>
-                    <p class="text-2xl font-bold text-gray-900 dark:text-white mt-1">{{ $estatisticas['sem_os'] ?? 0 }}</p>
+                    <p class="text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Sem Ordem de Serviço</p>
+                    <p class="text-3xl font-bold text-gray-900 dark:text-white mt-2">{{ $estatisticas['sem_os'] ?? 0 }}</p>
                 </div>
-                <div class="p-3 bg-gray-50 dark:bg-gray-900/20 rounded-xl border border-gray-100 dark:border-gray-800/50">
+                <div class="w-12 h-12 bg-gray-50 dark:bg-gray-900/20 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                     <x-icon name="file-circle-xmark" class="w-6 h-6 text-gray-600 dark:text-gray-400" style="duotone" />
                 </div>
             </div>

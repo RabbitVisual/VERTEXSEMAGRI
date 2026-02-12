@@ -176,6 +176,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
 
     // Notificações
     if (Module::isEnabled('Notificacoes')) {
+        Route::post('notificacoes/mark-all-read', [\Modules\Notificacoes\App\Http\Controllers\Admin\NotificacoesAdminController::class, 'markAllAsRead'])->name('notificacoes.markAllAsRead');
+        Route::post('notificacoes/{id}/read', [\Modules\Notificacoes\App\Http\Controllers\Admin\NotificacoesAdminController::class, 'markAsRead'])->name('notificacoes.markAsRead');
         Route::resource('notificacoes', \Modules\Notificacoes\App\Http\Controllers\Admin\NotificacoesAdminController::class)->except(['edit', 'update']);
     }
 
@@ -291,11 +293,30 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
                 Route::get('/', [\Modules\Materiais\App\Http\Controllers\Admin\CategoriasAdminController::class, 'index'])->name('index');
                 Route::get('/create', [\Modules\Materiais\App\Http\Controllers\Admin\CategoriasAdminController::class, 'create'])->name('create');
                 Route::post('/', [\Modules\Materiais\App\Http\Controllers\Admin\CategoriasAdminController::class, 'store'])->name('store');
+                Route::get('/{categoria}', [\Modules\Materiais\App\Http\Controllers\Admin\CategoriasAdminController::class, 'show'])->name('show');
                 Route::get('/{categoria}/edit', [\Modules\Materiais\App\Http\Controllers\Admin\CategoriasAdminController::class, 'edit'])->name('edit');
                 Route::put('/{categoria}', [\Modules\Materiais\App\Http\Controllers\Admin\CategoriasAdminController::class, 'update'])->name('update');
                 Route::delete('/{categoria}', [\Modules\Materiais\App\Http\Controllers\Admin\CategoriasAdminController::class, 'destroy'])->name('destroy');
 
-                // Subcategorias and Campos nesting can be further simplified if needed, but keeping for now
+                // Subcategorias
+                Route::prefix('{categoria}')->name('subcategorias.')->group(function() {
+                    Route::get('subcategorias', [\Modules\Materiais\App\Http\Controllers\Admin\CategoriasAdminController::class, 'subcategoriasIndex'])->name('index');
+                    Route::get('subcategorias/create', [\Modules\Materiais\App\Http\Controllers\Admin\CategoriasAdminController::class, 'subcategoriasCreate'])->name('create');
+                    Route::post('subcategorias', [\Modules\Materiais\App\Http\Controllers\Admin\CategoriasAdminController::class, 'subcategoriasStore'])->name('store');
+                    Route::get('subcategorias/{subcategoria}/edit', [\Modules\Materiais\App\Http\Controllers\Admin\CategoriasAdminController::class, 'subcategoriasEdit'])->name('edit');
+                    Route::put('subcategorias/{subcategoria}', [\Modules\Materiais\App\Http\Controllers\Admin\CategoriasAdminController::class, 'subcategoriasUpdate'])->name('update');
+                    Route::delete('subcategorias/{subcategoria}', [\Modules\Materiais\App\Http\Controllers\Admin\CategoriasAdminController::class, 'subcategoriasDestroy'])->name('destroy');
+
+                    // Campos (dentro de subcategorias)
+                    Route::prefix('subcategorias/{subcategoria}')->name('campos.')->group(function() {
+                        Route::get('campos', [\Modules\Materiais\App\Http\Controllers\Admin\CategoriasAdminController::class, 'camposIndex'])->name('index');
+                        Route::get('campos/create', [\Modules\Materiais\App\Http\Controllers\Admin\CategoriasAdminController::class, 'camposCreate'])->name('create');
+                        Route::post('campos', [\Modules\Materiais\App\Http\Controllers\Admin\CategoriasAdminController::class, 'camposStore'])->name('store');
+                        Route::get('campos/{campo}/edit', [\Modules\Materiais\App\Http\Controllers\Admin\CategoriasAdminController::class, 'camposEdit'])->name('edit');
+                        Route::put('campos/{campo}', [\Modules\Materiais\App\Http\Controllers\Admin\CategoriasAdminController::class, 'camposUpdate'])->name('update');
+                        Route::delete('campos/{campo}', [\Modules\Materiais\App\Http\Controllers\Admin\CategoriasAdminController::class, 'camposDestroy'])->name('destroy');
+                    });
+                });
             });
 
             Route::get('/{id}', [\Modules\Materiais\App\Http\Controllers\Admin\MateriaisAdminController::class, 'show'])->name('show');

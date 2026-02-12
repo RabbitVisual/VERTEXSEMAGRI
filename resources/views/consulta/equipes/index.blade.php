@@ -9,9 +9,26 @@
         <div>
             <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white flex items-center gap-3 mb-2">
                 <div class="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-violet-500 to-violet-600 rounded-xl flex items-center justify-center shadow-lg">
-                    <x-icon name="magnifying-glass" class="w-5 h-5" />
+                    <x-icon name="user-group" class="w-5 h-5 md:w-6 md:h-6 text-white" />
+                </div>
+                Equipes de Trabalho
+            </h1>
+            <p class="text-sm md:text-base text-gray-500 dark:text-gray-400">
+                Consulta de equipes operacionais e de campo.
+            </p>
+        </div>
+
+        <form action="{{ route('consulta.equipes.index') }}" method="GET" class="flex flex-wrap items-center gap-2">
+            <div class="relative">
+                <input type="text" name="search" value="{{ request('search') }}" placeholder="Nome da equipe..." class="pl-3 pr-10 py-2 border border-gray-300 dark:border-slate-600 rounded-lg text-sm bg-white dark:bg-slate-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-violet-500">
+                <button type="submit" class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-violet-500">
+                    <x-icon name="magnifying-glass" class="w-4 h-4" />
                 </button>
             </div>
+
+            <a href="{{ route('consulta.equipes.index') }}" class="inline-flex items-center justify-center px-4 py-2 border border-gray-300 dark:border-slate-600 text-sm font-medium rounded-lg text-gray-700 dark:text-gray-300 bg-white dark:bg-slate-700 hover:bg-gray-50 dark:hover:bg-slate-600" title="Limpar Filtros">
+                <x-icon name="arrow-rotate-left" class="w-5 h-5" />
+            </a>
         </form>
     </div>
 
@@ -44,7 +61,30 @@
                             </span>
                         </td>
                         <td class="px-4 md:px-6 py-4 whitespace-nowrap hidden md:table-cell">
-                            <span class="inline-flex items-center gap-1 text-sm text-gray-900 dark:text-white">
+                            <div class="flex items-center -space-x-2 overflow-hidden">
+                                @if(isset($equipe->membros))
+                                    @foreach($equipe->membros->take(3) as $membro)
+                                        <div class="inline-block h-6 w-6 rounded-full ring-2 ring-white dark:ring-slate-800 bg-gray-200 flex items-center justify-center text-xs font-bold text-gray-600" title="{{ $membro->nome ?? 'Membro' }}">
+                                            {{ substr($membro->nome ?? 'M', 0, 1) }}
+                                        </div>
+                                    @endforeach
+                                    @if($equipe->membros->count() > 3)
+                                        <div class="inline-block h-6 w-6 rounded-full ring-2 ring-white dark:ring-slate-800 bg-gray-100 flex items-center justify-center text-xs font-bold text-gray-500">
+                                            +{{ $equipe->membros->count() - 3 }}
+                                        </div>
+                                    @endif
+                                @else
+                                    <span class="text-xs text-gray-500">-</span>
+                                @endif
+                            </div>
+                        </td>
+                        <td class="px-4 md:px-6 py-4 whitespace-nowrap">
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ ($equipe->ativa ?? true) ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-300' : 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300' }}">
+                                {{ ($equipe->ativa ?? true) ? 'Ativa' : 'Inativa' }}
+                            </span>
+                        </td>
+                        <td class="px-4 md:px-6 py-4 whitespace-nowrap text-right">
+                            <a href="{{ route('consulta.equipes.show', $equipe->id) }}" class="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors" title="Ver detalhes">
                                 <x-icon name="eye" class="w-5 h-5" />
                             </a>
                         </td>
@@ -74,4 +114,3 @@
     </div>
 </div>
 @endsection
-

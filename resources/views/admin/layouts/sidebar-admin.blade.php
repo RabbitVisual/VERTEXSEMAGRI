@@ -255,6 +255,12 @@
                     </div>
                     <span class="flex-1">Solicitações Registradas</span>
                 </a>
+                <a href="{{ route('admin.materiais.solicitacoes-campo.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 {{ request()->routeIs('admin.materiais.solicitacoes-campo.*') ? 'bg-teal-100 text-teal-700 dark:bg-teal-900/30 dark:text-teal-400' : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-slate-700' }}">
+                    <div class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center {{ request()->routeIs('admin.materiais.solicitacoes-campo.*') ? 'bg-teal-500 dark:bg-teal-600' : 'bg-gray-100 dark:bg-slate-700' }}">
+                        <x-icon name="mobile-screen-button" class="w-5 h-5 {{ request()->routeIs('admin.materiais.solicitacoes-campo.*') ? 'text-white' : 'text-gray-600 dark:text-gray-400' }}" style="duotone" />
+                    </div>
+                    <span class="flex-1">Solicitações de Campo</span>
+                </a>
                 @endif
 
                 @if(\Nwidart\Modules\Facades\Module::isEnabled('Materiais') && Route::has('admin.materiais.index'))
@@ -262,7 +268,7 @@
                     <div class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center {{ request()->routeIs('admin.materiais.index') || request()->routeIs('admin.materiais.show') ? 'bg-teal-500 dark:bg-teal-600' : 'bg-gray-100 dark:bg-slate-700' }}">
                         <x-module-icon module="Materiais" class="w-5 h-5 {{ request()->routeIs('admin.materiais.index') || request()->routeIs('admin.materiais.show') ? 'text-white' : 'text-gray-600 dark:text-gray-400' }}" style="duotone" />
                     </div>
-                    <span class="flex-1">Materiais</span>
+                    <span class="flex-1">Estoque (Materiais)</span>
                 </a>
                 <a href="{{ route('admin.materiais.categorias.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 {{ request()->routeIs('admin.materiais.categorias.*') ? 'bg-teal-100 text-teal-700 dark:bg-teal-900/30 dark:text-teal-400' : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-slate-700' }}">
                     <div class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center {{ request()->routeIs('admin.materiais.categorias.*') ? 'bg-teal-500 dark:bg-teal-600' : 'bg-gray-100 dark:bg-slate-700' }}">
@@ -373,12 +379,25 @@
                 @endif
 
                 @if(\Nwidart\Modules\Facades\Module::isEnabled('Notificacoes') && Route::has('admin.notificacoes.index'))
-                <a href="{{ route('admin.notificacoes.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 {{ request()->routeIs('admin.notificacoes.*') ? 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400' : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-slate-700' }}">
-                    <div class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center {{ request()->routeIs('admin.notificacoes.*') ? 'bg-orange-500 dark:bg-orange-600' : 'bg-gray-100 dark:bg-slate-700' }}">
-                        <x-module-icon module="Notificacoes" class="w-5 h-5 {{ request()->routeIs('admin.notificacoes.*') ? 'text-white' : 'text-gray-600 dark:text-gray-400' }}" style="duotone" />
+                <div x-data="{ open: {{ request()->routeIs('admin.notificacoes.*') ? 'true' : 'false' }} }" class="space-y-1">
+                    <button @click="open = !open" class="w-full flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 {{ request()->routeIs('admin.notificacoes.*') ? 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400' : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-slate-700' }}">
+                        <div class="flex items-center gap-3">
+                            <div class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center {{ request()->routeIs('admin.notificacoes.*') ? 'bg-orange-500 dark:bg-orange-600' : 'bg-gray-100 dark:bg-slate-700' }}">
+                                <x-module-icon module="Notificacoes" class="w-5 h-5 {{ request()->routeIs('admin.notificacoes.*') ? 'text-white' : 'text-gray-600 dark:text-gray-400' }}" style="duotone" />
+                            </div>
+                            <span class="flex-1 text-left">Notificações</span>
+                        </div>
+                        <x-icon name="chevron-down" class="w-4 h-4 transition-transform" x-bind:class="{ 'rotate-180': open }" style="duotone" />
+                    </button>
+                    <div x-show="open" x-collapse class="pl-14 space-y-1">
+                        <a href="{{ route('admin.notificacoes.index') }}" class="block px-3 py-2 rounded-lg text-sm {{ request()->routeIs('admin.notificacoes.index') || request()->routeIs('admin.notificacoes.show') ? 'text-orange-700 dark:text-orange-400 font-medium' : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white' }}">
+                             Listagem
+                        </a>
+                        <a href="{{ route('admin.notificacoes.create') }}" class="block px-3 py-2 rounded-lg text-sm {{ request()->routeIs('admin.notificacoes.create') ? 'text-orange-700 dark:text-orange-400 font-medium' : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white' }}">
+                             Nova Notificação
+                        </a>
                     </div>
-                    <span class="flex-1">Notificações</span>
-                </a>
+                </div>
                 @endif
 
                 @if(Route::has('admin.audit.index'))
@@ -497,4 +516,25 @@
             <p class="text-xs text-gray-400 dark:text-gray-500">v1.0.26</p>
         </div>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Find the active link by checking for the absence of the inactive hover class
+            // Inactive links have 'hover:bg-gray-100', active links use specific color backgrounds
+            const activeLink = document.querySelector('aside a:not(.hover\\:bg-gray-100)');
+
+            if (activeLink) {
+                // Determine if we need to scroll
+                const sidebar = document.querySelector('aside .overflow-y-auto');
+                if (sidebar) {
+                    const sidebarRect = sidebar.getBoundingClientRect();
+                    const linkRect = activeLink.getBoundingClientRect();
+
+                    // Check if link is out of view
+                    if (linkRect.top < sidebarRect.top || linkRect.bottom > sidebarRect.bottom) {
+                        activeLink.scrollIntoView({ block: 'center', behavior: 'smooth' });
+                    }
+                }
+            }
+        });
+    </script>
 </aside>

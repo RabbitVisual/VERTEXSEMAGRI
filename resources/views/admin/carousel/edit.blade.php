@@ -3,172 +3,171 @@
 @section('title', 'Editar Slide do Carousel')
 
 @section('content')
-<div class="space-y-6 md:space-y-8">
+<div class="space-y-6 md:space-y-8 animate-fade-in pb-12 font-sans">
     <!-- Page Header -->
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 md:pb-6 border-b border-gray-200 dark:border-slate-700">
         <div>
             <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white flex items-center gap-3 mb-2">
-                <div class="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg">
-                    <x-icon name="chevron-right" class="w-4 h-4" />
-                <a href="{{ route('admin.carousel.index') }}" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Carousel</a>
-                <x-icon name="chevron-right" class="w-4 h-4" />
-                <span class="text-gray-900 dark:text-white font-medium">Editar</span>
+                <div class="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-pink-500 to-pink-600 rounded-xl flex items-center justify-center shadow-lg">
+                    <x-icon name="pencil-square" class="w-6 h-6 md:w-7 md:h-7 text-white" style="duotone" />
+                </div>
+                <span>Editar Slide</span>
+            </h1>
+            <nav aria-label="breadcrumb" class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                <a href="{{ route('admin.dashboard') }}" class="hover:text-pink-600 dark:hover:text-pink-400 transition-colors italic">Admin</a>
+                <x-icon name="chevron-right" class="w-3 h-3 text-slate-400 font-sans" style="duotone" />
+                <a href="{{ route('admin.carousel.index') }}" class="hover:text-pink-600 dark:hover:text-pink-400 transition-colors italic">Carousel</a>
+                <x-icon name="chevron-right" class="w-3 h-3 text-slate-400 font-sans" style="duotone" />
+                <span class="text-gray-900 dark:text-white font-medium uppercase tracking-widest text-[10px]">Editar</span>
             </nav>
         </div>
-        <a href="{{ route('admin.carousel.index') }}" class="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 dark:bg-slate-800 dark:text-white dark:border-slate-600 dark:hover:bg-slate-700 dark:focus:ring-slate-700 transition-colors">
-            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-            Cancelar
+
+        <a href="{{ route('admin.carousel.index') }}" class="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-600 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-700 focus:ring-4 focus:ring-gray-100 dark:focus:ring-slate-700 transition-all">
+            <x-icon name="arrow-left" class="w-5 h-5" style="solid" />
+            Voltar
         </a>
     </div>
 
-    <!-- Form - Flowbite Card -->
-    <div class="bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-slate-800 dark:border-slate-700">
+    <!-- Form -->
+    <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-gray-100 dark:border-slate-700 overflow-hidden">
         <form action="{{ route('admin.carousel.update', $carousel) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
 
-            <div class="p-6 md:p-8 space-y-6 md:space-y-8">
-                <!-- Título -->
-                <div>
-                    <label for="title" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                        Título do Slide <span class="text-xs font-normal text-gray-500 dark:text-gray-400">(aceita HTML formatado)</span>
-                    </label>
-                    <!-- Quill Editor Container para Título -->
-                    <div id="quill-title" class="quill-editor-wrapper"></div>
-                    <!-- Hidden textarea para enviar HTML -->
-                    <textarea id="title" name="title" class="hidden">{!! old('title', $carousel->title) !!}</textarea>
-                    @error('title')
-                        <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-                    @enderror
-                </div>
+            <div class="p-6 md:p-8 space-y-8">
+                <!-- Main Info -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Left Column -->
+                    <div class="space-y-6">
+                        <div>
+                            <label for="title" class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">
+                                Título do Slide <span class="text-xs font-normal text-pink-500 ml-1">* (HTML Suportado)</span>
+                            </label>
+                            <div id="quill-title" class="quill-editor-wrapper bg-gray-50 dark:bg-slate-900 rounded-lg border border-gray-200 dark:border-slate-700 focus-within:border-pink-500 dark:focus-within:border-pink-500 focus-within:ring-1 focus-within:ring-pink-500 transition-all"></div>
+                            <textarea id="title" name="title" class="hidden">{!! old('title', $carousel->title) !!}</textarea>
+                            @error('title')
+                                <p class="mt-2 text-sm text-red-500 flex items-center gap-1"><x-icon name="exclamation-circle" class="w-4 h-4" /> {{ $message }}</p>
+                            @enderror
+                        </div>
 
-                <!-- Ordem de Exibição -->
-                <div class="max-w-xs">
-                    <label for="order" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                        Ordem de Exibição
-                    </label>
-                    <input type="number"
-                           id="order"
-                           name="order"
-                           value="{{ old('order', $carousel->order) }}"
-                           min="0"
-                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-indigo-500 dark:focus:border-indigo-500 @error('order') border-red-500 dark:border-red-600 @enderror">
-                    @error('order')
-                        <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-                    @enderror
-                    <p class="mt-2 text-xs text-gray-500 dark:text-gray-400">Número menor aparece primeiro</p>
-                </div>
+                        <div>
+                            <label for="description" class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">
+                                Descrição / Texto <span class="text-xs font-normal text-slate-400 ml-1">(Opcional)</span>
+                            </label>
+                            <div id="quill-description" class="quill-editor-wrapper bg-gray-50 dark:bg-slate-900 rounded-lg border border-gray-200 dark:border-slate-700 focus-within:border-pink-500 dark:focus-within:border-pink-500 focus-within:ring-1 focus-within:ring-pink-500 transition-all min-h-[120px]"></div>
+                            <textarea id="description" name="description" class="hidden">{!! old('description', $carousel->description) !!}</textarea>
+                            @error('description')
+                                <p class="mt-2 text-sm text-red-500 flex items-center gap-1"><x-icon name="exclamation-circle" class="w-4 h-4" /> {{ $message }}</p>
+                            @enderror
+                        </div>
+                    </div>
 
-                <!-- Descrição -->
-                <div>
-                    <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                        Descrição/Texto do Slide <span class="text-xs font-normal text-gray-500 dark:text-gray-400">(Editor de texto rico - negrito, cores, tamanhos, etc.)</span>
-                    </label>
-                    <!-- Quill Editor Container -->
-                    <div id="quill-description" class="quill-editor-wrapper"></div>
-                    <!-- Hidden textarea para enviar HTML -->
-                    <textarea id="description" name="description" class="hidden">{!! old('description', $carousel->description) !!}</textarea>
-                    @error('description')
-                        <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <!-- Imagem -->
-                <div>
-                    <label for="image" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                        Imagem do Slide
-                    </label>
-                    <div class="space-y-4">
-                        @if($carousel->image)
-                            <div class="mb-4">
-                                <p class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Imagem Atual:</p>
-                                <img src="{{ asset('storage/' . $carousel->image) }}" alt="{{ $carousel->title ?? 'Slide' }}" class="w-full max-w-md h-64 object-cover rounded-lg border border-gray-200 dark:border-slate-700">
+                    <!-- Right Column -->
+                    <div class="space-y-6">
+                        <div>
+                            <label for="order" class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">
+                                Ordem de Exibição
+                            </label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <x-icon name="list-bullet" class="w-5 h-5 text-gray-400" />
+                                </div>
+                                <input type="number"
+                                       id="order"
+                                       name="order"
+                                       value="{{ old('order', $carousel->order) }}"
+                                       min="0"
+                                       class="pl-10 w-full bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-lg text-gray-900 dark:text-white focus:ring-pink-500 focus:border-pink-500 block p-2.5 transition-colors"
+                                       placeholder="Ex: 1">
                             </div>
-                        @endif
-                        <input type="file"
-                               id="image"
-                               name="image"
-                               accept="image/*"
-                               onchange="previewImage(this)"
-                               class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-slate-700 dark:border-slate-600 dark:placeholder-gray-400 @error('image') border-red-500 dark:border-red-600 @enderror">
-                        @error('image')
-                            <p class="text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-                        @enderror
-                        <p class="text-xs text-gray-500 dark:text-gray-400">Deixe em branco para manter a imagem atual</p>
-                        <div id="imagePreview" class="hidden">
-                            <p class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Nova Imagem:</p>
-                            <img id="previewImg" src="" alt="Preview" class="w-full max-w-md h-64 object-cover rounded-lg border border-gray-200 dark:border-slate-700">
+                            <p class="mt-1.5 text-xs text-slate-500">Menor número aparece primeiro.</p>
+                            @error('order')
+                                <p class="mt-2 text-sm text-red-500 flex items-center gap-1"><x-icon name="exclamation-circle" class="w-4 h-4" /> {{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label for="link" class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">
+                                    Link de Destino
+                                </label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <x-icon name="link" class="w-5 h-5 text-gray-400" />
+                                    </div>
+                                    <input type="url"
+                                           id="link"
+                                           name="link"
+                                           value="{{ old('link', $carousel->link) }}"
+                                           class="pl-10 w-full bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-lg text-gray-900 dark:text-white focus:ring-pink-500 focus:border-pink-500 block p-2.5 transition-colors"
+                                           placeholder="https://...">
+                                </div>
+                            </div>
+                            <div>
+                                <label for="link_text" class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">
+                                    Texto do Botão
+                                </label>
+                                <input type="text"
+                                       id="link_text"
+                                       name="link_text"
+                                       value="{{ old('link_text', $carousel->link_text) }}"
+                                       class="w-full bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-lg text-gray-900 dark:text-white focus:ring-pink-500 focus:border-pink-500 block p-2.5 transition-colors"
+                                       placeholder="Ex: Saiba Mais">
+                            </div>
+                        </div>
+
+                        <!-- Image Upload -->
+                        <div class="p-4 bg-gray-50 dark:bg-slate-900/50 rounded-xl border border-dashed border-gray-300 dark:border-slate-700 hover:border-pink-400 dark:hover:border-pink-600 transition-colors group">
+                            <label for="image" class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-3 group-hover:text-pink-600 dark:group-hover:text-pink-400 transition-colors cursor-pointer">
+                                Imagem de Fundo / Destaque
+                            </label>
+
+                            <input type="file"
+                                   id="image"
+                                   name="image"
+                                   accept="image/*"
+                                   onchange="previewImage(this)"
+                                   class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-pink-50 file:text-pink-700 hover:file:bg-pink-100 dark:file:bg-pink-900/30 dark:file:text-pink-300 transition-all cursor-pointer">
+
+                            <div id="imagePreview" class="{{ $carousel->image ? '' : 'hidden' }} mt-4 relative rounded-lg overflow-hidden border border-gray-200 dark:border-slate-700 shadow-sm">
+                                <img id="previewImg" src="{{ $carousel->image ? asset('storage/' . $carousel->image) : '' }}" alt="Preview" class="w-full h-48 object-cover">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent flex items-end p-2">
+                                    <p class="text-white text-xs font-bold">
+                                        {{ $carousel->image ? 'Imagem Atual' : 'Preview da Nova Imagem' }}
+                                    </p>
+                                </div>
+                            </div>
+                            @error('image')
+                                <p class="mt-2 text-sm text-red-500 flex items-center gap-1"><x-icon name="exclamation-circle" class="w-4 h-4" /> {{ $message }}</p>
+                            @enderror
                         </div>
                     </div>
                 </div>
 
-                <!-- Link -->
-                <div class="grid md:grid-cols-2 gap-6">
-                    <div>
-                        <label for="link" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                            Link (URL)
-                        </label>
-                        <input type="url"
-                               id="link"
-                               name="link"
-                               value="{{ old('link', $carousel->link) }}"
-                               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-indigo-500 dark:focus:border-indigo-500 @error('link') border-red-500 dark:border-red-600 @enderror"
-                               placeholder="https://exemplo.com">
-                        @error('link')
-                            <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-                        @enderror
-                    </div>
+                <!-- Toggles -->
+                <div class="flex flex-col sm:flex-row gap-6 pt-6 border-t border-gray-100 dark:border-slate-700">
+                    <label class="relative inline-flex items-center cursor-pointer group">
+                        <input type="checkbox" name="is_active" value="1" class="sr-only peer" {{ old('is_active', $carousel->is_active) ? 'checked' : '' }}>
+                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-emerald-300 dark:peer-focus:ring-emerald-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-emerald-500"></div>
+                        <span class="ml-3 text-sm font-medium text-gray-700 dark:text-gray-300 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">Publicado</span>
+                    </label>
 
-                    <div>
-                        <label for="link_text" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                            Texto do Botão
-                        </label>
-                        <input type="text"
-                               id="link_text"
-                               name="link_text"
-                               value="{{ old('link_text', $carousel->link_text ?? 'Saiba mais') }}"
-                               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-indigo-500 dark:focus:border-indigo-500 @error('link_text') border-red-500 dark:border-red-600 @enderror"
-                               placeholder="Ex: Saiba mais">
-                        @error('link_text')
-                            <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-                        @enderror
-                    </div>
-                </div>
-
-                <!-- Opções -->
-                <div class="grid md:grid-cols-2 gap-6 pt-4 border-t border-gray-200 dark:border-slate-700">
-                    <div class="flex items-center gap-3">
-                        <label class="relative inline-flex items-center cursor-pointer">
-                            <input type="checkbox" name="is_active" value="1" class="sr-only peer" {{ old('is_active', $carousel->is_active) ? 'checked' : '' }}>
-                            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 dark:peer-focus:ring-indigo-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-emerald-600"></div>
-                            <span class="ml-3 text-sm font-medium text-gray-900 dark:text-white">Slide Ativo</span>
-                        </label>
-                    </div>
-
-                    <div class="flex items-center gap-3">
-                        <label class="relative inline-flex items-center cursor-pointer">
-                            <input type="checkbox" name="show_image" value="1" class="sr-only peer" {{ old('show_image', $carousel->show_image) ? 'checked' : '' }}>
-                            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 dark:peer-focus:ring-indigo-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-indigo-600"></div>
-                            <span class="ml-3 text-sm font-medium text-gray-900 dark:text-white">Exibir Imagem</span>
-                        </label>
-                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer group">
+                        <input type="checkbox" name="show_image" value="1" class="sr-only peer" {{ old('show_image', $carousel->show_image) ? 'checked' : '' }}>
+                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-pink-300 dark:peer-focus:ring-pink-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-pink-600"></div>
+                        <span class="ml-3 text-sm font-medium text-gray-700 dark:text-gray-300 group-hover:text-pink-600 dark:group-hover:text-pink-400 transition-colors">Exibir Imagem</span>
+                    </label>
                 </div>
             </div>
 
             <!-- Footer -->
-            <div class="flex items-center justify-end gap-3 p-6 border-t border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-900/50">
-                <a href="{{ route('admin.carousel.index') }}" class="px-5 py-2.5 text-sm font-medium text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 dark:bg-slate-800 dark:text-white dark:border-slate-600 dark:hover:bg-slate-700 dark:focus:ring-slate-700 transition-colors">
+            <div class="px-6 py-4 bg-gray-50 dark:bg-slate-900/50 border-t border-gray-100 dark:border-slate-700 flex items-center justify-end gap-3">
+                <a href="{{ route('admin.carousel.index') }}" class="px-5 py-2.5 text-sm font-bold text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">
                     Cancelar
                 </a>
-                <button type="submit" class="px-5 py-2.5 text-sm font-medium text-center text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-300 dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800 transition-colors">
-                    <div class="inline-flex items-center gap-2">
-                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                        </svg>
-                        Salvar Alterações
-                    </div>
+                <button type="submit" class="inline-flex items-center gap-2 px-6 py-2.5 text-sm font-bold text-white bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 rounded-lg shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5 focus:ring-4 focus:ring-pink-200 dark:focus:ring-pink-900">
+                    <x-icon name="check" class="w-5 h-5" style="solid" />
+                    Salvar Alterações
                 </button>
             </div>
         </form>
@@ -192,7 +191,11 @@ function previewImage(input) {
 
         reader.readAsDataURL(input.files[0]);
     } else {
-        preview.classList.add('hidden');
+        // Don't hide if it was already showing an existing image, unless we want to clear it on cancel?
+        // But for file input "cancel" typically doesn't clear the input value in all browsers easily without reset.
+        // If the user selects nothing, input.files is empty. We should ideally revert to original image if possible or just hide specific preview.
+        // For simplicity, we'll keep it as is, or maybe not hide if there was an original image?
+        // Let's just handle new file preview.
     }
 }
 </script>

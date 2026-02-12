@@ -9,9 +9,26 @@
         <div>
             <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white flex items-center gap-3 mb-2">
                 <div class="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-teal-500 to-teal-600 rounded-xl flex items-center justify-center shadow-lg">
-                    <x-icon name="magnifying-glass" class="w-5 h-5" />
+                    <x-icon name="box" class="w-5 h-5 md:w-6 md:h-6 text-white" />
+                </div>
+                Estoque de Materiais
+            </h1>
+            <p class="text-sm md:text-base text-gray-500 dark:text-gray-400">
+                Consulta de saldo e movimentação de materiais.
+            </p>
+        </div>
+
+        <form action="{{ route('consulta.materiais.index') }}" method="GET" class="flex flex-wrap items-center gap-2">
+            <div class="relative">
+                <input type="text" name="search" value="{{ request('search') }}" placeholder="Buscar material..." class="pl-3 pr-10 py-2 border border-gray-300 dark:border-slate-600 rounded-lg text-sm bg-white dark:bg-slate-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-teal-500">
+                <button type="submit" class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-teal-500">
+                    <x-icon name="magnifying-glass" class="w-4 h-4" />
                 </button>
             </div>
+
+            <a href="{{ route('consulta.materiais.index') }}" class="inline-flex items-center justify-center px-4 py-2 border border-gray-300 dark:border-slate-600 text-sm font-medium rounded-lg text-gray-700 dark:text-gray-300 bg-white dark:bg-slate-700 hover:bg-gray-50 dark:hover:bg-slate-600" title="Limpar Filtros">
+                <x-icon name="arrow-rotate-left" class="w-5 h-5" />
+            </a>
         </form>
     </div>
 
@@ -89,7 +106,7 @@
                 </tbody>
             </table>
         </div>
-        
+
         @if(method_exists($materiais, 'links') && $materiais->hasPages())
         <div class="px-4 md:px-6 py-4 border-t border-gray-200 dark:border-slate-700">
             {{ $materiais->links() }}
@@ -98,4 +115,3 @@
     </div>
 </div>
 @endsection
-

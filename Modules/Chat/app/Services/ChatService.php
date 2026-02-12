@@ -109,7 +109,9 @@ class ChatService
                     ],
                     'Chat',
                     'ChatSession',
-                    $session->id
+                    $session->id,
+                    false,
+                    'co-admin'
                 );
             }
         } catch (\Exception $e) {
@@ -146,7 +148,9 @@ class ChatService
                         ],
                         'Chat',
                         'ChatSession',
-                        $session->id
+                        $session->id,
+                        false,
+                        'co-admin'
                     );
                 }
             }
@@ -468,7 +472,7 @@ class ChatService
 
         // Funcionário pode acessar apenas suas sessões internas
         if ($user->hasRole('funcionario')) {
-            return $session->type === 'internal' && 
+            return $session->type === 'internal' &&
                    ($session->user_id === $user->id || $session->assigned_to === $user->id);
         }
 
@@ -502,10 +506,10 @@ class ChatService
             $query->whereIn('status', ['waiting', 'active']);
         }
 
-        return $query->orderByRaw("CASE 
-            WHEN status = 'waiting' THEN 0 
-            WHEN status = 'active' THEN 1 
-            ELSE 2 
+        return $query->orderByRaw("CASE
+            WHEN status = 'waiting' THEN 0
+            WHEN status = 'active' THEN 1
+            ELSE 2
         END")
             ->orderBy('last_activity_at', 'desc')
             ->get();

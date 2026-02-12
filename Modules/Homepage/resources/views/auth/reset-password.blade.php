@@ -32,7 +32,7 @@
 
                 <div class="mt-8 space-y-4 text-left">
                     <div class="flex items-start gap-3 bg-white/10 backdrop-blur-sm p-4 rounded-xl">
-                        <x-icon name="shield-check" class="w-6 h-6 text-yellow-300 flex-shrink-0 mt-0.5" />
+                        <x-icon name="shield-halved" class="w-6 h-6 text-yellow-300 flex-shrink-0 mt-0.5" />
                         <div>
                             <strong class="block mb-1">Segurança</strong>
                             <p class="text-sm text-white/80">Sua senha será criptografada e protegida</p>
@@ -46,7 +46,7 @@
                         </div>
                     </div>
                     <div class="flex items-start gap-3 bg-white/10 backdrop-blur-sm p-4 rounded-xl">
-                        <x-icon name="lock-closed" class="w-6 h-6 text-green-300 flex-shrink-0 mt-0.5" />
+                        <x-icon name="lock" class="w-6 h-6 text-green-300 flex-shrink-0 mt-0.5" />
                         <div>
                             <strong class="block mb-1">Proteção</strong>
                             <p class="text-sm text-white/80">Mantenha sua conta protegida com uma senha única</p>
@@ -68,7 +68,7 @@
                 @if(session('status'))
                     <div class="mb-6 p-4 bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded-xl">
                         <div class="flex items-start gap-3">
-                            <x-icon name="check-circle" class="w-5 h-5 text-emerald-600 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
+                            <x-icon name="circle-check" class="w-5 h-5 text-emerald-600 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
                             <div class="flex-1">
                                 <p class="text-sm text-emerald-800 dark:text-emerald-200">{{ session('status') }}</p>
                             </div>
@@ -79,7 +79,7 @@
                 @if($errors->any())
                     <div class="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl">
                         <div class="flex items-start gap-3">
-                            <x-icon name="exclamation-circle" class="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
+                            <x-icon name="circle-exclamation" class="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
                             <div class="flex-1">
                                 <h4 class="font-semibold text-red-900 dark:text-red-200 mb-2">Erro ao redefinir senha</h4>
                                 <ul class="list-disc list-inside space-y-1 text-sm text-red-700 dark:text-red-300">
@@ -130,7 +130,7 @@
                         </label>
                         <div class="relative">
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <x-icon name="lock-closed" class="w-5 h-5 text-gray-400" />
+                                <x-icon name="lock" class="w-5 h-5 text-gray-400" />
                             </div>
                             <input
                                 type="password"
@@ -161,15 +161,15 @@
                             </p>
                             <ul class="text-xs text-gray-500 dark:text-gray-400 space-y-1 ml-4">
                                 <li class="flex items-center gap-2">
-                                    <span class="text-emerald-600 dark:text-emerald-400">•</span>
+                                    <x-icon name="check" class="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
                                     No mínimo 8 caracteres
                                 </li>
                                 <li class="flex items-center gap-2">
-                                    <span class="text-emerald-600 dark:text-emerald-400">•</span>
+                                    <x-icon name="check" class="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
                                     Letras maiúsculas e minúsculas
                                 </li>
                                 <li class="flex items-center gap-2">
-                                    <span class="text-emerald-600 dark:text-emerald-400">•</span>
+                                    <x-icon name="check" class="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
                                     Números e caracteres especiais
                                 </li>
                             </ul>
@@ -186,7 +186,7 @@
                         </label>
                         <div class="relative">
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <x-icon name="lock-closed" class="w-5 h-5 text-gray-400" />
+                                <x-icon name="lock" class="w-5 h-5 text-gray-400" />
                             </div>
                             <input
                                 type="password"
@@ -222,7 +222,7 @@
                     @error('recaptcha')
                         <div class="p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl">
                             <div class="flex items-start gap-3">
-                                <x-icon name="exclamation-circle" class="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
+                                <x-icon name="circle-exclamation" class="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
                                 <p class="text-sm text-red-700 dark:text-red-300">{{ $message }}</p>
                             </div>
                         </div>
@@ -339,4 +339,3 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 @endpush
 @endsection
-

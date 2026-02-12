@@ -16,6 +16,17 @@
     const PUSHER_KEY = window.PUSHER_APP_KEY || null;
     const PUSHER_CLUSTER = window.PUSHER_APP_CLUSTER || 'mt1';
 
+    // Detectar painel atual
+    function getCurrentPanel() {
+        if (window.location.pathname.startsWith('/admin')) {
+            return 'admin';
+        }
+        if (window.location.pathname.startsWith('/co-admin')) {
+            return 'co-admin';
+        }
+        return null;
+    }
+
     // Detectar URL base automaticamente
     function getBaseUrl() {
         return '';
@@ -52,7 +63,16 @@
     // Função para fazer requisições
     async function fetchAPI(endpoint, options = {}) {
         const cleanEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
-        const url = `/api/notificacoes${cleanEndpoint}`;
+
+        // Adicionar painel se não estiver presente
+        const panel = getCurrentPanel();
+        let finalEndpoint = cleanEndpoint;
+        if (panel && !cleanEndpoint.includes('panel=')) {
+            const separator = cleanEndpoint.includes('?') ? '&' : '?';
+            finalEndpoint = `${cleanEndpoint}${separator}panel=${panel}`;
+        }
+
+        const url = `/api/notificacoes${finalEndpoint}`;
 
         try {
             const fetchOptions = {

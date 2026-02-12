@@ -36,7 +36,7 @@ class NotificacoesApiController extends Controller
             }
 
             $userId = auth()->id();
-            
+
             if (!$userId) {
                 return response()->json([
                     'success' => true,
@@ -45,10 +45,12 @@ class NotificacoesApiController extends Controller
             }
 
             $limit = $request->get('limit', 10);
+            $panel = $request->get('panel');
             $notifications = $this->service->getUserNotifications(
                 $userId,
                 $limit,
-                true
+                true,
+                $panel
             );
 
             return response()->json([
@@ -106,7 +108,7 @@ class NotificacoesApiController extends Controller
             }
 
             $userId = auth()->id();
-            
+
             if (!$userId) {
                 return response()->json([
                     'success' => true,
@@ -114,7 +116,8 @@ class NotificacoesApiController extends Controller
                 ]);
             }
 
-            $count = $this->service->getUnreadCount($userId);
+            $panel = request()->get('panel');
+            $count = $this->service->getUnreadCount($userId, $panel);
 
             return response()->json([
                 'success' => true,
@@ -159,7 +162,7 @@ class NotificacoesApiController extends Controller
             }
 
             $userId = auth()->id();
-            
+
             if (!$userId) {
                 return response()->json([
                     'success' => true,
@@ -169,11 +172,13 @@ class NotificacoesApiController extends Controller
 
             $limit = $request->get('limit', 20);
             $unreadOnly = $request->get('unread_only', false);
+            $panel = $request->get('panel');
 
             $notifications = $this->service->getUserNotifications(
                 $userId,
                 $limit,
-                $unreadOnly
+                $unreadOnly,
+                $panel
             );
 
             return response()->json([
@@ -266,4 +271,3 @@ class NotificacoesApiController extends Controller
         }
     }
 }
-

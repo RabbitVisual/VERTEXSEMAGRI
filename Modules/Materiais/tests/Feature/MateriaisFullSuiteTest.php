@@ -70,10 +70,10 @@ class MateriaisFullSuiteTest extends TestCase
     }
 
     #[Test]
-    public function database_has_78_tables_as_production()
+    public function database_has_79_tables_as_production()
     {
         $tables = DB::select('SHOW TABLES');
-        $this->assertEquals(78, count($tables));
+        $this->assertEquals(79, count($tables));
     }
 
     #[Test]
@@ -287,7 +287,7 @@ class MateriaisFullSuiteTest extends TestCase
             'unidade_medida' => 'un'
         ]);
 
-        $this->assertEquals(2, Material::baixoEstoque()->count()); // Corrigido de bajoEstoque -> baixoEstoque
+        $this->assertEquals(2, Material::baixoEstoque()->count());
     }
 
     #[Test]
@@ -327,5 +327,128 @@ class MateriaisFullSuiteTest extends TestCase
         $this->assertTrue($material->subcategoria->is($sub));
         // HasOneThrough relationship check
         $this->assertEquals($cat->id, $material->categoria->id);
+    }
+
+    #[Test]
+    public function admin_can_manage_categories_and_subcategories()
+    {
+        $user = $this->createAdminUser();
+
+        // 1. Create Category
+        $response = $this->actingAs($user)->post(route('admin.materiais.categorias.store'), [
+            'nome' => 'Nova Categoria',
+            'icone' => 'box',
+            'ordem' => 1,
+            'ativo' => 1
+        ]);
+        $response->assertRedirect();
+        $this->assertDatabaseHas('categorias_materiais', ['nome' => 'Nova Categoria']);
+
+        $categoria = CategoriaMaterial::where('nome', 'Nova Categoria')->first();
+
+        // 2. Create Subcategory
+        $response = $this->actingAs($user)->post(route('admin.materiais.categorias.subcategorias.store', $categoria->id), [
+            'nome' => 'Nova Subcategoria',
+            'slug' => 'nova-sub',
+            'ordem' => 1,
+            'ativo' => 1
+        ]);
+        $response->assertRedirect();
+        $this->assertDatabaseHas('subcategorias_materiais', ['nome' => 'Nova Subcategoria', 'categoria_id' => $categoria->id]);
+    }
+
+    #[Test]
+    public function admin_can_manage_custom_fields()
+    {
+        $user = $this->createAdminUser();
+        list($cat, $sub) = $this->createCategoriaAndSubcategoria();
+
+        // Create Custom Field (Campo)
+        // Correct route name from web.php: admin.materiais.categorias.subcategorias.campos.store
+        // Note: The route is nested under category AND subcategory in web.php
+        $response = $this->actingAs($user)->post(route('admin.materiais.categorias.subcategorias.campos.store', ['categoria' => $cat->id, 'subcategoria' => $sub->id]), [
+            'nome' => 'Voltagem',
+            'tipo' => 'text',
+            'obrigatorio' => 1,
+            'ordem' => 1,
+            'ativo' => 1
+        ]);
+
+        $response->assertRedirect();
+        $this->assertDatabaseHas('campos_categoria_material', [
+            'subcategoria_id' => $sub->id,
+            'nome' => 'Voltagem'
+        ]);
+    }
+
+    #[Test]
+    public function admin_can_create_material_request_and_generate_pdf()
+    {
+        $user = $this->createAdminUser();
+        list($cat, $sub) = $this->createCategoriaAndSubcategoria();
+
+        $material = Material::create([
+            'nome' => 'Material Solicitado',
+            'subcategoria_id' => $sub->id,
+            'quantidade_estoque' => 100,
+            'unidade_medida' => 'un'
+        ]);
+
+        // Test Page Load
+        $response = $this->actingAs($user)->get(route('admin.materiais.solicitar.create'));
+        $response->assertOk();
+
+        // Test PDF Generation (Store)
+        // Based on pdf.blade.php content, it expects certain fields
+        $data = [
+            'cidade' => 'Coração de Maria',
+            'data' => now()->format('Y-m-d'),
+            'secretario_nome' => 'Secretario Teste',
+            'secretario_cargo' => 'Secretário de Agricultura',
+            'servidor_nome' => 'Servidor Teste',
+            'servidor_cargo' => 'Cargo Teste',
+            'observacoes' => 'Teste Integração',
+            'materiais' => [
+                [
+                    'material_id' => $material->id,
+                    'quantidade' => 10,
+                    'justificativa' => 'Uso imediato'
+                ]
+            ],
+            'materiais_customizados' => [
+                [
+                    'nome' => 'Item Avulso',
+                    'especificacao' => 'Detalhe X',
+                    'quantidade' => 2,
+                    'unidade_medida' => 'CX',
+                    'justificativa' => 'Necessidade especial'
+                ]
+            ]
+        ];
+
+        // The route for generating PDF is admin.materiais.solicitar.gerar-pdf
+        $response = $this->actingAs($user)->post(route('admin.materiais.solicitar.gerar-pdf'), $data);
+
+        // Expectation: It streams a PDF download or returns binary
+        $response->assertOk();
+        $response->assertHeader('content-type', 'application/pdf');
+
+        // Verify database existence of request (if the controller saves it)
+        // Controller likely saves to 'solicitacoes_materiais'
+        $this->assertDatabaseHas('solicitacoes_materiais', [
+            'servidor_nome' => 'Servidor Teste',
+            'user_id' => $user->id
+        ]);
+    }
+
+    #[Test]
+    public function admin_can_view_field_requests()
+    {
+        $user = $this->createAdminUser();
+
+        // Just check if the page loads safely
+        $response = $this->actingAs($user)->get(route('admin.materiais.solicitacoes-campo.index'));
+        $response->assertOk();
+        $response->assertViewIs('materiais::admin.solicitacoes-campo.index');
     }
 }

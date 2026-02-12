@@ -216,7 +216,7 @@ class CategoriasAdminController extends Controller
         $validated['subcategoria_id'] = $subcategoriaId;
         CampoCategoriaMaterial::create($validated);
 
-        return redirect()->route('admin.materiais.categorias.campos.index', [$categoriaId, $subcategoriaId])
+        return redirect()->route('admin.materiais.categorias.subcategorias.campos.index', [$categoriaId, $subcategoriaId])
             ->with('success', 'Campo criado com sucesso!');
     }
 
@@ -252,7 +252,7 @@ class CategoriasAdminController extends Controller
 
         $campo->update($validated);
 
-        return redirect()->route('admin.materiais.categorias.campos.index', [$categoriaId, $subcategoriaId])
+        return redirect()->route('admin.materiais.categorias.subcategorias.campos.index', [$categoriaId, $subcategoriaId])
             ->with('success', 'Campo atualizado com sucesso!');
     }
 
@@ -260,8 +260,7 @@ class CategoriasAdminController extends Controller
     {
         $campo->delete();
 
-        return redirect()->route('admin.materiais.categorias.campos.index', [$categoriaId, $subcategoriaId])
+        return redirect()->route('admin.materiais.categorias.subcategorias.campos.index', [$categoriaId, $subcategoriaId])
             ->with('success', 'Campo excluído com sucesso!');
     }
 }
-

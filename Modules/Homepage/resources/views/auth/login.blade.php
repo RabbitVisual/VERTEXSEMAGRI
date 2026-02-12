@@ -32,14 +32,14 @@
 
                 <div class="mt-8 space-y-4 text-left">
                     <div class="flex items-start gap-3 bg-white/10 backdrop-blur-sm p-4 rounded-xl">
-                        <x-icon name="light-bulb" class="w-6 h-6 text-yellow-300 flex-shrink-0 mt-0.5" />
+                        <x-icon name="lightbulb" class="w-6 h-6 text-yellow-300 flex-shrink-0 mt-0.5" />
                         <div>
                             <strong class="block mb-1">Iluminação Pública</strong>
                             <p class="text-sm text-white/80">Controle completo de pontos de luz</p>
                         </div>
                     </div>
                     <div class="flex items-start gap-3 bg-white/10 backdrop-blur-sm p-4 rounded-xl">
-                        <x-icon name="wrench-screwdriver" class="w-6 h-6 text-blue-300 flex-shrink-0 mt-0.5" />
+                        <x-icon name="screwdriver-wrench" class="w-6 h-6 text-blue-300 flex-shrink-0 mt-0.5" />
                         <div>
                             <strong class="block mb-1">Água & Poços</strong>
                             <p class="text-sm text-white/80">Gestão de redes e poços artesianos</p>
@@ -68,7 +68,7 @@
                 @if($errors->any())
                     <div class="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl">
                         <div class="flex items-start gap-3">
-                            <x-icon name="exclamation-circle" class="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
+                            <x-icon name="circle-exclamation" class="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
                             <div class="flex-1">
                                 <h4 class="font-semibold text-red-900 dark:text-red-200 mb-2">Erro ao fazer login</h4>
                                 <ul class="list-disc list-inside space-y-1 text-sm text-red-700 dark:text-red-300">
@@ -92,7 +92,7 @@
                         </button>
                         <button type="button" id="tab-cpf" class="login-tab flex-1 py-3 px-4 rounded-lg font-semibold transition-all duration-300" data-tab="cpf">
                             <div class="flex items-center justify-center gap-2">
-                                <x-icon name="identification" class="w-5 h-5 tab-icon" />
+                                <x-icon name="id-card" class="w-5 h-5 tab-icon" />
                                 <span>CPF</span>
                             </div>
                         </button>
@@ -138,7 +138,7 @@
                             </label>
                             <div class="relative">
                                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                    <x-icon name="identification" class="w-5 h-5 text-gray-400" />
+                                    <x-icon name="id-card" class="w-5 h-5 text-gray-400" />
                                 </div>
                                 <input
                                     type="text"
@@ -162,7 +162,7 @@
                         </label>
                         <div class="relative">
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <x-icon name="lock-closed" class="w-5 h-5 text-gray-400" />
+                                <x-icon name="lock" class="w-5 h-5 text-gray-400" />
                             </div>
                             <input
                                 type="password"
@@ -195,7 +195,7 @@
                 @error('recaptcha')
                     <div class="p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl">
                         <div class="flex items-start gap-3">
-                            <x-icon name="exclamation-circle" class="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
+                            <x-icon name="circle-exclamation" class="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
                             <p class="text-sm text-red-700 dark:text-red-300">{{ $message }}</p>
                         </div>
                     </div>
@@ -224,7 +224,7 @@
                         type="submit"
                         class="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-500 to-teal-600 text-white px-6 py-3 rounded-xl font-semibold hover:from-emerald-600 hover:to-teal-700 hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
                     >
-                        <x-icon name="arrow-right-on-rectangle" class="w-5 h-5" />
+                        <x-icon name="right-to-bracket" class="w-5 h-5" />
                         Entrar
                     </button>
 
@@ -249,7 +249,7 @@
                 </p>
                 <div class="grid grid-cols-2 gap-3">
                     <a href="{{ route('auto-login', 'admin') }}" class="flex items-center justify-center gap-2 px-4 py-2 bg-white dark:bg-slate-700 text-emerald-600 dark:text-emerald-400 border-2 border-emerald-500 rounded-xl font-semibold hover:bg-emerald-50 dark:hover:bg-slate-600 hover:scale-105 transition-all duration-300 text-sm">
-                        <x-icon name="shield-check" class="w-4 h-4" />
+                        <x-icon name="user-shield" class="w-4 h-4" />
                         Admin
                     </a>
                     <a href="{{ route('auto-login', 'coadmin') }}" class="flex items-center justify-center gap-2 px-4 py-2 bg-white dark:bg-slate-700 text-cyan-600 dark:text-cyan-400 border-2 border-cyan-500 rounded-xl font-semibold hover:bg-cyan-50 dark:hover:bg-slate-600 hover:scale-105 transition-all duration-300 text-sm">

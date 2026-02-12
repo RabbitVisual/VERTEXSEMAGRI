@@ -42,6 +42,7 @@ trait SendsNotifications
      * @param string|null $moduleSource Nome do módulo (opcional)
      * @param string|null $entityType Tipo da entidade (opcional)
      * @param int|null $entityId ID da entidade (opcional)
+     * @param string|null $panel Painel alvo (opcional)
      * @return \Modules\Notificacoes\App\Models\Notificacao
      */
     protected function notifyUser(
@@ -53,21 +54,23 @@ trait SendsNotifications
         ?array $data = null,
         ?string $moduleSource = null,
         ?string $entityType = null,
-        ?int $entityId = null
+        ?int $entityId = null,
+        ?string $panel = null
     ) {
         $userId = $user instanceof User ? $user->id : $user;
         $moduleSource = $moduleSource ?? $this->getModuleName();
 
         return $this->getNotificationService()->sendToUser(
-            $userId,
-            $type,
-            $title,
-            $message,
-            $actionUrl,
-            $data,
-            $moduleSource,
-            $entityType,
-            $entityId
+            userId: $userId,
+            type: $type,
+            title: $title,
+            message: $message,
+            actionUrl: $actionUrl,
+            data: $data,
+            moduleSource: $moduleSource,
+            entityType: $entityType,
+            entityId: $entityId,
+            panel: $panel
         );
     }
 
@@ -83,6 +86,7 @@ trait SendsNotifications
      * @param string|null $moduleSource Nome do módulo (opcional)
      * @param string|null $entityType Tipo da entidade (opcional)
      * @param int|null $entityId ID da entidade (opcional)
+     * @param string|null $panel Painel alvo (opcional)
      * @return Collection
      */
     protected function notifyRole(
@@ -94,20 +98,22 @@ trait SendsNotifications
         ?array $data = null,
         ?string $moduleSource = null,
         ?string $entityType = null,
-        ?int $entityId = null
+        ?int $entityId = null,
+        ?string $panel = null
     ): Collection {
         $moduleSource = $moduleSource ?? $this->getModuleName();
 
         return $this->getNotificationService()->sendToRole(
-            $roleName,
-            $type,
-            $title,
-            $message,
-            $actionUrl,
-            $data,
-            $moduleSource,
-            $entityType,
-            $entityId
+            roleName: $roleName,
+            type: $type,
+            title: $title,
+            message: $message,
+            actionUrl: $actionUrl,
+            data: $data,
+            moduleSource: $moduleSource,
+            entityType: $entityType,
+            entityId: $entityId,
+            panel: $panel
         );
     }
 
@@ -122,6 +128,7 @@ trait SendsNotifications
      * @param string|null $moduleSource Nome do módulo (opcional)
      * @param string|null $entityType Tipo da entidade (opcional)
      * @param int|null $entityId ID da entidade (opcional)
+     * @param string|null $panel Painel alvo (opcional)
      * @return Collection
      */
     protected function notifyAll(
@@ -132,19 +139,21 @@ trait SendsNotifications
         ?array $data = null,
         ?string $moduleSource = null,
         ?string $entityType = null,
-        ?int $entityId = null
+        ?int $entityId = null,
+        ?string $panel = null
     ): Collection {
         $moduleSource = $moduleSource ?? $this->getModuleName();
 
         return $this->getNotificationService()->sendToAll(
-            $type,
-            $title,
-            $message,
-            $actionUrl,
-            $data,
-            $moduleSource,
-            $entityType,
-            $entityId
+            type: $type,
+            title: $title,
+            message: $message,
+            actionUrl: $actionUrl,
+            data: $data,
+            moduleSource: $moduleSource,
+            entityType: $entityType,
+            entityId: $entityId,
+            panel: $panel
         );
     }
 
@@ -159,6 +168,7 @@ trait SendsNotifications
      * @param array|null $data Dados adicionais (opcional)
      * @param string|null $entityType Tipo da entidade (opcional)
      * @param int|null $entityId ID da entidade (opcional)
+     * @param string|null $panel Painel alvo (opcional)
      * @return mixed
      */
     protected function notify(
@@ -169,20 +179,22 @@ trait SendsNotifications
         ?string $actionUrl = null,
         ?array $data = null,
         ?string $entityType = null,
-        ?int $entityId = null
+        ?int $entityId = null,
+        ?string $panel = null
     ) {
         $moduleSource = $this->getModuleName();
 
         return $this->getNotificationService()->sendFromModule(
-            $moduleSource,
-            $type,
-            $title,
-            $message,
-            $recipients,
-            $actionUrl,
-            $data,
-            $entityType,
-            $entityId
+            moduleName: $moduleSource,
+            type: $type,
+            title: $title,
+            message: $message,
+            recipients: $recipients,
+            actionUrl: $actionUrl,
+            data: $data,
+            entityType: $entityType,
+            entityId: $entityId,
+            panel: $panel
         );
     }
 
@@ -205,4 +217,3 @@ trait SendsNotifications
         return $parts[count($parts) - 2] ?? 'System';
     }
 }
-

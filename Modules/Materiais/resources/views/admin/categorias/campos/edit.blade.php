@@ -20,7 +20,7 @@
                     <nav aria-label="breadcrumb" class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 font-medium">
                         <a href="{{ route('admin.dashboard') }}" class="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Admin</a>
                         <x-icon name="chevron-right" class="w-3 h-3 text-slate-400" />
-                        <a href="{{ route('admin.materiais.categorias.campos.index', [$categoria->id, $subcategoria->id]) }}" class="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors font-bold">Atributos</a>
+                        <a href="{{ route('admin.materiais.categorias.subcategorias.campos.index', [$categoria->id, $subcategoria->id]) }}" class="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors font-bold">Atributos</a>
                         <x-icon name="chevron-right" class="w-3 h-3 text-slate-400" />
                         <span class="text-gray-900 dark:text-white font-bold tracking-tight">Ajuste de Atributo</span>
                     </nav>
@@ -28,7 +28,7 @@
             </div>
 
             <div class="flex items-center gap-3">
-                <a href="{{ route('admin.materiais.categorias.campos.index', [$categoria->id, $subcategoria->id]) }}" class="inline-flex items-center gap-2 px-5 py-3 text-sm font-bold text-gray-700 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 focus:ring-4 focus:ring-gray-100 dark:bg-slate-700 dark:text-gray-300 dark:border-slate-600 transition-all duration-300 shadow-sm active:scale-95 text-center">
+                <a href="{{ route('admin.materiais.categorias.subcategorias.campos.index', [$categoria->id, $subcategoria->id]) }}" class="inline-flex items-center gap-2 px-5 py-3 text-sm font-bold text-gray-700 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 focus:ring-4 focus:ring-gray-100 dark:bg-slate-700 dark:text-gray-300 dark:border-slate-600 transition-all duration-300 shadow-sm active:scale-95 text-center">
                     <x-icon name="arrow-left" style="duotone" class="w-5 h-5" />
                     Listagem
                 </a>
@@ -61,7 +61,7 @@
             <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest bg-white dark:bg-slate-800 px-3 py-1 rounded-full border border-gray-100 dark:border-slate-700">ID: ATRIB-{{ $campo->id }}</span>
         </div>
 
-        <form action="{{ route('admin.materiais.categorias.campos.update', [$categoria->id, $subcategoria->id, $campo->id]) }}" method="POST" class="p-8 md:p-12">
+        <form action="{{ route('admin.materiais.categorias.subcategorias.campos.update', [$categoria->id, $subcategoria->id, $campo->id]) }}" method="POST" class="p-8 md:p-12">
             @csrf
             @method('PUT')
             <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">
@@ -175,7 +175,7 @@
             </div>
 
             <div class="flex items-center justify-end gap-4 mt-16 pt-8 border-t border-gray-100 dark:border-slate-700">
-                <a href="{{ route('admin.materiais.categorias.campos.index', [$categoria->id, $subcategoria->id]) }}" class="px-8 py-4 text-sm font-black text-gray-500 bg-white border-2 border-slate-100 rounded-2xl hover:bg-slate-50 transition-all active:scale-95 shadow-sm">
+                <a href="{{ route('admin.materiais.categorias.subcategorias.campos.index', [$categoria->id, $subcategoria->id]) }}" class="px-8 py-4 text-sm font-black text-gray-500 bg-white border-2 border-slate-100 rounded-2xl hover:bg-slate-50 transition-all active:scale-95 shadow-sm">
                     Reverter Mudanças
                 </a>
                 <button type="submit" class="inline-flex items-center gap-3 px-10 py-4 text-sm font-black text-white bg-emerald-600 rounded-2xl hover:bg-emerald-700 shadow-xl shadow-emerald-500/40 transition-all active:scale-95 border-b-4 border-emerald-800">

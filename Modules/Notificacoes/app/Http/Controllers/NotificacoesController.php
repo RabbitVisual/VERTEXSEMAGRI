@@ -25,25 +25,26 @@ class NotificacoesController extends Controller
     public function index(Request $request)
     {
         $userId = auth()->id();
-        $filters = $request->only(['type', 'is_read']);
-        
+        $filters = $request->only(['type', 'is_read', 'panel']);
+
         $query = \Modules\Notificacoes\App\Models\Notificacao::forUser($userId)
+            ->forPanel($filters['panel'] ?? null)
             ->with('user')
             ->orderBy('created_at', 'desc');
-        
+
         // Apply filters
         if (!empty($filters['type'])) {
             $query->where('type', $filters['type']);
         }
-        
+
         if (isset($filters['is_read']) && $filters['is_read'] !== '') {
             $isRead = $filters['is_read'] === '1' || $filters['is_read'] === 'true';
             $query->where('is_read', $isRead);
         }
-        
+
         $notifications = $query->paginate(20);
         $unreadCount = $this->service->getUnreadCount($userId);
-        
+
         return view('notificacoes::index', compact('notifications', 'unreadCount', 'filters'));
     }
 
@@ -53,11 +54,11 @@ class NotificacoesController extends Controller
     public function markAsRead($id)
     {
         $success = $this->service->markAsRead($id, auth()->id());
-        
+
         if ($success) {
             return redirect()->back()->with('success', 'Notificação marcada como lida.');
         }
-        
+
         return redirect()->back()->with('error', 'Erro ao marcar notificação como lida.');
     }
 
@@ -67,7 +68,7 @@ class NotificacoesController extends Controller
     public function markAllAsRead()
     {
         $count = $this->service->markAllAsRead(auth()->id());
-        
+
         return redirect()->back()->with('success', "{$count} notificações marcadas como lidas.");
     }
 
@@ -77,12 +78,11 @@ class NotificacoesController extends Controller
     public function destroy($id)
     {
         $success = $this->service->delete($id, auth()->id());
-        
+
         if ($success) {
             return redirect()->back()->with('success', 'Notificação deletada com sucesso.');
         }
-        
+
         return redirect()->back()->with('error', 'Erro ao deletar notificação.');
     }
 }
-

@@ -462,7 +462,7 @@
                     <div class="bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl p-8 shadow-2xl">
                         <div class="bg-white/10 backdrop-blur-sm rounded-xl p-6 space-y-4">
                             <div class="flex items-center gap-3 text-white">
-                                <x-icon name="goal" style="duotone" class="w-8 h-8" />
+                                <x-icon name="bullseye" style="duotone" class="w-8 h-8" />
                                 <div>
                                     <h4 class="font-bold text-lg">Missão</h4>
                                     <p class="text-sm text-white/90">Desenvolver políticas públicas para fortalecer a agricultura familiar e garantir a sustentabilidade</p>

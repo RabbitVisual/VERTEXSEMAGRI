@@ -9,7 +9,63 @@
         <div>
             <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white flex items-center gap-3 mb-2">
                 <div class="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-cyan-500 to-cyan-600 rounded-xl flex items-center justify-center shadow-lg">
-                    <x-icon name="eye" class="w-5 h-5" />
+                    <x-icon name="drop" class="w-5 h-5 md:w-6 md:h-6 text-white" />
+                </div>
+                Redes de Água
+            </h1>
+            <p class="text-sm md:text-base text-gray-500 dark:text-gray-400">
+                Gerenciamento e monitoramento das redes de distribuição de água.
+            </p>
+        </div>
+
+        <form action="{{ route('consulta.agua.index') }}" method="GET" class="flex flex-wrap items-center gap-2">
+            <div class="relative">
+                <input type="text" name="search" value="{{ request('search') }}" placeholder="Buscar rede..." class="pl-3 pr-10 py-2 border border-gray-300 dark:border-slate-600 rounded-lg text-sm bg-white dark:bg-slate-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-cyan-500">
+                <button type="submit" class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-cyan-500">
+                    <x-icon name="magnifying-glass" class="w-4 h-4" />
+                </button>
+            </div>
+
+            <a href="{{ route('consulta.agua.index') }}" class="inline-flex items-center justify-center px-4 py-2 border border-gray-300 dark:border-slate-600 text-sm font-medium rounded-lg text-gray-700 dark:text-gray-300 bg-white dark:bg-slate-700 hover:bg-gray-50 dark:hover:bg-slate-600" title="Limpar Filtros">
+                <x-icon name="arrow-rotate-left" class="w-5 h-5" />
+            </a>
+        </form>
+    </div>
+
+    <!-- Tabela -->
+    <div class="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-gray-200 dark:border-slate-700 overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200 dark:divide-slate-700">
+                <thead class="bg-gray-50 dark:bg-slate-900/50">
+                    <tr>
+                        <th class="px-4 md:px-6 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">Nome da Rede</th>
+                        <th class="px-4 md:px-6 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider hidden sm:table-cell">Código</th>
+                        <th class="px-4 md:px-6 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider hidden md:table-cell">Localidade</th>
+                        <th class="px-4 md:px-6 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">Status</th>
+                        <th class="px-4 md:px-6 py-3 text-right text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">Ações</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white dark:bg-slate-800 divide-y divide-gray-200 dark:divide-slate-700">
+                    @forelse($redes as $rede)
+                    <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50 transition-colors">
+                        <td class="px-4 md:px-6 py-4">
+                            <div class="text-sm font-medium text-gray-900 dark:text-white">{{ $rede->nome }}</div>
+                            <div class="text-xs text-gray-500 dark:text-gray-400 md:hidden">{{ $rede->codigo }}</div>
+                        </td>
+                        <td class="px-4 md:px-6 py-4 whitespace-nowrap hidden sm:table-cell">
+                            <span class="text-sm font-mono text-gray-600 dark:text-gray-400">{{ $rede->codigo }}</span>
+                        </td>
+                        <td class="px-4 md:px-6 py-4 whitespace-nowrap hidden md:table-cell">
+                            <span class="text-sm text-gray-600 dark:text-gray-400">{{ $rede->localidade->nome ?? 'N/A' }}</span>
+                        </td>
+                        <td class="px-4 md:px-6 py-4 whitespace-nowrap">
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $rede->ativo ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-300' : 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300' }}">
+                                {{ $rede->ativo ? 'Ativa' : 'Inativa' }}
+                            </span>
+                        </td>
+                        <td class="px-4 md:px-6 py-4 whitespace-nowrap text-right">
+                            <a href="{{ route('consulta.agua.show', $rede->id) }}" class="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors" title="Ver detalhes">
+                                <x-icon name="eye" class="w-5 h-5" />
                             </a>
                         </td>
                     </tr>
@@ -29,7 +85,7 @@
                 </tbody>
             </table>
         </div>
-        
+
         @if(method_exists($redes, 'links') && $redes->hasPages())
         <div class="px-4 md:px-6 py-4 border-t border-gray-200 dark:border-slate-700">
             {{ $redes->links() }}
@@ -38,4 +94,3 @@
     </div>
 </div>
 @endsection
-

@@ -26,7 +26,20 @@ class Notificacao extends Model
         'read_at',
         'action_url',
         'data',
+        'panel',
     ];
+
+    /**
+     * Scope para filtrar notificações por painel
+     */
+    public function scopeForPanel($query, ?string $panel = null)
+    {
+        if (!$panel) {
+            return $query;
+        }
+
+        return $query->where('panel', $panel);
+    }
 
     protected $casts = [
         'is_read' => 'boolean',
@@ -73,7 +86,8 @@ class Notificacao extends Model
         ?string $actionUrl = null,
         ?string $moduleSource = null,
         ?string $entityType = null,
-        ?int $entityId = null
+        ?int $entityId = null,
+        ?string $panel = null
     ): self {
         // Deduplicação: Verificar se já existe uma notificação idêntica criada nos últimos 10 segundos
         if ($userId) {
@@ -81,6 +95,7 @@ class Notificacao extends Model
                 ->where('type', $type)
                 ->where('title', $title)
                 ->where('message', $message)
+                ->where('panel', $panel)
                 ->where('created_at', '>=', now()->subSeconds(10))
                 ->first();
 
@@ -99,8 +114,8 @@ class Notificacao extends Model
             'action_url' => $actionUrl,
             'module_source' => $moduleSource,
             'entity_type' => $entityType,
-            'entity_type' => $entityType,
             'entity_id' => $entityId,
+            'panel' => $panel,
             'is_read' => false,
         ]);
 

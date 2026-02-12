@@ -173,5 +173,30 @@ class NotificacoesAdminController extends Controller
                 ->with('error', 'Erro ao deletar notificação: ' . $e->getMessage());
         }
     }
-}
 
+    public function markAsRead($id)
+    {
+        try {
+            $success = $this->service->markAsRead($id, auth()->id());
+
+            if ($success) {
+                return redirect()->back()->with('success', 'Notificação marcada como lida.');
+            }
+
+            return redirect()->back()->with('error', 'Erro ao marcar notificação como lida.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Erro ao processar: ' . $e->getMessage());
+        }
+    }
+
+    public function markAllAsRead()
+    {
+        try {
+            $count = $this->service->markAllAsRead(auth()->id());
+
+            return redirect()->back()->with('success', "{$count} notificações marcadas como lidas.");
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Erro ao processar: ' . $e->getMessage());
+        }
+    }
+}
